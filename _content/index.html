@@ -40,6 +40,15 @@ days:
       - Class discussion
       - Q&amp;A
 ---
+
+<style>
+canvas {
+    /*-webkit-mask-image: -webkit-gradient(linear, left, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));*/
+    -webkit-mask-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));
+}
+
+</style>
+
 <div class="bg-navy-darker">
 	<div class="section-lg text-white text-navy-lightest">
 		<div class="container">
@@ -50,7 +59,7 @@ days:
                         <p class="text-large">dbt learn is a three day in-person training program designed to empower analysts.</p>
 					</div>
 				</div>
-				<div class="col-lg-4">
+				<div class="col-lg-4" style="z-index: 10">
 					<div class="text-contain">
 						<h1 class="h0">&nbsp;</h1>
                         <a href="#" class="btn btn-primary btn-lg arrow-right">Register now</a>
@@ -59,6 +68,13 @@ days:
 			</div>
 		</div>
 	</div>
+    <div class="section-lg" style="padding: 0; margin-top: -180px; margin-bottom: -10px">
+        <div class="section-background-chart">
+            <div class="chart">
+                <canvas id="banner" width="800" height="300"></canvas>
+            </div>
+        </div>
+    </div>
 	<div class="mask mask-ne text-white"></div>
 </div>
 
@@ -134,3 +150,7 @@ days:
 		</div>
 	</div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+<script src="/ui/js/helpers/chart.js"></script>
