@@ -1,23 +1,29 @@
 var ctx = $("#banner");
-ctx.height(500);
+ctx.height(200);
 
 var t = Date.now();
+var num_bars = 60;
 var chaos = 100;
 var charterator = 0;
 
 function randomseries(){
 	var points = [];
-	for ( var i = 0 ; i < 120 ; i++ ) {
+	for ( var i = 0 ; i < num_bars ; i++ ) {
 		var rand = 100 + ( 2*i/(chaos) + ( Math.random() - Math.random() ) );
 		points.push(rand);
 	}
 	return points;
 }
 
+var labels = [];
+for (var i=0; i<num_bars; i++) {
+    labels.push(1);
+}
+
 var scatterChart = new Chart(ctx, {
 	type: 'bar',
 	data: {
-		labels: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+		labels: labels,
 		datasets: [
 			{
 				type: 'line',
