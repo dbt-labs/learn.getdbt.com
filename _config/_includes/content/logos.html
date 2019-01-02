@@ -1,0 +1,10 @@
+<div class="logos">
+	<div class="logos-content">
+		{% for item in site.data.logos %}
+			<{% if item.href %}a href="{{item.href}}" rel="nofollow" target="_blank"{% else %}div{% endif %} class="logo">
+				<div class="logo-graphic" style="background-image: url({{site.baseurl}}{{item.img}})"></div>
+				<div class="logo-name"><h6>{{item.name}}</h6></div>
+			</{% if item.href %}a{% else %}div{% endif %}>
+		{% endfor %}
+	</div>
+</div>

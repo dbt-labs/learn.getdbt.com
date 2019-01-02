@@ -1,0 +1,55 @@
+# --------------------------------------------------
+# Site settings
+
+title: Transform yourself
+description: TODO
+owner: http://github.com/fishtown-analytics
+repo: learn.getdbt.com
+branch: learn
+robots: true
+
+# --------------------------------------------------
+# Site imagery
+
+favicon: /favicon.ico
+avatar: www.getdbt.com/ui/img/graph/avatar.png
+poster: www.getdbt.com/ui/img/graph/poster.png
+
+# --------------------------------------------------
+# the subpath of your site, e.g. /blog
+
+url: "http://learn.getdbt.com"
+baseurl: "/dbt"
+stylesurl: "/dbt/www.getdbt.com"
+
+# css container
+namespace: dbt
+
+# --------------------------------------------------
+# Build settings
+
+includes_dir: _config/_includes
+layouts_dir: _config/_layouts
+
+sass:
+  style: compressed
+  sass_dir: www.getdbt.com/ui/_sass
+
+collections:
+  content:
+    output: true
+    permalink: /:path/
+
+defaults:
+-
+  scope:
+    path: ""
+    type: "styles"
+  values:
+    layout: "style-spec"
+-
+  scope:
+    path: ""
+    type: "content"
+  values:
+    layout: "page"

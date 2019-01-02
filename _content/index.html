@@ -1,0 +1,136 @@
+---
+title: dbt learn
+permalink: /
+days:
+  - name: Day 1
+    activities:
+      - Intros
+      - Why SQL?
+      - Select, Where, Group by, Order by
+      - Common SQL functions
+      - Databases
+      - Joins, ERDs
+      - Window functions
+      - Lunch + Networking
+      - Refactoring Queries
+      - Style guides
+      - Version control
+      - bash
+      - git
+      - Making Pull Requests
+  - name: Day 2
+    activities:
+      - What is an analyst?
+      - dbt setup and installation
+      - What is dbt?
+      - Data warehouse design
+      - dbt fundamentals
+      - Lunch + Networking
+      - Incremental models
+      - Testing and Continuous Integration
+      - Documentation + Package Management
+      - Design patterns
+      - Using Jinja
+  - name: Day 3
+    activities:
+      - Work applications
+      - KPIs for business units
+      - Problem sets
+      - Lunch + Networking
+      - Class discussion
+      - Q&amp;A
+---
+<div class="bg-navy-darker">
+	<div class="section-lg text-white text-navy-lightest">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="text-contain">
+						<h1 class="h0">Learn from the best</h1>
+                        <p class="text-large">dbt learn is a three day in-person training program designed to empower analysts.</p>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="text-contain">
+						<h1 class="h0">&nbsp;</h1>
+                        <a href="#" class="btn btn-primary btn-lg arrow-right">Register now</a>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+	<div class="mask mask-ne text-white"></div>
+</div>
+
+<div class="bg-white">
+	<div class="mask mask-nw text-navy-darker"></div>
+	<div class="section">
+		<div class="container">
+            <div class="row">
+                <div class='col-lg-8 col-lg-offset-2 text-center'>
+                    <img style="width: 100%" src="https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F49366046%2F187109234018%2F1%2Foriginal.jpg?w=800&auto=compress&rect=0%2C23%2C3478%2C1739&s=07f23eba13267ee9d10f5644891820c4" />
+                </div>
+            </div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain">
+						<h3 id="about" class="h2">About dbt learn</h3>
+						<p>
+                            dbt learn is a three day in-person training program designed to empower analysts.
+                            The only technical requirement needed is a practical knowledge of SQL, leave the rest to us!
+                            Taught by the Fishtown Analytics team, analysts will learn SQL essentials and the in's and out's
+                                of dbt through real-world applications.
+                            Analysts should walk away with a deeper understanding of how to approach, model, and optimize
+                                data through dbt.
+                        </p>
+						<ul class="list-icons list-cols text-med text-heading text-left">
+							{% assign checks = 'SQL Literacy; Version Control; Data Warehouses; Automated Testing; Design Patterns; and more!' | split: ';' %}
+							{% for check in checks %}
+								<li><span class="arrow-check text-red text-large list-icon"></span> {{check}}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="bg-silver-light">
+	<div class="mask mask-ne text-white"></div>
+	<div class="mask mask-sw text-white"></div>
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 col-bottomless">
+					<div class="text-contain text-center">
+						<h3 id="agenda" class="h2">Agenda</h3>
+					</div>
+                </div>
+            </div>
+			<div class="row">
+                {% for day in page.days %}
+                    <div class="col-lg-4">
+                        <h4>{{ day.name }}</h4>
+                        <ul class='list-icons text-med text-heading text-left'>
+                            {% for activity in day.activities %}
+                            <li><span class='arrow-check text-blue text-large list-icon'></span> {{ activity }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<div class="container">
+			<div id="register" class="row">
+				<div class="col-lg-12">
+					<div class="text-contain text-center">
+						<h3 class="h2">Want to learn from the best?</h3>
+                        <p><a href="#" class="btn btn-primary btn-lg arrow-right">Register now</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

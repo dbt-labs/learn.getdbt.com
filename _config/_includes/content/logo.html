@@ -1,0 +1,10 @@
+{% assign grow = include.width | divide_by: include.height %}
+
+<{% if include.link %}a href="{{include.link}}"{% else %}div{% endif %} class="logo-image" style="-webkit-flex:{{grow}} 1 0;-ms-flex:{{grow}} 1 0px;flex:{{grow}} 1 0px;">
+	<img
+		src="{{site.baseurl}}/assets/img/customers/{{include.img}}"
+		width="{{include.width}}"
+		height="{{include.height}}"
+		alt="{{include.alt}}"
+	/>
+</{% if include.link %}a{% else %}div{% endif %}>

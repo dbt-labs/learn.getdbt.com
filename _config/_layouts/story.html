@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US" class="{{site.namespace}}">
+	<head>
+	{% include options/gtm_head.html %}
+	{% include options/settings.html %}
+	{% include options/meta.html %}
+	{% include options/scripts.html %}
+	{% include options/styles.html %}
+	</head>
+	<body class="dbt">
+	{% include options/gtm_body.html %}
+	<div class="page">
+		{% unless page.nav_included %}{% include content/nav.html %}{% endunless %}
+		<div class="section-lg">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="text-contain">
+							<div class="editor">
+								{{ content }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% include content/footer.html %}
+	</div>
+	</body>
+</html>

@@ -1,0 +1,12 @@
+<div class="carousel slide" data-ride="carousel" id="quote-carousel">
+	<div class="carousel-inner" role="listbox">
+		{% for item in site.data.quotes %}
+			<div class="item {% if forloop.first %} active {% endif %}">
+				<blockquote class="text-larger text-red">&rdquo;{{item.quote}}&ldquo;</blockquote>
+				<cite>{{item.cite}}</cite>
+			</div>
+		{% endfor %}
+	</div>
+	<a data-slide="prev" data-target="#quote-carousel" class="left carousel-control" role="button"><i data-icon="left-open-big"></i></a>
+	<a data-slide="next" data-target="#quote-carousel" class="right carousel-control" role="button"><i data-icon="right-open-big"></i></a>
+</div>
