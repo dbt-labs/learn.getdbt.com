@@ -1,4 +1,4 @@
 [submodule "www.getdbt.com"]
 	path = www.getdbt.com
 	url = https://github.com/fishtown-analytics/www.getdbt.com
-    branch = cloud
+	branch = cloud
