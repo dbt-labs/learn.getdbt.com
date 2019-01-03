@@ -2,28 +2,33 @@
 title: dbt learn
 permalink: /
 days:
-  - name: Day 1:
+  - name: Day 1
+    activities:
       - Intro to SQL
       - Common to Advanced SQL functions
-      - ERDs and Executing Joins
+      - ERDs and executing Joins
+      - Creating a style guide
       - Refactoring "bad" queries
       - Version control (git, bash)
       - Making Pull Requests
-  - name: Day 2:
+  - name: Day 2
+    activities:
       - What is dbt?
-      - Data warehouse design
       - dbt fundamentals
+      - Data warehouse design
       - Incremental models
       - Testing and Continuous Integration
       - Documentation + Package Management
       - Design patterns
-  - name: Day 3:
-      - Using Jinja
-      - Creating a macro
+  - name: Day 3
+    activities:
       - Work applications
       - KPIs for business units
-      - Paired problem sets
       - Optimizing your SQL code
+      - Using Jinja
+      - Creating a macro
+      - Paired problem sets
+      - Presenting technical knowledge
 ---
 <div class="bg-navy-darker">
 	<div class="section-lg text-white text-navy-lightest">
@@ -98,7 +103,7 @@ days:
                         <h4>{{ day.name }}</h4>
                         <ul class='list-icons text-med text-heading text-left'>
                             {% for activity in day.activities %}
-                            <li><span class='arrow-check text-blue text-large list-icon'></span> {{ activity }}</li>
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> {{ activity }}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -112,9 +117,8 @@ days:
 				<div class="col-lg-12">
 					<div class="text-contain text-center">
 						<h3 class="h2">Want to learn from the best?</h3>
-                        <p><a href="#" class="btn btn-primary btn-lg arrow-right">Register now</a></p>
-                        <br>
-                        dbt learn will be hosted in Philadelphia, PA once per month.
+                        <p><a href="https://www.eventbrite.com/e/dbt-learn-february-2019-tickets-53954183415" class="btn btn-primary btn-lg arrow-right">Register now</a></p>
+                        <p>dbt learn will be hosted in Philadelphia, PA once per month.</p>
 					</div>
 				</div>
 			</div>
