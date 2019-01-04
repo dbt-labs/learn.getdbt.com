@@ -12,8 +12,8 @@ robots: true
 # Site imagery
 
 favicon: /favicon.ico
-avatar: ui/img/graph/avatar.png
-poster: ui/img/graph/poster.png
+avatar: learn.getdbt.com/ui/img/graph/avatar.png
+poster: learn.getdbt.com/ui/img/graph/poster.png
 
 # --------------------------------------------------
 # the subpath of your site, e.g. /blog
