@@ -2,25 +2,25 @@
 # Site settings
 
 title: Beyond analytics
-description: TODO
+description: dbt learn is a three day in-person training program designed to empower analysts.
 owner: http://github.com/fishtown-analytics
 repo: learn.getdbt.com
-branch: learn
+branch: master
 robots: true
 
 # --------------------------------------------------
 # Site imagery
 
 favicon: /favicon.ico
-avatar: www.getdbt.com/ui/img/graph/avatar.png
-poster: www.getdbt.com/ui/img/graph/poster.png
+avatar: learn.getdbt.com/ui/img/graph/avatar.png
+poster: learn.getdbt.com/ui/img/graph/poster.png
 
 # --------------------------------------------------
 # the subpath of your site, e.g. /blog
 
 url: "http://learn.getdbt.com"
-baseurl: "/dbt"
-stylesurl: "/dbt/www.getdbt.com"
+baseurl: "/"
+stylesurl: "/www.getdbt.com"
 
 # css container
 namespace: dbt
