@@ -4,41 +4,30 @@ permalink: /
 days:
   - name: Day 1
     activities:
-      - Intros
-      - Why SQL?
-      - Select, Where, Group by, Order by
-      - Common SQL functions
-      - Databases
-      - Joins, ERDs
-      - Window functions
-      - Lunch + Networking
-      - Refactoring Queries
-      - Style guides
-      - Version control
-      - bash
-      - git
+      - Intro to SQL
+      - Common to Advanced SQL functions
+      - ERDs and executing Joins
+      - Creating a style guide
+      - Refactoring "bad" queries
+      - Version control (git, bash)
       - Making Pull Requests
   - name: Day 2
     activities:
-      - What is an analyst?
-      - dbt setup and installation
-      - What is dbt?
-      - Data warehouse design
       - dbt fundamentals
-      - Lunch + Networking
+      - Data warehouse design
       - Incremental models
-      - Testing and Continuous Integration
+      - Testing + Continuous Integration
       - Documentation + Package Management
       - Design patterns
-      - Using Jinja
   - name: Day 3
     activities:
       - Work applications
       - KPIs for business units
-      - Problem sets
-      - Lunch + Networking
-      - Class discussion
-      - Q&amp;A
+      - Optimizing your SQL code
+      - Using Jinja
+      - Creating a macro
+      - Paired problem sets
+      - Presenting technical knowledge
 ---
 
 <style>
@@ -55,14 +44,14 @@ canvas {
 			<div class="row">
 				<div class="col-lg-8">
 					<div class="text-contain">
-						<h1 class="h0">Learn from the best</h1>
-                        <p class="text-large">dbt learn is a three day in-person training program designed to empower analysts.</p>
+						<h1 class="h0">Beyond analytics</h1>
+                        <p class="text-large">dbt learn is a three day in-person training program designed to <br> empower analysts.</p>
 					</div>
 				</div>
 				<div class="col-lg-4" style="z-index: 10">
 					<div class="text-contain">
 						<h1 class="h0">&nbsp;</h1>
-                        <a href="#" class="btn btn-primary btn-lg arrow-right">Register now</a>
+                        <a href="https://www.eventbrite.com/e/dbt-learn-february-2019-tickets-53954183415" class="btn btn-primary btn-lg arrow-right">Register now</a>
                     </div>
                 </div>
 			</div>
@@ -84,7 +73,7 @@ canvas {
 		<div class="container">
             <div class="row">
                 <div class='col-lg-8 col-lg-offset-2 text-center'>
-                    <img style="width: 100%" src="https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F49366046%2F187109234018%2F1%2Foriginal.jpg?w=800&auto=compress&rect=0%2C23%2C3478%2C1739&s=07f23eba13267ee9d10f5644891820c4" />
+                    <img style="width: 100%" src="https://i.imgur.com/bCyllZv.jpg" />
                 </div>
             </div>
 			<div class="row">
@@ -129,27 +118,29 @@ canvas {
                         <h4>{{ day.name }}</h4>
                         <ul class='list-icons text-med text-heading text-left'>
                             {% for activity in day.activities %}
-                            <li><span class='arrow-check text-blue text-large list-icon'></span> {{ activity }}</li>
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> {{ activity }}</li>
                             {% endfor %}
                         </ul>
                     </div>
                 {% endfor %}
 			</div>
 		</div>
-	</div>
-	<div class="section">
-		<div class="container">
-			<div id="register" class="row">
-				<div class="col-lg-12">
-					<div class="text-contain text-center">
-						<h3 class="h2">Want to learn from the best?</h3>
-                        <p><a href="#" class="btn btn-primary btn-lg arrow-right">Register now</a></p>
-					</div>
+    </div>
+</div>
+<div class="section">
+	<div class="container">
+		<div id="register" class="row">
+			<div class="col-lg-12">
+				<div class="text-contain text-center">
+					<h3 class="h2">Want to learn from the best?</h3>
+                    <p><a href="https://www.eventbrite.com/e/dbt-learn-february-2019-tickets-53954183415" class="btn btn-primary btn-lg arrow-right">Register now</a></p>
+                    <p>dbt learn is hosted monthly in Philadelphia, PA</p>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
