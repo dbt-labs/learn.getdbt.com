@@ -58,7 +58,8 @@ var scatterChart = new Chart(ctx, {
 		legend: { display: false },
 		tooltips: { enabled: false },
 		hover: {mode: null},
-		maintainAspectRatio: false
+		maintainAspectRatio: false,
+        responsive: true
 	}
 });
 
@@ -70,4 +71,4 @@ function mixChart(animate){
 	scatterChart.update(duration,true);
 }
 var timer = setTimeout(function(){ mixChart(); },1000);
-setInterval(function(){ mixChart(); },4500);
+setInterval(function(){ mixChart(4500); },4500);
