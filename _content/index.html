@@ -2,9 +2,8 @@
 title: dbt learn
 permalink: /
 render_chart: true
-days:
-  - name:
-    activities:
+agenda:
+  - activities:
       - Creating a style guide
       - Version control (git, bash)
       - Making Pull Requests
@@ -14,8 +13,7 @@ days:
       - Testing + Continuous Integration
       - Documentation + Package Management
       - Design patterns
-  - name:
-    activities:
+  - activities:
       - Understanding dbt + your BI tool
       - Work applications
       - KPIs for business units
@@ -69,7 +67,7 @@ canvas {
 		<div class="container">
             <div class="row">
                 <div class='col-lg-8 col-lg-offset-2 text-center'>
-                    <img style="width: 100%" src="https://i.imgur.com/bCyllZv.jpg" />
+                    <img style="width: 100%" src="https://i.imgur.com/RbKJTOY.jpg" />
                 </div>
             </div>
 			<div class="row">
@@ -100,7 +98,7 @@ canvas {
 	<div class="mask mask-ne text-white"></div>
 	<div class="mask mask-sw text-white"></div>
 	<div class="section">
-		<div class="container">
+		<div class="text-contain">
 			<div class="row">
 				<div class="col-lg-12 col-bottomless">
 					<div class="text-contain text-center">
@@ -109,11 +107,10 @@ canvas {
                 </div>
             </div>
 			<div class="row">
-                {% for day in page.days %}
-                    <div class="col-lg-4">
-                        <h4>{{ day.name }}</h4>
+                {% for agendum in page.agenda %}
+                    <div class="col-md-6">
                         <ul class='list-icons text-med text-heading text-left'>
-                            {% for activity in day.activities %}
+                            {% for activity in agendum.activities %}
                             <li><span class='arrow-right text-blue text-medium list-icon'></span> {{ activity }}</li>
                             {% endfor %}
                         </ul>
