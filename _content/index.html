@@ -27,7 +27,6 @@ canvas {
     /*-webkit-mask-image: -webkit-gradient(linear, left, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));*/
     -webkit-mask-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));
 }
-
 </style>
 
 <div class="bg-navy-darker">
@@ -155,140 +154,96 @@ canvas {
 	</div>
 </div>
 
-<style type="text/css">
-.form-style-5{
-	max-width: 500px;
-	padding: 10px 20px;
-	background: #f4f7f8;
-	margin: 10px auto;
-	padding: 20px;
-	background: #f4f7f8;
-	border-radius: 8px;
-}
-.form-style-5 fieldset{
-	border: none;
-}
-.form-style-5 legend {
-	font-size: 1.25em;
-	margin-bottom: 5px;
-}
-.form-style-5 label {
-	font-size: 1.05em;
-	display: block;
-	margin-bottom: 10px;
-}
-.form-style-5 input[type="text"],
-.form-style-5 input[type="email"],
-.form-style-5 textarea,
-.form-style-5 select {
-	background: rgba(255,255,255,.1);
-	border: none;
-	border-radius: 4px;
-	font-size: 15px;
-	margin: 0;
-	outline: 0;
-	padding: 5px;
-	width: 100%;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	background-color: #e8eeef;
-	color:#8a97a0;
-	-webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-	box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-	margin-bottom: 20px;
-}
-.form-style-5 input[type="text"]:focus,
-.form-style-5 textarea:focus,
-.form-style-5 select:focus{
-	background: #d2d9dd;
-}
-.form-style-5 select{
-	-webkit-appearance: menulist-button;
-	height:20px;
-}
-.form-style-5 .number {
-	background: #ff684b;
-	color: #fff;
-	height: 30px;
-	width: 30px;
-	display: inline-block;
-	font-size: 0.8em;
-	margin-right: 4px;
-	line-height: 30px;
-	text-align: center;
-	text-shadow: 0 1px 0 rgba(255,255,255,0.2);
-	border-radius: 15px 15px 15px 0px;
-}
-
-.form-style-5 input[type="submit"],
-.form-style-5 input[type="button"]
-{
-	position: relative;
-	display: block;
-	padding: 19px 39px 18px 39px;
-	color: #FFF;
-	margin: 0 auto;
-	background: #ff684b;
-	font-size: 15px;
-	text-align: center;
-	font-style: normal;
-	width: 100%;
-	border: 1px solid #ff684b;
-	border-width: 1px 1px 3px;
-	margin-bottom: 10px;
-}
-.form-style-5 input[type="submit"]:hover,
-.form-style-5 input[type="button"]:hover
-{
-	background: #ff684b;
-}
-</style>
 <div class="bg-silver-light">
 
 	<div class="mask mask-ne text-white"></div>
 	<div class="mask mask-sw text-white"></div>
 	<div class="section">
-        <div class="text-contain text-center">
-            <h3 id="interest" class="h2">Interest Form</h3>
-        </div>
-        <div class="form-style-5">
-            <form action="https://formspree.io/erica@fishtownanalytics.com" method="POST" />
-              <fieldset>
-              <legend>
-              	<span class="number">1</span> <b> Candidate Info</b>
-              </legend>
-              <p>
-              <input type="text" name="name" placeholder="Your Name *">
-
-              <input type="email" name="email" placeholder="Your Email *">
-              <input type="email" name="company" placeholder="Your Company *">
-              <label for="job">Session Preference:</label>
-              <select id="job" name="session">
-                <option value="1">Fall 2019</option>
-                <option value="2">Winter 2020</option>
-                <option value="3">Spring 2020</option>
-                <option value="4">Summer 2020</option>
-                <option value="5">Fall 2020</option>
-              </select>
-                <label for="job">Interested Seats:</label>
-              <select id="job" name="seats">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5+</option>
-              </select>
-              </fieldset>
-              <fieldset>
-              	<legend><span class="number">2</span> <b>Location Preferences</b></legend>
-              <textarea name="location" placeholder="e.g. Philadelphia, USA (west coast), Europe, etc"></textarea>
-              </fieldset>
-              <fieldset>
-              	<legend><span class="number">3</span> <b>Other Notes</b></legend>
-              <textarea name="other" placeholder="Additional information or questions"></textarea>
-              </fieldset>
-              <b><input type="submit" value="Let us know!"/></b>
+        <div class='row'>
+            <div class='col-md-6 col-md-offset-3'>
+                <form action="https://formspree.io/erica@fishtownanalytics.com" method="POST" />
+                <div class="text-contain text-center">
+                    <h3 id="interest" class="h2">Interest Form</h3>
+                </div>
+                    <div class='card'>
+                        <div class='card-body card-form'>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Your Name</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <input class='form-control' type="text" name="name" placeholder="Elliot Alderson" />
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Your Email</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <input class='form-control' type="text" name="email" placeholder="elliot@evilcorp.io" />
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Your Company</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <input class='form-control' type="text" name="company" placeholder="Evil Corp" />
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Session Preference</label>
+                                    </div>
+                                    <div class="select">
+                                    	<select class="form-control">
+                                    		<option>Fall 2019</option>
+                                    		<option>Winter 2020</option>
+                                    		<option>Spring 2020</option>
+                                    		<option>Summer 2020</option>
+                                    		<option>Fall 2020</option>
+                                    	</select>
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Interested Seats</label>
+                                    </div>
+                                    <div class="select">
+                                    	<select class="form-control">
+                                            <option>1</option>
+                                    		<option>2</option>
+                                    		<option>3</option>
+                                    		<option>4</option>
+                                    		<option>5+</option>
+                                    	</select>
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Location Preferences</label>
+                                    </div>
+                                    <div class="card-control">
+                                            <textarea class='form-control' id="location" name="location" placeholder="e.g. Philadelphia, USA (west coast), Europe, etc."></textarea>
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Other Notes</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <textarea class='form-control' id="other" name="other" placeholder="Additional information or questions"></textarea>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <p class="btn-inliner">
+                        <center>
+                           <button type="submit" class="btn btn-primary">Let us know!</button>
+                        </center>
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
 </div>
