@@ -118,44 +118,45 @@ canvas {
 		</div>
     </div>
 </div>
-<div class="section">
-	<div class="container">
-		<div id="details" class="row">
-			<div class="col-lg-12">
-				<div class="text-contain text-center">
-					<h3 class="h2">What to Expect</h3>
+
+<div class="bg-white">
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain">
+						<center><h3 id="about" class="h2">What to Expect</h3></center>
+						<p>
+                            <h4>Prequisite:</h4>
+                                <li> Webinar for SQL Foundations and Bash/Git/Version Control</li>
+                                <li> Meet with an instructor for 15min to discuss your goals</li>
+                                <li> Detailed set-up instrructions</li>
+                            <h4>During:</h4>
+                                <li> Access to presentations and a curated list of resources to further learnings</li>
+                                <li> Taught by three instructors from Fishtown Analytics 👋 </li>
+                                <li> What is dbt and how does it fit into the analytics ecosystem? </li>
+                                <li> dbt fundamentals, including building and testing data models, snapshotting slowly changing dimensions, environment management, and deploying dbt projects to production</li>
+                                <li> Data warehouse design: how we practice Kimball-style modeling in dbt </li>
+                                <li> Documenting your warehouse with dbt Docs </li>
+                                <li> Using dbt’s package management to federate ownership of large dbt projects </li>
+                                <li> Modeling for performance: building tables incrementally </li>
+                                <li> Using Jinja and macros to create dynamic, DRY data models </li>
+                                <li> A paired problemset everyday which students will present at the end of the day </li>
+                            <h4>After:</h4>
+                                <li>A cohort of peers to converse and network with</li>
+                                <li>Two weeks post-program to ask your instructors for support</li>
+                                <li>A verified dbt Learn certificate</li>
+					</div>
 				</div>
-                    Prequisite:
-                        <li> Webinar for SQL Foundations and Bash/Git/Version Control</li>
-                        <li> Meet with an instructor for 15min to discuss your goals</li>
-                        <li> Detailed set-up instrructions</li>
-                        <br>
-                    During:
-                        <li> Access to presentations and a curated list of resources to further learnings</li>
-                        <li> Taught by three instructors from Fishtown Analytics 👋 </li>
-                        <li> What is dbt and how does it fit into the analytics ecosystem? </li>
-                        <li> dbt fundamentals, including building and testing data models, snapshotting slowly changing dimensions, environment management, and deploying dbt projects to production</li>
-                        <li> Data warehouse design: how we practice Kimball-style modeling in dbt </li>
-                        <li> Documenting your warehouse with dbt Docs </li>
-                        <li> Using dbt’s package management to federate ownership of large dbt projects </li>
-                        <li> Modeling for performance: building tables incrementally </li>
-                        <li> Using Jinja and macros to create dynamic, DRY data models </li>
-                        <li> A paired problemset everyday which students will present at the end of the day </li>
-                        <br>
-                    After:
-                        <li>A cohort of peers to converse and network with</li>
-                        <li>Two weeks post-program to ask your instructors for support</li>
-                        <li>A verified dbt Learn certificate</li>
 			</div>
 		</div>
 	</div>
 </div>
 
-
 <style type="text/css">
 .form-style-5{
 	max-width: 500px;
-	padding: 5px 10px;
+	padding: 10px 20px;
 	background: #f4f7f8;
 	margin: 10px auto;
 	padding: 20px;
@@ -166,13 +167,13 @@ canvas {
 	border: none;
 }
 .form-style-5 legend {
-	font-size: 1.0em;
+	font-size: 1.25em;
 	margin-bottom: 5px;
 }
 .form-style-5 label {
-	font-size: .8em;
+	font-size: 1.05em;
 	display: block;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 .form-style-5 input[type="text"],
 .form-style-5 input[type="date"],
@@ -187,7 +188,7 @@ canvas {
 	background: rgba(255,255,255,.1);
 	border: none;
 	border-radius: 4px;
-	font-size: 10px;
+	font-size: 15px;
 	margin: 0;
 	outline: 0;
 	padding: 5px;
@@ -223,7 +224,7 @@ canvas {
 	height: 30px;
 	width: 30px;
 	display: inline-block;
-	font-size: 0.625em;
+	font-size: 0.8em;
 	margin-right: 4px;
 	line-height: 30px;
 	text-align: center;
@@ -240,7 +241,7 @@ canvas {
 	color: #FFF;
 	margin: 0 auto;
 	background: #ff684b;
-	font-size: 12px;
+	font-size: 15px;
 	text-align: center;
 	font-style: normal;
 	width: 100%;
@@ -272,7 +273,7 @@ canvas {
               <input type="text" name="name" placeholder="Your Name *">
 
               <input type="email" name="email" placeholder="Your Email *">
-
+              <input type="email" name="company" placeholder="Your Company *">
               <label for="job">Session Preference:</label>
               <select id="job" name="session">
                 <option value="1">Fall 2019</option>
@@ -298,8 +299,7 @@ canvas {
               	<legend><span class="number">3</span> <b>Other Notes</b></legend>
               <textarea name="other" placeholder="Additional information or questions"></textarea>
               </fieldset>
-              <b><input type="submit" value="Be Notified"/></b>
-            </form>
+              <b><input type="submit" value="Let us know"/></b>
         </div>
     </div>
 </div>
