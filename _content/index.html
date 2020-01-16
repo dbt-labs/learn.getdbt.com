@@ -4,23 +4,25 @@ permalink: /
 render_chart: true
 event_link: https://events.getdbt.com/
 agenda:
-  - activities:
+  - name: Foundations
+    activities:
+      - Analytics engineering in 2020
       - dbt fundamentals
       - Data warehouse design
-      - Understanding dbt + your BI tool
+      - dbt + BI tools
       - Testing + Continuous Integration
-      - Documentation + Sources
-      - Package management
-      - Design patterns
+      - Data sources + freshness
+      - Documenting data models
 
-  - activities:
-      - Work applications
-      - KPIs for business units
-      - Optimizing your SQL code
-      - Using Jinja & creating a macro
+  - name: Applications
+    activities:
+      - Extending SQL with Jinja
+      - Package management
+      - Understanding databases
+      - Optimizing queries
       - Incremental models
-      - Paired problem sets
-      - Presenting technical knowledge
+      - End-to-end analytics
+      - Patterns + techniques
 ---
 
 <style>
@@ -74,7 +76,7 @@ canvas {
 					<div class="text-contain">
 						<h3 id="about" class="h2">About dbt learn</h3>
 						<p>
-                            Analytics engineering is the data transformation work that happens between loading data into your warehouse and analyzing it. At dbt Learn, the Fishtown Analytics team will teach analysts how to use dbt to manage that workflow. The only technical requirement needed for dbt Learn is a practical knowledge of SQL and a willingness to learn Bash, Git, and version control. Attendees will learn about:
+                            Analytics engineering is the data transformation work that happens between loading data into your warehouse and analyzing it. At dbt Learn, the Fishtown Analytics team will teach analysts how to use dbt to manage that workflow. The only technical prerequisite for dbt Learn is a working knowledge of SQL. Prior familiarity with the command line and version control is helpful but not necessary. Attendees will learn about:
                         </p>
 						<ul class="list-icons list-cols text-med text-heading text-left">
 							{% assign checks = 'Data Warehouses; Automated Testing; Modeling Strategies; Performance Optimization; Writing DRY code; and more!' | split: ';' %}
@@ -102,7 +104,8 @@ canvas {
             </div>
 			<div class="row">
                 {% for agendum in page.agenda %}
-                    <div class="col-md-6">
+                <div class="col-md-6">
+                    <h4>{{ agendum.name }}</h4>
                         <ul class='list-icons text-med text-heading text-left'>
                             {% for activity in agendum.activities %}
                             <li><span class='arrow-right text-blue text-medium list-icon'></span> {{ activity }}</li>
@@ -121,25 +124,16 @@ canvas {
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="text-contain">
-						<center><h3 id="about" class="h2">What to Expect</h3></center>
+						<center><h3 class="h2">What to Expect</h3></center>
 						<p>
                             <h4>Before you begin:</h4>
-                                <li> Webinar for SQL Foundations and Bash/Git/Version Control</li>
-                                <li> Meet with an instructor for 15min to discuss your goals</li>
-                                <li> Detailed set-up instructions</li>
+                                <li> Interactive tutorial for getting started with dbt on Snowflake</li>
+                                <li> Primers for SQL Foundations and Bash/Git</li>
                             <h4>During:</h4>
-                                <li> A two-day course, taught by three instructors from Fishtown Analytics 👋 </li>
-                                <li> What is dbt and how does it fit into the analytics ecosystem? </li>
-                                <li> dbt fundamentals, including building and testing data models, snapshotting slowly changing dimensions, environment management, and deploying dbt projects to production</li>
-                                <li> Data warehouse design: how we practice Kimball-style modeling in dbt </li>
-                                <li> Documenting your warehouse with dbt Docs</li>
-                                <li> Utilizing dbt to alert on data quality and recency issues</li>
-                                <li> Using dbt’s package management to federate ownership of large dbt projects </li>
-                                <li> Modeling for performance: building tables incrementally </li>
-                                <li> Using Jinja and macros to create dynamic, DRY data models </li>
-                                <li> How to model strategically while thinking about scalability </li>
-                                <li> A paired problemset everyday which students will present at the end of the day </li>
-                                <li> Access to presentations and a curated list of resources to further learnings</li>
+                                <li> A two-day course, taught by instructors from Fishtown Analytics 👋 </li>
+                                <li> Integrated working sessions for hands-on exploration of dbt features</li>
+                                <li> Dedicated time for questions and side-by-side pairing</li>
+                                <li> Access to presentations and a curated list of additional resources</li>
                             <h4>After:</h4>
                                 <li>A cohort of peers to network with and learn from</li>
                                 <li>Two weeks post-program to ask your instructors for support</li>
@@ -204,8 +198,6 @@ canvas {
                                     </div>
                                     <div class="select">
                                     	<select class="form-control" id="session" name="session">
-                                    		<option>Fall 2019</option>
-                                    		<option>Winter 2020</option>
                                     		<option>Spring 2020</option>
                                     		<option>Summer 2020</option>
                                     		<option>Fall 2020</option>
