@@ -2,7 +2,7 @@
 # Site settings
 
 title: Beyond analytics
-description: dbt learn is a three day in-person training program designed to empower analysts.
+description: dbt learn is a two-day in-person training program designed to empower analysts.
 owner: http://github.com/fishtown-analytics
 repo: learn.getdbt.com
 branch: master
