@@ -35,7 +35,7 @@ layout: false
 ???
 Imagine you have an orders table where the status field can be overwritten as the order is processed. One day you query the table and get back this result, but the next day you get this result.
 
-You can no longer Technique:
+You can no longer answer:
 - When did that order ship?
 - How long did it take to change status?
 
@@ -102,13 +102,13 @@ $ dbt snapshot
 - Every time you run the dbt snapshot command, dbt will run your select statement and check if the dataset has changed compared to its last known state.
 - If the records have changed, then dbt will create a new entry in the snapshot table for the new state of the record. If there are net-new records in the source dataset, then dbt will create an initial entry for the record.
 
----
+--
 
 # Learn more about snapshots
 - [Read the docs](https://docs.getdbt.com/docs/snapshots)
 
 ---
-# I have a huge case statement
+# I have a long case statement
 --
 
 ```sql
