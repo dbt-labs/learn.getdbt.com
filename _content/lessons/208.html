@@ -3,18 +3,24 @@ layout: presentation
 title: Techniques of the trade
 lesson: 208
 ---
+<!-- just putting this here to prevent a silly jekyll warning at compile time -->
+
+{% raw %}
 
 # Techniques of the trade
 
 ???
 We've already learned the tools of the trade, but now we are learning the techniques.
-We're going to go through a series of problems that analytics engineers often have to solve, and discuss how we would typically solve them. Feel free to jump in with suggested answer at any point.
+We're going to go through a series of problems that analytics engineers often have to solve, and discuss how we would typically solve them. Feel free to jump in with suggested Technique at any point.
 
 
 ---
 
 # My source data keeps changing
---
+
+---
+
+layout: false
 
 ## On Monday:
 | order_id | status  | created_at | updated_at | 
@@ -29,7 +35,7 @@ We're going to go through a series of problems that analytics engineers often ha
 ???
 Imagine you have an orders table where the status field can be overwritten as the order is processed. One day you query the table and get back this result, but the next day you get this result.
 
-You can no longer answer:
+You can no longer Technique:
 - When did that order ship?
 - How long did it take to change status?
 
@@ -54,9 +60,15 @@ We want to turn our **mutable** data into **immutable data**
 | 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   | 
 | 1        | shipped | 2019-01-02 | 2019-01-02     | null         | 
 
-## Answer: Snapshots
+--
+
+## Technique: Snapshots
 
 ---
+
+layout: false
+
+# Anatomy of a snapshot
 
 ```sql
 -- snapshots/orders_snapshot.sql
@@ -80,18 +92,296 @@ We want to turn our **mutable** data into **immutable data**
 
 ```
 
+From the command line:
+```bash
+$ dbt snapshot
+
+```
 ???
-Snapshots are simple select statements which define a dataset. Every time you run the dbt snapshot command, dbt will run your select statement and check if the dataset has changed compared to its last known state. If the records have changed, then dbt will create a new entry in the snapshot table for the new state of the record. If there are net-new records in the source dataset, then dbt will create an initial entry for the record.
+- Snapshots are simple select statements which define a dataset. They live in the snapshots directory, and are enclosed in Jinja tags
+- Every time you run the dbt snapshot command, dbt will run your select statement and check if the dataset has changed compared to its last known state.
+- If the records have changed, then dbt will create a new entry in the snapshot table for the new state of the record. If there are net-new records in the source dataset, then dbt will create an initial entry for the record.
+
+---
+
+# Learn more about snapshots
+- [Read the docs](https://docs.getdbt.com/docs/snapshots)
+
+---
+# I have a huge case statement
+--
+
+```sql
+-- models/orders.sql
+select
+    order_id,
+    case
+        when country_code = 'AU' then 'Australia'
+        when country_code = 'UK' then 'United Kingdom'
+        when country_code = 'US' then 'United States'
+        ...
+    end as country_name
+
+from {{ ref('orders') }}
+```
+
+--
+
+## Technique: seeds
+???
+Seeds are CSV files that you can `ref` in your project
+
+---
+# Anatomy of a seed
+
+`data/country_codes.csv`:
+```txt
+country_code, country_name
+AU,Australia
+UK,United Kingdom
+US,United States
+```
+--
+Command:
+```bash
+$ dbt seed
+```
+--
+Downstream model:
+```sql
+-- models/orders.sql
+select
+    orders.order_id,
+    country_codes.country_name
+
+from {{ ref('orders') }} as orders
+
+left join {{ ref('country_codes') }} as country_codes
+    on orders.country_code = country_codes.country_code
+
+```
+
+???
+* Seeds live in the `data` folder as `.csv` files
+* Load them with the `dbt seed` command
+* You can `ref` them like any other model
+* Appropriate for version controlling business logic, not for loading huge datasets
+
+---
+# More information
+- [Read the docs](https://docs.getdbt.com/docs/seeds)
+
+--
+# Other use cases for seeds
+* Email addresses to exclude
+* List of employee accounts
+
+---
+# I want to split my relations across multiple schemas
 
 
+--
+
+## Technique: custom schemas
+
+---
+# Anatomy of custom schemas
 
 ---
 
-# I need to grant 
+# I am getting permission denied errors on relations that dbt creates
+--
+```txt
+-- snowflake
+SQL compilation error: Object 'ANALYTICS.DBT_CLAIRE.MY_TABLE' does not exist or not authorized.
+
+-- redshift
+ERROR:  permission denied for relation my_table
+
+-- bigquery
+...
+```
+???
+
+
+--
+
+# Technique: version-controlled grant statements
+
+???
+We want to ensure that as soon as dbt creates a relation, my BI tool can `select` from it
+There's a few ways to do this, and it's highly warehouse dependent
+
+--
+```sql
+grant usage on schema dbt_claire to role reporter;
+grant select on dbt_claire.customers to role reporter;
+```
+???
+Essentially we want to run a statement _like_ this
 
 ---
-- I need to do some database operations --> operations
-- I need to grant privileges --> hooks
-- I need to create some UDFs --> hooks (maybe)
-- I have a huge case statements/email exclusion list --> seeds
-- I need to adjust a materialization / build a new one
+# Hooks
+* Snippets of SQL that you can run:
+    * `on-run-start`: at the beginning of a `dbt run` or `dbt seed`
+    * `on-run-end`: at the end of a run
+    * `pre-hook`: before a model runs
+    * `post-hook`: after a model runs
+
+???
+Side step into hooks very quickly to look at it as a way to do this
+--
+# Operations
+* A _macro_ that you can run using the `run-operation` command
+
+---
+# V0: Use a `post-hook` to grant:
+```yaml
+# dbt_project.yml
+
+seeds:
+  post-hook: "grant select on {{ this }} to role reporter;"
+
+models:
+  post-hook: "grant select on {{ this }} to role reporter;"
+
+on-run-end:
+  - "grant usage on schema {{ target.schema }} to role reporter;"
+
+```
+???
+* {{ this }} is the current model / seed
+
+--
+## Problems:
+* Results in a lot of grant statements
+
+---
+# V1: Use `on-run-end` hooks to grant
+```yaml
+# dbt_project.yml
+
+on-run-end:
+  - "grant usage on schema {{ target.schema }} to role reporter;"
+  - "grant select on all tables in schema {{ target.schema }} to role reporter;"
+  - "grant select on all views in schema {{ target.schema }} to role reporter;"
+```
+--
+## Problems:
+* Downtime between when a model builds and when the `reporter` role can read it
+
+---
+# V2: Use `on-run-end` hooks + future grants
+```yaml
+# dbt_project.yml
+
+on-run-end:
+  - "grant usage on schema {{ target.schema }} to role reporter;"
+  - "grant select on all tables in schema {{ target.schema }} to role reporter;"
+  - "grant select on all views in schema {{ target.schema }} to role reporter;"
+  - "grant select on future table in schema {{ target.schema }} to role reporter;"
+  - "grant select on future views in schema {{ target.schema }} to role reporter;"
+```
+
+???
+On Postgres/Redshift, use default grants
+
+--
+## Problems
+* This is getting verbose...
+* And what about custom schemas?
+
+---
+# V3: Use a macro
+```yaml
+# dbt_project.yml
+
+on-run-end:
+  - "grant_select_on_schemas(schemas, 'reporter')"
+```
+
+```sql
+-- macros/grant_select_on_schemas.sql
+{% macro grant_select_on_schemas(schemas, role) %}
+  {% for schema in schemas %}
+    grant usage on schema {{ schema }} to role {{ role }};
+    grant select on all tables in schema {{ schema }} to role {{ role }};
+    grant select on all views in schema {{ schema }} to role {{ role }};
+    grant select on future tables in schema {{ schema }} to role {{ role }};
+    grant select on future views in schema {{ schema }} to role {{ role }};
+  {% endfor %}
+{% endmacro %}
+```
+--
+## Problems
+* None, but we can show off here!
+
+???
+* Snowflake has a concept of "all X in database"
+* Since we use one database for all of our relations, let's just grant privileges to the entire database
+* We only need to run this once! That sounds like an `operation` (Flip back to operation slide)
+
+---
+# V4: Use an operation & database-wide grants
+(Snowflake only!)
+```sql
+-- macros/grant_select_on_database_operation.sql
+{% macro grant_select_on_database(role, database=target.database) %}
+
+{% set grant_sql %}
+    grant usage on database analytics to {{ role }};
+
+    grant usage on all schemas in database {{ database }} to role {{ role }};
+    grant usage on future schemas in database {{ database }} to role {{ role }};
+    grant select on future tables in database {{ database }} to role {{ role }};
+    grant select on future views in database {{ database }} to role {{ role }};
+
+    grant select on future views in database {{ database }} to role {{ role }};
+    grant select on all tables in database {{ database }} to role {{ role }};
+{% endset %}
+
+{% do run_query(grant_sql) %}
+
+{% endmacro %}
+```
+```bash
+$ dbt run-operation grant_select_on_database --args '{role: "reporter"}'
+```
+???
+* Note the `run_query` macro — with hooks we could just generate the SQL. In operations we need to _run_ the SQL.
+---
+# I need to create some external tables
+To-do
+
+---
+# I need to create a table of all days
+???
+Useful for "date spining"
+--
+## Techique: dbt-utils.date_spine
+---
+# dbt_utils.date_spine
+```sql
+
+{{ dbt_utils.date_spine(
+    datepart="day",
+    start_date="to_date('2016/01/01', 'mm/dd/yyyy')",
+    end_date="dateadd(week, 1, current_date)"
+) }}
+
+```
+
+--
+| date_day   |
+|------------|
+| 2016-01-01 |
+| 2016-01-02 |
+| ...        |
+
+## Learn more
+* [Source code](https://github.com/fishtown-analytics/dbt-utils#date_spine-source)
+* [Discourse post](https://discourse.getdbt.com/t/finding-active-days-for-a-subscription-user-account-date-spining/265)
+
+
+
+{% endraw %}
