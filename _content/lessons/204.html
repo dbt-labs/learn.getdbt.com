@@ -1,0 +1,166 @@
+---
+layout: presentation
+title: Intro to Data Warehouses
+lesson: 204
+---
+
+# Data Warehouses & You
+
+---
+
+layout: false
+# What is a data warehouse?
+
+--
+
+meme goes here
+
+---
+
+# Structured Data
+
+_ordines et columnae sumus._     - Horace, Ode 4.7
+
+&nbsp;
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+---
+
+# Storing Data
+
+### CSV
+
+```csv
+id,name,favorite_color,is_creative
+1,Alice,green,false
+2,Barbara,blue,true
+```
+
+### JSON
+
+```json
+{"id": 1, "name": "Alice", "favorite_color": "green", "is_creative": true}
+{"id": 2, "name": "Barbara", "favorite_color": "blue", "is_creative": false}
+```
+
+---
+
+# Storing Data
+
+### Parquet
+
+[image goes here]
+
+---
+
+class: center, middle
+<img src="/lessons/img/204_2.png" style="width: 75%;">
+
+---
+
+# Databases
+
+- Interfaces into data
+- Data storage is abstracted
+- Some language (SQL) is used to query the data
+
+---
+
+# Transactional Databases
+
+Optimized for reads and writes
+
+Examples:
+Get one user’s email address
+Add seven items to a user’s cart
+Change a user’s last name
+
+```sql
+select *
+fom products
+where trending = true
+```
+
+[image goes here]
+
+In this category:
+* Postgres
+* MySQL
+* SQL Server
+* ...
+
+---
+
+# Analytic Databases
+
+Optimized for:
+* "Analytical" queries
+* Importing and exporting data
+
+For instance:
+* Number of distinct users in Ohio are over 38 years young
+* Rolling 14d average of pageviews per day for the last five years
+
+In this category:
+* Amazon Redshift
+* Snowflake
+* Google BigQuery
+* Azure SQL Data Warehouse
+* ....
+
+---
+
+# Database Comparisons*
+
+| db            | Latency       | Concurrent Queries | Rows Scanned / Query |
+|---------------|---------------|--------------------|----------------------|
+| Transactional | ~milliseconds | ~thousands         | ~thousands*          |
+| Analytical    | ~seconds      | ~dozens            | >> millions          |
+
+### Which one is right?
+
+Both!
+- Power your application with a transactional database
+- Analyze data with an analytical database
+
+---
+
+### A modern approach
+
+- Replicate data into a warehouse
+    - Transactional databases
+    - SaaS products
+    - Event tracking
+- Query the data in the warehouse
+- Be a cultural change agent for data in your organization
+- Profit
+
+[image of dbt stack goes here]
+
+---
+
+# What's in a name
+
+.left-column[
+- Analytical Database
+- Data Warehouse
+- Columnar Database
+- OLAP
+]
+
+.right-column[
+- Transactional Database
+- Relational Database
+- RDMS
+- OLTP
+]
+
+---
+
+class: bottom
+background-color: orange
+# Lunch!

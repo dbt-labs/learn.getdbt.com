@@ -1,0 +1,314 @@
+---
+layout: presentation
+title: Jinja
+lesson: 203
+---
+
+{% raw %}
+
+# `{{ Jinja }}`
+
+`{% set date = '{% endraw %}{{site.time|slice: 0, 10}}' %}{% raw %}`
+
+---
+
+layout: false
+# Jinja is a templating engine
+
+& it's pythonic! So it works in ways you'd expect if you've ever
+written python, while still being quite intuitive if you haven't.
+
+Other templating engines:
+* Django (inspiration for Jinja)
+* Nunjucks (JavaScript, Jinja-inspired)
+* Liquid (Ruby)
+
+Applications that use Jinja:
+* Ansible
+* Flask
+* Airflow
+* dbt!
+
+---
+
+# Read the docs!
+
+https://jinja.palletsprojects.com/en/2.11.x/
+
+<iframe width="100%" height="50%" src="https://jinja.palletsprojects.com/en/2.11.x/" 
+frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+
+---
+
+template: title
+
+<p style="font-size: 500%;" class="remark-inline-code">
+{% ... %}<br>
+{{ ... }}
+</p>
+
+---
+
+# Setting local variables
+
+
+```jinja
+{% set me = 3 %}
+{% set you = 'foo' %}
+```
+
+--
+
+
+```jinja
+{# dictionaries #}
+{% set person = {
+    'name': 'me',
+    'number': 3
+} %}
+{{ person.name }} OR {{ person['name'] }}
+```
+
+
+--
+
+
+```jinja
+{# arrays #}
+{% set i = ['me', 'myself'] %}
+{{ i[0] }}
+```
+
+
+--
+
+
+```jinja
+{# and so on #}
+{% set us = [
+  {
+      'name': 'me',
+      'number': 3
+  },
+  {
+      'name': 'you',
+      'details': 'foo'
+  }
+] %}
+```
+
+
+---
+
+# Conditions
+
+
+```jinja
+{% set temperature = 80 %}
+
+On a day like this, I especially like
+
+{% if temperature > 70 %}
+
+    a refreshing mango sorbet.
+
+{% else %}
+
+    a decadent chocolate ice cream.
+    
+{% endif %}
+```
+
+
+--
+
+```
+On a day like this, I especially like a refreshing mango sorbet.
+```
+
+
+---
+
+# Loops
+
+
+```jinja
+{% set flavors = ['chocolate','vanilla','strawberry'] %}
+
+{% for flavor in flavors %}
+	Today I want {{ flavor }} ice cream!
+{% endfor %}
+```
+
+
+--
+
+```
+Today I want chocolate ice cream!
+Today I want vanilla ice cream!
+Today I want strawberry ice cream!
+```
+
+---
+
+# Wait: Loops???
+
+In SQL???
+
+<img src="/lessons/img/202_1.png" style="width: 100%;">
+
+SQL is a highly performant and _very_ declarative language.
+
+We _are not_ looping across rows in the database. We _are_ using loops to avoid
+copy-paste when generating the SQL that is then run against the database.
+
+---
+
+# Macros
+
+
+```jinja
+{% macro hoyquiero(flavor, dessert = 'ice cream') %}
+	Today I want {{ flavor }} {{ dessert }}!
+{% endmacro %}
+
+{{ hoyquiero(flavor = 'chocolate') }}
+{{ hoyquiero('mango', 'sorbet') }}
+```
+
+
+```
+Today I want chocolate ice cream!
+Today I want mango sorbet!
+```
+
+---
+
+# dbtonic Jinja: refs
+
+`{{ ref(‘staging_model’) }}`
+
+_dev_: `dbt_jcohen.staging_model`    
+**prod: `analytics.staging_model`**
+
+&nbsp;
+
+Use it always! This is how dbt
+* mananages environments
+* infers all model dependencies (DAG)
+
+---
+
+# dbtonic Jinja: global vars
+
+
+```yml
+# dbt_project.yml
+models:
+  my_dbt_project:
+	vars:
+	  flavor: chocolate
+```
+
+```sql
+# flavortown.sql
+select '{{ var('flavor') }}' as my_favorite_flavor
+```
+
+```
+select 'chocolate' as my_favorite_flavor
+```
+
+&nbsp;
+
+You can override global vars with a CLI flag:
+
+```bash
+dbt run --vars '{"flavor": "vanilla"}'
+```
+
+```
+select 'vanilla' as my_favorite_flavor
+```
+
+
+
+---
+
+# dbtonic Jinja: materializations
+
+.left-column[
+...can be very complicated! We'll discuss more later.
+
+They're just Jinja macros, calling other Jinja macros.
+]
+
+.right-column[placeholder_for_img]
+
+---
+
+# dbtonic Jinja: good-to-knows
+
+### Logging
+
+...can be very useful! Especially if you're working on complicated macros.
+
+
+```jinja
+{% macro create_user(username, password) %}
+
+	create user {{username}} password '{{password}}'
+    
+	{% do log(
+        "User " ~ username ~ " is ready to rock and roll", 
+        info = true
+    ) %}
+
+{% endmacro %}
+```
+
+---
+
+# dbtonic Jinja: good-to-knows
+
+### Whitespace control
+
+
+```jinja
+yeah
+{% this will be an empty line in the compiled code %}
+good.
+{%- but this will not! -%}
+ok.
+```
+```
+yeah
+
+good.ok.
+```
+
+---
+
+# dbtonic Jinja: good-to-knows
+
+### Comments
+
+```sql
+-- this is a SQL comment
+/* as is this */
+```
+```jinja
+{# whereas this is a Jinja comment #}
+```
+
+& comments:
+* Only SQL comments show up in your compiled code.
+* Be careful about having the two in close proximity!
+
+{% endraw %}
+
+---
+
+class: bottom
+background-color: orange
+# Let's get templating!
