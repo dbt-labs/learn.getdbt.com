@@ -4,6 +4,8 @@ title: Jinja
 lesson: 203
 ---
 
+<!-- just putting this here to prevent a silly jekyll warning at compile time -->
+
 {% raw %}
 
 # `{{ Jinja }}`
@@ -62,10 +64,12 @@ template: title
 
 ```jinja
 {# dictionaries #}
+
 {% set person = {
     'name': 'me',
     'number': 3
 } %}
+
 {{ person.name }} OR {{ person['name'] }}
 ```
 
@@ -75,16 +79,20 @@ template: title
 
 ```jinja
 {# arrays #}
+
 {% set i = ['me', 'myself'] %}
+
 {{ i[0] }}
 ```
 
 
---
+---
 
+# Setting local variables
 
 ```jinja
 {# and so on #}
+
 {% set us = [
   {
       'name': 'me',
@@ -95,6 +103,8 @@ template: title
       'details': 'foo'
   }
 ] %}
+
+{{ us[1]['details'] }}
 ```
 
 

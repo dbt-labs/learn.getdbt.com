@@ -13,7 +13,7 @@ layout: false
 
 --
 
-meme goes here
+<img src="/lessons/img/204_1.png" class="img-center">
 
 ---
 
@@ -53,7 +53,18 @@ id,name,favorite_color,is_creative
 
 ### Parquet
 
-[image goes here]
+```parquet
+00000000  50 41 52 31 15 04 15 c8  ba 01 15 c8 ba 01 4c 15  |PAR1..........L.|
+00000010  c6 0f 15 04 00 00 00 2a  e9 6c f2 19 00 00 4e 7f  |.......*.l....N.|
+00000020  25 00 00 5e 30 d0 e1 37  00 00 4e 7f 25 00 00 2e  |%..^0..7..N.%...|
+00000030  f9 22 cb 03 00 00 4e 7f  25 00 00 f2 ba cd fb 01  |."....N.%.......|
+00000040  00 00 4e 7f 25 00 00 4e  be 04 ac 10 00 00 4e 7f  |..N.%..N......N.|
+00000050  25 00 00 c4 bc 95 26 18  00 00 4e 7f 25 00 00 a8  |%.....&...N.%...|
+00000060  cd 63 00 1c 00 00 4e 7f  25 00 00 a4 0d 1f 37 16  |.c....N.%.....7.|
+00000070  00 00 4e 7f 25 00 00 92  b3 57 b5 0c 00 00 4e 7f  |..N.%....W....N.|
+00000080  25 00 00 4e 7b 7e 8f 3c  00 00 4e 7f 25 00 00 94  |%..N{~.<..N.%...|
+00000090  2e 7a 95 00 00 00 4e 7f  25 00 00 74 a7 38 2f 3b  |.z....N.%..t.8/;|
+```
 
 ---
 
@@ -72,12 +83,26 @@ class: center, middle
 
 # Transactional Databases
 
-Optimized for reads and writes
+Optimized for:
+- Reads and writes
+- Thousands of concurrent queries
 
 Examples:
-Get one user’s email address
-Add seven items to a user’s cart
-Change a user’s last name
+- Get one user’s email address
+- Add seven items to a user’s cart
+- Change a user’s last name
+
+In this category:
+--
+
+- Postgres
+- MySQL
+- SQL Server
+- ...
+
+---
+
+# Transactional Databases
 
 ```sql
 select *
@@ -85,32 +110,28 @@ fom products
 where trending = true
 ```
 
-[image goes here]
-
-In this category:
-* Postgres
-* MySQL
-* SQL Server
-* ...
+<img src="/lessons/img/204_3.png" style="width: 100%;">
 
 ---
 
 # Analytic Databases
 
 Optimized for:
-* "Analytical" queries
-* Importing and exporting data
+- "Analytical" queries
+- Importing and exporting data
 
 For instance:
-* Number of distinct users in Ohio are over 38 years young
-* Rolling 14d average of pageviews per day for the last five years
+- Number of distinct users in Ohio are over 38 years young
+- Rolling 14d average of pageviews per day for the last five years
 
 In this category:
-* Amazon Redshift
-* Snowflake
-* Google BigQuery
-* Azure SQL Data Warehouse
-* ....
+--
+
+- Amazon Redshift
+- Snowflake
+- Google BigQuery
+- Azure SQL Data Warehouse
+- ....
 
 ---
 
@@ -121,43 +142,54 @@ In this category:
 | Transactional | ~milliseconds | ~thousands         | ~thousands*          |
 | Analytical    | ~seconds      | ~dozens            | >> millions          |
 
-### Which one is right?
+---
+
+# Which one is right?
 
 Both!
 - Power your application with a transactional database
 - Analyze data with an analytical database
 
+<img src="/lessons/img/204_4.png" style="width: 100%;">
+
 ---
 
-### A modern approach
+# A modern approach
 
-- Replicate data into a warehouse
+1. Replicate data into a warehouse
     - Transactional databases
     - SaaS products
     - Event tracking
-- Query the data in the warehouse
-- Be a cultural change agent for data in your organization
-- Profit
-
-[image of dbt stack goes here]
+2. Query the data in the warehouse
+3. Be a cultural change agent for data in your organization
+4. Profit
 
 ---
 
 # What's in a name
 
 .left-column[
-- Analytical Database
-- Data Warehouse
-- Columnar Database
-- OLAP
+- Transactional Database
+- Relational Database
+- RDMS or RDBMS
+- Rowise, Row-oriented, Row Store
+- OLTP
+- e.g. Postgres
 ]
 
 .right-column[
-- Transactional Database
-- Relational Database
-- RDMS
-- OLTP
+- Analytical Database
+- Data Warehouse
+- Columnar Database
+- Column-oriented, Column Store
+- OLAP
+- e.g. Redshift
 ]
+
+???
+- RDMS or RDBMS = Relational Database Management System
+- OLTP = Online Transactional Processing
+- OLAP = Online Analytical Processing
 
 ---
 
