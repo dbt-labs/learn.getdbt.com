@@ -1,0 +1,97 @@
+---
+layout: presentation
+title: Techniques of the trade
+lesson: 208
+---
+
+# Techniques of the trade
+
+???
+We've already learned the tools of the trade, but now we are learning the techniques.
+We're going to go through a series of problems that analytics engineers often have to solve, and discuss how we would typically solve them. Feel free to jump in with suggested answer at any point.
+
+
+---
+
+# My source data keeps changing
+--
+
+## On Monday:
+| order_id | status  | created_at | updated_at | 
+|----------|---------|------------|------------| 
+| 1        | pending | 2019-01-01 | 2020-02-20 | 
+
+## On Tuesday:
+| order_id | status  | created_at | updated_at | 
+|----------|---------|------------|------------| 
+| 1        | shipped | 2019-01-01 | 2020-02-21 | 
+
+???
+Imagine you have an orders table where the status field can be overwritten as the order is processed. One day you query the table and get back this result, but the next day you get this result.
+
+You can no longer answer:
+- When did that order ship?
+- How long did it take to change status?
+
+--
+
+## What we want:
+
+| order_id | status  | updated_at | dbt_valid_from | dbt_valid_to | 
+|----------|---------|------------|----------------|--------------| 
+| 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   | 
+| 1        | shipped | 2019-01-02 | 2019-01-02     | null         | 
+
+???
+We want to turn our **mutable** data into **immutable data**
+
+---
+
+# How do I make my data immutable?
+
+| order_id | status  | updated_at | dbt_valid_from | dbt_valid_to | 
+|----------|---------|------------|----------------|--------------| 
+| 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   | 
+| 1        | shipped | 2019-01-02 | 2019-01-02     | null         | 
+
+## Answer: Snapshots
+
+---
+
+```sql
+-- snapshots/orders_snapshot.sql
+{% snapshot orders_snapshot %}
+
+    {{
+        config(
+          target_database='analytics',
+          target_schema='snapshots',
+          unique_key='id',
+          
+          strategy='timestamp',
+          updated_at='updated_at',
+        )
+    }}
+    
+    -- Pro-Tip: Use sources in snapshots!
+    select * from {{ source('jaffle_shop', 'orders') }}
+    
+{% endsnapshot %}
+
+```
+
+???
+Snapshots are simple select statements which define a dataset. Every time you run the dbt snapshot command, dbt will run your select statement and check if the dataset has changed compared to its last known state. If the records have changed, then dbt will create a new entry in the snapshot table for the new state of the record. If there are net-new records in the source dataset, then dbt will create an initial entry for the record.
+
+
+
+---
+
+# I need to grant 
+
+---
+- I need to do some database operations --> operations
+- I need to grant privileges --> hooks
+- I need to create some UDFs --> hooks (maybe)
+- I have a huge case statements/email exclusion list --> seeds
+- I need to adjust a materialization / build a new one
