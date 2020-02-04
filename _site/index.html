@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US" class="dbt">
+  <head>
+	<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TZVZ8BG');</script>
+<!-- End Google Tag Manager -->
+
+	
+		<meta charset="utf-8">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, initial-scale=1" />
+			
+		
+		<title>dbt learn - Beyond analytics</title>
+		<meta name="description" content="dbt learn is a two-day in-person training program designed to empower analysts." />
+		<link rel="canonical" href="//" />
+		
+		<link rel="shortcut icon" href="//favicon.ico" />
+		<link rel="apple-touch-icon" href="/learn.getdbt.com/ui/img/graph/avatar.png" />
+		
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="http://localhost:4000" />
+		<meta property="og:site_name" content="Beyond analytics" />
+		<meta property="og:title" content="dbt learn - Beyond analytics" />
+		<meta property="og:description" content="dbt learn is a two-day in-person training program designed to empower analysts." />
+		<meta property="og:image" content="/learn.getdbt.com/ui/img/graph/poster.png" />
+		
+		<meta name="twitter:card" content="summary_large_image"/>
+		<meta name="twitter:title" content="dbt learn - Beyond analytics"/>
+		<meta name="twitter:description" content="dbt learn is a two-day in-person training program designed to empower analysts."/>
+		<meta name="twitter:image" content="/learn.getdbt.com/ui/img/graph/poster.png"/>
+		
+			
+		<script>WebFontConfig={google:{families:['Source+Code+Pro:400,700']}},function(){var a=document.createElement("script");a.src="//ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js",a.type="text/javascript",a.async="true";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)}();</script>
+		
+		
+		<script>velllum={directory:'//www.getdbt.com'}; function async(u,c){var d=document,t='script',o=d.createElement(t),s=d.getElementsByTagName(t)[0];o.src=u;if(c){o.addEventListener('load',function(e){c(null,e);},false);}s.parentNode.insertBefore(o,s);}; async('//code.jquery.com/jquery-3.0.0.min.js',function(){ $(document).ready(function(){ async(window.velllum.directory+'/ui/js/velllum.js'); }); });</script>
+
+		
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+	
+		<link rel="stylesheet" type="text/css" href="//www.getdbt.com/ui/css/velllum.css" media="all" />
+
+  </head>
+  <body class="">
+	<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZVZ8BG"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+	<div hidden>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 24">
+	<g id="brand">
+		<g id="brand-logo"><path d="M17.4,9.594A7.473,7.473,0,0,0,14.61,6.732l1.624.769a9.434,9.434,0,0,1,3.43,2.752L22.63,4.815A2.618,2.618,0,0,0,22.574,2.1a2.5,2.5,0,0,0-3.271-.8L13.915,4.244a4,4,0,0,1-3.83,0L4.814,1.369A2.618,2.618,0,0,0,2.1,1.427a2.5,2.5,0,0,0-.8,3.27l2.939,5.387a4,4,0,0,1,0,3.831L1.371,19.182a2.623,2.623,0,0,0,.078,2.749A2.5,2.5,0,0,0,4.7,22.7l5.556-3.031A9.434,9.434,0,0,1,7.5,16.234L6.732,14.61A7.473,7.473,0,0,0,9.594,17.4L19.3,22.7a2.5,2.5,0,0,0,3.249-.767,2.632,2.632,0,0,0,.073-2.753ZM20.5,2.5a1,1,0,1,1-1,1A1,1,0,0,1,20.5,2.5Zm-17,2a1,1,0,1,1,1-1A1,1,0,0,1,3.5,4.5Zm0,17a1,1,0,1,1,1-1A1,1,0,0,1,3.5,21.5ZM13,11a1.994,1.994,0,0,0-1.353,3.464,2.494,2.494,0,1,1,2.817-2.817A1.983,1.983,0,0,0,13,11Zm7.5,10.5a1,1,0,1,1,1-1A1,1,0,0,1,20.5,21.5Z" fill="#ff694b"/></g>
+		<g id="brand-dbt"><path d="M44.763,3.214h3.466v17.18H45.255l-.492-1.754h-.171c-.114.142-.243.292-.385.449s-.282.31-.417.46-.265.285-.386.406a2.907,2.907,0,0,1-.267.247,3.578,3.578,0,0,1-.963.31,7.189,7.189,0,0,1-1.476.139,4.329,4.329,0,0,1-3.081-1.006,4.152,4.152,0,0,1-1-1.776,10.448,10.448,0,0,1-.364-3.059,9.756,9.756,0,0,1,.5-3.327,4.893,4.893,0,0,1,1.358-2.107A5.527,5.527,0,0,1,41.9,8.2a10.648,10.648,0,0,1,1.658.118q.738.117,1.209.224ZM39.778,14.489q0,2.268.706,2.974a1.684,1.684,0,0,0,.824.46,4.53,4.53,0,0,0,1.166.139,6.254,6.254,0,0,0,1.262-.128,5.584,5.584,0,0,0,1.027-.3V10.916c-.243-.028-.553-.057-.931-.085s-.752-.043-1.123-.043a5.444,5.444,0,0,0-1.2.117,1.932,1.932,0,0,0-.856.418A2.417,2.417,0,0,0,40,12.467,7.348,7.348,0,0,0,39.778,14.489Z"/><path d="M63.7,13.368a9.846,9.846,0,0,1-.546,3.541,4.981,4.981,0,0,1-1.443,2.128,4.722,4.722,0,0,1-1.669.845,8.967,8.967,0,0,1-2.482.289,13.567,13.567,0,0,1-2.407-.2A14.543,14.543,0,0,1,53.3,19.53l-.941.47h-.62V2.8H55.2v7h.172c.113-.128.246-.275.4-.439s.3-.321.438-.47.278-.289.406-.418a1.886,1.886,0,0,1,.3-.257,2.627,2.627,0,0,1,.941-.331A7.689,7.689,0,0,1,59.5,7.72a4.066,4.066,0,0,1,2.867.9,3.825,3.825,0,0,1,.995,1.786A11.114,11.114,0,0,1,63.7,13.368Zm-3.508.514q0-2.29-.706-2.975a2.508,2.508,0,0,0-1.755-.492,9.091,9.091,0,0,0-1.508.118,7.665,7.665,0,0,0-1.017.224v6.654a6.733,6.733,0,0,0,.856.107q.556.044,1.177.043a5.528,5.528,0,0,0,1.209-.118,1.922,1.922,0,0,0,.867-.417,2.276,2.276,0,0,0,.652-1.112A7.328,7.328,0,0,0,60.189,13.882Z"/><path d="M73.753,10.522H70.415v5.327a3.474,3.474,0,0,0,.086.846,1.11,1.11,0,0,0,.278.524.969.969,0,0,0,.513.256,4.1,4.1,0,0,0,.792.065c.356,0,.731-.014,1.123-.044s.7-.055.91-.085l-.258,2.354c-.371.1-.837.2-1.4.289a11.655,11.655,0,0,1-1.872.138,5.759,5.759,0,0,1-1.69-.213,2.6,2.6,0,0,1-1.112-.653,2.559,2.559,0,0,1-.621-1.123,6.161,6.161,0,0,1-.192-1.647V10.522H65.28L65.451,8h1.52V6.029l3.444-.642V8h3.83Z"/><rect x="76" y="23" width="7" height="1" fill="#f64"/></g>
+	</g>
+</svg>
+</div>
+	<div class="page">
+	  
+	  <nav class="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-short">
+				<div class="navigation-content">
+					<div class="navigation-links">
+						<div class="navigation-link">
+							<a class="navigation-anchor navigation-brand" href="http://localhost:4000/" title="dbt learn is a two-day in-person training program designed to empower analysts.">
+								<img src= "https://i.imgur.com/xNIeUkv.png">
+								<strong class="navigation-brand-text">Beyond analytics - dbt learn is a two-day in-person training program designed to empower analysts.</strong>
+							</a>
+						</div>
+						<div class="navigation-link">
+							<a class="navigation-anchor" href="#about">About</a>
+						</div>
+						<div class="navigation-link">
+							<a class="navigation-anchor" href="#agenda">Agenda</a>
+						</div>
+						<div class="navigation-link">
+							<a class="navigation-anchor" href="#interest">Interest Form</a>
+						</div>
+						<div class="navigation-link">
+							<a class="navigation-anchor" href="#faq">FAQ</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+
+	  <style>
+canvas {
+    /*-webkit-mask-image: -webkit-gradient(linear, left, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));*/
+    -webkit-mask-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));
+}
+</style>
+
+<div class="bg-navy-darker">
+	<div class="section-lg text-white text-navy-lightest">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="text-contain">
+						<h1 class="h0">Learn analytics engineering with dbt</h1>
+                        <p class="text-large">A two-day, in-person training program that teaches analysts the tools and knowledge needed to own the entire analytics engineering workflow.</p>
+					</div>
+				</div>
+				<div class="col-lg-4" style="z-index: 10">
+					<div class="text-contain">
+						<h1 class="h0">&nbsp;</h1>
+                        <a target="_blank" href="https://events.getdbt.com/" class="btn btn-primary btn-lg arrow-right">View upcoming events
+                        </a>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+    <div class="section-lg" style="padding: 0; margin-top: -100px; margin-bottom: -10px">
+        <div class="section-background-chart">
+            <div class="chart" style="height: 200px">
+                <canvas id="banner" width="800" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+	<div class="mask mask-ne text-white"></div>
+</div>
+
+<div class="bg-white">
+	<div class="mask mask-nw text-navy-darker"></div>
+	<div class="section">
+		<div class="container">
+            <div class="row">
+                <div class='col-lg-8 col-lg-offset-2 text-center'>
+                    <img style="width: 100%" src="https://i.imgur.com/RbKJTOY.jpg" />
+                </div>
+            </div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain">
+						<h3 id="about" class="h2">About dbt Learn</h3>
+						<p>
+                            <a href="https://blog.getdbt.com/what-is-an-analytics-engineer/">Analytics engineering</a> is the data transformation work that happens between loading data 
+                            into your warehouse and analyzing it. At dbt Learn, the Fishtown Analytics team will teach analysts how to use dbt to manage that workflow.
+                            Attendees will learn about:
+                        </p>
+						<ul class="list-icons list-cols text-med text-heading text-left">
+							
+							
+								<li><span class="arrow-check text-red text-large list-icon"></span> Data Warehouses</li>
+							
+								<li><span class="arrow-check text-red text-large list-icon"></span>  Automated Testing</li>
+							
+								<li><span class="arrow-check text-red text-large list-icon"></span>  Modeling Strategies</li>
+							
+								<li><span class="arrow-check text-red text-large list-icon"></span>  Performance Optimization</li>
+							
+								<li><span class="arrow-check text-red text-large list-icon"></span>  Writing DRY code</li>
+							
+								<li><span class="arrow-check text-red text-large list-icon"></span>  and more!</li>
+							
+						</ul>
+                        <p>The only technical prerequisite is a working knowledge of SQL. Prior familiarity with the command line and version control is helpful but not necessary.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="bg-silver-light">
+	<div class="mask mask-ne text-white"></div>
+	<div class="mask mask-sw text-white"></div>
+	<div class="section">
+		<div class="text-contain">
+			<div class="row">
+				<div class="col-lg-12 col-bottomless">
+					<div class="text-contain text-center">
+						<h3 id="agenda" class="h2">Agenda</h3>
+					</div>
+                </div>
+            </div>
+			<div class="row">
+                
+                <div class="col-md-6">
+                    <h4>Foundations</h4>
+                        <ul class='list-icons text-med text-heading text-left'>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Analytics engineering in 2020</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> dbt fundamentals</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Data warehouse design</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> dbt + BI tools</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Testing + Continuous Integration</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Data sources + freshness</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Documenting data models</li>
+                            
+                        </ul>
+                    </div>
+                
+                <div class="col-md-6">
+                    <h4>Applications</h4>
+                        <ul class='list-icons text-med text-heading text-left'>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Extending SQL with Jinja</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Package management</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Understanding databases</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Optimizing queries</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Incremental models</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> End-to-end analytics</li>
+                            
+                            <li><span class='arrow-right text-blue text-medium list-icon'></span> Patterns + techniques</li>
+                            
+                        </ul>
+                    </div>
+                
+			</div>
+		</div>
+    </div>
+</div>
+
+<div class="bg-white">
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain">
+						<center><h3 class="h2">What to Expect</h3></center>
+						<p>
+                            <h4>Before you begin:</h4>
+                                <li> Interactive tutorial for getting started with dbt on Snowflake</li>
+                                <li> Primers for SQL Foundations and Bash/Git</li>
+                            <h4>During:</h4>
+                                <li> A two-day course, taught by instructors from Fishtown Analytics 👋 </li>
+                                <li> Integrated working sessions for hands-on exploration of dbt features</li>
+                                <li> Dedicated time for questions and side-by-side pairing</li>
+                                <li> Access to presentations and a curated list of additional resources</li>
+                            <h4>After:</h4>
+                                <li>A cohort of peers to network with and learn from</li>
+                                <li>Two weeks post-program to ask your instructors for support</li>
+                                <li>A verified dbt Learn certificate</li>
+                            <div class="text-contain text-center">
+                            <br>
+                        <p><a target="_blank" href="https://events.getdbt.com/" class="btn btn-primary btn-lg arrow-right">View upcoming events</a></p>
+				            </div>
+   				</div>
+   			</div>
+   		</div>
+   	</div>
+   </div>
+</div>
+
+<div class="bg-silver-light">
+
+	<div class="mask mask-ne text-white"></div>
+	<div class="mask mask-sw text-white"></div>
+	<div class="section">
+        <div class='row'>
+            <div class='col-md-6 col-md-offset-3'>
+                <form action="https://formspree.io/h8qf9swk@robot.zapier.com" method="POST" />
+                <div class="text-contain text-center">
+                    <h3 id="interest" class="h2">Interested in attending a future session?</h3>
+                </div>
+                    <div class='card'>
+                        <div class='card-body card-form'>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Your Name</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <input class='form-control' type="text" name="name" placeholder="Kiki Ogino" />
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Your Email</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <input class='form-control' type="text" name="email" placeholder="kiki@breadshop.com" />
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Your Company</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <input class='form-control' type="text" name="company" placeholder="Bread Shop" />
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Session Preference</label>
+                                    </div>
+                                    <div class="select">
+                                    	<select class="form-control" id="session" name="session">
+                                    		<option>Spring 2020</option>
+                                    		<option>Summer 2020</option>
+                                    		<option>Fall 2020</option>
+                                    	</select>
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Attendees</label>
+                                    </div>
+                                    <div class="select">
+                                    	<select class="form-control" id="attendees" name="attendees">
+                                            <option>1</option>
+                                    		<option>2</option>
+                                    		<option>3</option>
+                                    		<option>4</option>
+                                    		<option>5+</option>
+                                    	</select>
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Location Preferences</label>
+                                    </div>
+                                    <div class="card-control">
+                                            <input class='form-control' id="location" name="location" placeholder="e.g. Philadelphia, USA (west coast), Europe, etc.">
+                                    </div>
+                                </div>
+                                <div class="card-formrow">
+                                    <div class="card-control condensed">
+                                        <label class="form-control">Other Notes</label>
+                                    </div>
+                                    <div class="card-control">
+                                        <textarea class='form-control' id="other" name="other" placeholder="Additional information or questions"></textarea>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <p class="btn-inliner">
+                        <center>
+                           <button type="submit" class="btn btn-primary">Let us know!</button>
+                        </center>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white">
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain">
+						<center><h3 id="faq" class="h2">FAQ</h3></center>
+						<p>
+                            <h5>Is there a free online version?</h5>
+                                <p> We're really interested in making this happen! It's still a ways away.
+                                In the meantime, we're dedicated to making in-person Learn the best it can possibly be.</p>
+                            <h5>Is it possible to see a course syllabus ahead of time?</h5>
+                                <p> We are constantly updating and improving on dbt Learn! We provide registered students with a detailed 
+                                    agenda a few weeks before each session. You can see <a href="#agenda">above</a> some topic areas we always cover.</p>
+                            <h5>The cost of the event is prohibitive for me, is there any flexibility on the price?</h5>
+                                <p> We want dbt to be as accessible to as many people as possible. If you work for a non-profit, 
+                                    the public sector, or are member of a community that is historically underrepresented in 
+                                    tech – send us a message at <a href="mailto:learn@getdbt.com">learn@getdbt.com</a>. We would love to talk about what it will 
+                                    take to get you to the event.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+	  
+	  <footer class="footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 text-center-small">
+			</div>
+			<div class="col-lg-6 text-right text-center-small">
+				<ul class="list-inline">
+					<li><a href="http://fishtownanalytics.com" target="_blank"><strong>dbt learn</strong> is hosted with love by<strong class="nowrap"><i data-icon="fishtown" class="icon-buffer"></i> Fishtown Analytics</strong></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+    
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+        <script src="/ui/js/helpers/chart.js"></script>
+    
+  </body>
+</html>
