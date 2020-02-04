@@ -7,10 +7,10 @@ lesson: 208
 
 {% raw %}
 
-# Techniques of the trade
+# (dbt) Techniques of the trade
 
 ???
-We've already learned the tools of the trade, but now we are learning the techniques.
+We've already learned the tools of the trade (dbt), but now we are learning the techniques.
 We're going to go through a series of problems that analytics engineers often have to solve, and discuss how we would typically solve them. Feel free to jump in with suggested Technique at any point.
 
 
@@ -23,14 +23,14 @@ We're going to go through a series of problems that analytics engineers often ha
 layout: false
 
 ## On Monday:
-| order_id | status  | created_at | updated_at | 
-|----------|---------|------------|------------| 
-| 1        | pending | 2019-01-01 | 2020-02-20 | 
+| order_id | status  | created_at | updated_at |
+|----------|---------|------------|------------|
+| 1        | pending | 2019-01-01 | 2020-02-20 |
 
 ## On Tuesday:
-| order_id | status  | created_at | updated_at | 
-|----------|---------|------------|------------| 
-| 1        | shipped | 2019-01-01 | 2020-02-21 | 
+| order_id | status  | created_at | updated_at |
+|----------|---------|------------|------------|
+| 1        | shipped | 2019-01-01 | 2020-02-21 |
 
 ???
 Imagine you have an orders table where the status field can be overwritten as the order is processed. One day you query the table and get back this result, but the next day you get this result.
@@ -43,10 +43,10 @@ You can no longer answer:
 
 ## What we want:
 
-| order_id | status  | updated_at | dbt_valid_from | dbt_valid_to | 
-|----------|---------|------------|----------------|--------------| 
-| 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   | 
-| 1        | shipped | 2019-01-02 | 2019-01-02     | null         | 
+| order_id | status  | updated_at | dbt_valid_from | dbt_valid_to |
+|----------|---------|------------|----------------|--------------|
+| 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   |
+| 1        | shipped | 2019-01-02 | 2019-01-02     | null         |
 
 ???
 We want to turn our **mutable** data into **immutable data**
@@ -55,10 +55,10 @@ We want to turn our **mutable** data into **immutable data**
 
 # How do I make my data immutable?
 
-| order_id | status  | updated_at | dbt_valid_from | dbt_valid_to | 
-|----------|---------|------------|----------------|--------------| 
-| 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   | 
-| 1        | shipped | 2019-01-02 | 2019-01-02     | null         | 
+| order_id | status  | updated_at | dbt_valid_from | dbt_valid_to |
+|----------|---------|------------|----------------|--------------|
+| 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   |
+| 1        | shipped | 2019-01-02 | 2019-01-02     | null         |
 
 --
 
@@ -79,15 +79,15 @@ layout: false
           target_database='analytics',
           target_schema='snapshots',
           unique_key='id',
-          
+
           strategy='timestamp',
           updated_at='updated_at',
         )
     }}
-    
+
     -- Pro-Tip: Use sources in snapshots!
     select * from {{ source('jaffle_shop', 'orders') }}
-    
+
 {% endsnapshot %}
 
 ```
@@ -172,25 +172,16 @@ left join {{ ref('country_codes') }} as country_codes
 - [Read the docs](https://docs.getdbt.com/docs/seeds)
 
 --
+
 # Other use cases for seeds
 * Email addresses to exclude
 * List of employee accounts
 
 ---
-# I want to split my relations across multiple schemas
-
-
---
-
-## Technique: custom schemas
-
----
-# Anatomy of custom schemas
-
----
 
 # I am getting permission denied errors on relations that dbt creates
 --
+
 ```txt
 -- snowflake
 SQL compilation error: Object 'ANALYTICS.DBT_CLAIRE.MY_TABLE' does not exist or not authorized.
@@ -358,9 +349,12 @@ To-do
 ???
 Useful for "date spining"
 --
+
 ## Techique: dbt-utils.date_spine
 ---
-# dbt_utils.date_spine
+# Anatomy of a date spine
+
+`models/utils/util_days.sql`
 ```sql
 
 {{ dbt_utils.date_spine(
@@ -370,6 +364,8 @@ Useful for "date spining"
 ) }}
 
 ```
+???
+Also note that you need the utils package installed, and to `dbt deps`
 
 --
 | date_day   |
@@ -378,10 +374,328 @@ Useful for "date spining"
 | 2016-01-02 |
 | ...        |
 
+--
+
 ## Learn more
 * [Source code](https://github.com/fishtown-analytics/dbt-utils#date_spine-source)
 * [Discourse post](https://discourse.getdbt.com/t/finding-active-days-for-a-subscription-user-account-date-spining/265)
 
+---
+
+# I want to add a threshold to the uniquness test
+--
+
+```yml
+version: 2
+
+models:
+  - name: dim_customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique:
+              error_threshold: 10
+```
+???
+
+
+We already know that:
+- dbt has its own project
+- tests are just macros prefixed with `test_`
+- your own macro will take precedence over dbt's macros
+
+--
+## Technique: custom schema test
+
+---
+# Anatomy of a custom schema test
+1. View the [source code](https://github.com/fishtown-analytics/dbt/tree/dev/0.15.2/core/dbt/include/global_project) for an existing test
+2. Copy it into your project!
+3. Adjust as required
+
+???
+- This is a thing you won't do very often, so it's okay to not know this off by heart!
+---
+# Example: add a failure threshold to uniqueness test
+## Before
+```sql
+{% macro test_unique(model) %}
+
+{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
+
+select count(*)
+from (
+
+    select
+        {{ column_name }}
+
+    from {{ model }}
+    where {{ column_name }} is not null
+    group by {{ column_name }}
+    having count(*) > 1
+
+) validation_errors
+
+{% endmacro %}
+
+```
+_[source code](https://github.com/fishtown-analytics/dbt/blob/dev/0.15.2/core/dbt/include/global_project/macros/schema_tests/unique.sql)_
+
+???
+* We want to have an additional (optional) parameter for how many records can fail
+* Tests fail when they return a number > 0
+* If time permits: Do this live
+
+---
+# Example: add a failure threshold to uniqueness test
+## After
+```sql
+-- macros/test_unique
+{% macro test_unique(model) %}
+
+{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
+{% set error_threshold = kwargs.get('error_threshold', 0) %}
+
+with validation_errors as (
+    select
+        {{ column_name }}
+    from {{ model }}
+    where {{ column_name }} is not null
+    group by {{ column_name }}
+    having count(*) > 1
+),
+
+aggregated as (
+    select
+        count(*) as n_errors
+    from validation_errors
+    group by 1
+),
+
+select
+    case
+      when n_errors <= {{ error_threshold }} then 0
+      else n_errors
+    end as result
+from aggregated
+
+{% endmacro %}
+```
+---
+# Example: add a failure threshold to uniqueness test
+## After
+```yml
+version: 2
+
+models:
+  - name: dim_customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique:
+              error_threshold: 10
+```
+???
+* We've refactored the SQL to make it a bit more readable
+* We have a default threshold of 0 so we don't need to add it to every test
+
+---
+# Other use cases for custom schema tests
+* Build new schema tests, e.g. [mutually exclusive ranges](https://github.com/fishtown-analytics/dbt-utils#mutually_exclusive_ranges-source)
+* [Only test in a certain environment](https://discourse.getdbt.com/t/conditionally-running-dbt-tests-only-running-dbt-tests-in-production/322)
+
+--
+
+# More information
+- [Read the docs](https://docs.getdbt.com/docs/custom-schema-tests)
+- Check out open-sourced [schema tests](https://github.com/fishtown-analytics/dbt-utils#schema-tests)
+
+
+---
+# I need to test that my refactor didn't break anything
+
+???
+Or: I'm moving code from LookML / a different pipeline, and don't want to break anything
+--
+## Technique: audit-helper package
+
+???
+The SQL to check that two relations are exactly the same is very gnarly! so we open sourced it
+
+--
+## More information:
+* [audit-helper package](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/)
+* [Discourse post](https://discourse.getdbt.com/t/how-to-not-lose-your-mind-when-auditing-data/445)
+
+---
+# (SQL) Techniques of the trade
+
+???
+
+
+---
+# I need a "single customer view"
+--
+
+But my customers have different IDs in:
+* my app
+* Zendesk
+* Shopify
+* Segment
+
+???
+How do you answer how many people did X and then went on to do Y?
+
+--
+
+## Technique: user stitching
+
+---
+# Anatomy of user stitching
+Create master "customers" table with one record per (best-guess) of a human being, with a unique customer identifier
+
+
+???
+* Pro tip: on Snowflake and BQ, you can list the mapped IDs in an array!
+* Start simple, make it more complex as you go
+
+
+---
+# What we have:
+`snowplow.page_views`:
+
+| pageview_id | date         | user_id | anonymous_id |
+|-------------|--------------|---------|--------------|
+| 13jkbse2    | 01/10/2019   |         | 123456       |
+| 372jdka     | 01/29/2019   |         | 123456       |
+| 9nd2353     | 01/31/2019   |         | 123456       |
+| 84jkr939    | 02/03/2019   |         | 123456       |
+| jsd8j2kw    | 03/19/2019   | 1       | 123456       |
+
+`jaffle_shop.customers`:
+
+| customer_id  | email                       |
+|--------------|-----------------------------|
+| 1            | alice@fishtownanalytics.com |
+
+`stripe.customers`:
+
+| customer_id | email                         |
+|-------------|-------------------------------|
+| 73          | alice@fishtownanalytics.com   |
+
+---
+
+# What we want:
+| customer_id | snowplow_anonymous_id | stripe_customer_id | email                       |
+|-------------|-----------------------|--------------------|-----------------------------|
+| 1           | 123456                | 73                 | alice@fishtownanalytics.com |
+
+
+???
+What happens when you have duplicate users? You'll need to dedupe them! Maybe you'll have mapping pairs:
+* "mapping pairs" help you say "If a user has _this_ ID in Zendesk, then they have _this_ ID in our customers table (can be many-to-one)
+* Which leads us to...
+
+---
+# I have duplicate records
+--
+
+## Technique: deduplication
+
+---
+# Anatomy of deduplication
+## Example: deduplicating users:
+* Use `distinct` + window functions for narrow tables
+
+```sql
+select distinct
+    customer_id,
+
+    -- use the most recent email address
+    last_value(email ignore nulls) over (
+        partition by customer_id
+        order by created_at
+        rows between unbounded preceding and unbounded following
+    ) as email,
+
+    min(created_at) over (
+        partition by customer_id
+    ) as first_seen_at,
+
+    max(created_at) over (
+        partition by customer_id
+    ) as last_seen_at
+
+from amazon_orders
+```
+---
+# Anatomy of deduplication
+## Example: deduplicating users:
+* Use `row_number` + `where` for wide tables
+
+.left-column[
+  ```sql
+  with users as (
+    select
+      *,
+      row_number() over (
+          partition by user_id
+          order by created_at desc
+      ) = 1 as is_most_recent_record
+    from users
+  )
+
+  select * from users
+  where is_most_recent_record
+  ```
+]
+--
+.right-column[
+  ```sql
+  -- snowflake only!
+  select
+    *,
+    row_number() over (
+        partition by user_id
+        order by created_at desc
+    ) = 1 as is_most_recent_record
+  from users
+  qualify is_most_recent_record
+
+
+
+  ```
+
+]
+
+
+---
+# I have KPIs that my business reports
+--
+
+## Technique: metrics table
+
+---
+# Anatomy of a metrics table
+* One record per day per metrics
+* `ref`s one model for each metric and unions them together
+* Can also compare to previous year values and targets here
+
+| date_day   | metric_channel | metric_name | metric_type | value | past_7 | past_14 | past_21 | ly_value | ... | target |
+|------------|----------------|-------------|-------------|-------|--------|---------|---------|----------|-----|--------|
+| 02/06/2019 | marketing      | leads       | count       | 20    | 200    | 300     | 150     | 15       | ... | 15     |
+| 02/06/2019 | marketing      | mql         | count       | 7     | 40     | 60      | 50      | 3        | ... | 10     |
+| 02/06/2019 | marketing      | sqls        | count       | 2     | 10     | 5       | 20      | 2        | ... | 3      |
+| 02/06/2019 | accounting     | revenue     | amount      | 150   | 3000   | 2000    | 1500    | 20       | ... | 100    |
+
+???
+They can get tricky to handle in the BI layer:
+* You lose the ability to drill into the data when you do this!
+* Further aggregation can mess things up, especially for non-additive metrics (e.g. conversion rates)
+
+---
+# Fin!
 
 
 {% endraw %}
