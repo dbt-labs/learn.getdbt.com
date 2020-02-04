@@ -1,8 +1,5 @@
 www.getdbt.com
 .sass-cache
-_site/*
-!_site/deploy.sh
-!_sute/tutorial/*
 .DS_Store
 .jekyll-metadata
 Gemfile.lock
