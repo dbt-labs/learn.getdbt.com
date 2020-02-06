@@ -1,0 +1,305 @@
+---
+layout: presentation
+title: dbt Fundamentals
+lesson: 104
+estimated_teaching_time: 45
+teaching_method: live demo + slides. Questions encouraged.
+working_session: false
+---
+
+# dbt Fundamentals
+
+???
+Note to teacher:
+- This presentation should be accompanied by re-doing the tutorial live.
+- It comes after a number of lessons that are one-sided
+- Ask the audience some questions / encourage participation. There will be some students who know all this already, so give them the opportunity to participate by helping answer questions.
+- If people ask questions that are related to future lessons, jot them down on a shared place so you can cross them off throughout the rest of the course.
+
+Speaker track:
+- In the pre-work, you created your first dbt project.
+- We're going to go through this pre-work again, build apply some concepts to it to try to build a common language (a lingua franca if you will).
+- Please ask questions as we go, we need to make sure we're all on a solid foundation, as we'll continue to build on this foundation throughout the
+
+---
+layout: false
+# The three ingredients for dbt
+
+???
+To use dbt, you need three things:
+
+--
+
+1. A data warehouse
+???
+* We're using Snowflake, your org might be using BigQuery / Redshift (or heaven forbid, spark)
+* Flip to Snowflake console and show the data
+
+--
+    * that can run SQL
+    * with data already loaded in to it
+
+???
+Questions to prompt:
+- How does data get into the warehouse?
+
+--
+2. A dbt project
+--
+    * created with the `init` command / button
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+???
+Create the project again/show off the models
+Quick side step into models though...
+
+---
+# Models
+???
+See if anyone wants to have a go at explaining a model
+
+--
+* Models are `select` statements that transform data.
+* Stored in the `models` directory, and have a `.sql` extension
+???
+
+---
+# The three ingredients for dbt
+1. A data warehouse
+    * that can run SQL
+    * with data already loaded in to it
+2. A dbt project
+    * created with the `init` command / button
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+3. A command
+
+--
+    * an instruction, issued from the command line
+    * e.g. `dbt run`
+
+
+???
+* Run `dbt run`!
+* What happens when you tell dbt to run?
+    * What did dbt do?
+        * Wrapped the `select` statement in the appropriate DDL
+        * Executed that SQL
+        * Advanced: first checked if the schema existed, and if it didn't recreated it!
+    * How did dbt connect to the warehouse? A: connection / profile
+    * How did dbt know what schema to use? A: the target schema
+    * How did dbt know whether this should be a table or view? A: **materialization**
+    *
+* Where can you see this happening?
+    * Logs
+    * Compiled SQL
+
+* What happens if you rerun dbt?
+    * No downtime (this looks different on each warehouse)
+
+<!-- To do
+---
+# Targets
+
+
+-->
+---
+# Materializations
+
+???
+* What is a materialization?
+
+--
+* Materializations are "build" strategies
+* Effectively the SQL that your `select` statement gets wrapped in
+* (For now) models can be materialized as `views` and `tables`
+* You need to **configure** a model's materialization
+
+???
+* Try changing a materialization
+* We're going to talk a lot more about materializations tomorrow
+---
+# Configurations
+
+???
+* What is a configuration?
+--
+* `configurations` are model settings
+* They can be set in your `dbt_project.yml` file, _and_ in your model file.
+* Configurations are applied _hierarchically_
+* Example configurations:
+    * `materialized`
+    * `tags`
+    * `enabled`
+
+???
+* Show changing configurations
+* Ensure students understand that configurations are applied hierarchically
+*
+---
+# The three ingredients for dbt
+1. A data warehouse
+    * that can run SQL
+    * with data already loaded in to it
+2. A dbt project
+    * created with the `init` command / button
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+3. A command
+    * an instruction, issued from the command line
+    * e.g. `dbt run`
+--
+<!-- I'm not sure about this! It might end up being more confusing
+-->
+
+When you execute the `run` **command** dbt connects to your **data warehouse** (via a **profile**/**connection**) and builds the **models** in your **dbt project** as **relations** in your **target schema**.
+--
+The way that dbt builds a model depends on the **materialization** you **configure** for a model.
+
+???
+* This is a mouthful! Make sure students understand each of these words
+
+---
+<!-- I'm  also not sure about this! To check once we have the previous presentations done
+-->
+
+* What _is_ dbt?
+* What _is_ the dbt CLI?
+* What _is_ dbt Cloud?
+
+???
+You might be wondering what part of this is dbt?
+
+---
+
+* _dbt_ is the software that understands a command, and goes and builds a dbt project
+* The _dbt CLI_ is a way to tell _dbt_ what to do
+* _dbt Cloud_:
+    * has an interface for issuing commands (the command bar) as well as project editing.
+    * and more (to come in later lessons!)
+
+
+---
+layout: title
+Breathe!
+???
+Stop for questions at this point, make sure everyone is following.
+
+---
+
+-- then, we introduced some dependencies with `ref`
+-- welcome to DAGs! :dizzy:
+-- configuring directories
+
+
+* What order does dbt run models in? see: ref
+* Oh but also, ref does the double duty thing: enables us to work  in environments
+
+
+
+Then we added some tests:
+
+
+* project contains _models_ (and other things)
+
+* models are _select_ statements only
+*
+
+* cloud vs CLI
+
+
+* debug, compile, **test**
+
+* dbt --help
+
+Terms that are familiar:
+* dbt project
+* models
+* materializations
+*
+
+You should feel comfortable doing the follow:
+* Changing a model from a view to a table (and back again):
+    * In the `dbt_project.yml` file
+    * In the ` &ltmy_model&gt.sql` file
+* Running:
+    * all models
+    * one model at a time
+    * all models upstream of one model
+    * all models downstream of one model
+* Finding the SQL that ran
+* Testing:
+    * all models
+    * one model at a time
+    * ... etc
+
+???
+If anyone is lost, they need to ask questions now!
+---
+
+# Working session
+* We just got stripe payment data into our warehouse:
+
+```sql
+select * from raw.stripe.payments
+>>>
+| ID | orderID | paymentMethod | AMOUNT | CREATED    |
+|----|---------|---------------|--------|------------|
+| 1  | 1       | credit_card   | 1000   | 2018-01-01 |
+| 2  | 2       | credit_card   | 2000   | 2018-01-02 |
+| 3  | 3       | coupon        | 100    | 2018-01-04 |
+| 4  | 4       | coupon        | 2500   | 2018-01-05 |
+| 5  | 5       | bank_transfer | 1700   | 2018-01-05 |
+
+```
+???
+Notes on the data:
+* different naming conventions
+* cased column names
+* amount is in cents
+* created is not called `created_date`
+
+----
+# Working session
+```sql
+select * from raw.stripe.payments
+```
+
+1. Build an `orders` model with the following fields:
+    * `order_id`
+    * `customer_id`
+    * `amount` (hint: this has to come from payments)
+2. Add a new field to the `customers` model:
+    * `customers.lifetime_value`: the total amount a customer has spent at `jaffle_shop`
+3. [Bonus] On the `orders` model, add subtotals for each `payment_method`, e.g.:
+    * `credit_card_amount`
+    * `coupon_amount`
+    * etc
+
+???
+Discussion points (for after lunch):
+When building your models:
+* What did you name the files?
+* How did you organize them in your models directory?
+* Did you test these models? Did you document them?
+
+Was there anything you noticed about the raw data?
+* All of it was in the `raw` database
+* Grouped into schemas based on the soruce
+
+
+---
+Working
+
+* commands: `run`
+* `ref`
+* tests
+* targets
+* How does dbt build dependencies?
+* What else does `ref` do?
+
+
+If you have any questions, please use this time to ask them!
+* dbt commands: run, test, debug, compile
+
+---

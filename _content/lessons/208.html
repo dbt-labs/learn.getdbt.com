@@ -450,7 +450,7 @@ _[source code](https://github.com/fishtown-analytics/dbt/blob/dev/0.15.2/core/db
 # Example: add a failure threshold to uniqueness test
 ## After
 ```sql
--- macros/test_unique
+-- macros/test_unique.sql
 {% macro test_unique(model) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
