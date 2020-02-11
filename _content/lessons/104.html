@@ -3,8 +3,8 @@ layout: presentation
 title: dbt Fundamentals
 lesson: 104
 estimated_teaching_time: 45
+estimated_working_session: 60
 teaching_method: live demo + slides. Questions encouraged.
-working_session: false
 ---
 
 # dbt Fundamentals
@@ -182,6 +182,7 @@ You might be wondering what part of this is dbt?
 ---
 layout: title
 Breathe!
+
 ???
 Stop for questions at this point, make sure everyone is following.
 
@@ -241,7 +242,7 @@ If anyone is lost, they need to ask questions now!
 * We just got stripe payment data into our warehouse:
 
 ```sql
-select * from raw.stripe.payments
+select * from raw.stripe.payment
 >>>
 | ID | orderID | paymentMethod | AMOUNT | CREATED    |
 |----|---------|---------------|--------|------------|
@@ -254,12 +255,13 @@ select * from raw.stripe.payments
 ```
 ???
 Notes on the data:
-* different naming conventions
+* singular table name
+* no underscores in column names
 * cased column names
 * amount is in cents
 * created is not called `created_date`
 
-----
+---
 # Working session
 ```sql
 select * from raw.stripe.payments
@@ -285,7 +287,7 @@ When building your models:
 
 Was there anything you noticed about the raw data?
 * All of it was in the `raw` database
-* Grouped into schemas based on the soruce
+* Grouped into schemas based on the source
 
 
 ---

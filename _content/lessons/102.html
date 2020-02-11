@@ -1,52 +1,25 @@
 ---
 layout: presentation
-title: Applying software engineering conncepts to analytics
-lesson: 102
+title: The dbt Viewpoint
+lesson: 101
 ---
+template: title
+# The dbt Viewpoint
+<!--
+To-do:
+- Discuss title
+- Check that this fits the story of the first day
 
-# Applying software engineering concepts to analytics
+Notes:
 
---
-
-## a.k.a The stuff I was too afraid to ask software engineers about
-
----
-
-layout: false
-<img src="/lessons/img/102_1.png" style="width: 100%;">
-
---
-
-> One possible solution I’m exploring is to build (Looker) PDTs in Redshift...
-> [Is this] able to be solved with dbt?
-
-_Read: does dbt do exactly what dbt does?_
-
----
-
-## Concepts you should know
-
-- Version control
-- Modular & DRY code
-- Environments
-- Testing
-- Continuous integration
-- Continuous deployment
-
-???
-For each concept:
-- What does it look like in software engineering?
-- What does it look like in traditional analytics workflow?
-- What does it look like when using dbt / analytics engineering workflow?
-
-
+-->
 ---
 
 template: title
-# Version Control
+# Analytics code should be version controlled
 
 ---
-
+layout: false
 ## What is version control?
 
 - Version control helps manage changes to your code:
@@ -65,39 +38,84 @@ template: title
 - Bookmarking the right query in your web editor
 
 ???
-    - What does it mean?
-    - What does it look like in software engineering?
-    - What does it look like in traditional analytics workflow?
-    - What does it look like when using dbt / analytics engineering workflow?
-
 - Instead of `final final v20`, or just bookmarking a change
 - Your future self will thank you
+---
+
+## What does version control look like with dbt?
+- SQL is code, so…
+- Exactly the same as software engineering! Here is an example.
+- We have a [git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for those getting started
+
+???
 - SQL is code
 - GitHub hosts things online (dropbox example)
 - Show example Pull Request
 - Literally exactly the same process as software engineers
 - Extra resources:
     - Our git guide
-
 ---
 
-## What does version control look like with dbt?
-- SQL is code, so…
-- Exactly the same as software engineering! Here is an example.
-- We have a git guide for those getting started
+* Analytics code should have quality assurance
+
+* Analytics should be documented
 
 ---
-
 template: title
-# Environments (dev & prod)
+# Analytics should be modular
+---
+
+## What is modularity?
+- Each tool solves a separate class of problems, and can be swapped in and out.
+- Modularity on various scales in software engineering:
+    - Using Stripe for payments
+    - Using a python package for shared problems
+    - Within a codebase, use separate modules (== `.py` file)
+    - Within a module (==`.py` file), abstract repeated code into functions
+- Easier to define what each module does
+- Allows you to focus on what makes your business unique
+
+???
+Modularity exists on many levels in software engineering. From the macro of which tools you use to solve a problem, to the micro of how you write your code.
 
 ---
 
+## What does modularity look like in traditional analytics?
+
+- Typically low modularity in the tech stack: using one system to cover many parts of your data pipeline. For example
+    - Oracle as your data warehouse + ingestion tool
+    - Looker as your BI + transformation tool
+    - In-house tool for ETL
+- Low modularity in queries: repeated snippets of SQL across many queries
+
+???
+Real life examples:
+- Organizations that write the DML + DDL for every single transformation
+- Really long queries that include business knowledge like "if cancelled_at is after shipped_at then refunded, else cancelled"
+
+---
+
+## What does modularity look like with dbt?
+
+- The modern data stack: separate tools for ingestion, warehousing, transformation,
+- Within a dbt project:
+    - Using packages (more on this later)
+    - Using separate models for different parts of transformation
+
+???
+From the pre-work: how we split up our code into separate "cleaning" and "transforming" models
+
+---
+template: title
+# Analytics should use environments
+
+---
+layout: false
 ## What are environments?
 
 Environments allow you to develop and test code without impacting the users of their software.
 
-- **Production (prod):** the environment that end users interact with.  No one 
+- **Production (prod):** the environment that end users interact with.  No one
 can make changes in prod except for real human interaction/
 - **Development (dev):** the environment engineers write code in
 - **Staging / QA / CI / feature branches:** somewhere in between!
@@ -108,270 +126,26 @@ Releasing your code into production is called “deployment”.
 
 ## What do environments look like with dbt?
 
-- Run dev transformations on prod data sources
-- Use separate targets within a profile for each environment
-- Materialize your dev tables / views in a schema named `dbt_<your_name>`
+- Run dev transformations in your own schema (`dev_jcohen`), run prod transformations in a trusted schema.
+- Usually use prod data for these transformations
 - More info [here](https://docs.getdbt.com/docs/managing-environments).
 
 ---
-
 template: title
 
-# Modularity
+# Analytics workflows should be automated
 
 ---
-
-## What is modularity?
-
-- Each tool solves a separate class of problems, and can be swapped in and out
-    - E.g. use Stripe for payments
-    - E.g. use a ruby gem or python package for shared problems
-- Allows you to focus on the “modules” that are unique to your business
-- Helps avoid vendor lock in
+## What do workflows look like in traditional analytics?
+1. Once a month: Run this query
+2. Download the CSV
+3. Paste the results into this Google Sheet
+4. Copy and paste the charts into a board presentation
 
 ---
-
-## What does modularity look like in traditional analytics?
-
-- Typically low modularity: using one system  to cover many parts of your data pipeline. For example
-    - Oracle as your data warehouse + ingestion tool
-    - Looker as your BI + transformation tool
-    - In-house tool for ETL
-
----
-
-## What does modularity look like with dbt?
-
-- The modern data stack
-- Within a dbt project:
-    - Using packages (more on this later)
-
----
-
-template: title
-
-# Modular & DRY Code
-
----
-
-## What is modular & DRY code?
-
-- Each piece of code solves one problem
-- DRY: don’t repeat yourself
-- Repeated code is abstracted into functions
-
-???
-In apps, these could even be in separate repos, or languages, just so long as 
-they have a consistent interface for the end user
-
----
-
-## What does modular & DRY code look like in analytics?
-
-- SQL is a very repetitive language – e.g. repeated SQL lines, repeated CTEs
-
----
-
-```sql
-select
-    order_id,
-    sum(case when payment_method = 'bank_transfer' then amount end) as bank_transfer_amount,
-    sum(case when payment_method = 'credit_card' then amount end) as credit_card_amount,
-    sum(case when payment_method = 'gift_card' then amount end) as gift_card_amount,
-    sum(amount) as total_amount
-    
-from app_data.payments
-
-group by 1
-```
-
----
-
-class: middle
-[even more code]
-
----
-
-## What does modular & DRY code look like with dbt?
-
-- Each model does one thing:
-    - Separate cleansing and business logic into different models
-    - Separate shared CTEs into different models
-- Jinja + macros (more soon!)
-
----
-
----
-
-template: title
-# Orchestration
-
----
-
-## What is orchestration?
-
-- The automated configuration, coordination, and management of computer software.
-- Read: running your code in an automated way
-
----
-
-## What does orchestration look like in traditional analytics?
-
-- Lots of sticky-taped processes:
-- Email this report monthly
-- Download the CSV, put it into an Excel document
-- Copy the Excel chart into a board deck 
-
----
-
-## What does orchestration look like with dbt?
-
-- Running your dbt project on a schedule!
-- More to come in dbt Cloud session
-
----
-
-template: title
-# Testing
-# Continuous Integration
-# Continuous Deployment
-
----
-
-## Stay tuned!
-
-These are separate topics!
-
----
-
-## Concepts that are good to know
-
-- Linting & auto-formatting
-- Frameworks
-- Idempotence
-
----
-
-template: title
-# Linting & Auto Formatting
-
----
-
-## What is linting & auto-formatting?
-
-- A linter will tell you if your code format doesn’t match a set of pre-defined conventions
-- An auto-formatter will reformat your code for you
-- E.g. black in python auto-formats your code to match the PEP8 convention
-- Ensures consistency, and that your code is readable.
-- Linting checks are often performed as part of CI tests
-
----
-
-## What does linting & auto-formatting look like in traditional analytics?
-
-- Some SQL runners have auto-formatters
-
----
-
-## What does linting & auto-formatting look like with dbt?
-
-- No automated linter (yet…)
-- We lint by hand in the PR process, by following our Coding Conventions.
-
----
-
-template: title
-# Frameworks
-
----
-
-## What is a framework?
-
-- An abstraction that provides generic functionality so engineers can focus on what makes their app unique
-- Frameworks reduce boilerplate code
-- Examples:
-    - CSS
-    - Ruby on Rails
-    - Django
-
----
-
-## What do frameworks look like in traditional analytics?
-- Worst case scenario:
-- Every piece of DDL and DML is written by a data engineer
-
-## What do frameworks look like with dbt?
-- dbt provides a framework for data transformations!
-
----
-
-template: title
-# Idempotence
-
----
-
-## What is idempotence?
-
-- A function that gets run once versus a dozen times has the same result
-- Real life example: a crosswalk button
-- Programming example: refunding an order (hopefully!)
-
----
-
-## What does idempotence look like in traditional analytics?
-
-- In some ETL systems: if you run twice a day, you end up with duplicate data.
-- If you skip a day, you have to “backfill”
-
-## What does idempotence look like with dbt?
-
-- dbt is built on the assumption of idempotence:
-    - If you skip a day, it’s ok!
-    - If you run multiple times, it’s ok!
-    - If you drop your dbt schema it’s ok!
-
----
-
-template: title
-# What's the theme here?
-
----
-
-## Concepts you should know
-
-.left-column[
-- Version control
-- Modular & DRY code
-- Environments
-- Testing
-]
-
-.right-column[
-- Continuous integration
-- Continuous deployment
-- Linting & auto-formatting
-- Frameworks
-]
-
----
-
-template: title
-# Leverage
-
----
-
-## Other random words/concepts!
-
-Let me know what other jargon we use!
-
-- Separation of credentials
-- SLAs
-- READMEs
-- Compiled code
-- Abstraction
-
----
-
-class: bottom
-background-color: orange
-# Questions?
+## What do workflows look like with dbt?
+1. Data is ingested by Stitch/Fivetran
+2. It is transformed with dbt and tested every x hours:
+    - The latest version of the code is always used
+    — Any errors are sent to a Slack channel
+3. Your BI tool runs queries on the warehouse using the latest (transformed) data
