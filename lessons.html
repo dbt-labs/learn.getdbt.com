@@ -1,0 +1,10 @@
+---
+layout: story
+permalink: /lessons/
+---
+
+<h1>Lessons</h1>
+
+{% for lesson in site.lessons %}
+    <p><a href="{{lesson.url}}">{{lesson.lesson}}</a>. {{lesson.title}}</p>
+{% endfor %}

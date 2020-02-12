@@ -72,7 +72,10 @@ Below, we begin content from the presentation file. -->
 {{ content }}
 
 <!-- This adds a link to the first slide of the next presentation -->
+{% assign num = page.lesson | slice: 2 | plus: 0 %}
+{% if num < 9 %}
 .right[[cont...](/lessons/{{page.lesson|plus:1}})]
+{% endif %}
     </textarea>
     <script type="text/javascript">
       var slideshow = remark.create({
