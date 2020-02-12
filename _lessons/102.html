@@ -5,14 +5,7 @@ lesson: 102
 ---
 template: title
 # The Analytics Engineering Viewpoint
-<!--
-To-do:
-- Discuss title
-- Check that this fits the story of the first day
 
-Notes:
-
--->
 ---
 
 template: title
@@ -47,20 +40,31 @@ layout: false
 - Exactly the same as software engineering! Here is an example.
 - We have a [git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for those getting started
 
-???
-- SQL is code
-- GitHub hosts things online (dropbox example)
-- Show example Pull Request
-- Literally exactly the same process as software engineers
-- Extra resources:
-    - Our git guide
 ---
-
-* Analytics code should have quality assurance
-
-* Analytics should be documented
+template: title
+# Analytics code should have quality assurance
 
 ---
+layout: false
+## What is QA?
+* Adding tests to check that your code is reliable
+* Tests give you peace of mind, and allows you to work faster
+* Testing concepts in software engineering:
+    * Unit tests
+    * Integration tests
+
+---
+## What does QA look like in traditional analytics?
+
+- Spreadsheets: add some check columns
+- SQL: inspect a few rows, run a few queries (check for uniqueness etc)
+
+---
+## What does QA look like for analytics engineers?
+- Run automated tests on source data and on transformed data to ensure that SQL works as intended
+- Ensure source data is up to date
+---
+
 template: title
 # Analytics should be modular
 ---
@@ -70,8 +74,8 @@ template: title
 - Modularity on various scales in software engineering:
     - Using Stripe for payments
     - Using a python package for shared problems
-    - Within a codebase, use separate modules (== `.py` file)
-    - Within a module (==`.py` file), abstract repeated code into functions
+    - Within a codebase, use separate modules (i.e. separate `.py` file)
+    - Within a module, abstract repeated code into functions
 - Easier to define what each module does
 - Allows you to focus on what makes your business unique
 
@@ -82,11 +86,12 @@ Modularity exists on many levels in software engineering. From the macro of whic
 
 ## What does modularity look like for analysts?
 
-- Typically low modularity in the tech stack: using one system to cover many parts of your data pipeline. For example
+- Typically low modularity in the tech stack
+- One system may cover many parts of your stack, e.g.:
     - Oracle as your data warehouse + ingestion tool
     - Looker as your BI + transformation tool
     - In-house tool for ETL
-- Low modularity in queries: repeated snippets of SQL across many queries (hopefully in CTEs!)
+- Low modularity in queries: repeated snippets of SQL across many queries
 
 ???
 Real life examples:
@@ -97,7 +102,7 @@ Real life examples:
 
 ## What does modularity look like for analytics engineers?
 
-- The modern data stack: separate tools for ingestion, warehousing, transformation,
+- The modern data stack (seen earlier)
 - Within a dbt project:
     - Using packages (more on this later)
     - Using separate models for different parts of transformation
@@ -105,28 +110,6 @@ Real life examples:
 ???
 From the pre-work: how we split up our code into separate "cleaning" and "transforming" models
 
----
-template: title
-# Analytics code should be tested
-
----
-layout: false
-## What is testing
-* Tests check that your code works and does what it's supposed to do
-* Tests give you peace of mind, and allow you to work faster
-* Testing concepts in software engineering:
-    * Unit tests
-    * Integration tests
-
----
-## What does testing look like in traditional analytics?
-
-- Spreadsheets: add some check columns
-- SQL: inspect a few rows, run a few queries (check for uniqueness etc)
-
----
-## What does testing look like for analytics engineers?
-- Run automated tests on source data and on transformed data to ensure that SQL works as intended
 ---
 template: title
 # Analytics should use environments
@@ -146,7 +129,7 @@ Releasing your code into production is called “deployment”.
 
 ---
 
-## What do environments look like for analytics engineers
+## What do environments look like for analytics engineers?
 - Run dev transformations in your own schema (`dev_jcohen`), run prod transformations in a trusted schema.
 - Usually use prod data for these transformations
 - More info [here](https://docs.getdbt.com/docs/managing-environments).
@@ -158,6 +141,7 @@ template: title
 
 ---
 ## What do workflows look like in traditional analytics?
+Manual processes:
 1. Once a month: Run this query
 2. Download the CSV
 3. Paste the results into this Google Sheet
@@ -165,10 +149,11 @@ template: title
 
 ---
 ## What do workflows look like for analytics engineers?
+Automated processes:
 1. Data is ingested by Stitch/Fivetran
 2. It is transformed and tested every x hours:
-    - The latest version of the code is always used
-    — Any errors are sent to a Slack channel
+    * The latest version of the code is always used
+    * Any errors are sent to a Slack channel
 3. Your BI tool is connected ot the transformed data
 
-<img src="/lessons/img/{{page.lesson}}/ae-workflow.png" style="width: 100%;">
+<img src="/lessons/img/101/modern-data-stack.svg" style="width: 100%;">

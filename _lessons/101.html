@@ -14,53 +14,65 @@ layout: false
 (And what do you call yourselves?)
 
 ---
-## The traditional data stack (circa 2012)
-
-- First data hire was probably a data engineer
-    - Built infrastructure: extract data from the Postgres database and SaaS tools that ran your business, transform that data, and then load it into your data warehouse
-- Then hire a data analyst to build dashboards and reports on top of this data.
-    - Maintain messy SQL files with names like monthly_revenue_final.sql
-    - Or bookmark their queries in a SQL web editor
-    - Maybe supplement analyses with Excel work
-- Execs receive monthly reports of company’s metrics
-
-
----
-## Changes since then
-
-- Cloud-based data warehouses made data storage and processing affordable and fast
-    - Redshift, Snowflake, BQ
-- Data pipeline services (ex: Stitch, Fivetran) turned data extraction into work that took only a few clicks
-- Business intelligence (BI) tools (ex: Looker, Mode, Chartio) increased ability for stakeholders to be self-service.
+## The traditional data team
+- Data engineers:
+    - Build data warehouse infrastructure
+    - Extract & load data into your warehouse
+    - Transform data to make it easier to work with
+- Data analysts:
+    - Build dashboards & reports
+    - Insights work
+- Stakeholders:
+    - Politely wait for their analyst to give them numbers
 
 
 ---
+## Modern data stack
+<img src="/lessons/img/{{page.lesson}}/modern-data-stack-without-dbt.png" style="width: 100%;">
 
-## Changes and consequences
-**Make this more verbose**
-- Have you ever...
+???
+- MPP warehouses replaced the need for engineers to maintain warehouse infrastructures
+- Stitch and Fivetran got data into your warehouse, but the data was then in a source conformed format
+- BI tools (Looker) allowed consumers to do their own deep dives into data
+- Problem: people only had access to the raw data
 
-- Business users became more self-service
-- This often resulted in mismatched numbers due to gaps in business knowledge:
-    - Example: how many orders did we have last month?
-        - Was it cancelled?
-        - Was it returned?
-        - Is deleted_at null?
-        - Was the `user_id = 12`?
-- The solution: transform the raw data into a shape that’s ready for analytics.
-- **dbt puts this transformation firmly within the reach of anyone who knows SQL**
+Teaching notes:
+- flip back to traditional data team and annotate to show how it doesn't make sense anymore (cross parts out, arrow other parts around, particularly stakeholders not wanting to wait for the analysts)
+---
 
-<img src="/lessons/img/{{page.lesson}}/modern-data-stack.png" style="width: 100%;">
+
+## Consequences of the modern data stack
+Have you ever:
+- Had two stakeholder have different values for a KPI, and not been sure what was right?
+- Rewritten the same snippet of SQL, e.g:
+```sql
+select * from orders
+where status not in ('cancelled', 'false')
+    and deleted_at is null
+    and user_id != 12
+```
+- Broken all your dashboards because of a bad join?
+- Had data go stale (and only found out when someone else noticed?)
+
+---
+# Enter: dbt
+
+<img src="/lessons/img/{{page.lesson}}/modern-data-stack.svg" style="width: 100%;">
 
 
 ???
-* The data is like crude oil
+* The solution? Transform your data in a shape that's ready for analytics
+* Anyone who knows SQL can do this!
+* This role is neither data engineering nor data analysis... it's analytics engineering
+
+
 ---
 
-## Enter: Analytics Engineer
+## dbt & Analytics Engineering
 
 <img src="/lessons/img/{{page.lesson}}/role-comparison.png" style="width: 100%;">
 
 ???
 What do these software engineering best practices look like?
-... Can't wait to see you, after the break!
+
+All that and more... after the break!

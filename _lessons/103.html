@@ -56,15 +56,16 @@ Questions to prompt:
 Create the project again/show off the models
 Quick side step into models though...
 
----
-# Models
+--
+## Models
+* Models are `select` statements that transform data.
+* Stored in the `models` directory, and have a `.sql` extension
 ???
 See if anyone wants to have a go at explaining a model
 
 --
 
-* Models are `select` statements that transform data.
-* Stored in the `models` directory, and have a `.sql` extension
+
 ???
 
 ---
@@ -156,7 +157,7 @@ When you execute the `run` **command** dbt builds **models** as **relations** in
 The way that dbt builds a model depends on the **materialization** you **configure** for a model.
 ???
 Notes to teacher:
-* Switching this to just building models since we should have laid down some of those concepts arelady
+* Switching this to just building models since we should have laid down some of those concepts already
 ---
 # Materializations
 
@@ -215,7 +216,7 @@ Instructions to teacher:
 ---
 layout: false
 # Building dependencies
-* ref does the double duty thing: enables us to work  in environments
+* ref does the double duty thing: enables us to work in environments
 ???
 * Demonstrate running one model at a time
 ---
@@ -281,6 +282,7 @@ You should be able to:
 
 ???
 Teacher notes:
+* Use this as a checklist that you've covered everything off
 * Emphasize that we're going to launch off from here — use the lunch time to make sure that everyone is following so far.
 * For those who do understand, there's a working session
 ---
@@ -301,12 +303,12 @@ select * from raw.stripe.payment
 
 ```
 ???
-Notes on the data:
+Notes on the data (for teachers, hopefully the students discover some of these)
 * singular table name
 * no underscores in column names
 * cased column names
 * amount is in cents
-* created is not called `created_date`
+* `created` vs. `created_date`
 
 ---
 # Working session
