@@ -13,44 +13,7 @@ layout: false
 
 (And what do you call yourselves?)
 
---
-
-.left-column[
-  ### Data Analyst
-
-  - Build custom data ingestion integrations
-  - Manage overall pipeline orchestration
-  - Develop and deploy machine learning endpoints
-  - Build and maintain the data platform
-  - Data warehouse performance optimization
-
-]
-.right-column[
-  ### Data Engineer
-
-  - Deep insights work (ex: Why did churn spike last month? What are the best acquisition channels?)
-  - Work with business users to understand data requirements
-  - Build critical dashboards
-  - Forecasting
-
-]
-
 ---
-
-## Enter: Analytics Engineer
-
-- Provide clean data sets to end users
-    - Models data in a way that empowers end users to answer their own questions.
-- Spends their time transforming, testing, deploying, and documenting data.
-- Applies software engineering best practices like version control and continuous integration (CI) to the analytics code base
-
----
-
-template: title
-# When and why? A brief history
-
----
-
 ## The traditional data stack (circa 2012)
 
 - First data hire was probably a data engineer
@@ -61,8 +24,8 @@ template: title
     - Maybe supplement analyses with Excel work
 - Execs receive monthly reports of company’s metrics
 
----
 
+---
 ## Changes since then
 
 - Cloud-based data warehouses made data storage and processing affordable and fast
@@ -70,40 +33,34 @@ template: title
 - Data pipeline services (ex: Stitch, Fivetran) turned data extraction into work that took only a few clicks
 - Business intelligence (BI) tools (ex: Looker, Mode, Chartio) increased ability for stakeholders to be self-service.
 
+
 ---
 
 ## Changes and consequences
+**Make this more verbose**
+- Have you ever...
 
-- Business users self-serviced and data-driven
-- Anyone could write a SQL statement to get a metric
-    - but doesn’t necessarily mean it’s true!
+- Business users became more self-service
+- This often resulted in mismatched numbers due to gaps in business knowledge:
+    - Example: how many orders did we have last month?
+        - Was it cancelled?
+        - Was it returned?
+        - Is deleted_at null?
+        - Was the `user_id = 12`?
+- The solution: transform the raw data into a shape that’s ready for analytics.
+- **dbt puts this transformation firmly within the reach of anyone who knows SQL**
 
-- The solution: transform the raw data into a shape that’s ready for analytics. At the time, there were only two widely-used options:
-- Looker’s Persistent Derived Tables
-    - Get a data engineer involved
+<img src="/lessons/img/101-modern-data-stack.png" style="width: 100%;">
 
+
+???
+* The data is like crude oil
 ---
 
-## dbt and the modern data team
+## Enter: Analytics Engineer
 
-- First data hire = someone who ends up owning the entire data stack
-    - Sets up ETL tool, chooses data warehouse to funnel into, cleans and adds key business logic to the date, and which BI tool to report the data in
-- Not data engineering, nor analysis…
-- Hence the position, “Analytics Engineer” began
+<img src="/lessons/img/101-role-comparison.png" style="width: 100%;">
 
----
-
-## “Analytics Engineer”
-
-Provide clean, transformed data ready for analysis
- Apply software engineering practices to analytics code (ex: version control, testing, continuous integration)
-Maintain data documentation & definitions
-Train business users on how to use a data platform data visualization tools
-
-...but the lines are a bit blurry
-
----
-
-class: bottom
-background-color: orange
-# Thoughts?
+???
+What do these software engineering best practices look like?
+... Can't wait to see you, after the break!

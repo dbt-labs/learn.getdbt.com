@@ -1,10 +1,10 @@
 ---
 layout: presentation
-title: The dbt Viewpoint
-lesson: 101
+title: The Analytics Engineering Viewpoint
+lesson: 102
 ---
 template: title
-# The dbt Viewpoint
+# The Analytics Engineering Viewpoint
 <!--
 To-do:
 - Discuss title
@@ -33,7 +33,7 @@ layout: false
 
 ---
 
-## What does version control look like in traditional analytics?
+## What does version control look like for analysts?
 - `orders_final_this_one_is_final.xls`
 - Bookmarking the right query in your web editor
 
@@ -42,7 +42,7 @@ layout: false
 - Your future self will thank you
 ---
 
-## What does version control look like with dbt?
+## What does version control look like for analytics engineers?
 - SQL is code, so…
 - Exactly the same as software engineering! Here is an example.
 - We have a [git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for those getting started
@@ -80,13 +80,13 @@ Modularity exists on many levels in software engineering. From the macro of whic
 
 ---
 
-## What does modularity look like in traditional analytics?
+## What does modularity look like for analysts?
 
 - Typically low modularity in the tech stack: using one system to cover many parts of your data pipeline. For example
     - Oracle as your data warehouse + ingestion tool
     - Looker as your BI + transformation tool
     - In-house tool for ETL
-- Low modularity in queries: repeated snippets of SQL across many queries
+- Low modularity in queries: repeated snippets of SQL across many queries (hopefully in CTEs!)
 
 ???
 Real life examples:
@@ -95,7 +95,7 @@ Real life examples:
 
 ---
 
-## What does modularity look like with dbt?
+## What does modularity look like for analytics engineers?
 
 - The modern data stack: separate tools for ingestion, warehousing, transformation,
 - Within a dbt project:
@@ -105,6 +105,28 @@ Real life examples:
 ???
 From the pre-work: how we split up our code into separate "cleaning" and "transforming" models
 
+---
+template: title
+# Analytics code should be tested
+
+---
+layout: false
+## What is testing
+* Tests check that your code works and does what it's supposed to do
+* Tests give you peace of mind, and allow you to work faster
+* Testing concepts in software engineering:
+    * Unit tests
+    * Integration tests
+
+---
+## What does testing look like in traditional analytics?
+
+- Spreadsheets: add some check columns
+- SQL: inspect a few rows, run a few queries (check for uniqueness etc)
+
+---
+## What does testing look like for analytics engineers?
+- Run automated tests on source data and on transformed data to ensure that SQL works as intended
 ---
 template: title
 # Analytics should use environments
@@ -124,8 +146,7 @@ Releasing your code into production is called “deployment”.
 
 ---
 
-## What do environments look like with dbt?
-
+## What do environments look like for analytics engineers
 - Run dev transformations in your own schema (`dev_jcohen`), run prod transformations in a trusted schema.
 - Usually use prod data for these transformations
 - More info [here](https://docs.getdbt.com/docs/managing-environments).
@@ -143,9 +164,11 @@ template: title
 4. Copy and paste the charts into a board presentation
 
 ---
-## What do workflows look like with dbt?
+## What do workflows look like for analytics engineers?
 1. Data is ingested by Stitch/Fivetran
-2. It is transformed with dbt and tested every x hours:
+2. It is transformed and tested every x hours:
     - The latest version of the code is always used
     — Any errors are sent to a Slack channel
-3. Your BI tool runs queries on the warehouse using the latest (transformed) data
+3. Your BI tool is connected ot the transformed data
+
+<img src="/lessons/img/102_1.png" style="width: 100%;">

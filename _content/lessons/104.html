@@ -23,10 +23,10 @@ Speaker track:
 
 ---
 layout: false
-# The three ingredients for dbt
+# The four ingredients for dbt
 
 ???
-To use dbt, you need three things:
+To use dbt, you need four things:
 
 --
 
@@ -36,6 +36,7 @@ To use dbt, you need three things:
 * Flip to Snowflake console and show the data
 
 --
+
     * that can run SQL
     * with data already loaded in to it
 
@@ -46,9 +47,11 @@ Questions to prompt:
 --
 2. A dbt project
 --
-    * created with the `init` command / button
+
+    * created with the `init` command / `initialize` button
     * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
     * a project contains **models**
+
 ???
 Create the project again/show off the models
 Quick side step into models though...
@@ -59,12 +62,13 @@ Quick side step into models though...
 See if anyone wants to have a go at explaining a model
 
 --
+
 * Models are `select` statements that transform data.
 * Stored in the `models` directory, and have a `.sql` extension
 ???
 
 ---
-# The three ingredients for dbt
+# The four ingredients for dbt
 1. A data warehouse
     * that can run SQL
     * with data already loaded in to it
@@ -72,12 +76,37 @@ See if anyone wants to have a go at explaining a model
     * created with the `init` command / button
     * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
     * a project contains **models**
-3. A command
+3. A connection to your warehouse:
+--
+
+    * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
+    * dbt Cloud: a connection
+    * contains credentials to connect to your warehouse and a **target schema**
+
+???
+* Explain why this lives outside your project:
+    * creds are sensitive and shouldn't be version controlled
+    * target schemas should be different for each user, so shouldn't be hardcoded in a project
+* Explain what a target schema is
+* For CLI users — they might want more info on targets/prfiles
+---
+# The four ingredients for dbt
+1. A data warehouse
+    * that can run SQL
+    * with data already loaded in to it
+2. A dbt project
+    * created with the `init` command / button
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+3. A connection to your warehouse:
+    * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
+    * dbt Cloud: a connection
+    * contains credentials to connect to your warehouse and a **target schema**
+4. A command
 
 --
     * an instruction, issued from the command line
     * e.g. `dbt run`
-
 
 ???
 * Run `dbt run`!
@@ -97,12 +126,37 @@ See if anyone wants to have a go at explaining a model
 * What happens if you rerun dbt?
     * No downtime (this looks different on each warehouse)
 
-<!-- To do
 ---
-# Targets
 
+# The four ingredients for dbt
+1. A data warehouse
+    * that can run SQL
+    * with data already loaded in to it
+2. A dbt project
+    * created with the `init` command / button
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+3. A connection to your warehouse:
+    * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
+    * dbt Cloud: a connection
+    * contains credentials to connect to your warehouse and a **target schema**
+4. A command
+    * an instruction, issued from the command line
+    * e.g. `dbt run`
+--
 
--->
+When you execute the `run` **command** dbt connects to your **data warehouse** (via a **profile**/**connection**) and builds the **models** in your **dbt project** as **relations** in your **target schema**.
+
+---
+# Building dbt models
+Models are `select` statements.
+
+When you execute the `run` **command** dbt builds **models** as **relations** in your **target schema**.
+
+The way that dbt builds a model depends on the **materialization** you **configure** for a model.
+???
+Notes to teacher:
+* Switching this to just building models since we should have laid down some of those concepts arelady
 ---
 # Materializations
 
@@ -110,9 +164,9 @@ See if anyone wants to have a go at explaining a model
 * What is a materialization?
 
 --
-* Materializations are "build" strategies
+* `materializations` are "build" strategies
 * Effectively the SQL that your `select` statement gets wrapped in
-* (For now) models can be materialized as `views` and `tables`
+* Models can be materialized as `views` and `tables` (we'll learn more later!)
 * You need to **configure** a model's materialization
 
 ???
@@ -128,118 +182,111 @@ See if anyone wants to have a go at explaining a model
 * They can be set in your `dbt_project.yml` file, _and_ in your model file.
 * Configurations are applied _hierarchically_
 * Example configurations:
-    * `materialized`
-    * `tags`
-    * `enabled`
+    * `materialized='view'`
+    * `tags=['nightly', 'hourly']`
+    * `enabled=True`
 
 ???
-* Show changing configurations
-* Ensure students understand that configurations are applied hierarchically
-*
+* Show changing configurations, esp. examples that highlight hierarchical nature
 ---
-# The three ingredients for dbt
-1. A data warehouse
-    * that can run SQL
-    * with data already loaded in to it
-2. A dbt project
-    * created with the `init` command / button
-    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
-    * a project contains **models**
-3. A command
-    * an instruction, issued from the command line
-    * e.g. `dbt run`
---
-<!-- I'm not sure about this! It might end up being more confusing
--->
+# Building dbt models
+Models are `select` statements.
 
-When you execute the `run` **command** dbt connects to your **data warehouse** (via a **profile**/**connection**) and builds the **models** in your **dbt project** as **relations** in your **target schema**.
---
+When you execute the `run` **command** dbt builds **models** as **relations** in your **target schema**.
+
 The way that dbt builds a model depends on the **materialization** you **configure** for a model.
 
-???
-* This is a mouthful! Make sure students understand each of these words
-
----
-<!-- I'm  also not sure about this! To check once we have the previous presentations done
--->
-
-* What _is_ dbt?
-* What _is_ the dbt CLI?
-* What _is_ dbt Cloud?
-
-???
-You might be wondering what part of this is dbt?
-
 ---
 
-* _dbt_ is the software that understands a command, and goes and builds a dbt project
-* The _dbt CLI_ is a way to tell _dbt_ what to do
-* _dbt Cloud_:
-    * has an interface for issuing commands (the command bar) as well as project editing.
-    * and more (to come in later lessons!)
-
-
----
-layout: title
-Breathe!
+# Breathe!
 
 ???
 Stop for questions at this point, make sure everyone is following.
 
 ---
 
--- then, we introduced some dependencies with `ref`
--- welcome to DAGs! :dizzy:
--- configuring directories
-
-
-* What order does dbt run models in? see: ref
-* Oh but also, ref does the double duty thing: enables us to work  in environments
-
-
-
-Then we added some tests:
-
-
-* project contains _models_ (and other things)
-
-* models are _select_ statements only
-*
-
-* cloud vs CLI
-
-
-* debug, compile, **test**
-
-* dbt --help
-
-Terms that are familiar:
-* dbt project
-* models
-* materializations
-*
-
-You should feel comfortable doing the follow:
-* Changing a model from a view to a table (and back again):
-    * In the `dbt_project.yml` file
-    * In the ` &ltmy_model&gt.sql` file
-* Running:
-    * all models
-    * one model at a time
-    * all models upstream of one model
-    * all models downstream of one model
-* Finding the SQL that ran
-* Testing:
-    * all models
-    * one model at a time
-    * ... etc
+# Let's do it again!
+## This time with a better query!
 
 ???
-If anyone is lost, they need to ask questions now!
+Instructions to teacher:
+* Copy the query from the tutorial and run it
+
+---
+layout: false
+# Building dependencies
+* ref does the double duty thing: enables us to work  in environments
+???
+* Demonstrate running one model at a time
+---
+# Building dbt models
+Models are `select` statements.
+
+When you execute the `run` **command** dbt builds **models** as **relations** in your **target schema**.
+
+The way that dbt builds a model depends on the **materialization** you **configure** for a model.
+
+The order that dbt builds models is determined by the `ref` function.
+---
+???
+* Demonstrate running one test at a time
+---
+# Testing dbt models
+Tests are assertions you make about your **models**.
+
+When you execute the `test` **command** dbt iterates through the schema files (`models/**.yml`) to construct `select` queries.
+
+These queries return `0` when your assertion is true, otherwise the test fails.
+
+
+---
+# Other helpful commands
+CLI:
+* `dbt --help` (and `dbt run --help`)
+* `dbt --version`
+* `dbt debug`
+* `dbt compile`
+
+???
+* Demo each command — for CLI users, it's worth realizing that these are pretty standard CLI commands!
+
+---
+# Knowledge check
+
+You should be comfortable with these concepts:
+.left-column[
+* dbt project
+* models
+* target schema
+* materializations
+]
+.right-column[
+* configs
+* refs
+* configurations
+* tests
+]
+
+<br/>
+You should be able to:
+* Create new models (that depend on other models)
+* Run your models (all of them / one model at a time)
+* Check the SQL that's running
+* Configure your models (from the `dbt_project.yml` file / within a model)
+* Add tests to your models
+* Run your tests (all of them / one model at a time)
+
+<br/>
+🙋‍♀️ Please let us know if you want to go over any of these
+
+???
+Teacher notes:
+* Emphasize that we're going to launch off from here — use the lunch time to make sure that everyone is following so far.
+* For those who do understand, there's a working session
 ---
 
 # Working session
-* We just got stripe payment data into our warehouse:
+We just got some payment data into our warehouse:
 
 ```sql
 select * from raw.stripe.payment
@@ -263,8 +310,10 @@ Notes on the data:
 
 ---
 # Working session
+We just got some payment data into our warehouse:
+
 ```sql
-select * from raw.stripe.payments
+select * from raw.stripe.payment
 ```
 
 1. Build an `orders` model with the following fields:
@@ -276,32 +325,16 @@ select * from raw.stripe.payments
 3. [Bonus] On the `orders` model, add subtotals for each `payment_method`, e.g.:
     * `credit_card_amount`
     * `coupon_amount`
-    * etc
+    * etc.
 
 ???
-Discussion points (for after lunch):
+Discussion points (leading questions for the next session)
+
+Where did our data come from? How do we know that?
+* All of it was in the `raw` database
+* Grouped into schemas based on the source
+
 When building your models:
 * What did you name the files?
 * How did you organize them in your models directory?
 * Did you test these models? Did you document them?
-
-Was there anything you noticed about the raw data?
-* All of it was in the `raw` database
-* Grouped into schemas based on the source
-
-
----
-Working
-
-* commands: `run`
-* `ref`
-* tests
-* targets
-* How does dbt build dependencies?
-* What else does `ref` do?
-
-
-If you have any questions, please use this time to ask them!
-* dbt commands: run, test, debug, compile
-
----
