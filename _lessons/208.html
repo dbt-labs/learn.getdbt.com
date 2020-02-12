@@ -558,8 +558,28 @@ models:
 - [Read the docs](https://docs.getdbt.com/docs/custom-schema-tests)
 - Check out open-sourced [schema tests](https://github.com/fishtown-analytics/dbt-utils#schema-tests)
 
+---
+# I need to write an extremely bespoke test
+???
+* Truly a one-off data test
 
+--
+## Technique: data tests
+---
+# Anatomy of a data test
+`tests/refund_cannot_exceed_amount.sql`
+```sql
+-- refunds have a negative amount, so the total amount should always be > 0
+select
+    order_id,
+    sum(amount) as total_amount
 
+from {{ ref('fct_payments' )}}
+
+group by 1
+
+having total_amount < 0
+```
 
 ---
 # I need to test that my refactor didn't break anything
@@ -577,6 +597,28 @@ The SQL to check that two relations are exactly the same is very gnarly! so we o
 * [audit-helper package](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/)
 * [Discourse post](https://discourse.getdbt.com/t/how-to-not-lose-your-mind-when-auditing-data/445)
 
+---
+
+# I have some SQL that I use in a dashboard that I want to version control
+--
+## Technique: analyses
+---
+# Anatomy of an analysis
+
+`analysis/mrr_dashboard.sql`
+
+```sql
+select
+    date_month,
+
+    sum(is_active::integer) as customers,
+    sum(mrr) as mrr
+
+from {{ ref('fct_mrr') }}
+
+group by 1
+```
+[Learn more](https://docs.getdbt.com/docs/analyses)
 ---
 # (SQL) Techniques of the trade
 

@@ -1,7 +1,7 @@
 ---
 layout: presentation
 title: dbt Fundamentals
-lesson: 104
+lesson: 103
 estimated_teaching_time: 45
 estimated_working_session: 60
 teaching_method: live demo + slides. Questions encouraged.
@@ -89,7 +89,7 @@ See if anyone wants to have a go at explaining a model
     * creds are sensitive and shouldn't be version controlled
     * target schemas should be different for each user, so shouldn't be hardcoded in a project
 * Explain what a target schema is
-* For CLI users — they might want more info on targets/prfiles
+* For CLI users — they might want more info on targets/profiles
 ---
 # The four ingredients for dbt
 1. A data warehouse
@@ -111,21 +111,15 @@ See if anyone wants to have a go at explaining a model
 
 ???
 * Run `dbt run`!
-* What happens when you tell dbt to run?
-    * What did dbt do?
-        * Wrapped the `select` statement in the appropriate DDL
-        * Executed that SQL
-        * Advanced: first checked if the schema existed, and if it didn't recreated it!
-    * How did dbt connect to the warehouse? A: connection / profile
-    * How did dbt know what schema to use? A: the target schema
-    * How did dbt know whether this should be a table or view? A: **materialization**
-    *
-* Where can you see this happening?
-    * Logs
-    * Compiled SQL
+* Explain what dbt is doing (wraps the select statement in DDL and runs it)
+* Show where to see the logs
 
-* What happens if you rerun dbt?
-    * No downtime (this looks different on each warehouse)
+
+Good knowledge check questions:
+* How did dbt connect to the warehouse? A: connection / profile
+* How did dbt know what schema to use? A: the target schema
+* What happens if you rerun dbt? A: no downtime (this looks different on each warehouse)
+
 
 ---
 
@@ -215,10 +209,14 @@ Instructions to teacher:
 
 ---
 layout: false
-# Building dependencies
-* ref does the double duty thing: enables us to work in environments
+# Creating dependencies
+* It's often a good idea to split up models
+* Use the `ref` function to do build dependencies between models
+* `ref` **compiles** to the correct table name → this allows us to work in environments.
+
 ???
-* Demonstrate running one model at a time
+* Demonstrate building dependencies
+* Also demonstrate running one model at a time
 ---
 # Building dbt models
 Models are `select` statements.
@@ -228,12 +226,16 @@ When you execute the `run` **command** dbt builds **models** as **relations** in
 The way that dbt builds a model depends on the **materialization** you **configure** for a model.
 
 The order that dbt builds models is determined by the `ref` function.
----
 ???
-* Demonstrate running one test at a time
+
 ---
 # Testing dbt models
-Tests are assertions you make about your **models**.
+
+???
+* Add some tests to your models
+* Demonstrate running one test at a time
+--
+**Tests** are assertions you make about your **models**.
 
 When you execute the `test` **command** dbt iterates through the schema files (`models/**.yml`) to construct `select` queries.
 
@@ -254,7 +256,7 @@ CLI:
 ---
 # Knowledge check
 
-You should be comfortable with these concepts:
+You should be comfortable with these words:
 .left-column[
 * dbt project
 * models
@@ -311,6 +313,7 @@ Notes on the data (for teachers, hopefully the students discover some of these)
 * `created` vs. `created_date`
 
 ---
+name: working-session
 # Working session
 We just got some payment data into our warehouse:
 

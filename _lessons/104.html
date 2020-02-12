@@ -305,7 +305,7 @@ be grouped together in all three interfaces.
 # Unofficial rules of thumb
 
 1. Nomenclature is _hard_, and it's worth your time to be consistent. It doesn't
-matter if you prefer `fct_` or `fact_`, it's important that you choose one. (What's not hard? 
+matter if you prefer `fct_` or `fact_`, it's important that you choose one. (What's not hard?
 Every model/object name is snake case + case insensitive.)
 2. Prefixed models represent usable assets. Double underscores represent private/internal methods.
 3. Individual models should max out at a half-dozen CTEs / few hundred lines of SQL.
@@ -346,7 +346,7 @@ so much for their BI tool??
 - Reporting nice-to-haves
     - Dynamic parameters
     - Scheduling, alerting, PDF’ing and CSV’ing
-    
+
 ---
 
 ## Not the things they're bad at... :)
@@ -384,7 +384,7 @@ so much for their BI tool??
 dbt models are like kitchen tools. The only single-purpose kitchen applicance
 you should ever have is a rice cooker.
 
-BI assets are like recipies. It doesn't hurt as much to have similar ones, but 
+BI assets are like recipies. It doesn't hurt as much to have similar ones, but
 when it comes time to make dinner, your guests might become confused :)
 
 ---
@@ -402,7 +402,7 @@ select
 from {{environment}}.fact_sales    -- switch between dev / prod
 
 -- dynamic reporting parameters / dimension groups
-where year = {{param_year}}        
+where year = {{param_year}}
   and product_category = '{{param_product_category}}'
 
 group by 1,2
@@ -415,7 +415,7 @@ group by 1,2
 
 <img src="/lessons/img/{{page.lesson}}/bi-logos.png" class="img-center">
 ---
-
+name: working-session
 # Working session
 
 Refactor your project to be consistent with how we (Fishtown) structure our dbt project. Consider
