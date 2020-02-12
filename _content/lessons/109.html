@@ -1,0 +1,73 @@
+---
+layout: presentation
+title: Pull Requests
+lesson: 109
+estimated_teaching_time: 15
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
+---
+
+# Pull Requests
+
+---
+
+layout: false
+
+# Why?
+
+- This is how you ship/deliver/release your work.
+- You _cannot_ merge code that is not approved.
+- Your PR is your chance to make the argument that your code _should_ be merged. 
+It's not a chore, it's a powerful tool!
+
+---
+
+# We have a guide for that
+
+Pull requests should:
+
+- Tackle a single functional grouping of work.
+- Include a description that explains the context of the changes to the code, as 
+well as what the code does. It's useful to include links to relevant cards/tickets, 
+other PRs, dbt docs, and screenshots of updated DAGs.
+- Explain in detail any breaking changes after merging this code in production,
+or what needs to be done to merge the code successfully.
+- Show a "green" passing CI build, or explain any failing tests.
+
+You can create _templates_ for pull request descriptions that will serve as
+helpful guides to future contributors!
+
+_Check out [Fishtown's git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md)_
+
+---
+
+# WIP PRs
+
+Pull requests can be used to collaborate on code, as they are a great way to 
+share the code you've written so far. In this scenario, use a **draft** pull request.
+
+### Caveat
+
+At present, dbt Cloud CI will run & test _all_ new commits to an open PR,
+draft or otherwise.
+
+---
+
+# Any issues?
+
+- Found a bug?
+- Have an idea for an improvement?
+
+Open an [issue](https://guides.github.com/features/issues/)! You don't need to 
+have the code already written. If you get into a habit now of communicating
+ideas and in-progress work to your colleagues, you'll thank yourself later.
+
+---
+
+background-color: orange
+class: middle, bottom
+
+# Ready, set, open!
+
+???
+Open a pull request, and tag a classmate to review it!
