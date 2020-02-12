@@ -1,20 +1,106 @@
 ---
 layout: presentation
-title: Testing & CI
+title: Sources
 lesson: 106
 estimated_teaching_time: 30
 teaching_method: live demo + slides. Questions encouraged.
 working_session: true
 ---
 
-testing/ci
-- we added tests but when do we run them?
+# Sources
 
-- questions?
+---
 
-???
-Note to teacher:
-- The following several presentations 
-(Testing, Sources, Docs, Debugging Models, and Opening a PR)
-are thin conceptual overviews that should dovetail naturally with
-the group's working sessions.
+layout: false
+
+# If any of the following is true...
+
+* I'm switching my email marketing platform. (Or: I'm switching the tool that
+extracts and loads _from_ my email marketing platform.) I want to know which 
+final models depend on that source data.
+--
+
+* I'm switching from Redshift to Snowflake. All of my source data will be
+in a different database/schema.
+--
+
+* Because no one is perfect, my data loading tools experience occasional 
+hiccups or wrinkles that result in delayed or duplicated data
+--
+
+* My SQL transformations are working as expected, but my transformed data just 
+doesn't look right. Help?!?!
+--
+
+* I want to stage & query data that lives in external file storage (!!)
+
+---
+
+# Sources may be right for you!
+
+* Declare `database`, `schema`, and `table` names
+* Test schema integrity (`unique`, `not_null`)
+* Test loading freshness
+* Declare `external` properties
+
+---
+
+# Familiar concepts
+
+I define my sources in `stripe_source.yml`:
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    tables:
+      - name: payment
+```
+
+And then I create a staging model, `stg_stripe_payment.sql`:
+
+{% raw %}
+```sql
+with source as (
+
+    select * from {{source('stripe', 'payment')}}
+
+),
+
+renamed as (
+
+...
+```
+{% endraw %}
+
+---
+
+# Sources are green...
+
+<img src="/lessons/img/{{page.lesson}}/dag-source.png" class="img-center">
+
+---
+
+# And green is good
+
+<img src="/lessons/img/{{page.lesson}}/freshness-viz.png" class="img-center">
+
+---
+
+# A common approach
+
+* Define all `sources` in YML files contained within a subfolder, `models/sources`.
+* Daily jobs runs commands in the following order:
+```bash
+dbt test -m sources             # ensure no duplicates or unexpected nulls
+dbt run                         # only runs if test above succeeds
+dbt test --exclude sources
+dbt source snapshot-freshness
+```
+
+---
+
+background-color: orange
+class: middle, bottom
+
+# Questions?
