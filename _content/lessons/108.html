@@ -1,0 +1,130 @@
+---
+layout: presentation
+title: Debugging Models
+lesson: 108
+estimated_teaching_time: 15
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
+---
+
+# Debugging dbt
+
+---
+
+layout: false
+
+# What is dbt doing under the surface?
+
+1. **Connecting** to your database
+2. **Parsing** all the code in your project
+3. **Compiling** all your models
+4. **Running** those models, in order, against the database
+5. **Testing** your models by running queries that validate assumptions
+
+---
+
+# Opportune for errors!
+
+- Parsing errors (YML)
+
+--
+
+- Database errors
+    - Connections
+    - Permissions
+    - SQL
+        - syntax
+        - actual data
+
+--
+
+- dbt "errors"
+
+    - Model test failures
+    - Source freshness failures
+    - Feature deprecations (upgrade your version!)
+
+---
+
+# You can't run dbt
+
+Is this a dbt project? Can you connect to the database? What's going on???
+```bash
+$ dbt debug
+Running with dbt=0.15.2
+dbt version: 0.15.2
+python version: 3.7.6
+python path: /usr/local/Cellar/dbt/0.15.2_1/libexec/bin/python3.7
+os info: Darwin-19.2.0-x86_64-i386-64bit
+Using profiles.yml file at /Users/jerco/.dbt/profiles.yml
+
+Configuration:
+  profiles.yml file [OK found and valid]
+  dbt_project.yml file [OK found and valid]
+  profile: learn [OK found]
+  target: dev [OK found]
+
+Required dependencies:
+ - git [OK found]
+
+Connection:
+  account: kw27752
+  user: fishtown_jeremy
+  database: learn_analytics
+  schema: dbt_jcohen
+  warehouse: learning
+  role: learner
+  client_session_keep_alive: False
+  Connection test: OK connection ok
+  ```
+
+# You can't run specific models
+
+Can dbt parse all the files in your project?
+```
+dbt compile
+```
+
+Look at the "compiled" & "run" code for that model
+```
+target/compiled/my_project/my_model.sql
+target/run/my_project/my_model.sql
+```
+- Visually inspect
+- Try running chunks (CTEs) in a SQL editor
+
+---
+
+# You need to see exactly what dbt is doing
+
+Look at the logs!!
+
+---
+
+# Your results aren't right
+
+The most dangerous errors of all! If you didn't have tests, you wouldn't
+know anything is wrong.
+
+```
+target/compiled/my_package/schema_test
+target/compiled/my_paackage/data_test
+```
+
+Run the SQL to find some examples of offending records
+
+---
+
+# Still stuck?
+
+- Software bugs: search [open dbt issues](https://github.com/fishtown-analytics/dbt/issues), StackOverflow
+- Conceptual issues: search [dbt Discourse](discourse.getdbt.com)
+- Ask in [dbt Slack](slack.getdbt.com)!
+- Phone a friend :)
+
+---
+
+background-color: orange
+class: middle, bottom
+
+# On y va !
