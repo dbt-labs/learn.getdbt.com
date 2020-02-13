@@ -177,24 +177,19 @@ Examples:
 ---
 # Q: When should you run tests?
 --
-* When you first check out a project
-* During development
-* When you want to merge your code
-* Whenever you run dbt in production
-
-???
-Demonstration:
+* Manual: When you first run a project
+* Manual: During development
+* Automated: When you run dbt on a schedule
+* Automated: When you want to merge your code
 
 ---
-# Testing changes to code
-* Run tests on merge
----
-# Testing in production
-* How do you know if things go wrong?
-* Alerting / monitoring
+# Running dbt in production
+* You need to run dbt on a schedule to keep your data up to date
+* These production runs should always use the latest version of your dbt project → **continuous deployment**
+* You should have a way to know if something goes wrong (monitoring + alerting) and ways to debug what went wrong (logs and artifacts)
+* You should automate a build + test your code  every time you want to merge changes (or "deploy to production") →  **continuous integration**
 
-
-
+We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
 
 ---
 name:working-session
