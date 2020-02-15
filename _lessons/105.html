@@ -170,6 +170,7 @@ Examples:
 ---
 # Q: What should you test?
 --
+
 * Good rules of thumb:
     * Test primary keys (`unique`, `not_null`)
     * Test fields that you use in downstream models
@@ -177,11 +178,15 @@ Examples:
 ---
 # Q: When should you run tests?
 --
+
 * Manual: When you first run a project
 * Manual: During development
 * Automated: When you run dbt on a schedule
 * Automated: When you want to merge your code
 
+--
+
+Wait, how do I automate running dbt?
 ---
 # Running dbt in production
 * You need to run dbt on a schedule to keep your data up to date
@@ -196,4 +201,3 @@ name:working-session
 
 # Working session
 * Ensure that your (new) `orders` model has tests on it
----

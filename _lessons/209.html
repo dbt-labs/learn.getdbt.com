@@ -1,18 +1,22 @@
 ---
 layout: presentation
 title: End to end case study
-lesson: 203
+lesson: 209
 ---
 # Designing a data model
 ???
-Teacher notes:
+Notes to teacher:
 * This is a real life case study from Slack
+* There's a repo [here](https://github.com/fishtown-analytics/learn-case-study) that contains the WIP code (the real code is in our internal analytics repo)
+* This repo is connected to the `dbt Learn` account. Feel free to open up the IDE for this project, you'll need to put in your creds for the Fishtown Analytics Snowflake accounts (_not_ the Learn account)
+
 
 Speaker track:
 * We recently started putting all of our data from Slack into Snowflake, so we're taking you through what that looked like.
 * I was both the stakeholder and the analyst
 * Emphasis on the word "design" — a ton of consideration for our end user
 ---
+layout: false
 # Process of modeling
 1. Define the model
 2. Exploratory model building
@@ -32,17 +36,22 @@ Speaker track:
 
 # Case study:
 **What’s the business question I’m trying to answer?**
-How active is our dbt Slack community?
 
+How active is our dbt Slack community?
+<br/>
+<br/>
+<br/>
 **What is the dashboard I'm trying to build?**
+
 Let's draw it!
 
 ???
-[to do for future Learn's that i'm not part of, insert image here!]
+[to do for future Learns that i'm not part of, insert image here!]
 ---
 # Case study
 **What other questions will business users have when they see this dashboard?**
 --
+
 * How many messages get sent a day? Should that number include replies?
 * How many messages get a reply? How quickly? Wait, replies can’t get replies… so we need to filter those out
 * How many replies does a message get?
@@ -51,29 +60,38 @@ Let's draw it!
 
 ---
 # Case study
-**What is the granularity of the model? What fields do I need?**
+**What is the granularity of the model?**
+
+**What fields do I need?**
+
 --
+
 .left-column[
-`f_posts`: One record per message that is posted in a channel
+`fct_posts`: One record per message that is posted in a channel
 * message_id
 * user_id (user handle?)
-* posted_at
+* channel_id (channel name instead?)
+* sent_at
 * n_replies
 * first_reply_at
-* channel_id
 ]
 
 .right-column[
-`f_replies`: One record per message that is posted in reply to another message
+`fct_replies`: One record per message that is posted in reply to another message
 * message_id
-* user_id
+* sent_at
+* user_id (user handle?)
 * parent_message_id
 ]
+
+Are there other dimensions I want?
 ---
 # Hold up!
 ???
 Do we need to build this model (in this case yes, because it's a new data source)
 --
+
+Before you go any further, ask yourself:
 * Can we adjust an existing model rather than create a new one?
 * Does this belong in dbt or in the BI layer?
 * Is this an ad-hoc request, or something that is worth spending time on?
@@ -81,24 +99,28 @@ Do we need to build this model (in this case yes, because it's a new data source
 ---
 # Exploratory model building
 ---
-# Work backwards to the {{ source() }}
+# Work backwards to the {% raw %}{{ source() }}{% endraw %}
 * What data to I have available to fill in the blanks?
   * Now is the time to interrogate your data.
 * How does the data join together? Do I have the right keys to join across?
 * What assumptions am I making about my data sources? Can I test those?
 
 ---
-layout:false
-<img src="/lessons/img/{{page.lesson}}/exploratory-data-analysis.png" style="width: 100%;">
+.center[
+<img src="/lessons/img/{{page.lesson}}/exploratory-data-analysis.jpeg" style="width: 50%;">
+]
+[Source](https://twitter.com/b0rk/status/1182288624018247685?lang=en)
 ---
 # Case study
 What data do I have?
 * `raw.slack.messages`: Data source that gets updated daily
 * `raw.slack_historical.messages`: Historical message export
+
 Great let’s draw a DAG & write a few models!
 ???
 To-do:
-Insert a picture of fake dag into
+* Insert a picture of DAG
+* Link to the repo
 ---
 # Write V1 of the model
 * Start by putting all your code in one or a few SQL files! (but use CTEs)
@@ -108,15 +130,42 @@ Insert a picture of fake dag into
 Then `git commit!`
 ---
 # Case study
-**Things discovered while building this model:**
-* Timestamps are in epoch?
-* No primary key? The epoch timestamp is the primary key?
-* Different column names in historical? Only a channel_name, not an id?
+**Process I used**
+* Defined some sources
+* Defined my staging models (used the [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/) package 🤫). I noticed:
+    * Timestamps are in epoch?
+    * No primary key? The epoch timestamp is the primary key?
+* Built my `fct_` models
+* Looked at the data in aggregate...
+???
+This is where the repo is at. Demonstrate some the cleaning up that has happened, but really at a superficial level.
+
+---
+# V0 Chart:
+## Posts in each channel each week
+.center[
+<img src="/lessons/img/{{page.lesson}}/bad-looker-chart.png"style="width: 100%;">
+]
+
+???
+What's wrong here?
+--
+
+* Number of messages is way too high:
+* A lot of "null" `channel_id`s:
+* `channel_id` isn't actually that useful — use `channel_name` instead
+---
+
+**Things discovered while iterating on this model:**
+* Different column names in historical? Only a `channel_name`, not a `channel_id`
+* The data time periods overlap
 * Different grains — nested replies?
 * Messages includes channel joins!
+
 ---
 # Refactor
 ---
+
 # As you go, consider:
 * Modularity:
     * Am I repeating SQL? Can I re-use models already in my project?
@@ -128,7 +177,13 @@ Then `git commit!`
 * Correctness:
     * How correct is this? Does that matter?
 ---
-to-do: final dag
+background-color: #005E7A
+
+<img src="/lessons/img/{{page.lesson}}/final-dag.png" style="width: 100%;">
+
+???
+This is what it ended up as! A ton more complicated!
+(To-do: it needs to be at least 3x bigger than this!)
 ---
 # Final checklist:
 Before you send a PR to be reviewed, check whether you have:
@@ -137,3 +192,7 @@ Before you send a PR to be reviewed, check whether you have:
 * Does my code match the style guide?
 * Do I have tests and descriptions?
 (Check out our [checklist](https://github.com/fishtown-analytics/dbt-init/blob/master/starter-project/.github/pull_request_template.md))
+
+???
+* Note that these are all things we talked about on day two, but 90% of the work in this case study was things we learnt on day one!
+* The actual PR: https://github.com/fishtown-analytics/internal-analytics/pull/110

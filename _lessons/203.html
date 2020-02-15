@@ -3,6 +3,7 @@ layout: presentation
 title: Packages and projects
 lesson: 203
 ---
+layout: false
 # Packages
 * Packages are dbt projects that you can install in your _own dbt project_
 
@@ -31,9 +32,12 @@ packages:
 ???
 * Discuss when to use which syntax
 ---
+# Use case: Using macros from a package
+
 1. Add a `packages.yml` file to your project
 --
-2. Run `dbt deps` to install the package (check out the `modules` dir)
+
+2. Run `dbt deps` to install the package (check out the `modules` dir!)
 ```shell
 $ dbt deps
 ```
@@ -41,11 +45,16 @@ $ dbt deps
 * Show the  modules directory
 * Note that these are .gitignored
 ---
+# Use case: Using macros from a package
+
 1. Add a `packages.yml` file to your project
 2. Run `dbt deps` to install the package (check out the `modules` dir)
 --
+
 3. Access macros from the package
+{% raw %}
 ```sql
+-- models/utils/util_days.sql
 {{ dbt_utils.date_spine(
     datepart="day",
     start_date="to_date('01/01/2016', 'mm/dd/yyyy')",
@@ -53,7 +62,9 @@ $ dbt deps
    )
 }}
 ```
+{% endraw %}
 ```yml
+# models/marts/core/schema.yml
 version: 2
 
 models:
@@ -65,49 +76,66 @@ models:
 
 ???
 * Go through some of the most common macros in dbt-utils (there might be overlap with previous lesson)
+---
+# Q: What happens when you add a package with models in it?
+--
+
+These models get added to your DAG!
+---
+# Use cases for packages:
+* Versatile macros, especially for “How to Write this in SQL” problems ([dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/))
+* Common staging models for one data source ([facebook](https://hub.getdbt.com/fishtown-analytics/facebook_ads/latest/))
+* Ad hoc queries you find yourself writing over and over ([audit_helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/))
+* Follow industry standards for boilerplate-yet-complex modeling ([snowplow](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/))
+???
+Installing packages also adds the models
+
+---
+name: working-session
+# Working session
+## Using macros from a package:
+* Add [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) to your dbt project
+* Use a macro from dbt-utils (e.g. `date_spine` to create a table of all days)
+
 
 ---
 # Hold up, what about all those other macros?
-When we ran dbt earlier, there were a ton of macros:
-<img src="/lessons/img/{{page.lesson}}/127-macros.png" style="width: 100%;">
+Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
+.center[
+<img src="/lessons/img/{{page.lesson}}/127-macros.png" style="width: 50%;">
+]
 ???
 This slide is truly for curious minds.
 --
-dbt is itself [a project](https://github.com/fishtown-analytics/dbt/tree/dev/barbara-gittings/core/dbt/include/global_project)!
+
+dbt is itself [a package](https://github.com/fishtown-analytics/dbt/tree/dev/barbara-gittings/core/dbt/include/global_project)!
+* a.k.a "the dbt global project"
 * Tests are macros prefixed with `test_`
 * Materializations use macros
 
+???
+Hint: we might need this information later today!
+
+---
+# Everything's a project!
+So:
+* You have your own dbt project
+* You also have the dbt global project
+* You can also install additional projects as packages
+
 --
+
+## What happens if you create a macro with the same name as a global macro?
+--
+
+
 If you have a macro in _your project_ with the same name as macro in the _dbt global project_, your version is preferred! This means you can:
 * Change the way dbt generates schema + and relation names
 * Change the way tests are implemented
 * Even change materializations!
 
 [Learn more](https://discourse.getdbt.com/t/did-you-know-dbt-ships-with-its-own-project/764).
-
-???
-Hint: we might need this information later today!
-
 ---
-# Recap:
-So:
-* You have your own dbt project
-* You also have access to the macros in the global dbt project
-* You can also install additional projects as packages
-
-(Theme: everything's a project!)
----
-# Back to packages
-
-* Use cases for packages:
-    * Versatile macros, especially for “How to Write this in SQL” problems ([dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/))
-    * Common staging models for one data source ([facebook](https://hub.getdbt.com/fishtown-analytics/facebook_ads/latest/)
-    * Ad hoc queries you find yourself writing over and over ([audit_helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/))
-    * Follow industry standards for boilerplate-yet-complex modeling ([snowplow](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/))
-
-
----
-name: working-session
 # Working session
 ## Using macros from a package:
 * Add [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) to your dbt project
