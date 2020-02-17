@@ -96,24 +96,13 @@ group by 1
 
 ---
 
-# Mental model
-
-| Task                | Time  | Time (Relative) |
-|---------------------|-------|-----------------|
-| 1 CPU Cycle         | 0.3ns | 1 second        |
-| Memory Access       | 120ns | 5 minutes       |
-| Disk read           | 1ms   | 1 month         |
-| Internet: SF to NYC | 40ms  | 4 years         |
-
----
-
 # Q: Why are data warehouses fast?
 
 ### A: They're columnar!
 
 --
 
-Which allows them to <span style="background-color: yellow;">**limit scanned data**</span> when executing a query.
+Which allows them to <span style="background-color: yellow;">**limit scanned data**</span> when executing an analytical query.
 
 --
 
@@ -163,24 +152,39 @@ Data warehouses can benefit from <span style="background-color: yellow;">**horiz
 
 ---
 
-# Caveat
+template: title
+# Why are queries slow?
 
-We're going to root this talk in the terminology of Redshift, because it's the 
-canonical columnar database.
+---
 
-If you instead use:
-- **Snowflake** or **BigQuery**, these principles are still foundational. Wait until 
-the end of the presentation for a synthesis.
-- **Postgres**, you're choosing to perform analytics on a non-analytic database.
-These types of queries can still be very fast, but they're not what Postgres is
-optimized for.
-- **Athena**, **Spark**, **Presto**, ..., these principles are _even more_ critical.
-Let's talk in an hour :)
+# Mental model
+
+| Task                | Time  | Time (Relative) |
+|---------------------|-------|-----------------|
+| 1 CPU Cycle         | 0.3ns | 1 second        |
+| Memory Access       | 120ns | 5 minutes       |
+| Disk read           | 1ms   | 1 month         |
+| Internet: SF to NYC | 40ms  | 4 years         |
+
+---
+
+# Conceptual framework
+
+- Scanning data is **_slow_**
+- Moving data around is **_slowww_**
+
+- Warehouses are "logical" and "physical"
+    - We like to think about the "logical" part of it
+    - Sometimes it’s necessary to consider the "physical"
+
+- Biggest takeaway?
+    - Your time is valuable
+    - Make choices that keep you focused on the "logical"
 
 ---
 
 template: title
-# Sorting data
+# Example: sorting data
 
 ---
 
@@ -229,201 +233,23 @@ where order_date >= ‘2019-01-03’
 
 ---
 
-# Remember the mental model!
+# In practice
 
-| Task                | Time  | Time (Relative) |
-|---------------------|-------|-----------------|
-| 1 CPU Cycle         | 0.3ns | 1 second        |
-| Memory Access       | 120ns | 5 minutes       |
-| Disk read           | 1ms   | 1 month         |
-| Internet: SF to NYC | 40ms  | 4 years         |
+Databases need to sort data for:
+- Filters (`where`)
+- Window functions (`partition by`, `order by`)
 
-???
-Sorting data limits the initial "Disk read." Even a _very_ complex query,
-with a lot of intricate computation, will run faster than a straightforward
-query of 10x the data because the computation happens in memory, whereas the
-data read happens against disk.
-
----
-
-template: title
-# Distributing data
-
----
-
-# Remember horizontal scaling?
-
-<img src="/lessons/img/{{page.lesson}}/redshift-nodes.png" class="img-center">
-
---
-
-.left-column[
-### Storage
-<img src="/lessons/img/{{page.lesson}}/library.png" style="width: 50%;" class="img-center">
-]
-
-.right-column[
-### Compute
-<img src="/lessons/img/{{page.lesson}}/librarian.png" style="width: 65%;" class="img-center">
-]
-
-???
-- Library = "storage"
-- Librarian = "compute"
-
----
-
-# Distribute "Round-Robin"
-
-.left-column[
-.left-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-]
-
-.right-column[
-.left-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-]
-
-&nbsp;
-
-### Rules
-- Every librarian has their own section of the library.
-- The sections are evenly and randomly divided.
-
-???
-- How many books are there?
-- How many authors are there?
-
----
-
-# Distribute by Author
-
-.left-column[
-.left-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
-### Authors A-G
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
-### H-L
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-]
-
-.right-column[
-.left-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
-### M-U
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
-### V-Z
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-]
-
-???
-**How many authors are there?**
-
-It's important not to confuse distribution with sorting. Even though the books
-are _distributed_ across libaries by author last name, each of these libraries
-could actually be sorted by year.
-
-Distribution = BETWEEN
-Sorting = WITHIN
-
-**How many publication years are there?**
-Distributing on the _wrong_ column is _worse_ than distributing evenly. If you 
-wanted the distinct count of years, Redshift's job is now _harder_. Why?
-
----
-
-# Distribute All
-
-.left-column[
-.left-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-]
-
-.right-column[
-.left-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
-<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
-]
-]
-
-&nbsp;
-
-### Rules
-- Every librarian has their own copy of the entire library.
-
-???
-How many books are there?
-How many authors are there?
-How many publication years are there?
-The only cost here? Storage space!
-
----
-
-# Remember the mental model!
-
-| Task                | Time  | Time (Relative) |
-|---------------------|-------|-----------------|
-| 1 CPU Cycle         | 0.3ns | 1 second        |
-| Memory Access       | 120ns | 5 minutes       |
-| Disk read           | 1ms   | 1 month         |
-| Internet: SF to NYC | 40ms  | 4 years         |
-
-???
-Distributing data limits the amount of data that needs to be shuffled
-between nodes, "Internet: SF to NYC." Shuffling can occur at the beginning 
-(Redshift) or in the middle of query execution.
-
----
-
-# Remember databases?
-
-Distribution comes up in:
+Databases need to move data around for:
 - Uniqueness (`distinct`)
 - Joins
 
-Sorting comes up in:
-- Filters (`where`)
-- Subsets (`partition by`)
-
 ???
-- Uniquess = `distinct`, though also `, count(*) ... group by 1`.
-- Joins implicitly require finding all unique values for match/comparison, so 
-the same principle applies.
+Joins implicitly require finding all unique values for match/comparison, which
+is why they're similar to getting `distinct` values.
 
 ---
 
-# Your queries are your optimization problems
+# Queries are optimization problems
 
 .left-column[
 `dim_users`
@@ -446,6 +272,8 @@ the same principle applies.
 | ...     | ...      | ...         |
 ]
 
+--
+
 &nbsp;
 
 ```sql
@@ -462,7 +290,47 @@ you should **sort on age** and **distribute on `user_id`**.
 ---
 
 template: title
-# Takeaways
+# Specific databases
+
+---
+
+# BigQuery partitioning
+
+- BigQuery presents a totally different optimization problem!
+
+- Limiting scanned data is not just a way to have faster queries, it's an
+_economic necessity_.
+
+    - BQ charges based on **total data scanned**, not complexity of computation
+    - You can `partition` tables by a date, timestamp, or integer column, which
+    is analogous to sorting on that column
+
+---
+
+# Snowflake clustering
+
+Snowflake natively stores data in tiny chunks (“micropartitions”) and stores 
+metadata about each partition, like the min/max value.
+
+This improves performance dramatically by improving “query pruning”: How many 
+micropartitions need to be scanned to return the results of my query?
+
+---
+
+<img src="/lessons/img/{{page.lesson}}/snowflake-pruned-query.png" class="img-center">
+
+---
+
+# When should we cluster?
+
+Biggest datasets (event streams) are naturally ordered, so data will be 
+distributed across micropartitions based on when it was collected.
+
+When do we need to do more?
+- On especially big tables. Snowflake says >1 TB, we say >100 GB.
+- You’re regularly filtering on a field that is _not_ naturally sorted
+- You're willing to pay more so that a particular query runs fastest
+    - E.g. embedded reporting, exposed to external stakeholders
 
 ---
 
@@ -505,21 +373,6 @@ Draw an arrow from left ("more work") to right ("less work"). A well tuned,
 perfectly optimized Redshift cluster will execute queries _as quickly as_ a
 comparable Snowflake cluster, for a lower price. But a poorly tuned Redshift
 cluster is, well, a cluster.
-
----
-
-# Conceptual framework
-
-- Scanning data is **_slow_**
-- Moving data around is **_slowww_**
-
-- Warehouses are "logical" and "physical"
-    - We like to think about the "logical" part of it
-    - Sometimes it’s necessary to consider the "physical"
-
-- Biggest takeaway?
-    - Your time is valuable
-    - Make choices that keep you focused on the "logical"
 
 ---
 

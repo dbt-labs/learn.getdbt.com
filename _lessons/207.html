@@ -1,163 +1,338 @@
 ---
 layout: presentation
-title: Big Data Technologies
+title: Materializations + Incremental models
 lesson: 207
 ---
 
-# "Big Data" Technologies
+# dbt Materializations
 
 ---
 
 layout: false
-# Apples to oranges to mangosteens
+# What is a materialization?
 
-.dense-text[
-.left-column-66[
-.left-column[
-### Postgres
-- Stores rows of structured, tabular data
-- High concurrency, decent parallelization
-- Compute and storage are tightly locked
-- Performance optimization via indexes
-- Decent support for semi-structured (JSON) data (as of version 9!)
-- Shaky support for querying "foreign" data (via extensions)
-- Everything works the way you expect
-]
+- A "wrapper" for your SQL
 
-.right-column[
-### Redshift
-- Stores columns of structured, tabular data in proprietary file format
-- Massively parallel query execution across multiple workers
-- Compute and storage are interrelated
-- Performance optimization via sorting, distribution
-- Minimal support for semi- and unstructured data (JSON)
-- Decent support for querying "external" data in S3 (via Spectrum)
-- Most things work the way you expect
-]
-]
-]
+- Includes all the "boilerplate" DDL/DML, like `create`, `alter`, `drop`
 
---
-
-.dense-text[
-.right-column-33[
-### Spark
-- "Data Lake": All data is stored externally
-- Storage and compute are _completely_ separate. You pay for them independently.
-- Performance optimization means storing in a columnar file format (parquet)
-with excellent metadata
-- Semi- and unstructured data is a first-class citizen, with pretty good SQL
-functionality
-- There's no guarantee that things will work the way you expect!
-]
-]
+- Handles various database conditions
+    - What if this model already exists in the database?
+    - What if this model is materialized as a table, but it currently exists as 
+    a view in the database?
+    - What if we want to build this model incrementally?
+        - Does it already exist?
+        - Does it have the same structure?
+        - What data is "new"?
 
 ---
 
-# Modern data warehouses
+# Standard materializations
 
-- Best in class: Snowflake + BigQuery
-    - Redshift is playing catch-up with advent of Spectrum + RA3 nodes
+- Table
+- View
+- Ephemeral
+- Incremental
 
-- Best of both worlds:
-    
-    - Intuitive **user experience** of a database: users, groups/roles,
-    authentication, permissions, information schema, everything is SQL
-    
-    - Flexible and scalable **performance** of a data lake + distributed
-    processing technology
-    
-- Differentiators
-    - Support for non-tabular / semi-structured data
-    - Support for external data
-    - Separation of compute + storage
-    
----
+### Can you write your own? Absolutely!
 
-# What is semi-structured data?
-
-It's common that 90% of your data is tabular/structured, but there's a little
-bit that makes more sense as JSON!
-
-| bldg_id | location | occupancy | vacant_units | amenities |
-|---------|-------------|-----------|--------------|----------------------------------------------------------------------------|
-| 1 | Rittenhouse | 54 | `[1, 3, 9]` | `{“doorman”: true, “Pets_allowed”: true, “Pets_allowed_with_deposit”: 1000}` |
-| 2 | Fairmount | 8 | `[]` | `{ “Yard_size_sqft”: 100 }` |
-| 3 | Austin, TX | 5 | `[1]` | `{ “Yard_size_sqft”: 1,000 }` |
+- Materializations are just special Jinja macros, that call
+a bunch of other Jinja macros
+- The trickiest part is implementing them equally across several types of 
+databases
 
 ---
 
-# Support for semi-structured data
-
-| JSON support           | Redshift      | Snowflake                           | BigQuery                            |
-|------------------------|---------------|-------------------------------------|-------------------------------------|
-| Unnesting dictionaries | Kind of       | Yes definitely! `amenities:doorman` | Yes definitely! `amenities.doorman` |
-| Flattening arrays      | Not natively  | Yes! `lateral flatten`              | Yes! `cross join unnest`            |
-| Loading data           | Flatten first | Load as-is                          | Load as repeated records            |
-
-???
-Some notes
-
----
-
-# Support for external data
-
-| External support           | Redshift      | Snowflake                           | BigQuery                            |
-|----------------------------|------------------------------------------------|------------------------------------------|--------------------------------------------|
-| COPY from/to               | Yes, for S3                                    | Yes, for S3/GCS/Azure                    | Yes, for GCS + G Drive                     |
-| Read from external tables  | Yes! Via Spectrum. Manual partitioning         | Yes! All via DDL, automatic partitioning | Yes! Powerful schema inference, but no DDL |
-| External-only transform    | Limited cf. Athena                             | Extensive                                | Limited                                    |
-
-???
-Some notes
-
----
-
-# Separation of storage + compute
-
-- When data is small and transformation is straightforward, you don't mind
-that these are locked in a tight aspect ratio
-    - "I'd like another node, please!"
-    - Everyone is sharing the same scarce resources
-
---
-
-- What if you want more storge, without needing to pay for more compute nodes?
-What if you want it _now_?
-
---
-    - How do you know how much storage you need? (easy)
-    - How do you know how much compute you need? (hard)
-    - AWS/Azure/GCloud sell you "spot instances" of compute resources
-    - Data is never stored "on disk" because you spin up + spin down
-    nodes as needed
+<img src="/lessons/img/{{page.lesson}}/material-houses.png" style="width: 60%;" class="img-center">
 
 ---
 
 template: title
-# Different modeling paradigms
+# Incremental models
+
+`where updated_at >= '{{site.time|slice: 0, 10}}'`
 
 ---
 
-# What if you have petabytes of data?
+# Why?
+
+<img src="/lessons/img/{{page.lesson}}/fr-run-timing.png" class="img-center">
+
+---
+
+# Why not?
+
+This is an optimization problem for _your_ database. It requires a deep 
+understanding of the data warehouse performance we've been discussing.
+
+The implementation is straightforward, the implications are complex and subtle.
+You need to think in advance about all the ways that things can go wrong.
+
+---
+
+# When?
+
+### If you're...
+
+- Just starting out
+- Relatively small data (< 10mm rows, ~10 GB / table)
+- Able to query views with low latency
+- Building table models in < 90s seconds
+
+### Don't worry about it!
+
+---
+
+# When?
+
+.left-column[
+### If you're...
+
+- Maturing as an organization
+- Working with a lot of unchanging historical data (> TB)
+- Noticing that table models take 5+ minutes to build
+]
+
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/rodin-thinker.png" class="img-center">
+]
+
+---
+
+# Who?
+
+### Great candidates for incremental
+- Sources
+    - Immutable event streams (append-only, no updates)
+    - Reliable `updated_at` field if any updates
+- Fact table structure (tall + skinny)
+
+### Not-so-great
+- Transformations that involve:
+    - Joins
+    - Slowly changing dimensions (SCDs)
+    - Window functions
+    - High proportion of **late-arriving facts**
+    
+???
+Talk through each of these:
+- Joins: update cadence between join tables may differ
+- SCDs: too many updates! just rebuild from scratch each time
+- Window functions: you'll be calculating on top of _part_, never _whole_
+- Late-arriving facts: we're going to talk about this!
+
+---
+
+template: title
+# How?
 
 --
-    
-- All models are materialized incrementally, and never fully refreshed
-- Testing is relative: `unique` and `not_null` failures < 1%
-- Tables are "sharded" by a top-level identifier: region, account, client, etc.
-    
---
-    
-### And what if that data is constantly arriving?
 
-- Real-time directional signals on top of _streaming_ datasets (Kafka, Kinesis, oh my...)
-- That data is funneled into external permanent storage
-- All-time historical aggregates from batch incremental transformations
-- A lot of our friendly abstractions + assumptions are out the window...
+### ...simple vs. correct?
+### ...to make it performant on my database?
+
+---
+
+# [On the limits of incrementality](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
+
+<img src="/lessons/img/{{page.lesson}}/incr-discourse.png" class="img-center">
+
+---
+
+# "The big easy"
+
+_Keep it simple:_ This model rolls up **events** into **sessions**. A session 
+contains one or more events with the same `session_id`.
+
+{% raw %}
+```sql
+{{config(
+    materialized = 'incremental',
+    unique_key = 'session_id',
+    sort = 'session_start',
+    dist = 'session_id'
+)}}
+
+with events as (
+
+    select * from {{ref('events')}}
+    
+    {% if is_incremental %}
+    where event_timestamp >= (select max(session_start) from {{this}})
+    {% endif %}
+
+),
+
+-- rest of model --
+```
+{% endraw %}
+
+---
+
+# Let's dissect: special Jinja variables
+
+### {% raw %}`{{this}}`{% endraw %}
+
+Represents the currently existing database object mapped to this model.
+
+### `is_incremental()`
+
+Checks four conditions:
+1. Does this model already exist as an object in the database? (Yes!)
+2. Is the database object a table? (Yes!)
+3. Is this model configured with an incremental materialization? (Yes!)
+4. Was the `--full-refresh` flag passed to this `dbt run`? (No!)
+
+If all of the conditions are met, `is_incremental()` returns `true`.
+
+---
+
+# How does this actually work?
+
+<img src="/lessons/img/{{page.lesson}}/how-deeper.png" class="img-center">
+
+How is this idempotent?
+
+- At any point, you could `run --full-refresh` and get the "true" table. The
+goal of incremental models is to _approximate_ the "true" table in a fraction
+of the runtime.
+
+---
+
+# Under the hood: database specifics
+
+What's the DDL/DML that dbt is running?
+
+- `delete` + `insert` ("upsert") on Redshift and a special Snowflake "strategy"
+- `merge` is default BigQuery + default Snowflake "strategy"
+
+Basically:
+
+- Match **new** and **existing** records on their `unique_key`
+- Delete/update matched **existing** records with **new** ones
+- Insert unmatched **new** records
+
+Performance is optimal if:
+- The source `events` model is sorted by `event_timestamp`
+- The model is sorted by `session_start`
+- Redshift: It doesn't hurt if both tables are distributed by `session_id`
+
+---
+
+template: title
+# How things fall apart
+
+---
+
+# Our sessionization logic
+
+```sql
+sessionized as (
+
+    select
+    
+        session_id,
+        user_id,
+        count(*) as events_in_session
+        
+    from events
+    group by 1
+
+),
+
+indexed as (
+
+    select *,
+    
+         row_number() over (
+            partition by user_id
+            order by event_timestamp
+        ) as session_index
+    
+    from sessionized
+
+)
+
+select * from indexed
+```
+
+---
+
+# Late-arriving facts
+
+<img src="/lessons/img/{{page.lesson}}/how-late-arriving.png" class="img-center">
+
+The session is split across our `where` filter. In the simple approach,
+we would replace the first half-session (computed from first half of events)
+with the second half-session.
+
+How can we correctly calculate the _entire_ session?
+
+---
+
+# How common?
+
+<img src="/lessons/img/{{page.lesson}}/prop-late-arriving.png" class="img-center">
+
+- 2.5 months of Snowplow data, 285mm events
+- 99.82% arrive within 1 hr of firing
+- 99.88% within 24 hr
+
+---
+
+# "Close enough & performant"
+
+<img src="/lessons/img/{{page.lesson}}/how-close-enough.png" class="img-center">
+
+- _Always_ recalculate the 3 previous days
+- Empirically this will account for 99.93% of all events on the first try
+- Full refresh on a weekly basis
+
+---
+
+# "Always correct & slow"
+
+<img src="/lessons/img/{{page.lesson}}/how-always-correct.png" class="img-center">
+
+- If a user has a new event, recalculate _all_ sessions for that user
+- This works with window functions! But it's **_slowwwww_**...
+
+---
+
+# Too clever by half
+
+<img src="/lessons/img/{{page.lesson}}/how-too-clever.png" class="img-center">
+
+- If a user has a new session, pull the user's _most recent session only_,
+and perform relative calculations
+- This takes some hard thinking! E.g. [Segment package](https://github.com/fishtown-analytics/segment/blob/master/macros/cross-adapter-modeling/sessionization/segment_web_sessions.sql#L75)
+
+---
+
+# Another approach: just overwrite entire partitions
+
+- Recalculate all data for one day and replace it entirely
+
+- No matching on a `unique_key` = no guarantee of uniqueness
+
+- This is the default on Big Data tech (e.g. Spark), and we've also implemented
+as an optional strategy for BigQuery
+
+---
+
+# It's the modeling, silly
+
+- Keep the inputs and transformations of your incremental models as
+singular, simple, and immutable as possible.
+    - Slowly changing dimensions, like a `product_name` that the company
+    regularly rebrands? Join from a `dim` table.
+    - Window functions for quality-of-life counters? Fix it in post
+    (downstream table). This is how our Snowplow package calculates user's `session_index`.
+
+- Rethink! Incrementality introduces a level of complexity (for you and for
+the database) that is **necessarily a trade-off**.
 
 ---
 
 class: bottom
 background-color: orange
-# We made it!
+### Made it :)
