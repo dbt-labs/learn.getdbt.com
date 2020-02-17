@@ -12,13 +12,13 @@ layout: false
 # What is a materialization?
 
 - A "wrapper" for your SQL
+    - Includes all the "boilerplate" DDL/DML, like `create`, `alter`, `drop`
 
-- Includes all the "boilerplate" DDL/DML, like `create`, `alter`, `drop`
-
-- Handles various database conditions
+- An abstraction on top of the database
     - What if this model already exists in the database?
     - What if this model is materialized as a table, but it currently exists as 
     a view in the database?
+    - What if Redshift uses `alter table` for views, but Snowflake uses `alter view`?
     - What if we want to build this model incrementally?
         - Does it already exist?
         - Does it have the same structure?
