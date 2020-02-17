@@ -6,6 +6,17 @@
     <title>{{ page.title | strip_html }}</title>
     <style>
       
+    @import url(https://fonts.googleapis.com/css?family=Caveat);	
+    @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic);	
+    @import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700,400italic);	
+
+    body { font-family: 'Lato'; }	
+    h1, h2, h3 {	
+    font-family: 'Caveat';	
+    font-weight: normal;	
+    }	
+    .remark-code, .remark-inline-code { font-family: 'Inconsolata'; }
+      
       /* Two-column layouts */
       .left-column  { width: 49%; float: left; }
       .right-column { width: 49%; float: right; }
@@ -32,6 +43,7 @@
       
       table {
           border-collapse: collapse;
+          width: 100%;
       }
       th {
           padding: 10px;

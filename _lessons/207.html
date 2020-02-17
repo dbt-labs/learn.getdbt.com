@@ -1,0 +1,163 @@
+---
+layout: presentation
+title: Big Data Technologies
+lesson: 207
+---
+
+# "Big Data" Technologies
+
+---
+
+layout: false
+# Apples to oranges to mangosteens
+
+.dense-text[
+.left-column-66[
+.left-column[
+### Postgres
+- Stores rows of structured, tabular data
+- High concurrency, decent parallelization
+- Compute and storage are tightly locked
+- Performance optimization via indexes
+- Decent support for semi-structured (JSON) data (as of version 9!)
+- Shaky support for querying "foreign" data (via extensions)
+- Everything works the way you expect
+]
+
+.right-column[
+### Redshift
+- Stores columns of structured, tabular data in proprietary file format
+- Massively parallel query execution across multiple workers
+- Compute and storage are interrelated
+- Performance optimization via sorting, distribution
+- Minimal support for semi- and unstructured data (JSON)
+- Decent support for querying "external" data in S3 (via Spectrum)
+- Most things work the way you expect
+]
+]
+]
+
+--
+
+.dense-text[
+.right-column-33[
+### Spark
+- "Data Lake": All data is stored externally
+- Storage and compute are _completely_ separate. You pay for them independently.
+- Performance optimization means storing in a columnar file format (parquet)
+with excellent metadata
+- Semi- and unstructured data is a first-class citizen, with pretty good SQL
+functionality
+- There's no guarantee that things will work the way you expect!
+]
+]
+
+---
+
+# Modern data warehouses
+
+- Best in class: Snowflake + BigQuery
+    - Redshift is playing catch-up with advent of Spectrum + RA3 nodes
+
+- Best of both worlds:
+    
+    - Intuitive **user experience** of a database: users, groups/roles,
+    authentication, permissions, information schema, everything is SQL
+    
+    - Flexible and scalable **performance** of a data lake + distributed
+    processing technology
+    
+- Differentiators
+    - Support for non-tabular / semi-structured data
+    - Support for external data
+    - Separation of compute + storage
+    
+---
+
+# What is semi-structured data?
+
+It's common that 90% of your data is tabular/structured, but there's a little
+bit that makes more sense as JSON!
+
+| bldg_id | location | occupancy | vacant_units | amenities |
+|---------|-------------|-----------|--------------|----------------------------------------------------------------------------|
+| 1 | Rittenhouse | 54 | `[1, 3, 9]` | `{“doorman”: true, “Pets_allowed”: true, “Pets_allowed_with_deposit”: 1000}` |
+| 2 | Fairmount | 8 | `[]` | `{ “Yard_size_sqft”: 100 }` |
+| 3 | Austin, TX | 5 | `[1]` | `{ “Yard_size_sqft”: 1,000 }` |
+
+---
+
+# Support for semi-structured data
+
+| JSON support           | Redshift      | Snowflake                           | BigQuery                            |
+|------------------------|---------------|-------------------------------------|-------------------------------------|
+| Unnesting dictionaries | Kind of       | Yes definitely! `amenities:doorman` | Yes definitely! `amenities.doorman` |
+| Flattening arrays      | Not natively  | Yes! `lateral flatten`              | Yes! `cross join unnest`            |
+| Loading data           | Flatten first | Load as-is                          | Load as repeated records            |
+
+???
+Some notes
+
+---
+
+# Support for external data
+
+| External support           | Redshift      | Snowflake                           | BigQuery                            |
+|----------------------------|------------------------------------------------|------------------------------------------|--------------------------------------------|
+| COPY from/to               | Yes, for S3                                    | Yes, for S3/GCS/Azure                    | Yes, for GCS + G Drive                     |
+| Read from external tables  | Yes! Via Spectrum. Manual partitioning         | Yes! All via DDL, automatic partitioning | Yes! Powerful schema inference, but no DDL |
+| External-only transform    | Limited cf. Athena                             | Extensive                                | Limited                                    |
+
+???
+Some notes
+
+---
+
+# Separation of storage + compute
+
+- When data is small and transformation is straightforward, you don't mind
+that these are locked in a tight aspect ratio
+    - "I'd like another node, please!"
+    - Everyone is sharing the same scarce resources
+
+--
+
+- What if you want more storge, without needing to pay for more compute nodes?
+What if you want it _now_?
+
+--
+    - How do you know how much storage you need? (easy)
+    - How do you know how much compute you need? (hard)
+    - AWS/Azure/GCloud sell you "spot instances" of compute resources
+    - Data is never stored "on disk" because you spin up + spin down
+    nodes as needed
+
+---
+
+template: title
+# Different modeling paradigms
+
+---
+
+# What if you have petabytes of data?
+
+--
+    
+- All models are materialized incrementally, and never fully refreshed
+- Testing is relative: `unique` and `not_null` failures < 1%
+- Tables are "sharded" by a top-level identifier: region, account, client, etc.
+    
+--
+    
+### And what if that data is constantly arriving?
+
+- Real-time directional signals on top of _streaming_ datasets (Kafka, Kinesis, oh my...)
+- That data is funneled into external permanent storage
+- All-time historical aggregates from batch incremental transformations
+- A lot of our friendly abstractions + assumptions are out the window...
+
+---
+
+class: bottom
+background-color: orange
+# We made it!

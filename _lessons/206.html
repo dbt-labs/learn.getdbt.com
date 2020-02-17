@@ -1,0 +1,333 @@
+---
+layout: presentation
+title: Materializations + Incremental models
+lesson: 206
+---
+
+# dbt Materializations
+
+---
+
+layout: false
+# What is a materialization?
+
+- A "wrapper" for your SQL
+
+- Includes all the "boilerplate" DDL/DML, like `create`, `alter`, `drop`
+
+- Handles various database conditions
+    - What if this model already exists in the database?
+    - What if this model is materialized as a table, but it currently exists as 
+    a view in the database?
+    - What if we want to build this model incrementally?
+        - Does it already exist?
+        - Does it have the same structure?
+        - What data is "new"?
+
+---
+
+# Standard materializations
+
+- Table
+- View
+- Ephemeral
+- Incremental
+
+### Can you write your own? Absolutely!
+
+- Materializations are just special Jinja macros, that call
+a bunch of other Jinja macros
+- The trickiest part is implementing them equally across several types of 
+databases
+
+---
+
+<img src="/lessons/img/{{page.lesson}}/material-houses.png" style="width: 60%;" class="img-center">
+
+---
+
+template: title
+# Incremental models
+
+`where updated_at >= '{{site.time|slice: 0, 10}}'`
+
+---
+
+# Why?
+
+<img src="/lessons/img/{{page.lesson}}/fr-run-timing.png" class="img-center">
+
+---
+
+# When?
+
+### If you're...
+
+- Just starting out
+- Relatively small data (< 10mm rows, ~10 GB / table)
+- Able to query views with low latency
+- Building table models in < 90s seconds
+
+### Don't worry about it!
+
+---
+
+# When?
+
+.left-column[
+### If you're...
+
+- Maturing as an organization
+- Working with a lot of unchanging historical data (> TB)
+- Noticing that table models take 5+ minutes to build
+]
+
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/rodin-thinker.png" class="img-center">
+]
+
+---
+
+# Who?
+
+### Great candidates for incremental
+- Sources
+    - Immutable event streams (append-only, no updates)
+    - Reliable `updated_at` field if any updates
+- Fact table structure (tall + skinny)
+
+--
+
+### Not-so-great
+- Transformations
+    - Joins
+    - Slowly changing dimensions (SCDs)
+    - Window functions
+    - High proportion of **late-arriving facts**
+    
+???
+Talk through each of these:
+- Joins: update cadence between join tables may differ
+- SCDs: too many updates! just rebuild from scratch each time
+- Window functions: you'll be calculating on top of _part_, never _whole_
+- Late-arriving facts: we're going to talk about this!
+
+---
+
+template: title
+# How?
+
+--
+
+### ...simple vs. correct?
+### ...to make it performant on my database?
+
+---
+
+# [On the limits of incrementality](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
+
+<img src="/lessons/img/{{page.lesson}}/incr-discourse.png" class="img-center">
+
+---
+
+# "The big easy"
+
+_Keep it simple:_ This model rolls up **events** into **sessions**. A session 
+contains one or more events with the same `session_id`.
+
+{% raw %}
+```sql
+{{config(
+    materialized = 'incremental',
+    unique_key = 'session_id',
+    sort = 'session_start',
+    dist = 'session_id'
+)}}
+
+with events as (
+
+    select * from {{ref('events')}}
+    {% if is_incremental %}
+    where event_timestamp >= (select max(session_start) from {{this}})
+
+),
+
+-- rest of model --
+```
+{% endraw %}
+
+---
+
+# Special variables
+
+{% raw %}`{{this}}`{% endraw %} represents the currently existing database
+object mapped to this model.
+
+`is_incremental()` checks four conditions:
+1. Does this model already exist as an object in the database? (Yes!)
+2. Is the database object a table? (Yes!)
+3. Is this model configured with an incremental materialization? (Yes!)
+4. Was the `--full-refresh` flag passed to this `dbt run`? (No!)
+
+If all of the conditions are met, `is_incremental()` returns `true`.
+
+---
+
+# How does this actually work?
+
+<img src="/lessons/img/{{page.lesson}}/how-simple.png" class="img-center">
+
+On Redshift, this is performant as long as:
+- `event_timestamp` is a sort key on the `events` model (most important)
+- `session_start` is a sort key on the `sessions` model
+- It doesn't hurt if `session_id` is a dist key on both
+
+---
+
+# Take it further!
+
+<img src="/lessons/img/{{page.lesson}}/how-deeper.png" class="img-center">
+
+How is this idempotent?
+
+- At any point, you could `run --full-refresh` and get the "true" table. The
+goal of incremental models is to _approximate_ the "true" table in a fraction
+of the runtime.
+
+What's the DDL/DML being run under the surface?
+
+- "Upsert" (`delete` + `insert`) on Redshift and a special Snowflake "strategy"
+- `merge`: default BigQuery + Snowflake strategy
+- `insert overwrite`: optional BigQuery strategy (more on this!)
+
+---
+
+template: title
+# How things fall apart
+
+---
+
+# Late-arriving facts
+
+<img src="/lessons/img/{{page.lesson}}/how-late-arriving.png" class="img-center">
+
+---
+
+# Better late than never?
+
+<img src="/lessons/img/{{page.lesson}}/prop-late-arriving.png" class="img-center">
+
+- 2.5 months of Snowplow data, 285mm events
+- 99.82% arrive within 1 hr of firing
+- 99.88% within 24 hr
+
+---
+
+# "Close enough & performant"
+
+<img src="/lessons/img/{{page.lesson}}/how-close-enough.png" class="img-center">
+
+- _Always_ recalculate the 3 previous days
+- Empirically this will account for 99.93% of all events on the first try
+- Full refresh on a weekly basis
+
+---
+
+# "Always correct & slow"
+
+<img src="/lessons/img/{{page.lesson}}/how-always-correct.png" class="img-center">
+
+- If a user has a new event, recalculate _all_ sessions for that user
+- This works with window functions! But it's **_slowwwww_**...
+
+---
+
+# Too clever by half
+
+<img src="/lessons/img/{{page.lesson}}/how-too-clever.png" class="img-center">
+
+- If a user has a new session, pull the user's _most recent session only_,
+and perform relative calculations
+- This takes some hard thinking! E.g. [Segment package](https://github.com/fishtown-analytics/segment/blob/master/macros/cross-adapter-modeling/sessionization/segment_web_sessions.sql#L75)
+
+---
+
+# Forget it, Jake. It's modeling.
+
+- Keep the inputs and transformations of your incremental models as
+singular, simple, and immutable as possible.
+    - Slowly changing dimensions, like a `product_name` that the company
+    regularly rebrands? Join from a `dim` table.
+    - Window functions for quality-of-life counters? Fix it in post
+    (downstream table). This is how our Snowplow package calculates user's `session_index`.
+
+- Rethink! Incrementality introduces a level of complexity (for you and for
+the database) that is **necessarily a trade-off**.
+
+---
+
+template: title
+# Appendices
+
+### (What if everything I just told you is untrue?)
+
+---
+
+# Appendix A: BigQuery
+
+- BigQuery presents a totally different optimization problem!
+
+- Incrementality is not _just_ a quality-of life-improvement, it's an _economic necessity_.
+
+    - BQ charges based on **total data scanned**, not complexity of computation
+
+    - Always partition opt for "close enough & performant"
+
+    - As of 0.16.0, dbt will be a _lot_ smarter when merging into partitioned BQ
+    tables
+
+---
+
+# Appendix B: "Overwrite partitions"
+
+- Recalculate all data for one day and replace it entirely
+
+- No matching on a `unique_key` = no guarantee of uniqueness
+
+- This is the default on Big Data tech (e.g. Spark), and we've also implemented
+as an optional strategy for BigQuery
+
+---
+
+# Appendix C: Snowflake clustering
+
+Snowflake natively stores data in tiny chunks (“micropartitions”) and stores 
+metadata about each partition, like the min/max value.
+
+This improves performance dramatically by improving “query pruning”: How many 
+micropartitions need to be scanned to return the results of my query?
+
+---
+
+# Appendix C: Snowflake clustering
+
+<img src="/lessons/img/{{page.lesson}}/snowflake-pruned-query.png" class="img-center">
+
+---
+
+# Appendix C: Snowflake clustering
+
+Event stream data is naturally ordered, so data will be distributed across 
+micropartitions based on when it was collected. Right?
+
+When do we need to do more?
+- On especially big tables. Snowflake says >1 TB, we say >100 GB.
+- You’re regularly filtering on a field that is _not_ naturally sorted
+- You're willing to pay more so that a particular query runs fastest
+    - E.g. embedded reporting, exposed to external stakeholders
+
+---
+
+class: bottom
+background-color: orange
+### Nearly there...

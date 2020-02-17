@@ -1,0 +1,528 @@
+---
+layout: presentation
+title: Data Warehouse Performance
+lesson: 205
+---
+
+# Data Warehouse Performance
+
+---
+
+layout: false
+# Q: Why are data warehouses fast?
+
+--
+
+### A: They're columnar!
+
+???
+Data warehouses _rose_ to prominence because they're columnar. Get it?
+
+---
+
+# Transactional database (row-level)
+
+&nbsp;
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+
+&nbsp;
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 2  | Barbara | blue           | true        |
+
+---
+
+# Analytic database (columnar)
+
+&nbsp;
+
+.left-column[
+.left-column[
+| id |
+|----|   
+| 1  |
+| 2  |
+]
+
+.right-column[
+| name    |
+|---------|
+| Alice   |
+| Barbara |
+]]
+
+.right-column[
+.left-column[
+| favorite_color |
+|----------------|
+| green          |
+| blue           |
+]
+
+.right-column[
+| is_creative |
+|-------------|
+| false       |
+| true        |
+]]
+
+---
+
+# How you store <> how you query
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+```sql
+select * from users
+where id = 2
+```
+
+```sql
+select
+
+    is_creative,
+    count(*)
+
+from users
+group by 1
+```
+
+---
+
+# Mental model
+
+| Task                | Time  | Time (Relative) |
+|---------------------|-------|-----------------|
+| 1 CPU Cycle         | 0.3ns | 1 second        |
+| Memory Access       | 120ns | 5 minutes       |
+| Disk read           | 1ms   | 1 month         |
+| Internet: SF to NYC | 40ms  | 4 years         |
+
+---
+
+# Q: Why are data warehouses fast?
+
+### A: They're columnar!
+
+--
+
+Which allows them to <span style="background-color: yellow;">**limit scanned data**</span> when executing a query.
+
+--
+
+### A: They're scalable.
+
+---
+
+# Horizontal scaling
+
+<img src="/lessons/img/{{page.lesson}}/redshift-nodes.png" class="img-center">
+
+---
+
+# Vertical Scaling
+
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/amd-vc.png" class="img-center">
+]
+
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/nvidia-gpu.png" class="img-center">
+]
+
+--
+
+&nbsp;
+
+<img src="/lessons/img/{{page.lesson}}/snowflake-scaling.png" class="img-center" style="width: 50%;">
+
+---
+
+# Q: Why are data warehouses fast?
+
+### A: They're columnar!
+
+Which allows them to <span style="background-color: yellow;">**limit scanned data**</span> when executing a query.
+
+### A: They're scalable.
+
+--
+
+Data warehouses can benefit from <span style="background-color: yellow;">**horizontal and vertical scaling**</span>.
+
+--
+
+### Conclusion: They're optimized for analytics.
+
+---
+
+# Caveat
+
+We're going to root this talk in the terminology of Redshift, because it's the 
+canonical columnar database.
+
+If you instead use:
+- **Snowflake** or **BigQuery**, these principles are still foundational. Wait until 
+the end of the presentation for a synthesis.
+- **Postgres**, you're choosing to perform analytics on a non-analytic database.
+These types of queries can still be very fast, but they're not what Postgres is
+optimized for.
+- **Athena**, **Spark**, **Presto**, ..., these principles are _even more_ critical.
+Let's talk in an hour :)
+
+---
+
+template: title
+# Sorting data
+
+---
+
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
+
+???
+1. Label each row with a letter. How many books start with the letter "D"?
+2. Label each row with a letter. How many books were written in 2002?
+3. Label each row with a year. How many books were written in 2002?
+
+---
+
+template: title
+# I'm thinking of a number...
+
+???
+- I'm thinking of a number between 1 and 100. What is it?
+- What's the quickest way to figure out what it is?
+- Binary search: Is it greater than 50?
+- This works _if and only if_ the numbers are **sorted**
+
+---
+
+# How to sort?
+
+| order_id | user    | order_date | order_total |
+|----------|---------|------------|-------------|
+| 1        | Alice   | 2019-01-01 | $20.00      |
+| 2        | Barbara | 2019-01-02 | $30.00      |
+| 3        | Alice   | 2019-01-03 | $10.00      |
+| ...      | ...     | ...        | ...         |
+
+???
+???
+- You need a query before you know how to optimize for it.
+
+--
+
+```sql
+select *
+from orders
+where order_date >= ‘2019-01-03’
+```
+???
+- Which field should we sort on in order to optimize this query?
+
+---
+
+# Remember the mental model!
+
+| Task                | Time  | Time (Relative) |
+|---------------------|-------|-----------------|
+| 1 CPU Cycle         | 0.3ns | 1 second        |
+| Memory Access       | 120ns | 5 minutes       |
+| Disk read           | 1ms   | 1 month         |
+| Internet: SF to NYC | 40ms  | 4 years         |
+
+???
+Sorting data limits the initial "Disk read." Even a _very_ complex query,
+with a lot of intricate computation, will run faster than a straightforward
+query of 10x the data because the computation happens in memory, whereas the
+data read happens against disk.
+
+---
+
+template: title
+# Distributing data
+
+---
+
+# Remember horizontal scaling?
+
+<img src="/lessons/img/{{page.lesson}}/redshift-nodes.png" class="img-center">
+
+--
+
+.left-column[
+### Storage
+<img src="/lessons/img/{{page.lesson}}/library.png" style="width: 50%;" class="img-center">
+]
+
+.right-column[
+### Compute
+<img src="/lessons/img/{{page.lesson}}/librarian.png" style="width: 65%;" class="img-center">
+]
+
+???
+- Library = "storage"
+- Librarian = "compute"
+
+---
+
+# Distribute "Round-Robin"
+
+.left-column[
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+]
+
+.right-column[
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+]
+
+&nbsp;
+
+### Rules
+- Every librarian has their own section of the library.
+- The sections are evenly and randomly divided.
+
+???
+- How many books are there?
+- How many authors are there?
+
+---
+
+# Distribute by Author
+
+.left-column[
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
+### Authors A-G
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
+### H-L
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+]
+
+.right-column[
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
+### M-U
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
+### V-Z
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+]
+
+???
+**How many authors are there?**
+
+It's important not to confuse distribution with sorting. Even though the books
+are _distributed_ across libaries by author last name, each of these libraries
+could actually be sorted by year.
+
+Distribution = BETWEEN
+Sorting = WITHIN
+
+**How many publication years are there?**
+Distributing on the _wrong_ column is _worse_ than distributing evenly. If you 
+wanted the distinct count of years, Redshift's job is now _harder_. Why?
+
+---
+
+# Distribute All
+
+.left-column[
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+]
+
+.right-column[
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">&nbsp;
+<img src="/lessons/img/{{page.lesson}}/librarian.png" class="img-center">
+]
+]
+
+&nbsp;
+
+### Rules
+- Every librarian has their own copy of the entire library.
+
+???
+How many books are there?
+How many authors are there?
+How many publication years are there?
+The only cost here? Storage space!
+
+---
+
+# Remember the mental model!
+
+| Task                | Time  | Time (Relative) |
+|---------------------|-------|-----------------|
+| 1 CPU Cycle         | 0.3ns | 1 second        |
+| Memory Access       | 120ns | 5 minutes       |
+| Disk read           | 1ms   | 1 month         |
+| Internet: SF to NYC | 40ms  | 4 years         |
+
+???
+Distributing data limits the amount of data that needs to be shuffled
+between nodes, "Internet: SF to NYC." Shuffling can occur at the beginning 
+(Redshift) or in the middle of query execution.
+
+---
+
+# Remember databases?
+
+Distribution comes up in:
+- Uniqueness (`distinct`)
+- Joins
+
+Sorting comes up in:
+- Filters (`where`)
+- Subsets (`partition by`)
+
+???
+- Uniquess = `distinct`, though also `, count(*) ... group by 1`.
+- Joins implicitly require finding all unique values for match/comparison, so 
+the same principle applies.
+
+---
+
+# Your queries are your optimization problems
+
+.left-column[
+`dim_users`
+
+| user_id | user_name | age |
+|---------|-----------|-----|
+| 1       | alice     | 27  |
+| 2       | barbara   | 42  |
+| ...     | ...       | ... |
+]
+
+.right-column[
+`fct_orders`
+
+| user_id | order_id | order_total |
+|---------|----------|-------------|
+| 1       | 123      | 75.00       |
+| 2       | 124      | 30.00       |
+| 1       | 125      | 40.00       |
+| ...     | ...      | ...         |
+]
+
+&nbsp;
+
+```sql
+select sum(order_total)
+from fct_users
+join fct_orders using (user_id)
+where age < 30
+```
+
+???
+How to sort + distribute? Totally depends on the query you want to run! Here,
+you should **sort on age** and **distribute on `user_id`**.
+
+---
+
+template: title
+# Takeaways
+
+---
+
+# Apples to apples
+
+.left-column-33[
+### Redshift
+- Sort keys
+    - Compound
+    - Interleaved
+- Dist style
+    - Single column
+    - Even
+    - All
+- Maintenance
+    - vacuum
+    - analyze
+- Column compression
+    - ZSTD
+    - LZO
+    - ...
+]
+
+.right-column-66[
+.left-column[
+### BigQuery
+- Partitioning
+- Clustering
+- Nesting/arraying
+]
+
+.right-column[
+### Snowflake
+- Clustering (= sorting), only for large tables
+]
+]
+
+???
+Draw an arrow from left ("more work") to right ("less work"). A well tuned,
+perfectly optimized Redshift cluster will execute queries _as quickly as_ a
+comparable Snowflake cluster, for a lower price. But a poorly tuned Redshift
+cluster is, well, a cluster.
+
+---
+
+# Conceptual framework
+
+- Scanning data is **_slow_**
+- Moving data around is **_slowww_**
+
+- Warehouses are "logical" and "physical"
+    - We like to think about the "logical" part of it
+    - Sometimes it’s necessary to consider the "physical"
+
+- Biggest takeaway?
+    - Your time is valuable
+    - Make choices that keep you focused on the "logical"
+
+---
+
+class: bottom
+background-color: orange
+# On y va !
