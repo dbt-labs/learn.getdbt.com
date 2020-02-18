@@ -4,11 +4,12 @@ title: Data Warehouse Performance
 lesson: 205
 ---
 
+class: title, center, middle
 # Data Warehouse Performance
 
 ---
 
-layout: false
+
 # Q: Why are data warehouses fast?
 
 --
@@ -20,9 +21,7 @@ Data warehouses _rose_ to prominence because they're columnar. Get it?
 
 ---
 
-# Transactional database (row-level)
-
-&nbsp;
+### Transactional
 
 | id | name    | favorite_color | is_creative |
 |----|---------|----------------|-------------|
@@ -34,11 +33,7 @@ Data warehouses _rose_ to prominence because they're columnar. Get it?
 |----|---------|----------------|-------------|
 | 2  | Barbara | blue           | true        |
 
----
-
-# Analytic database (columnar)
-
-&nbsp;
+### Analytical
 
 .left-column[
 .left-column[
@@ -72,19 +67,14 @@ Data warehouses _rose_ to prominence because they're columnar. Get it?
 
 ---
 
-# How you store <> how you query
-
-| id | name    | favorite_color | is_creative |
-|----|---------|----------------|-------------|
-| 1  | Alice   | green          | false       |
-| 2  | Barbara | blue           | true        |
+# Data is stored to be queried
 
 ```sql
+-- transactional
 select * from users
 where id = 2
-```
 
-```sql
+-- analytical
 select
 
     is_creative,
@@ -93,6 +83,11 @@ select
 from users
 group by 1
 ```
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
 
 ---
 
@@ -152,12 +147,20 @@ Data warehouses can benefit from <span style="background-color: yellow;">**horiz
 
 ---
 
-template: title
-# Why are queries slow?
+class: subtitle, center, middle
+# So... why are queries slow?
 
 ---
 
 # Mental model
+
+- A query, written in SQL, is interpreted by the database optimizer and
+compiled to machine code.
+
+- The machine code contains a set of instructions, some of which are more 
+strenuous to execute.
+
+&nbsp;
 
 | Task                | Time  | Time (Relative) |
 |---------------------|-------|-----------------|
@@ -183,28 +186,41 @@ template: title
 
 ---
 
-template: title
+class: subtitle, center, middle
 # Example: sorting data
 
----
-
-<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
-
-???
-1. Label each row with a letter. How many books start with the letter "D"?
-2. Label each row with a letter. How many books were written in 2002?
-3. Label each row with a year. How many books were written in 2002?
-
----
-
-template: title
-# I'm thinking of a number...
+### I'm thinking of a number...
 
 ???
 - I'm thinking of a number between 1 and 100. What is it?
 - What's the quickest way to figure out what it is?
 - Binary search: Is it greater than 50?
 - This works _if and only if_ the numbers are **sorted**
+
+---
+
+## The library! :)
+
+.left-column-66[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
+]
+
+--
+
+.right-column-33[
+### How many books start with the letter "D"?
+]
+
+--
+
+.right-column-33[
+### How many books were written in 2002?
+]
+
+???
+1. Label each row with a letter. How many books start with the letter "D"?
+2. Label each row with a letter. How many books were written in 2002?
+3. Label each row with a year. How many books were written in 2002?
 
 ---
 
@@ -217,17 +233,17 @@ template: title
 | 3        | Alice   | 2019-01-03 | $10.00      |
 | ...      | ...     | ...        | ...         |
 
-???
-???
-- You need a query before you know how to optimize for it.
 
 --
+
+### You need to know how the data will be queried!
 
 ```sql
 select *
 from orders
 where order_date >= ‘2019-01-03’
 ```
+
 ???
 - Which field should we sort on in order to optimize this query?
 
@@ -243,9 +259,21 @@ Databases need to move data around for:
 - Uniqueness (`distinct`)
 - Joins
 
+The optimizer is your friend!
+
+- If the database optimizer does its job perfectly, you never need to think
+about sorting, distributing, clustering, shuffling, range joining, ...
+- If you _only_ think about the "logical" and _never_ about the "physical,"
+you will never truly empathize with the database optimizer, and you will
+write non-performant SQL.
+
 ???
-Joins implicitly require finding all unique values for match/comparison, which
+- Joins implicitly require finding all unique values for match/comparison, which
 is why they're similar to getting `distinct` values.
+
+Rabbi Hillel's questions, paraphrased:
+- If you are only for the optimizer, who will be for you?
+- If you are only for yourself, who are you?
 
 ---
 
@@ -289,7 +317,7 @@ you should **sort on age** and **distribute on `user_id`**.
 
 ---
 
-template: title
+class: subtitle, center, middle
 # Specific databases
 
 ---
@@ -376,6 +404,5 @@ cluster is, well, a cluster.
 
 ---
 
-class: bottom
-background-color: orange
-# On y va !
+class: subtitle, middle, center
+# Now for something a little bit different...

@@ -4,16 +4,17 @@ title: Intro to Data Warehouses
 lesson: 204
 ---
 
+class: title, center, middle
 # Data Warehouses & You
 
 ---
 
-layout: false
+
 # What is a data warehouse?
 
 --
 
-<img src="/lessons/img/{{page.lesson}}/galaxy.png" class="img-center">
+<img src="/lessons/img/{{page.lesson}}/galaxy.png" style="width: 60%;" class="img-center">
 
 ---
 
@@ -68,21 +69,25 @@ id,name,favorite_color,is_creative
 
 ---
 
-class: center, middle
-<img src="/lessons/img/{{page.lesson}}/butterfly.png" style="width: 75%;">
-
----
-
 # Databases
 
-- Interfaces into data
-- Data storage is abstracted
+.left-column[
+- Interfaces into data!
 - Some language (SQL) is used to query the data
+- Data storage is abstracted
+    - Machine-readable optimized file formats
+    - On spinning disks, inside boxes, somewhere in Virginia/Oregon/Ireland
+]
+
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/butterfly.png" class="img-center">
+]
 
 ---
 
 # Transactional Databases
 
+.left-column[
 Optimized for:
 - Reads and writes
 - Thousands of concurrent queries
@@ -93,17 +98,13 @@ Examples:
 - Change a user’s last name
 
 In this category:
---
-
 - Postgres
 - MySQL
 - SQL Server
 - ...
+]
 
----
-
-# Transactional Databases
-
+.right-column[
 ```sql
 select *
 fom products
@@ -111,6 +112,7 @@ where trending = true
 ```
 
 <img src="/lessons/img/{{page.lesson}}/superstore.png" style="width: 100%;">
+]
 
 ---
 
@@ -125,7 +127,6 @@ For instance:
 - Rolling 14d average of pageviews per day for the last five years
 
 In this category:
---
 
 - Amazon Redshift
 - Snowflake
@@ -142,6 +143,30 @@ In this category:
 | Transactional | ~milliseconds | ~thousands         | ~thousands*          |
 | Analytical    | ~seconds      | ~dozens            | >> millions          |
 
+--
+
+&nbsp;
+
+### What's in a name?
+
+.left-column[
+Transactional Database, a.k.a.:
+- Relational Database
+- RDMS or RDBMS
+- Rowise, Row-oriented, Row Store
+- OLTP
+- e.g. Postgres
+]
+
+.right-column[
+Analytical Database, a.k.a.:
+- Data Warehouse
+- Columnar Database
+- Column-oriented, Column Store
+- OLAP
+- e.g. Redshift
+]
+
 ---
 
 # Which one is right?
@@ -150,7 +175,7 @@ Both!
 - Power your application with a transactional database
 - Analyze data with an analytical database
 
-<img src="/lessons/img/{{page.lesson}}/stack.png" style="width: 100%;">
+<img src="/lessons/img/{{page.lesson}}/stack.png" style="width: 90%;">
 
 ---
 
@@ -164,28 +189,6 @@ Both!
 3. Be a cultural change agent for data in your organization
 4. Profit
 
----
-
-# What's in a name
-
-.left-column[
-- Transactional Database
-- Relational Database
-- RDMS or RDBMS
-- Rowise, Row-oriented, Row Store
-- OLTP
-- e.g. Postgres
-]
-
-.right-column[
-- Analytical Database
-- Data Warehouse
-- Columnar Database
-- Column-oriented, Column Store
-- OLAP
-- e.g. Redshift
-]
-
 ???
 - RDMS or RDBMS = Relational Database Management System
 - OLTP = Online Transactional Processing
@@ -193,6 +196,5 @@ Both!
 
 ---
 
-class: bottom
-background-color: orange
+class: subtitle, middle, center
 # Lunch!

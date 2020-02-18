@@ -7,11 +7,10 @@ teaching_method: live demo + slides. Questions encouraged.
 working_session: true
 ---
 
+class: title, center, middle
 # Sources
 
 ---
-
-layout: false
 
 # If any of the following is true...
 
@@ -83,30 +82,36 @@ renamed as (
 
 # And green is good
 
+```yml
+sources:
+  - name: stripe
+    loaded_at_field: _batched_at
+    loader: airflow
+    
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+    
+    tables:
+      - name: payment
+```
+
 <img src="/lessons/img/{{page.lesson}}/freshness-viz.png" class="img-center">
 
 ---
 
 # A common approach
 
-* Define all `sources` in YML files contained within a subfolder, `models/sources`.
-* Daily jobs runs commands in the following order:
 ```bash
-dbt test -m sources             # ensure no duplicates or unexpected nulls
+dbt test -m source:*            # ensure no duplicates or unexpected nulls
 dbt run                         # only runs if test above succeeds
-dbt test --exclude sources
+dbt test --exclude source:*
 dbt source snapshot-freshness
 ```
 
 ---
 
-background-color: orange
-class: middle, bottom
-
-# Questions?
-
----
-name:working-session
+class: subtitle
 
 # Working session
 * Add `sources` for our two data sources: `jaffle_shop` and `stripe`.

@@ -4,13 +4,14 @@ title: Big Data Technologies
 lesson: 206
 ---
 
+class: title, center, middle
 # "Big Data" Technologies
 
 ---
 
-layout: false
 
-# Apples to oranges to mangosteens
+
+# Apples to oranges...
 
 | tech | stored as | storage/ compute | optimization | semi-structured data | "external" data | intuition |
 |----------|-----------|------------------|-------------------------|----------------------|----------------------|-----------------------------------------------------|
@@ -40,6 +41,8 @@ layout: false
 --
 | Spark | files | separate | file formats + metadata | first-class support | all data is external | <span style="background-color: yellow;">no guarantees</span> |
 
+# ...to mangosteens
+
 ???
 
 ### Spark
@@ -54,9 +57,14 @@ functionality
 
 ---
 
-# Why not use Spark (Presto, Hive, Athena, et al)?
+# Why not?
+
+### Spark, Presto, Hive, Athena
 
 - This a blog post I need to write :)
+
+- They each have their fans, and their appropriate target audience!
+
 - Basically:
     - They are incredibly powerful and cost-effective.
     - They're harder to use, and harder to reason about.
@@ -99,9 +107,9 @@ bit that makes more sense as JSON!
 | 2 | Fairmount | 8 | `[]` | `{ “Yard_size_sqft”: 100 }` |
 | 3 | Austin, TX | 5 | `[1]` | `{ “Yard_size_sqft”: 1,000 }` |
 
----
+--
 
-# Semi-structured data
+&nbsp;
 
 | JSON support           | Redshift      | Snowflake                           | BigQuery                            |
 |------------------------|---------------|-------------------------------------|-------------------------------------|
@@ -141,14 +149,13 @@ when you need it
 
 ---
 
-template: title
-# Different modeling paradigms
+# What if you have petabytes of data?
+
+<img src="/lessons/img/{{page.lesson}}/jt-billion-rows.png" class="img-center">
 
 ---
 
-# What if you have petabytes of data?
-
---
+# Different modeling paradigms
     
 - All models are materialized incrementally, and never fully refreshed
 - Testing is relative: `unique` and `not_null` failures < 1%
@@ -165,6 +172,5 @@ template: title
 
 ---
 
-class: bottom
-background-color: orange
-# This is all leading up to...
+class: subtitle, middle, center
+# Speaking of modeling paradigms...

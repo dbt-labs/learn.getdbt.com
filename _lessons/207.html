@@ -4,11 +4,12 @@ title: Materializations + Incremental models
 lesson: 207
 ---
 
+class: title, center, middle
 # dbt Materializations
 
 ---
 
-layout: false
+
 # What is a materialization?
 
 - A "wrapper" for your SQL
@@ -28,25 +29,30 @@ layout: false
 
 # Standard materializations
 
+.left-column[
+
 - Table
 - View
 - Ephemeral
-- Incremental
+- <span style="background: yellow;">Incremental</span>
 
 ### Can you write your own? Absolutely!
 
 - Materializations are just special Jinja macros, that call
 a bunch of other Jinja macros
+- E.g. ["insert by period"](https://github.com/fishtown-analytics/dbt-utils#materializations)
 - The trickiest part is implementing them equally across several types of 
 databases
 
----
+]
 
+.right-column[
 <img src="/lessons/img/{{page.lesson}}/material-houses.png" style="width: 60%;" class="img-center">
+]
 
 ---
 
-template: title
+class: title, center, middle
 # Incremental models
 
 `where updated_at >= '{{site.time|slice: 0, 10}}'`
@@ -61,8 +67,8 @@ template: title
 
 # Why not?
 
-This is an optimization problem for _your_ database. It requires a deep 
-understanding of the data warehouse performance we've been discussing.
+This is an optimization problem, specific to _your_ database. It requires a deep 
+understanding of the performance features we've been discussing.
 
 The implementation is straightforward, the implications are complex and subtle.
 You need to think in advance about all the ways that things can go wrong.
@@ -71,6 +77,7 @@ You need to think in advance about all the ways that things can go wrong.
 
 # When?
 
+.left-column[
 ### If you're...
 
 - Just starting out
@@ -78,40 +85,41 @@ You need to think in advance about all the ways that things can go wrong.
 - Able to query views with low latency
 - Building table models in < 90s seconds
 
-### Don't worry about it!
+### don't worry about it!
+]
 
----
+--
 
-# When?
-
-.left-column[
+.right-column[
 ### If you're...
 
 - Maturing as an organization
 - Working with a lot of unchanging historical data (> TB)
 - Noticing that table models take 5+ minutes to build
-]
 
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/rodin-thinker.png" class="img-center">
-]
+<img src="/lessons/img/{{page.lesson}}/rodin-thinker.png" style="width: 50%;" class="img-center">
+]   
 
 ---
 
 # Who?
 
-### Great candidates for incremental
+.left-column[
+### Great candidates
 - Sources
     - Immutable event streams (append-only, no updates)
     - Reliable `updated_at` field if any updates
 - Fact table structure (tall + skinny)
+]
 
+.right-column[
 ### Not-so-great
 - Transformations that involve:
     - Joins
     - Slowly changing dimensions (SCDs)
     - Window functions
     - High proportion of **late-arriving facts**
+]
     
 ???
 Talk through each of these:
@@ -122,7 +130,7 @@ Talk through each of these:
 
 ---
 
-template: title
+class: subtitle, center, middle
 # How?
 
 --
@@ -218,12 +226,12 @@ Performance is optimal if:
 
 ---
 
-template: title
+class: subtitle, center, middle
 # How things fall apart
 
 ---
 
-# Our sessionization logic
+### Imagine some sessionization logic
 
 ```sql
 sessionized as (
@@ -271,11 +279,17 @@ How can we correctly calculate the _entire_ session?
 
 # How common?
 
+.left-column-66[
+#### Percent of overall events, by days between firing + collection
 <img src="/lessons/img/{{page.lesson}}/prop-late-arriving.png" class="img-center">
+]
 
+.right-column-33[
 - 2.5 months of Snowplow data, 285mm events
 - 99.82% arrive within 1 hr of firing
 - 99.88% within 24 hr
+- <span style="background: yellow;">99.93% within 72 hr</span>
+]
 
 ---
 
@@ -308,11 +322,11 @@ and perform relative calculations
 
 ---
 
-# Another approach: just overwrite entire partitions
+# Another approach: overwrite partitions
 
-- Recalculate all data for one day and replace it entirely
-
-- No matching on a `unique_key` = no guarantee of uniqueness
+- Recalculate all data for one day and just replace it entirely
+    - **Pro:** Very efficient! Filter on partition field, save a join step
+    - **Con:** No matching on a `unique_key` = no guarantee of uniqueness
 
 - This is the default on Big Data tech (e.g. Spark), and we've also implemented
 as an optional strategy for BigQuery
@@ -333,6 +347,5 @@ the database) that is **necessarily a trade-off**.
 
 ---
 
-class: bottom
-background-color: orange
+class: subtitle, middle, center
 ### Made it :)
