@@ -4,107 +4,24 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>{{ page.title | strip_html }}</title>
-    <style>
-      
-    @import url(https://fonts.googleapis.com/css?family=Gudea);	
-    @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic);	
-    @import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700,400italic);	
 
-    body { font-family: 'Lato'; }	
-    h1, h2, h3 {
-        font-family: 'Gudea';	
-        font-weight: normal;
-        color: rgb(255, 132, 94);
-    }
-    
-    .white {
-        color: white;
-    }
-    
-    .remark-container {
-      background-color: rgb(255, 106, 76);
-    }
-    
-    .remark-code, .remark-inline-code { font-family: 'Inconsolata'; }
-      
-      /* Two-column layouts */
-      .left-column  { width: 49%; float: left; }
-      .right-column { width: 49%; float: right; }
-
-      .left-column-33  { width: 33%; float: left; }
-      .right-column-66 { width: 66%; float: right; }
-
-      .left-column-66  { width: 66%; float: left; }
-      .right-column-33 { width: 33%; float: right; }
-
-      .right-column ~ p { clear: both; }
-      .right-column ~ ul { clear: both; }
-
-      .scale { width: 50% }
-      
-      .dense-text { font-size: 90%; }
-      
-      .img-center {
-          width: 75%;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-      }
-      
-      .title {
-        background: url('/ui/img/graph/poster.png'), #123744;
-        background-position: 0% 100%;
-        background-size: 30%;
-        background-repeat: no-repeat;
-        color: white;
-      }
-      .title h1, .title h2 {
-        color: rgb(255, 132, 94);
-        font-weight: bold;
-        font-size: 400%;
-      }
-      
-      .subtitle {
-        background: #123744;
-        color: white;
-      }
-      .subtitle h1, .subtitle h2 {
-        color: white;
-      }
-      
-      .subtitle a:link { color: white; }
-      .subtitle a:visited { color: white; }
-      .subtitle a:hover { color: white; }
-      .subtitle a:active { color: white; }
-      
-      table {
-          border-collapse: collapse;
-          width: 100%;
-      }
-      th {
-          padding: 10px;
-          background-color: lightblue;
-          border: 1px solid black;
-      }
-      td {
-          padding: 5px;
-          border: 1px solid grey;
-      }
-
-    </style>
+    {% include options/styles-learn.html %}
   </head>
   <body>
-  <script src="//gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
     <textarea id="source">
-
 {{ content }}
-
-<!-- This adds a link to the first slide of the next presentation -->
-{% assign num = page.lesson | slice: 2 | plus: 0 %}
-{% if num < 9 %}
-<a href="/lessons/{{page.lesson|plus:1}}"><img style="width: 5%; position: absolute; bottom: 10%; right: 5%;" src="/ui/img/graph/avatar.png"></img></a></span>
-{% endif %}
+        <!-- This adds a link to the first slide of the next presentation -->
+        {% assign num = page.lesson | slice: 2 | plus: 0 %}
+        {% if num < 9 %}
+            <a href="/lessons/{{page.lesson|plus:1}}">
+                <img
+                    style="width: 5%; position: absolute; bottom: 10%; right: 5%;"
+                    src="/ui/img/graph/avatar.png"></img>
+            </a>
+        {% endif %}
     </textarea>
+
+    <script src="//gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
     <script type="text/javascript">
       var slideshow = remark.create({
           navigation: {scroll: false,},
