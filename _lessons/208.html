@@ -101,8 +101,15 @@ Before you go any further, ask yourself:
 class: subtitle
 
 # Exploratory model building
----
+--
 
+Get to V1
+???
+i.e. get something in the hands of your users that works
+
+Lots of tinkering at this point, helps you understand your data sources
+
+---
 # Work backwards to the {% raw %}{{ source() }}{% endraw %}
 * What data to I have available to fill in the blanks?
   * Now is the time to interrogate your data.
@@ -132,7 +139,7 @@ Teacher notes:
 
 
 ---
-# Write V0 of the model
+# Get to V1 of the model
 * Start by putting all your code in one or a few SQL files! (but use CTEs)
 * Develop your dashboard at the same time to check the results
 * What other “sources of truth” do you have for this data? Does your model match?
@@ -144,7 +151,7 @@ Then `git commit!`
 
 ---
 # Case study
-**Process I used**
+**Process I followed**
 * Defined some sources
 * Defined my staging models (used the [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/) package 🤫). I noticed:
     * Timestamps are in epoch?
@@ -170,8 +177,7 @@ What's wrong here?
 * `channel_id` isn't actually that useful — use `channel_name` instead
 ---
 
-# Get to V1 by iterating
-**Things discovered while iterating on this model:**
+# Iterate to get from V0 → V1
 * Different column names in historical? Only a `channel_name`, not a `channel_id`
 * The data time periods overlap
 * Different grains — nested replies?
@@ -195,6 +201,7 @@ class: subtitle
     * How correct is this? Does that matter?
 ---
 background-color: #005E7A
+class: middle
 
 <img src="/lessons/img/{{page.lesson}}/final-dag.png" style="width: 100%;">
 
@@ -214,3 +221,11 @@ Before you send a PR to be reviewed, check:
 ???
 * Note that these are all things we talked about on day two, but 90% of the work in this case study was things we learnt on day one!
 * The actual PR: https://github.com/fishtown-analytics/internal-analytics/pull/110
+---
+class: subtitle
+# Summary
+1. Define the model
+2. Exploratory model building
+3. Refactor
+
+{% include options/next-presentation.html %}
