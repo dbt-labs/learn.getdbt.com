@@ -182,7 +182,7 @@ Good knowledge check questions:
 4. A command
 
 ---
-# What happens when you run dbt?
+# What happens when you `dbt run`?
 1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
 2. dbt parses your **dbt project**
 3. dbt wraps your **models** in the appropriate DML (e.g. `create table as`)
@@ -222,7 +222,7 @@ Good knowledge check questions:
 ???
 * Show changing configurations, esp. examples that highlight hierarchical nature
 ---
-# What happens when you run dbt?
+# What happens when you `dbt run`?
 1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
 2. dbt parses your **dbt project**
 3. dbt wraps your **models** in the based on the the **materialization** you **configure** for a model (e.g. `create table as`)
@@ -280,17 +280,28 @@ class:subtitle
 
 
 ---
+class:subtitle
 # Testing dbt models
 
 ???
 * Add some tests to your models
 * Demonstrate running one test at a time
+---
+# What are tests?
 --
+
 **Tests** are assertions you make about your **models**.
 
-When you execute the `test` **command** dbt iterates through the schema files (`models/**.yml`) to construct `select` queries.
+When your assertion is true, your tests pass.
 
-These queries return `0` when your assertion is true, otherwise the test fails.
+Behind the scenes, tests are just `select` statements!
+
+---
+# What happens when you `dbt test`?
+1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
+2. dbt parses your **dbt project**
+3. dbt iterates through the schema files (`models/**.yml`) to construct `select` queries.
+4. dbt executes the SQL for each test: if the number `0` is returned your test passes
 
 
 ---
@@ -332,7 +343,6 @@ You should be able to:
 * Add tests to your models
 * Run your tests (all of them / one model at a time)
 
-<br/>
 🙋‍♀️ Please let us know if you want to go over any of these
 
 ???
