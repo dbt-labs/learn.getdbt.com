@@ -105,8 +105,9 @@ Connection:
 
 ---
 
-# You're seeing a parsing/compilation error
+### You're seeing a parsing/compilation error
 
+.dense-text[
 ```bash
 Encountered an error:
 Compilation Error
@@ -128,6 +129,7 @@ Compilation Error
             columns:
                    ^
 ```
+]
 
 ---
 
@@ -138,6 +140,11 @@ dbt compile
 ```
 
 _Hopefully_, the error includes the path to the offending file :)
+
+```bash
+Error reading acme: schema.yml - Runtime Error
+    Syntax error near line 27
+```
 
 ---
 
@@ -209,17 +216,49 @@ Every last line of it.
 
 # Next step: to the logs!
 
-<!-- TODO include image of six flags -->
+<img src="/lessons/img/{{page.lesson}}/logs-1.png" style="width: 50%;" class="img-center">
 
+.left-column[
+<img src="/lessons/img/{{page.lesson}}/logs-2.jpg" style="width:70%;" class="img-center">
+]
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/logs-3.jpg" style="width:70%;" class="img-center">
+]
 ---
 
 # Your results aren't right
 
-<!-- TODO include image of failed dbt test -->
-
+.left-column-33[
 This is a different kind of "error"!
 
 If you didn't have tests, you wouldn't know anything is wrong.
+]
+
+.right-column-66[
+.dense-text[
+```bash
+dbt test
+Running with dbt=0.15.2
+Found 2 models, 4 tests, 0 snapshots, 0 analyses, 147 macros, 0 operations, 0 seed files, 0 sources
+
+15:46:58 | Concurrency: 5 threads (target='dev')
+15:46:58 |
+15:46:58 | 1 of 1 START test not_null_my_first_dbt_model_id..................... [RUN]
+15:47:00 | 1 of 1 FAIL 1 not_null_my_first_dbt_model_id......................... [FAIL 1 in 1.12s]
+15:47:00 |
+15:47:00 | Finished running 4 tests in 3.01s.
+
+Completed with 1 error and 0 warnings:
+
+Failure in test not_null_my_first_dbt_model_id (models/example/schema.yml)
+  Got 1 result, expected 0.
+
+  compiled SQL at target/compiled/my_new_project/schema_test/not_null_my_first_dbt_model_id.sql
+
+Done. PASS=3 WARN=0 ERROR=1 SKIP=0 TOTAL=4
+```
+]
+]
 
 ---
 
