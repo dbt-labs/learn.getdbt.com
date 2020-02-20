@@ -8,8 +8,10 @@ class: title, center, middle
 # Packages
 
 ---
-class: subtitle, center, middle
-## Packages are dbt projects that you can install in your _own dbt project_
+# What are packages?
+--
+
+Packages are dbt projects that you can install in your _own dbt project_
 
 
 ???
@@ -22,9 +24,10 @@ And from there we can talk a little bit about writing custom tests + using custo
 # Use case: Using macros from a package
 
 1. Add a `packages.yml` file to your project
+--
 
-`packages.yml`
-```yaml
+```yml
+# packages.yml
 packages:
   - package: fishtown-analytics/snowplow
     version: 0.7.1
@@ -52,7 +55,7 @@ $ dbt deps
 # Use case: Using macros from a package
 
 1. Add a `packages.yml` file to your project
-2. Run `dbt deps` to install the package (check out the `modules` dir)
+2. Run `dbt deps` to install the package
 --
 
 3. Access macros from the package
@@ -67,6 +70,13 @@ $ dbt deps
 }}
 ```
 {% endraw %}
+---
+# Use case: Using macros from a package
+
+1. Add a `packages.yml` file to your project
+2. Run `dbt deps` to install the package
+3. Access macros from the package
+
 ```yml
 # models/marts/core/schema.yml
 version: 2
@@ -85,14 +95,22 @@ models:
 --
 
 These models get added to your DAG!
+
+---
+background-color: #005E7A
+<img src="/lessons/img/{{page.lesson}}/snowplow-package.png" style="width: 100%;">
+
+
 ---
 # Use cases for packages:
+## Macros:
 * Versatile macros, especially for “How to Write this in SQL” problems ([dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/))
+* Ad hoc queries/snippets you find yourself writing over and over ([audit_helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/), [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/))
+
+## Models:
 * Common staging models for one data source ([facebook](https://hub.getdbt.com/fishtown-analytics/facebook_ads/latest/))
-* Ad hoc queries you find yourself writing over and over ([audit_helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/))
-* Follow industry standards for boilerplate-yet-complex modeling ([snowplow](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/))
-???
-Installing packages also adds the models
+* Follow industry standards for boilerplate-yet-complex modeling ([snowplow](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/), [segment](https://hub.getdbt.com/fishtown-analytics/segment/latest/))
+
 
 ---
 class: subtitle
@@ -121,13 +139,17 @@ dbt is itself [a package](https://github.com/fishtown-analytics/dbt/tree/dev/bar
 Hint: we might need this information later today!
 
 ---
+background-color: white
+<img src="/lessons/img/{{page.lesson}}/dbt-global-project.jpeg" style="width: 100%;">
+
+---
 # Everything's a project!
 So:
 * You have your own dbt project
 * You also have the dbt global project
 * You can also install additional projects as packages
 
---
+---
 
 ## What happens if you create a macro with the same name as a global macro?
 --
@@ -138,7 +160,9 @@ If you have a macro in _your project_ with the same name as macro in the _dbt gl
 * Change the way tests are implemented
 * Even change materializations!
 
-[Learn more](https://discourse.getdbt.com/t/did-you-know-dbt-ships-with-its-own-project/764).
+.caption[
+[Learn more](https://discourse.getdbt.com/t/did-you-know-dbt-ships-with-its-own-project/764)
+]
 ---
 class: subtitle
 # Working session

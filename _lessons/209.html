@@ -1,17 +1,12 @@
 ---
 layout: presentation
 title: Techniques of the trade
-lesson: 208
+lesson: 209
 ---
 
 class: title, center, middle
 # (dbt) Techniques of the trade
 
-<!--
-Notes:
-- This presentation has gotten really long!
-- Should we move some of these up to closer to the Jinja section?
--->
 
 {% raw %}
 
@@ -31,13 +26,12 @@ Notes for teacher:
 ---
 
 
-
-## On Monday:
+### On Monday:
 | order_id | status  | created_at | updated_at |
 |----------|---------|------------|------------|
 | 1        | pending | 2019-01-01 | 2020-02-20 |
 
-## On Tuesday:
+### On Tuesday:
 | order_id | status  | created_at | updated_at |
 |----------|---------|------------|------------|
 | 1        | shipped | 2019-01-01 | 2020-02-21 |
@@ -79,7 +73,7 @@ We want to turn our **mutable** data into **immutable data**
 
 
 # Anatomy of a snapshot
-
+A `.sql` file in the `snapshots` directory:
 ```sql
 -- snapshots/orders_snapshot.sql
 {% snapshot orders_snapshot %}
@@ -89,7 +83,6 @@ We want to turn our **mutable** data into **immutable data**
           target_database='analytics',
           target_schema='snapshots',
           unique_key='id',
-
           strategy='timestamp',
           updated_at='updated_at',
         )
@@ -102,20 +95,25 @@ We want to turn our **mutable** data into **immutable data**
 
 ```
 
+???
+- Snapshots are simple select statements which define a dataset. They live in the snapshots directory, and are enclosed in Jinja tags
+
+---
+# Anatomy of a snapshot
 From the command line:
 ```bash
 $ dbt snapshot
 
 ```
+
 ???
-- Snapshots are simple select statements which define a dataset. They live in the snapshots directory, and are enclosed in Jinja tags
 - Every time you run the dbt snapshot command, dbt will run your select statement and check if the dataset has changed compared to its last known state.
 - If the records have changed, then dbt will create a new entry in the snapshot table for the new state of the record. If there are net-new records in the source dataset, then dbt will create an initial entry for the record.
 
 --
-
-# Learn more about snapshots
-- [Read the docs](https://docs.getdbt.com/docs/snapshots)
+.caption[
+[Learn more about snapshots](https://docs.getdbt.com/docs/snapshots)
+]
 
 ---
 # I have a long case statement
@@ -156,7 +154,9 @@ Command:
 ```bash
 $ dbt seed
 ```
---
+---
+# Anatomy of a seed
+
 Downstream model:
 ```sql
 -- models/orders.sql
@@ -177,11 +177,13 @@ left join {{ ref('country_codes') }} as country_codes
 * You can `ref` them like any other model
 * Appropriate for version controlling business logic, not for loading huge datasets
 
----
-# More information
-- [Read the docs](https://docs.getdbt.com/docs/seeds)
-
 --
+
+.caption[
+  [Learn more about seeds](https://docs.getdbt.com/docs/seeds)
+]
+
+---
 
 # Other use cases for seeds
 * Email addresses to exclude
@@ -199,15 +201,13 @@ SQL compilation error: Object 'ANALYTICS.DBT_CLAIRE.MY_TABLE' does not exist or 
 -- redshift
 ERROR:  permission denied for relation my_table
 
--- bigquery
-...
 ```
 ???
 
 
 --
 
-# Technique: version-controlled grant statements
+## Technique: version-controlled grant statements
 
 ???
 We want to ensure that as soon as dbt creates a relation, my BI tool can `select` from it
@@ -222,7 +222,7 @@ grant select on dbt_claire.customers to role reporter;
 Essentially we want to run a statement _like_ this
 
 ---
-# Hooks
+# Tool 1: Hooks
 * Snippets of SQL that you can run:
     * `on-run-start`: at the beginning of a `dbt run` or `dbt seed`
     * `on-run-end`: at the end of a run
@@ -231,128 +231,75 @@ Essentially we want to run a statement _like_ this
 
 ???
 Side step into hooks very quickly to look at it as a way to do this
---
-# Operations
-* A _macro_ that you can run using the `run-operation` command
-
 ---
-# V0: Use a `post-hook` to grant:
-```yaml
-# dbt_project.yml
+# Tool 1: Hooks
+* Configured from the `dbt_project.yml` file or in a model
 
-seeds:
-  post-hook: "grant select on {{ this }} to role reporter;"
+```yml
+# dbt_project.yml
+on-run-end:
+  - "grant usage on {{ target.schema }} to role reporter"
 
 models:
-  post-hook: "grant select on {{ this }} to role reporter;"
-
-on-run-end:
-  - "grant usage on schema {{ target.schema }} to role reporter;"
-
-```
-???
-* {{ this }} is the current model / seed
-
---
-## Problems:
-* Results in a lot of grant statements
-
----
-# V1: Use `on-run-end` hooks to grant
-```yaml
-# dbt_project.yml
-
-on-run-end:
-  - "grant usage on schema {{ target.schema }} to role reporter;"
-  - "grant select on all tables in schema {{ target.schema }} to role reporter;"
-  - "grant select on all views in schema {{ target.schema }} to role reporter;"
-```
---
-## Problems:
-* Downtime between when a model builds and when the `reporter` role can read it
-
----
-# V2: Use `on-run-end` hooks + future grants
-```yaml
-# dbt_project.yml
-
-on-run-end:
-  - "grant usage on schema {{ target.schema }} to role reporter;"
-  - "grant select on all tables in schema {{ target.schema }} to role reporter;"
-  - "grant select on all views in schema {{ target.schema }} to role reporter;"
-  - "grant select on future table in schema {{ target.schema }} to role reporter;"
-  - "grant select on future views in schema {{ target.schema }} to role reporter;"
-```
-
-???
-On Postgres/Redshift, use default grants
-
---
-## Problems
-* This is getting verbose...
-* And what about custom schemas?
-
----
-# V3: Use a macro
-```yaml
-# dbt_project.yml
-
-on-run-end:
-  - "grant_select_on_schemas(schemas, 'reporter')"
+  - post-hook: "grant select on {{ this }} to role reporter"
 ```
 
 ```sql
--- macros/grant_select_on_schemas.sql
-{% macro grant_select_on_schemas(schemas, role) %}
-  {% for schema in schemas %}
-    grant usage on schema {{ schema }} to role {{ role }};
-    grant select on all tables in schema {{ schema }} to role {{ role }};
-    grant select on all views in schema {{ schema }} to role {{ role }};
-    grant select on future tables in schema {{ schema }} to role {{ role }};
-    grant select on future views in schema {{ schema }} to role {{ role }};
-  {% endfor %}
-{% endmacro %}
+-- models/my_model
+{{ config(post_hook="grant select on " ~ this ~ "to role reporter")}}
+select ...
 ```
---
-## Problems
-* None, but we can show off here!
 
-???
-* Snowflake has a concept of "all X in database"
-* Since we use one database for all of our relations, let's just grant privileges to the entire database
-* We only need to run this once! That sounds like an `operation` (Flip back to operation slide)
+.caption[
+  [Learn more about hooks](www.getdbt.com/docs/hooks)
+]
 
 ---
-# V4: Use an operation & database-wide grants
-(Snowflake only!)
-```sql
--- macros/grant_select_on_database_operation.sql
-{% macro grant_select_on_database(role, database=target.database) %}
+# Tool 2: Operations
+A _macro_ that you can run using the `run-operation` command
 
+```sql
+-- macros/grant_select.sql
+{% macro grant_select() %}
 {% set grant_sql %}
-    grant usage on database analytics to {{ role }};
-
-    grant usage on all schemas in database {{ database }} to role {{ role }};
-    grant usage on future schemas in database {{ database }} to role {{ role }};
-    grant select on future tables in database {{ database }} to role {{ role }};
-    grant select on future views in database {{ database }} to role {{ role }};
-
-    grant select on future views in database {{ database }} to role {{ role }};
-    grant select on all tables in database {{ database }} to role {{ role }};
+grant usage on schema {{ target.schema }} to role reporter;
+grant select on dbt_claire.customers to role reporter;
 {% endset %}
-
 {% do run_query(grant_sql) %}
-
 {% endmacro %}
+
 ```
+
+Command line:
 ```bash
-$ dbt run-operation grant_select_on_database --args '{role: "reporter"}'
+$ dbt run-operation grant_select
 ```
+
+.caption[
+  [Learn more about operations](www.getdbt.com/docs/using-operations)
+]
+
 ???
-* Note the `run_query` macro — with hooks we could just generate the SQL. In operations we need to _run_ the SQL.
+Note that you have to run the query
+These won't work, but here's how we put it together
 ---
-# I need to create some external tables
-To-do
+# Implementation details
+Consider:
+* Are you using multiple schemas? You'll need to grant the `schemas` variable
+* Can you leverage default/future grants?
+* Can you abstract this logic into a macro instead of hooks?
+* Redshift: Are you granting to a single user, or an entire group?
+
+
+[Our preferred approach](https://discourse.getdbt.com/t/the-exact-grant-statements-we-use-in-a-dbt-project/430)
+
+---
+
+# Other use cases for hooks & operations
+* Creating UDFs at the start of a run ([Discourse](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions/18))
+* Performing warehouse maintenance on Redshift ([package](https://github.com/fishtown-analytics/redshift))
+* Staging external tables ([package](https://github.com/fishtown-analytics/redshift))
+
 
 ---
 # I need to create a table of all days
@@ -366,7 +313,7 @@ Useful for "date spining"
 
 `models/utils/util_days.sql`
 ```sql
-
+-- models/utils/util_days.sql
 {{ dbt_utils.date_spine(
     datepart="day",
     start_date="to_date('2016/01/01', 'mm/dd/yyyy')",
@@ -386,13 +333,14 @@ Also note that you need the utils package installed, and to `dbt deps`
 
 --
 
-## Learn more
-* [Source code](https://github.com/fishtown-analytics/dbt-utils#date_spine-source)
-* [Discourse post](https://discourse.getdbt.com/t/finding-active-days-for-a-subscription-user-account-date-spining/265)
+.caption[
+  [Discourse post](https://discourse.getdbt.com/t/finding-active-days-for-a-subscription-user-account-date-spining/265)
+]
 
 ---
 # My runs take too long when I'm developing
 --
+
 ## Technique: Limit data in dev
 ???
 * Especially useful for event-style data
@@ -465,40 +413,10 @@ We already know that:
 
 ???
 - This is a thing you won't do very often, so it's okay to not know this off by heart!
----
-# Example: add a failure threshold to uniqueness test
-## Before
-```sql
-{% macro test_unique(model) %}
-
-{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
-
-select count(*)
-from (
-
-    select
-        {{ column_name }}
-
-    from {{ model }}
-    where {{ column_name }} is not null
-    group by {{ column_name }}
-    having count(*) > 1
-
-) validation_errors
-
-{% endmacro %}
-
-```
-_[source code](https://github.com/fishtown-analytics/dbt/blob/dev/0.15.2/core/dbt/include/global_project/macros/schema_tests/unique.sql)_
-
-???
-* We want to have an additional (optional) parameter for how many records can fail
-* Tests fail when they return a number > 0
-* If time permits: Do this live
 
 ---
-# Example: add a failure threshold to uniqueness test
-## After
+# Example
+
 ```sql
 -- macros/test_unique.sql
 {% macro test_unique(model) %}
@@ -532,8 +450,8 @@ from aggregated
 {% endmacro %}
 ```
 ---
-# Example: add a failure threshold to uniqueness test
-## After
+# Example
+
 ```yml
 version: 2
 
@@ -554,11 +472,9 @@ models:
 * Build new schema tests, e.g. [mutually exclusive ranges](https://github.com/fishtown-analytics/dbt-utils#mutually_exclusive_ranges-source)
 * [Only test in a certain environment](https://discourse.getdbt.com/t/conditionally-running-dbt-tests-only-running-dbt-tests-in-production/322)
 
---
-
-# More information
-- [Read the docs](https://docs.getdbt.com/docs/custom-schema-tests)
-- Check out open-sourced [schema tests](https://github.com/fishtown-analytics/dbt-utils#schema-tests)
+.caption[
+  [Learn more](https://docs.getdbt.com/docs/custom-schema-tests) / [More examples](https://github.com/fishtown-analytics/dbt-utils#schema-tests)
+]
 
 ---
 # I need to write an extremely bespoke test
@@ -566,6 +482,7 @@ models:
 * Truly a one-off data test
 
 --
+
 ## Technique: data tests
 ---
 # Anatomy of a data test
@@ -582,26 +499,15 @@ group by 1
 
 having total_amount < 0
 ```
-
----
-# I need to test that my refactor didn't break anything
-
-???
-Or: I'm moving code from LookML / a different pipeline, and don't want to break anything
---
-## Technique: audit-helper package
-
-???
-The SQL to check that two relations are exactly the same is very gnarly! so we open sourced it
-
---
-## More information:
-* [audit-helper package](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/)
-* [Discourse post](https://discourse.getdbt.com/t/how-to-not-lose-your-mind-when-auditing-data/445)
+Run with `dbt test`
+.caption[
+  [Learn more](https://docs.getdbt.com/docs/testing)
+]
 
 ---
 
 # I have some SQL that I use in a dashboard that I want to version control
+
 --
 ## Technique: analyses
 ---
@@ -620,7 +526,9 @@ from {{ ref('fct_mrr') }}
 
 group by 1
 ```
+.caption[
 [Learn more](https://docs.getdbt.com/docs/analyses)
+]
 ---
 # (SQL) Techniques of the trade
 
@@ -699,7 +607,6 @@ What happens when you have duplicate users? You'll need to dedupe them! Maybe yo
 
 ---
 # Anatomy of deduplication
-## Example: deduplicating users:
 * Use `distinct` + window functions for narrow tables
 
 ```sql
@@ -715,17 +622,12 @@ select distinct
 
     min(created_at) over (
         partition by customer_id
-    ) as first_seen_at,
-
-    max(created_at) over (
-        partition by customer_id
-    ) as last_seen_at
+    ) as first_seen_at
 
 from amazon_orders
 ```
 ---
 # Anatomy of deduplication
-## Example: deduplicating users:
 * Use `row_number` + `where` for wide tables
 
 .left-column[
@@ -795,5 +697,3 @@ class: subtitle, center, middle
 
 
 {% endraw %}
-
-{% include options/next-presentation.html %}

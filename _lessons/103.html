@@ -6,9 +6,8 @@ estimated_teaching_time: 45
 estimated_working_session: 60
 teaching_method: live demo + slides. Questions encouraged.
 ---
-
 class: title, center, middle
-# dbt Fundamentals
+# Setting the scene
 
 ???
 Note to teacher:
@@ -17,10 +16,39 @@ Note to teacher:
 - Ask the audience some questions / encourage participation. There will be some students who know all this already, so give them the opportunity to participate by helping answer questions.
 - If people ask questions that are related to future lessons, jot them down on a shared place so you can cross them off throughout the rest of the course.
 
-Speaker track:
-- In the pre-work, you created your first dbt project.
-- We're going to go through this pre-work again, build apply some concepts to it to try to build a common language (a lingua franca if you will).
-- Please ask questions as we go, we need to make sure we're all on a solid foundation, as we'll continue to build on this foundation throughout the
+---
+# Scenario
+
+I'm an analyst working at "The Jaffle Shop". The Jaffle Shop uses our own app for order management:
+.center[
+<img src="/lessons/img/{{page.lesson}}/jaffle-shop-erd.png" style="width: 40%;">
+]
+I have a copy of this data replicated into my warehouse:
+```sql
+select * from raw.jaffle_shop.customers
+```
+--
+
+## Why should I transform my data?
+???
+Hopefully answers like:
+- clean up the data
+- create news fields
+- build trust/test it
+- stop repeated work
+
+---
+
+# My project
+* I'm going to transform my data to:
+    * Clean up some dirtiness in my data (e.g. `user_id`)
+    * Build some new fields on my customers model (`number_of_orders` etc.)
+* And then connect my BI tool to the transformed data
+---
+
+class: title, center, middle
+# dbt Fundamentals
+
 
 ---
 
@@ -41,44 +69,64 @@ To use dbt, you need four things:
     * that can run SQL
     * with data already loaded in to it
 
+.center[
+<img src="/lessons/img/{{page.lesson}}/data-warehouse.png" style="width: 50%;">
+]
+
 ???
 Questions to prompt:
 - How does data get into the warehouse?
 
---
+---
+# The four ingredients for dbt
+
+1. A data warehouse
+
 2. A dbt project
 --
 
     * created with the `init` command / `initialize` button
     * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
-    * a project contains **models**
+
+.center[
+<img src="/lessons/img/{{page.lesson}}/dbt-project.png" style="width: 50%;">
+]
 
 ???
 Create the project again/show off the models
 Quick side step into models though...
 
---
-## Models
-* Models are `select` statements that transform data.
-* Stored in the `models` directory, and have a `.sql` extension
+---
+# The four ingredients for dbt
+
+1. A data warehouse
+
+2. A dbt project
+    * created with the `init` command / `initialize` button
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+---
+## What are models?
+
 ???
 See if anyone wants to have a go at explaining a model
-
 --
 
+* Models are `select` statements that transform data.
+* Stored in the `models` directory, and have a `.sql` extension
 
-???
+
+.center[
+<img src="/lessons/img/{{page.lesson}}/model.png" style="width: 50%;">
+]
 
 ---
 # The four ingredients for dbt
 1. A data warehouse
-    * that can run SQL
-    * with data already loaded in to it
+
 2. A dbt project
-    * created with the `init` command / button
-    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
-    * a project contains **models**
-3. A connection to your warehouse:
+
+3. A connection to your warehouse
 --
 
     * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
@@ -94,21 +142,17 @@ See if anyone wants to have a go at explaining a model
 ---
 # The four ingredients for dbt
 1. A data warehouse
-    * that can run SQL
-    * with data already loaded in to it
+
 2. A dbt project
-    * created with the `init` command / button
-    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
-    * a project contains **models**
-3. A connection to your warehouse:
-    * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
-    * dbt Cloud: a connection
-    * contains credentials to connect to your warehouse and a **target schema**
+
+3. A connection to your warehouse
+
 4. A command
 
 --
     * an instruction, issued from the command line
     * e.g. `dbt run`
+
 
 ???
 * Run `dbt run`!
@@ -120,59 +164,52 @@ Good knowledge check questions:
 * How did dbt connect to the warehouse? A: connection / profile
 * How did dbt know what schema to use? A: the target schema
 * What happens if you rerun dbt? A: no downtime (this looks different on each warehouse)
+---
+.center[
+<img src="/lessons/img/{{page.lesson}}/dbt-run.png" style="width: 100%;">
+]
 
 
 ---
 
 # The four ingredients for dbt
 1. A data warehouse
-    * that can run SQL
-    * with data already loaded in to it
+
 2. A dbt project
-    * created with the `init` command / button
-    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
-    * a project contains **models**
-3. A connection to your warehouse:
-    * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
-    * dbt Cloud: a connection
-    * contains credentials to connect to your warehouse and a **target schema**
+
+3. A connection to your warehouse
+
 4. A command
-    * an instruction, issued from the command line
-    * e.g. `dbt run`
---
-
-When you execute the `run` **command** dbt connects to your **data warehouse** (via a **profile**/**connection**) and builds the **models** in your **dbt project** as **relations** in your **target schema**.
 
 ---
-# Building dbt models
-Models are `select` statements.
+# What happens when you run dbt?
+1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
+2. dbt parses your **dbt project**
+3. dbt wraps your **models** in the appropriate DML (e.g. `create table as`)
+4. dbt executes this SQL to build your models in your **target schema**
 
-When you execute the `run` **command** dbt builds **models** as **relations** in your **target schema**.
-
-The way that dbt builds a model depends on the **materialization** you **configure** for a model.
 ???
-Notes to teacher:
-* Switching this to just building models since we should have laid down some of those concepts already
+- Behind the scenes, tons more happening: checking if the schema exists etc.
+--
+
+* **How can I see what's happening?**
+    * Check out the `target/` directory and the `logs/` file
+* **How does dbt know the right SQL to use?** (`create table as` vs. `create view as`)
+    * The way that dbt builds a model depends on the **materialization** you **configure** for a model.
+
 ---
-# Materializations
 
-???
-* What is a materialization?
+# What is a materialization?
 
 --
-* `materializations` are "build" strategies
-* Effectively the SQL that your `select` statement gets wrapped in
+* `materializations` are build strategies
+* i.e. the SQL that your `select` statement gets wrapped in
 * Models can be materialized as `views` and `tables` (we'll learn more later!)
 * You need to **configure** a model's materialization
 
-???
-* Try changing a materialization
-* We're going to talk a lot more about materializations tomorrow
 ---
-# Configurations
+#  What is a configuration?
 
-???
-* What is a configuration?
 --
 * `configurations` are model settings
 * They can be set in your `dbt_project.yml` file, _and_ in your model file.
@@ -185,14 +222,13 @@ Notes to teacher:
 ???
 * Show changing configurations, esp. examples that highlight hierarchical nature
 ---
-# Building dbt models
-Models are `select` statements.
+# What happens when you run dbt?
+1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
+2. dbt parses your **dbt project**
+3. dbt wraps your **models** in the based on the the **materialization** you **configure** for a model (e.g. `create table as`)
+4. dbt executes this SQL to build your models in your **target schema**
 
-When you execute the `run` **command** dbt builds **models** as **relations** in your **target schema**.
-
-The way that dbt builds a model depends on the **materialization** you **configure** for a model.
-
----
+--
 
 # Breathe!
 
@@ -202,7 +238,7 @@ Stop for questions at this point, make sure everyone is following.
 ---
 
 # Let's do it again!
-## This time with a better query!
+## This time for the Jaffle Shop
 
 ???
 Instructions to teacher:
@@ -213,21 +249,35 @@ Instructions to teacher:
 # Creating dependencies
 * It's often a good idea to split up models
 * Use the `ref` function to do build dependencies between models
-* `ref` **compiles** to the correct table name → this allows us to work in environments.
+* These dependencies form a **Directed Acyclic Graph (DAG)**
+* dbt uses this DAG to understand the order to run models in
+.center[
+<img src="/lessons/img/{{page.lesson}}/jaffle-shop-dag.png" style="width: 60%;">
+]
 
-???
-* Demonstrate building dependencies
-* Also demonstrate running one model at a time
 ---
-# Building dbt models
-Models are `select` statements.
+# DAGs
+## A real life example:
+.center[
+<img src="/lessons/img/{{page.lesson}}/laundry-dag.png" style="width: 60%;">
+]
 
-When you execute the `run` **command** dbt builds **models** as **relations** in your **target schema**.
+---
+background-color: #004C61
+class:subtitle
+## A slightly more complex DAG
+.center[
+<img src="/lessons/img/{{page.lesson}}/example-dag.png" style="width: 100%;">
+]
 
-The way that dbt builds a model depends on the **materialization** you **configure** for a model.
+---
+background-color: #005E7A
+class:subtitle
+# A typical dbt DAG
+.center[
+<img src="/lessons/img/{{page.lesson}}/typical-dag.png" style="width: 50%;">
+]
 
-The order that dbt builds models is determined by the `ref` function.
-???
 
 ---
 # Testing dbt models
@@ -263,6 +313,7 @@ You should be comfortable with these words:
 * models
 * target schema
 * materializations
+* DAGs
 ]
 .right-column[
 * configs
@@ -270,8 +321,9 @@ You should be comfortable with these words:
 * configurations
 * tests
 ]
+---
+# Knowledge check
 
-<br/>
 You should be able to:
 * Create new models (that depend on other models)
 * Run your models (all of them / one model at a time)
@@ -330,10 +382,6 @@ select * from raw.stripe.payment
     * `amount` (hint: this has to come from payments)
 2. Add a new field to the `customers` model:
     * `customers.lifetime_value`: the total amount a customer has spent at `jaffle_shop`
-3. [Bonus] On the `orders` model, add subtotals for each `payment_method`, e.g.:
-    * `credit_card_amount`
-    * `coupon_amount`
-    * etc.
 
 {% include options/next-presentation.html %}
 

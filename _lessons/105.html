@@ -13,19 +13,19 @@ class: title, center, middle
 # Refresher:
 --
 
-## From 102: The Analytics Engineering Viewpoint
-**Analytics code should have quality assurance**
-* Run automated tests on source data and on transformed data to ensure that SQL works as intended
-* Ensure source data is up to date
+## 102: The Analytics Engineering Viewpoint
+_**Analytics code should have quality assurance**_
+* _Run automated tests on source data and on transformed data to ensure that SQL works as intended_
+* _Ensure source data is up to date_
 
---
+---
+# Refresher
+## 103: dbt Fundamentals
+_**Tests** are assertions you make about your **models**._
 
-## From 103: dbt Fundamentals
-**Tests** are assertions you make about your **models**.
+_When you execute the `test` **command** dbt iterates through the schema files (`models/**.yml`) to construct `select` queries._
 
-When you execute the `test` **command** dbt iterates through the schema files (`models/**.yml`) to construct `select` queries.
-
-These queries return `0` when your assertion is true, otherwise the test fails.
+_These queries return `0` when your assertion is true, otherwise the test fails._
 ???
 We've already touched on these concepts a couple of times.
 
@@ -127,7 +127,10 @@ models:
         tests:
           - not_null
 ```
---
+---
+# Q: Why might a test fail?
+
+1. The SQL in your model doesn’t do what you intended.
 
 ```sql
 select
@@ -136,7 +139,20 @@ select
 from customers
 
 left join customer_orders using (customer_id)
+
 ```
+
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: number_of_orders
+        tests:
+          - not_null
+```
+
 ???
 Examples:
 * Bad deduping
@@ -189,19 +205,26 @@ Examples:
 
 Wait, how do I automate running dbt?
 ---
-# Running dbt in production
-* You need to run dbt on a schedule to keep your data up to date
-* These production runs should always use the latest version of your dbt project → **continuous deployment**
-* You should have a way to know if something goes wrong (monitoring + alerting) and ways to debug what went wrong (logs and artifacts)
-* You should automate a build + test your code  every time you want to merge changes (or "deploy to production") →  **continuous integration**
+# Automating dbt runs
+## a.k.a. Running dbt in production
+You need to run dbt on a schedule to keep your data up to date.
+
+Your automated runs should:
+* Use the latest version of my project? → **continuous deployment**
+* Have monitoring and alerting if something goes wrong?
+* Have a way to debug failures?
+* Build & test your code every time you want to merge changes (or "deploy to production") →  **continuous integration**
 
 We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
+---
+<img src="/lessons/img/{{page.lesson}}/dbt-cloud.png" style="width: 100%;">
+
 
 ---
 name: working-session
 class: subtitle
 
 # Working session
-* Ensure that your (new) `orders` model has tests on it
+* Ensure that your `orders` model has tests on it (and that they pass)
 
 {% include options/next-presentation.html %}

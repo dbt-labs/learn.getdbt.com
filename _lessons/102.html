@@ -37,7 +37,10 @@ class: subtitle, center, middle
 
 ## What does version control look like for analytics engineers?
 - SQL is code, so…
-- Exactly the same as software engineering! Here is an example.
+- Exactly the same as software engineering:
+    - git for version control
+    - GitHub to host their repo
+    - Pull Requests for collaboration & approvals
 - We have a [git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for those getting started
 
 ---
@@ -48,7 +51,7 @@ class: subtitle, center, middle
 
 ## What is QA?
 * Adding tests to check that your code is reliable
-* Tests give you peace of mind, and allows you to work faster
+* Tests give you peace of mind, and allow you to work faster
 * Testing concepts in software engineering:
     * Unit tests
     * Integration tests
@@ -102,7 +105,10 @@ Real life examples:
 
 ## What does modularity look like for analytics engineers?
 
-- The modern data stack (seen earlier)
+- The modern data stack:
+.center[
+<img src="/lessons/img/101/modern-data-stack.svg" style="width: 80%;">
+]
 - Within a dbt project:
     - Using packages (more on this later)
     - Using separate models for different parts of transformation
@@ -130,9 +136,12 @@ Releasing your code into production is called “deployment”.
 ---
 
 ## What do environments look like for analytics engineers?
-- Run dev transformations in your own schema (`dev_jcohen`), run prod transformations in a trusted schema.
+- Run dev transformations in your own sandpit schema (`dev_jcohen`), run prod transformations in a trusted schema.
 - Usually use prod data for these transformations
-- More info [here](https://docs.getdbt.com/docs/managing-environments).
+
+.caption[
+    [Learn more](https://docs.getdbt.com/docs/managing-environments)
+]
 
 ---
 class: subtitle, center, middle
@@ -151,11 +160,19 @@ Manual processes:
 ## What do workflows look like for analytics engineers?
 Automated processes:
 1. Data is ingested by Stitch/Fivetran
-2. It is transformed and tested every x hours:
-    * The latest version of the code is always used
+2. It is transformed and tested every 4 hours:
+    * The latest version of the code is always used (continuous deployment)
     * Any errors are sent to a Slack channel
-3. Your BI tool is connected ot the transformed data
+3. Your BI tool is connected to the production version of the data (environments)
+3. Changes to the code are automatically tested before being merged (continuous integration)
+---
+class: subtitle
 
-<img src="/lessons/img/101/modern-data-stack.svg" style="width: 100%;">
+# The Analytics Engineering Viewpoint
+* Analytics code should be version controlled
+* Analytics code should have quality assurance
+* Analytics should be modular
+* Analytics should use environments
+* Analytics workflows should be automated
 
 {% include options/next-presentation.html %}
