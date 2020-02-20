@@ -1,0 +1,283 @@
+---
+layout: presentation
+title: Debugging dbt
+lesson: 108
+estimated_teaching_time: 15
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
+---
+
+class: title, center, middle
+# Debugging dbt
+
+---
+
+class: subtitle, center, middle
+# a.k.a
+# Cool error, dude!
+
+---
+
+# What is dbt doing under the surface?
+
+1. **Connecting** to your database
+2. **Parsing** all the code in your project
+3. **Compiling** all your models
+4. **Running** those models, in order, against the database
+5. **Testing** your models by running queries that validate assumptions
+
+---
+
+# First thing's first: what kind of error?
+
+.left-column[
+- Parsing error (YML)
+- Database error
+    - Connection
+    - Permissions
+    - SQL
+        - syntax
+        - actual data
+]
+
+.right-column[        
+- dbt "errors"
+    - Model, source, or data test failure
+    - Compilation error
+    - Deprecation warning/error
+]
+
+???
+If it's a deprecating warning/error, that's easy — you should upgrade :)
+
+---
+
+class: subtitle, center, middle
+
+# What do to when...
+
+---
+
+# You can't run dbt
+
+- Is this a dbt project?
+- Can you connect to the database?
+- What's going on???
+
+# Answer:
+
+```bash
+dbt debug
+```
+
+---
+
+.dense-text[
+```bash
+$ dbt debug
+Running with dbt=0.15.2
+dbt version: 0.15.2
+python version: 3.7.6
+python path: /usr/local/Cellar/dbt/0.15.2_1/libexec/bin/python3.7
+os info: Darwin-19.2.0-x86_64-i386-64bit
+Using profiles.yml file at /Users/jerco/.dbt/profiles.yml
+
+Configuration:
+  profiles.yml file [OK found and valid]
+  dbt_project.yml file [OK found and valid]
+  profile: learn [OK found]
+  target: dev [OK found]
+
+Required dependencies:
+ - git [OK found]
+
+Connection:
+  account: kw27752
+  user: fishtown_jeremy
+  database: learn_analytics
+  schema: dbt_jcohen
+  warehouse: learning
+  role: learner
+  client_session_keep_alive: False
+  Connection test: OK connection ok
+  ```
+]
+
+---
+
+# You're seeing a parsing/compilation error
+
+```bash
+Encountered an error:
+Compilation Error
+  Error reading acme: schema.yml - Runtime Error
+    Syntax error near line 27
+    ------------------------------
+    24 |             - date_month
+    25 |
+    26 |   - customer_churn_month
+    27 |     columns:
+    28 |       - name: customer_id
+    29 |         tests:
+    30 |           - unique
+
+    Raw Error:
+    ------------------------------
+    mapping values are not allowed here
+      in "<unicode string>", line 27, column 12:
+            columns:
+                   ^
+```
+
+---
+
+# Next step: reproduce the error
+
+```bash
+dbt compile
+```
+
+_Hopefully_, the error includes the path to the offending file :)
+
+---
+
+# You're seeing a Database Error
+
+```bash
+Encountered an error:
+Database Error: Snowflake absolutely hates the code you've written
+```
+
+---
+
+# Maybe...
+
+.left-column-33[
+- Your model SQL has syntax errors
+    - Missing a comma
+    - Too many commas
+    - Your database will know this right away!  
+]  
+
+.right-column-66[
+.left-column[
+- Your SQL conflicts with underlying data
+    - You're trying to cast a string value to `int`
+    - Your database will figure this out mid-query!
+]
+.right-column[
+- You're asking too much of your database
+    - `Disk full`
+    - `Compilation memory exhausted`
+    - `Each row cannot be >2 MB`
+    - Your database won't know what hit it :(
+]
+]
+---
+
+# Next step: get the SQL!
+
+.left-column[
+### dbt CLI:
+```
+target/compiled/my_project/my_model.sql
+target/run/my_project/my_model.sql
+```
+]
+
+.right-column[
+### dbt Cloud:
+- Development: open the model and hit "compile SQL"
+- Deployment: grab from run artifacts
+]
+
+Iterate:
+- Visually inspect the SQL
+- Try running the model chunk by chunk (CTEs)
+- Refactor as needed
+
+---
+
+# You're seeing an error and have no idea where to start
+
+Your best bet is to see _exactly_ the SQL that dbt is running against
+your database.
+
+Every last line of it.
+
+---
+
+# Next step: to the logs!
+
+<!-- TODO include image of six flags -->
+
+---
+
+# Your results aren't right
+
+<!-- TODO include image of failed dbt test -->
+
+This is a different kind of "error"!
+
+If you didn't have tests, you wouldn't know anything is wrong.
+
+---
+
+# Next step: test for yourself
+
+.left-column[
+### dbt CLI:
+```
+target/compiled/my_package/schema_test
+target/compiled/my_paackage/data_test
+```
+]
+
+.right-column[
+### dbt Cloud:
+- Development: `dbt test`, check the "Debug" logs
+- Deployment: grab from run artifacts
+]
+
+Iterate:
+- Run the SQL
+- Tweak it to return examples of offending records
+- Thank your past self, the one who added tests :)
+
+---
+
+# Still stuck?
+
+.left-column-33[
+- Your implementation might be off
+    - Search the [dbt documentation](docs.getdbt.com)
+    - Search [dbt Discourse](discourse.getdbt.com)
+]
+
+.right-column-66[
+.left-column[
+- You might be seeing a known software bug
+    - Search [open dbt issues](https://github.com/fishtown-analytics/dbt/issues)
+    - Search the Internet (StackOverflow)
+]
+
+.right-column[
+- You're a member of a generous, helpful community!
+    - Ask in [dbt Slack](slack.getdbt.com)
+    - Phone a friend :)
+]
+]
+
+---
+name: working-session
+class: subtitle
+
+# Working session
+* Break things!
+    * Write some bad SQL
+    * Write some bad YAML
+    * Break a test
+    * Use a bad `ref`
+* Fix things 😌
+
+{% include options/next-presentation.html %}

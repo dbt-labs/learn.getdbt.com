@@ -6,10 +6,11 @@
 					<div class="navigation-links">
 						<div class="navigation-link">
 							<a class="navigation-anchor navigation-brand" href="{{site.url}}/" title="{{site.description}}">
-								<img src= "https://i.imgur.com/xNIeUkv.png">
+                                <img src="/ui/img/dbt-logo-color.png" />
 								<strong class="navigation-brand-text">{{site.title}} - {{site.description}}</strong>
 							</a>
 						</div>
+						{% if page.title != 'Lessons' %}
 						<div class="navigation-link">
 							<a class="navigation-anchor" href="#about">About</a>
 						</div>
@@ -22,6 +23,7 @@
 						<div class="navigation-link">
 							<a class="navigation-anchor" href="#faq">FAQ</a>
 						</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>
