@@ -41,7 +41,7 @@ class: title, center, middle
 --
 | Spark | files | separate | file formats + metadata | first-class support | all data is external | <span class="highlight">no guarantees</span> |
 
-# ...to mangosteens
+# ...to kumquats
 
 ???
 
@@ -57,14 +57,12 @@ functionality
 
 ---
 
-# Why not?
+# Why not use?
 
-### Spark, Presto, Hive, Athena
+### Spark, Presto, Athena, ...
 
 - This a blog post I need to write :)
-
 - They each have their fans, and their appropriate target audience!
-
 - Basically:
     - They are incredibly powerful and cost-effective.
     - They're harder to use, and harder to reason about.
@@ -78,18 +76,17 @@ It offers the best of both worlds:
 - Intuitive **user experience** of a database: users, groups/roles,
 authentication, permissions, information schema, everything is SQL
 
-- Flexible and scalable **performance** of a data lake + distributed
+- Flexible and scalable **performance** of a data lake and distributed
 processing technology
 
---
+---
 
-Who are best in class?
+# Who is best in class?
+
 - Snowflake + BigQuery. These are data lakes posing as data warehouses.
 - Redshift is playing catch-up with Spectrum + RA3 nodes
 
---
-
-What sets them apart?
+### What sets them apart?
 - Support for semi-structured data
 - Support for external data
 - Separation of compute + storage
@@ -103,49 +100,65 @@ bit that makes more sense as JSON!
 
 | bldg_id | location | occupancy | vacant_units | amenities |
 |---------|-------------|-----------|--------------|----------------------------------------------------------------------------|
-| 1 | Rittenhouse | 54 | `[1, 3, 9]` | `{“doorman”: true, “Pets_allowed”: true, “Pets_allowed_with_deposit”: 1000}` |
-| 2 | Fairmount | 8 | `[]` | `{ “Yard_size_sqft”: 100 }` |
-| 3 | Austin, TX | 5 | `[1]` | `{ “Yard_size_sqft”: 1,000 }` |
+| 1 | Rittenhouse | 54 | `[2, 3, 9]` | `{"doorman": true, "pets_allowed": true, "pet_deposit": 1000}` |
+| 2 | Fairmount | 8 | `[]` | `{ "yard_size_sqft": 100 }` |
+| 3 | Austin, TX | 5 | `[1]` | `{ "yard_size_sqft": 1000, "pets_allowed": true }` |
 
---
+vs.
 
-&nbsp;
+| bldg_id | location | occupancy | vacant_unit_1 | num_vacant | doorman | pets_allowed | pet_deposit | yard_size_sqft |
+|---------|-------------|-----------|--------------|----------------------------------------------------------------------------|
+| 1 | Rittenhouse | 54 | 2 | 3 | true | true | 1000 | |
+| 2 | Fairmount | 8 | | 0 | | | | 100 |
+| 3 | Austin, TX | 5 | 1 | 1 | | true | | 1000 |
 
-| JSON support           | Redshift      | Snowflake                           | BigQuery                            |
-|------------------------|---------------|-------------------------------------|-------------------------------------|
-| Unnesting dictionaries | Kind of       | Yes definitely! `amenities:doorman` | Yes definitely! `amenities.doorman` |
-| Flattening arrays      | Not natively  | Yes! `lateral flatten`              | Yes! `cross join unnest`            |
-| Loading data           | Flatten first | Load as-is                          | Load as repeated records            |
+---
+
+# Semi-structured data
+
+| JSON support           | Redshift                         | Snowflake                           | BigQuery                            |
+|------------------------|----------------------------------|-------------------------------------|-------------------------------------|
+| Unnesting dictionaries | Kind of: `json_extract_path_text`| Yes definitely! `amenities:doorman` | Yes definitely! `amenities.doorman` |
+| Flattening arrays      | Not natively                     | Yes: `lateral flatten`              | Yes: `cross join unnest`            |
+| Loading data           | Flatten + unnest first           | Load as-is (`variant` blob)         | Load as repeated records            |
 
 
 ---
 
 # External data
 
-Can your database query files living in S3, Google Cloud Storage, Azure blob storage...?
+Can your database query files living in S3, Google Cloud Storage, Azure Blob storage...?
 
-| External support           | Redshift      | Snowflake                           | BigQuery                            |
+| External support           | Redshift                                       | Snowflake                                | BigQuery                                   |
 |----------------------------|------------------------------------------------|------------------------------------------|--------------------------------------------|
 | COPY from/to               | Yes, for S3                                    | Yes, for S3/GCS/Azure                    | Yes, can query GCS + G Drive               |
 | Read from external tables  | Yes! Via Spectrum. Manual partitioning         | Yes! All via DDL, automatic partitioning | Yes! Powerful schema inference, but no DDL |
 | External-only transform    | Limited cf. Athena                             | Extensive                                | Limited                                    |
 
+.caption[Read more about [dbt + external tables](https://github.com/fishtown-analytics/dbt-external-tables)]
+
 ---
 
-# Separation of storage + compute
+# Storage &harr; compute
 
 When data is small and transformation is straightforward, you don't mind
 that these are locked in a tight aspect ratio
-- "I'd like another node, please!"
-- Everyone is sharing the same scarce resources
+- Everyone is sharing the same resources
+- Need more? "I'd like another node, please!"
+
+---
+
+# Storage &harr; compute
 
 What if you want more storage, without needing to pay for more compute nodes?
+- Resources are scarce and analysts shouldn't compete with each other
+- Event volume is _large_ and you can't store it all in-warehouse
+
 What if you want it _now_?
-- How do you know how much storage you need? (easy)
-- How do you know how much compute you need? (hard)
-- AWS/Azure/GCloud sell you "spot instances" of compute resources
-- Data is never stored "on disk" because you spin up + spin down compute only
-when you need it
+- Scaling storage is easy: more files in S3/GCS/Blob
+- Scaling compute is hard: bid for an EC2 spot instance
+- Data is never stored "on disk," it is always read from file storage
+    - Any caching is lost when compute spins down
 
 ---
 
@@ -157,18 +170,30 @@ when you need it
 
 # Different modeling paradigms
     
-- All models are materialized incrementally, and never fully refreshed
-- Testing is relative: `unique` and `not_null` failures < 1%
-- Tables are "sharded" by a top-level identifier: region, account, client, etc.
-    
---
-    
-### And what if that data is constantly arriving?
+- All models are materialized incrementally
+    - Replace discrete partitions, rather than merging/matching records*
+    - Never `--full-refresh`
+- Testing is relative
+    - E.g. test that `unique` failures are < 1% of all rows
+- Tables are "sharded" by a top-level identifier
+    - region, account, client, etc.
 
-- Real-time directional signals on top of _streaming_ datasets (Kafka, Kinesis, oh my...)
-- That data is funneled into external permanent storage
-- All-time historical aggregates from batch incremental transformations
-- A lot of our friendly abstractions + assumptions are out the window...
+---
+
+# And if that data is constantly arriving?
+
+You may have _two_ transformation workflows:
+
+- (1) Calculate real-time directional signals on top of _streaming_ datasets
+    - Kafka/Kinesis &rarr; KSQL
+    - SparkSQL structured streaming
+
+- Then, that data is funneled into S3/GCS/Blob for permanent storage, and staged 
+in external tables or loaded into your warehouse, allowing you to...
+
+- (2) Calculate all-time historical aggregates from batch incremental transformations
+
+Oy. A lot of our friendly abstractions + assumptions are out the window...
 
 ---
 

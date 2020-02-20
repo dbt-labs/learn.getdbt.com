@@ -12,42 +12,61 @@ class: title, center, middle
 
 # What is a materialization?
 
-- A "wrapper" for your SQL
-    - Includes all the "boilerplate" DDL/DML, like `create`, `alter`, `drop`
+- A wrapper for your SQL
+    - Includes all the boilerplate DDL/DML: `create`, `alter`, `drop`, ...
 
 - An abstraction on top of the database
-    - What if this model already exists in the database?
-    - What if this model is materialized as a table, but it currently exists as 
-    a view in the database?
+    - Does this model already exists in the database? What if it's materialized 
+    as a table, but it currently exists as a view?
     - What if Redshift uses `alter table` for views, but Snowflake uses `alter view`?
     - What if we want to build this model incrementally?
-        - Does it already exist?
-        - Does it have the same structure?
+        - Does it have the same structure as the existing version?
         - What data is "new"?
 
 ---
 
 # Standard materializations
 
-.left-column[
+.left-column-66[
+
+- Table
+- View
+- Ephemeral
+- Incremental
+
+### You can write your own!
+
+- Just special Jinja macros, calling other macros
+- Trickiest part: cross-database support
+- E.g. ["insert by period"](https://github.com/fishtown-analytics/dbt-utils#materializations)
+
+]
+
+.right-column-33[
+<img src="/lessons/img/{{page.lesson}}/material-houses.png" class="img-center">
+]
+
+---
+
+# Standard materializations
+
+.left-column-66[
 
 - Table
 - View
 - Ephemeral
 - .highlight[Incremental]
 
-### Can you write your own? Absolutely!
+### You can write your own!
 
-- Materializations are just special Jinja macros, that call
-a bunch of other Jinja macros
+- Just special Jinja macros, calling other macros
+- Trickiest part: cross-database support
 - E.g. ["insert by period"](https://github.com/fishtown-analytics/dbt-utils#materializations)
-- The trickiest part is implementing them equally across several types of 
-databases
 
 ]
 
-.right-column[
-<img src="/lessons/img/{{page.lesson}}/material-houses.png" style="width: 60%;" class="img-center">
+.right-column-33[
+<img src="/lessons/img/{{page.lesson}}/material-houses.png" class="img-center">
 ]
 
 ---
@@ -67,11 +86,13 @@ class: title, center, middle
 
 # Why not?
 
-This is an optimization problem, specific to _your_ database. It requires a deep 
-understanding of the performance features we've been discussing.
+**Performance first:** Incremental modeling is an optimization problem, 
+specific to _your_ database. It requires a deep understanding of the 
+performance features we've been discussing.
 
-The implementation is straightforward, the implications are complex and subtle.
-You need to think in advance about all the ways that things can go wrong.
+**Quiet failure mode:** The implementation is straightforward, the 
+implications are complex and subtle. You need to think in advance about all 
+the ways that things can go wrong.
 
 ---
 
@@ -79,25 +100,27 @@ You need to think in advance about all the ways that things can go wrong.
 
 .left-column[
 ### If you're...
-
 - Just starting out
 - Relatively small data (< 10mm rows, ~10 GB / table)
 - Able to query views with low latency
 - Building table models in < 90s seconds
 
-### don't worry about it!
+### _don't worry about it!_
 ]
 
 --
 
 .right-column[
+.left-column[
 ### If you're...
-
 - Maturing as an organization
-- Working with a lot of unchanging historical data (> TB)
-- Noticing that table models take 5+ minutes to build
+- Modeling a lot of unchanging historical data (> TB)
+- Seeing table models take 5+ minutes to build
+]
 
-<img src="/lessons/img/{{page.lesson}}/rodin-thinker.png" style="width: 50%;" class="img-center">
+.right-column[
+<img src="/lessons/img/{{page.lesson}}/rodin-thinker.png" style="border-radius: 50%;" class="img-center">
+]
 ]   
 
 ---
@@ -111,7 +134,7 @@ You need to think in advance about all the ways that things can go wrong.
     - Reliable `updated_at` field if any updates
 - Fact table structure (tall + skinny)
 ]
-
+--
 .right-column[
 ### Not-so-great
 - Transformations that involve:
@@ -140,14 +163,17 @@ class: subtitle, center, middle
 
 ---
 
-# [On the limits of incrementality](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
+### [The Discourse](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
 
-<img src="/lessons/img/{{page.lesson}}/incr-discourse.png" class="img-center">
+<img src="/lessons/img/{{page.lesson}}/incr-discourse-stats.png" class="img-center">
+&nbsp;
+<img src="/lessons/img/{{page.lesson}}/incr-discourse-intro.png" class="img-center">
 
 ---
 
 # "The big easy"
 
+.dense-text[
 _Keep it simple:_ This model rolls up **events** into **sessions**. A session 
 contains one or more events with the same `session_id`.
 
@@ -155,9 +181,7 @@ contains one or more events with the same `session_id`.
 ```sql
 {{config(
     materialized = 'incremental',
-    unique_key = 'session_id',
-    sort = 'session_start',
-    dist = 'session_id'
+    unique_key = 'session_id'
 )}}
 
 with events as (
@@ -173,6 +197,7 @@ with events as (
 -- rest of model --
 ```
 {% endraw %}
+]
 
 ---
 
@@ -190,6 +215,7 @@ Checks four conditions:
 3. Is this model configured with an incremental materialization? (Yes!)
 4. Was the `--full-refresh` flag passed to this `dbt run`? (No!)
 
+???
 If all of the conditions are met, `is_incremental()` returns `true`.
 
 ---
@@ -200,9 +226,9 @@ If all of the conditions are met, `is_incremental()` returns `true`.
 
 How is this idempotent?
 
-- At any point, you could `run --full-refresh` and get the "true" table. The
-goal of incremental models is to _approximate_ the "true" table in a fraction
-of the runtime.
+- At any point, you could `run --full-refresh` and get the "true" table.
+- The goal of incremental models is to _approximate_ the "true" table in a fraction
+of the runtime
 
 ---
 
@@ -219,10 +245,27 @@ Basically:
 - Delete/update matched **existing** records with **new** ones
 - Insert unmatched **new** records
 
-Performance is optimal if:
+---
+
+# For best results
+
 - The source `events` model is sorted by `event_timestamp`
 - The model is sorted by `session_start`
-- Redshift: It doesn't hurt if both tables are distributed by `session_id`
+
+```sql
+with events as (
+
+    select * from dev_jerco.events
+    
+    where event_timestamp >= (select max(session_start) from dev_jerco.sessions)
+
+),
+
+-- rest of model --
+```
+
+- Redshift: It's a good idea to distribute the `sessions` model on `session_id`
+    - dbt will `delete` from the existing table using an implicit inner join
 
 ---
 
@@ -233,6 +276,7 @@ class: subtitle, center, middle
 
 ### Imagine some sessionization logic
 
+.left-column[
 ```sql
 sessionized as (
 
@@ -247,6 +291,12 @@ sessionized as (
 
 ),
 
+...
+```
+]
+
+.right-column[
+```sql
 indexed as (
 
     select *,
@@ -262,12 +312,15 @@ indexed as (
 
 select * from indexed
 ```
+]
 
 ---
 
 # Late-arriving facts
 
 <img src="/lessons/img/{{page.lesson}}/how-late-arriving.png" class="img-center">
+
+--
 
 The session is split across our `where` filter. In the simple approach,
 we would replace the first half-session (computed from first half of events)

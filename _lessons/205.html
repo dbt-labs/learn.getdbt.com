@@ -20,6 +20,8 @@ name: big-q
 |----|---------|----------------|-------------|
 | 1  | Alice   | green          | false       |
 
+<div style="font-size: 10px;">&nbsp;</div>
+
 | id | name    | favorite_color | is_creative |
 |----|---------|----------------|-------------|
 | 2  | Barbara | blue           | true        |
@@ -108,7 +110,7 @@ Why else?
 
 # Horizontal scaling
 
-Parallel processing = faster processing
+Parallel processing = faster processing!
 
 <img src="/lessons/img/{{page.lesson}}/redshift-nodes.png" class="img-center">
 
@@ -336,9 +338,9 @@ _economic necessity_.
 # Snowflake clustering
 
 Snowflake natively stores data in tiny chunks (“micropartitions”) and stores 
-metadata about each partition, like the min/max value.
+metadata about each partition, such as the min/max value.
 
-This improves performance dramatically by improving “query pruning”: How many 
+This improves performance dramatically via “query pruning”: How many 
 micropartitions need to be scanned to return the results of my query?
 
 ---
@@ -362,8 +364,10 @@ When do we need to do more?
 
 # Apples to apples
 
-.left-column-33[
+.dense-text[
+.left-column[
 ### Redshift
+.left-column[
 - Sort keys
     - Compound
     - Interleaved
@@ -371,6 +375,8 @@ When do we need to do more?
     - Single column
     - Even
     - All
+]
+.right-column[
 - Maintenance
     - vacuum
     - analyze
@@ -379,18 +385,21 @@ When do we need to do more?
     - LZO
     - ...
 ]
+]
 
-.right-column-66[
+.right-column[
 .left-column[
 ### BigQuery
 - Partitioning
 - Clustering
-- Nesting/arraying
+- Nesting/arraying repeated records
 ]
 
 .right-column[
 ### Snowflake
-- Clustering (= sorting), only for large tables
+- Clustering (~sorting)
+    - Only for large tables
+]
 ]
 ]
 
@@ -403,6 +412,7 @@ cluster is, well, a cluster.
 ---
 
 class: subtitle, middle, center
-# Now for something a little bit different...
+# Just those three?
+# Wait and see...
 
 {% include options/next-presentation.html %}
