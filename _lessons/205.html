@@ -9,15 +9,8 @@ class: title, center, middle
 
 ---
 
-
+name: big-q
 # Q: Why are data warehouses fast?
-
---
-
-### A: They're columnar!
-
-???
-Data warehouses _rose_ to prominence because they're columnar. Get it?
 
 ---
 
@@ -26,8 +19,6 @@ Data warehouses _rose_ to prominence because they're columnar. Get it?
 | id | name    | favorite_color | is_creative |
 |----|---------|----------------|-------------|
 | 1  | Alice   | green          | false       |
-
-&nbsp;
 
 | id | name    | favorite_color | is_creative |
 |----|---------|----------------|-------------|
@@ -67,14 +58,27 @@ Data warehouses _rose_ to prominence because they're columnar. Get it?
 
 ---
 
-# Data is stored to be queried
+# Which for which?
 
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+.left-column[
 ```sql
--- transactional
-select * from users
-where id = 2
+select
 
--- analytical
+    name,
+    favorite_color
+
+from users
+where id = 2
+```
+]
+
+.right-column[
+```sql
 select
 
     is_creative,
@@ -83,67 +87,60 @@ select
 from users
 group by 1
 ```
-
-| id | name    | favorite_color | is_creative |
-|----|---------|----------------|-------------|
-| 1  | Alice   | green          | false       |
-| 2  | Barbara | blue           | true        |
+]
 
 ---
 
-# Q: Why are data warehouses fast?
+template: big-q
+name: first-a
 
-### A: They're columnar!
+.left-column[
+### A: They're columnar.
 
---
+This structure of data storage allows them to .highlight[**limit scanned data**] 
+when executing an "analytical" query.
+]
 
-Which allows them to <span style="background-color: yellow;">**limit scanned data**</span> when executing an analytical query.
-
---
-
-### A: They're scalable.
+???
+Why else?
 
 ---
 
 # Horizontal scaling
 
+Parallel processing = faster processing
+
 <img src="/lessons/img/{{page.lesson}}/redshift-nodes.png" class="img-center">
+
+???
+BigQuery runs _every_ query with _thousands_ of worker nodes
 
 ---
 
 # Vertical Scaling
 
 .left-column[
+### In the world
 <img src="/lessons/img/{{page.lesson}}/amd-vc.png" class="img-center">
-]
-
-.right-column[
+&nbsp;
 <img src="/lessons/img/{{page.lesson}}/nvidia-gpu.png" class="img-center">
 ]
 
---
-
-&nbsp;
-
-<img src="/lessons/img/{{page.lesson}}/snowflake-scaling.png" class="img-center" style="width: 50%;">
+.right-column[
+### In Snowflake
+<img src="/lessons/img/{{page.lesson}}/snowflake-scaling.png" class="img-center">
+]
 
 ---
 
-# Q: Why are data warehouses fast?
+template: first-a
+name: second-a
 
-### A: They're columnar!
-
-Which allows them to <span style="background-color: yellow;">**limit scanned data**</span> when executing a query.
-
+.right-column[
 ### A: They're scalable.
 
---
-
-Data warehouses can benefit from <span style="background-color: yellow;">**horizontal and vertical scaling**</span>.
-
---
-
-### Conclusion: They're optimized for analytics.
+Data warehouses can benefit from .highlight[**horizontal and vertical scaling**].
+]
 
 ---
 
@@ -154,13 +151,11 @@ class: subtitle, center, middle
 
 # Mental model
 
-- A query, written in SQL, is interpreted by the database optimizer and
-compiled to machine code.
-
-- The machine code contains a set of instructions, some of which are more 
-strenuous to execute.
-
-&nbsp;
+- A query, written in SQL, is interpreted by the database optimizer
+- The optimizer writes an execution plan in machine code
+- The execution plan contains a sequence of tasks
+- Some tasks are easy, some are more strenuous
+- Some tasks can be performed in parallel, some to need to wait for others to finish
 
 | Task                | Time  | Time (Relative) |
 |---------------------|-------|-----------------|
@@ -175,11 +170,9 @@ strenuous to execute.
 
 - Scanning data is **_slow_**
 - Moving data around is **_slowww_**
-
 - Warehouses are "logical" and "physical"
     - We like to think about the "logical" part of it
     - Sometimes it’s necessary to consider the "physical"
-
 - Biggest takeaway?
     - Your time is valuable
     - Make choices that keep you focused on the "logical"
@@ -189,7 +182,10 @@ strenuous to execute.
 class: subtitle, center, middle
 # Example: sorting data
 
-### I'm thinking of a number...
+---
+
+class: subtitle, center, middle
+## I'm thinking of a number...
 
 ???
 - I'm thinking of a number between 1 and 100. What is it?
@@ -199,7 +195,7 @@ class: subtitle, center, middle
 
 ---
 
-## The library! :)
+## My favorite place :)
 
 .left-column-66[
 <img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
@@ -208,13 +204,13 @@ class: subtitle, center, middle
 --
 
 .right-column-33[
-### How many books start with the letter "D"?
+#### How many books start with the letter "D"?
 ]
 
 --
 
 .right-column-33[
-### How many books were written in 2002?
+#### How many books were written in 2002?
 ]
 
 ???
@@ -251,21 +247,25 @@ where order_date >= ‘2019-01-03’
 
 # In practice
 
+.left-column[
 Databases need to sort data for:
 - Filters (`where`)
 - Window functions (`partition by`, `order by`)
+]
 
+.right-column[
 Databases need to move data around for:
 - Uniqueness (`distinct`)
 - Joins
+]
 
-The optimizer is your friend!
+**The optimizer is your friend!**
 
 - If the database optimizer does its job perfectly, you never need to think
 about sorting, distributing, clustering, shuffling, range joining, ...
 - If you _only_ think about the "logical" and _never_ about the "physical,"
-you will never truly empathize with the database optimizer, and you will
-write non-performant SQL.
+you cannot empathize with the database optimizer, and you will
+write non-performant SQL
 
 ???
 - Joins implicitly require finding all unique values for match/comparison, which
@@ -277,7 +277,7 @@ Rabbi Hillel's questions, paraphrased:
 
 ---
 
-# Queries are optimization problems
+### Every query is an optimization problem
 
 .left-column[
 `dim_users`
@@ -299,8 +299,6 @@ Rabbi Hillel's questions, paraphrased:
 | 1       | 125      | 40.00       |
 | ...     | ...      | ...         |
 ]
-
---
 
 &nbsp;
 

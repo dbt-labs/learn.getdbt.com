@@ -12,16 +12,34 @@ class: title, center, middle
 
 ---
 
-# Why?
+# What's a PR?
 
-- This is how you ship/deliver/release your work.
-- You _cannot_ merge code that is not approved.
-- Your PR is your chance to make the argument that your code _should_ be merged.
-It's not a chore, it's a powerful tool!
+- Final step in a git-based workflow
+    - You've got a branch
+    - I've got a branch
+    - We both want to merge into `master`
+- Checkpoint for quality control
+    - Mechanism for review and approval by your colleagues
+    - Automated testing (Continuous Integration)
+- Also called **Merge Requests (MRs)**
 
 ---
 
-# We have a guide for that
+# Why?
+
+- This is how you ship, deliver, release your work
+    - If it's never merged, did you really do it?
+- You _cannot_ merge code that is not approved
+- Your PR is your _opportunity_ to make the argument that your code _should_ be merged
+    - It's not a chore, it's a powerful tool!
+
+---
+
+[include image of a good PR]
+
+---
+
+# We've got a [guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for that
 
 Pull requests should:
 
@@ -34,44 +52,53 @@ or what needs to be done to merge the code successfully.
 - Show a "green" passing CI build, or explain any failing tests.
 
 You can create _templates_ for pull request descriptions that will serve as
-helpful guides to future contributors!
-
-_Check out [Fishtown's git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md)_
+helpful guides to future contributors!*
 
 ---
 
-# WIP PRs
+# In progress?
 
-Pull requests can be used to collaborate on code, as they are a great way to
-share the code you've written so far. In this scenario, use a **draft** pull request.
+- WIP PRs can be nice ways to share, collaborate, and comment on code, 
+even if it's not merge-ready
+    - Some hosting platforms / organizations have **draft** pull requests enabled
+    - Others adopt a naming convention: "WIP" or "DO NOT MERGE"
+- **_Caveat:_** At present, dbt Cloud will trigger CI from _all_ new commits 
+pushed to an open PR (draft or otherwise)
 
-### Caveat
-
-At present, dbt Cloud CI will run & test _all_ new commits to an open PR,
-draft or otherwise.
+???
+The dbt Cloud trigger is something we're thinking about changing!
 
 ---
 
-# Any issues?
+# No code yet?
 
-- Found a bug?
-- Have an idea for an improvement?
+If you...
+- find a bug
+- have an idea for an improvement
+- want to share some long-term thinking
 
-Open an [issue](https://guides.github.com/features/issues/)! You don't need to
-have the code already written. If you get into a habit now of communicating
-ideas and in-progress work to your colleagues, you'll thank yourself later.
+### _Open an [issue](https://guides.github.com/features/issues/)!_
+
+Things break and people have ideas all the time. If you get into a habit now of 
+communicating bugs, problems, and in-progress work to your colleagues early and
+often, you'll thank yourself later.
+
+---
+
+class: subtitle, center, middle
+# Breathe. You made it through Day One.
 
 ---
 class: subtitle
 
-# Ready, set, open!
-## Summary of working sessions from today:
+# Summary of working sessions from today:
 * [Pre-work](https://tutorial.getdbt.com/learn/setting-up/): Build your first dbt project
-* [103 dbt Fundamentals](103#working-session): Add an `orders` model to your project
-* [104 Data Warehouse Design](104#working-session): Re-organize your project
-* [105 Testing & CI](105#working-session): Add tests to your `orders` model
-* [106 Sources](106#working-session): Use sources for `jaffle_shop` and `stripe`
-* [107 Docs](107#working-session): Add a docs block to your project
+* [103 dbt Fundamentals](/lessons/103#working-session): Add an `orders` model to your project
+* [104 Data Warehouse Design](/lessons/104#working-session): Re-organize your project
+* [105 Testing & CI](/lessons/105#working-session): Add tests to your `orders` model
+* [106 Sources](/lessons/106#working-session): Use sources for `jaffle_shop` and `stripe`
+* [107 Docs](/lessons/107#working-session): Add a docs block to your project
+* [108 Debugging dbt](/lessons/108#working-session): Break things and fix them
 
 When you're ready, open a PR and tag a classmate to review it!
 ???

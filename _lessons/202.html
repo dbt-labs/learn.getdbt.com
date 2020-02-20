@@ -17,27 +17,24 @@ class: title, center, middle
 
 # Jinja is a templating engine
 
-& it's pythonic! So it works in ways you'd expect if you've ever
-written python, while still being quite intuitive if you haven't.
+And it's _pythonic_! So it works in ways you'd expect if you've ever
+written python, and even if you haven't.
 
+.left-column[
 Other templating engines:
 * Nunjucks (JavaScript, Jinja-inspired)
 * Liquid (Ruby)
+]
 
+.right-column[
 Applications that use Jinja:
 * Ansible
 * Flask
 * Airflow
 * dbt!
+]
 
----
-
-# Read the docs!
-
-https://jinja.palletsprojects.com/en/2.11.x/
-
-<iframe width="100%" height="50%" src="https://jinja.palletsprojects.com/en/2.11.x/" 
-frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)
 
 ---
 
@@ -58,40 +55,50 @@ class: subtitle, middle, center
 {% set you = 'foo' %}
 ```
 
---
-
+---
+# Dictionaries
 
 ```jinja
-{# dictionaries #}
-
 {% set person = {
     'name': 'me',
     'number': 3
 } %}
-
-{{ person.name }} OR {{ person['name'] }}
 ```
-
-
---
-
-
 ```jinja
-{# arrays #}
-
-{% set i = ['me', 'myself'] %}
-
-{{ i[0] }}
+{{ person.name }}
+{{ person['name'] }}
+```
+--
+```
+me
+me
 ```
 
 
 ---
-
-# Setting local variables
+# Arrays
 
 ```jinja
-{# and so on #}
+{% set self = ['me', 'myself'] %}
 
+{% do self.append('i') %}
+```
+
+```jinja
+{{ i[0] }}
+{{ i | length }}
+```
+--
+```
+me
+3
+```
+
+---
+
+# And so on
+
+```jinja
 {% set us = [
   {
       'name': 'me',
@@ -105,7 +112,10 @@ class: subtitle, middle, center
 
 {{ us[1]['details'] }}
 ```
-
+--
+```
+foo
+```
 
 ---
 
@@ -162,21 +172,24 @@ Today I want strawberry ice cream!
 
 # Wait: Loops???
 
-In SQL???
+_Aren't we going to be writing SQL???_
 
 {% endraw %}
 <img src="/lessons/img/{{page.lesson}}/hn-loops.png" style="width: 100%;">
 {% raw %}
 
+--
+
 SQL is a highly performant and _very_ declarative language.
 
-We _are not_ looping across rows in the database. We _are_ using loops to avoid
-copy-paste when generating the SQL that is then run against the database.
+We _are not_ looping across rows in the database.
+
+We _are_ using loops to avoid copy-paste when writing SQL. That compiled
+SQL is then run against the database.
 
 ---
 
 # Macros
-
 
 ```jinja
 {% macro hoyquiero(flavor, dessert = 'ice cream') %}
@@ -186,8 +199,7 @@ copy-paste when generating the SQL that is then run against the database.
 {{ hoyquiero(flavor = 'chocolate') }}
 {{ hoyquiero('mango', 'sorbet') }}
 ```
-
-
+--
 ```
 Today I want chocolate ice cream!
 Today I want mango sorbet!
@@ -195,81 +207,114 @@ Today I want mango sorbet!
 
 ---
 
-# dbtonic Jinja: refs
-
-`{{ ref(‘staging_model’) }}`
-
-_dev_: `dbt_jcohen.staging_model`    
-**prod: `analytics.staging_model`**
-
-&nbsp;
-
-Use it always! This is how dbt
-* mananages environments
-* infers all model dependencies (DAG)
+class: subtitle, center, middle
+# dbtonic Jinja
 
 ---
 
-# dbtonic Jinja: global vars
+# refs
+
+`{{ ref(stg_stripe_payment) }}`
+
+.grey[`dev_jerco.stg_stripe_payment`]
+
+**`analytics.stg_stripe_payment`**
+
+&nbsp;
+
+Use it always! This is how dbt:
+* Mananages environments
+* Infers all model dependencies (DAG)
+
+---
+
+# project-level vars
 
 
 ```yml
 # dbt_project.yml
+
 models:
   my_dbt_project:
 	vars:
-	  flavor: chocolate
+	  flavor: chocolate    # default value
 ```
+
+```sql
+# flavortown.sql
+
+select '{{ var('flavor') }}' as my_favorite_flavor
+```
+--
+```
+select 'chocolate' as my_favorite_flavor
+```
+
+---
+
+# Hot tip
+
+You can override global vars with a CLI flag:
 
 ```sql
 # flavortown.sql
 select '{{ var('flavor') }}' as my_favorite_flavor
 ```
 
-```
-select 'chocolate' as my_favorite_flavor
-```
-
-&nbsp;
-
-You can override global vars with a CLI flag:
-
 ```bash
 dbt run --vars '{"flavor": "vanilla"}'
 ```
-
+--
 ```
 select 'vanilla' as my_favorite_flavor
 ```
 
 ---
 
-# dbtonic Jinja: good-to-knows
-
-### Logging
-
-...can be very useful! Especially if you're working on complicated macros.
-
+# Logging
 
 ```jinja
-{% macro create_user(username, password) %}
+{% macro grant_on(user, object, privilege) %}
 
-	create user {{username}} password '{{password}}'
+	grant {{privilege}} on {{object}} to {{user}}
     
-	{% do log(
-        "User " ~ username ~ " is ready to rock and roll", 
-        info = true
-    ) %}
+    {% set message %}
+        User {{user}} is ready to rock & roll with {{privilege}} on {{object}}
+    {% endset %}
+    
+	{% do log(message, info = true) %}
 
 {% endmacro %}
 ```
 
+```sql
+{{ grant_on('fishtown_jeremy', 'analytics.stg_stripe_payment', 'select') }}
+```
+--
+```
+User fishtown_jeremy is ready to rock & roll with select on 
+analytics.stg_stripe_payment
+```
 ---
 
-# dbtonic Jinja: good-to-knows
+# Logging
 
-### Whitespace control
+Especially useful when you're working on:
+- Complicated macros
+- Macros that call other macros
+- Macros that run introspective queries against the database*
+- Macros that are run as operations*
+- Custom materializations*
 
+Topics for later (or another time)!
+
+---
+
+# Whitespace control
+
+Add dashes to remove whitespace from compiled output:
+- `{{ this }}` &rarr; `{{- this -}}`
+- `{% this %}` &rarr; `{%- this -%}`
 
 ```jinja
 yeah
@@ -278,6 +323,7 @@ good.
 {%- but this will not! -%}
 ok.
 ```
+--
 ```
 yeah
 
@@ -286,9 +332,7 @@ good.ok.
 
 ---
 
-# dbtonic Jinja: good-to-knows
-
-### Comments
+# Comments
 
 ```sql
 -- this is a SQL comment
@@ -298,9 +342,10 @@ good.ok.
 {# whereas this is a Jinja comment #}
 ```
 
-& comments:
-* Only SQL comments show up in your compiled code.
-* Be careful about having the two in close proximity!
+- Only SQL comments show up in your compiled code
+    - Jinja comments for dbt things
+    - SQL comments for modeling/business logic
+- Be careful about having the two in close proximity!
 
 {% endraw %}
 

@@ -12,39 +12,45 @@ class: title, center, middle
 
 ---
 
-# If any of the following is true...
+# If you've ever had this happen...
 
-* I'm switching my email marketing platform. (Or: I'm switching the tool that
-extracts and loads _from_ my email marketing platform.) I want to know which
-final models depend on that source data.
+- I'm switching my email marketing platform. I want to know which final models depend on that source data.
 --
 
-* I'm switching from Redshift to Snowflake. All of my source data will be
-in a different database/schema.
+- I'm switching the tool that extracts and loads _from_ my email 
+marketing platform. The table names used to have underscores, now they don't!
 --
 
-* Because no one is perfect, my data loading tools experience occasional
-hiccups or wrinkles that result in delayed or duplicated data
+- I'm switching from Redshift to Snowflake. All of my source data will be
+in a different database and schema.
 --
 
-* My SQL transformations are working as expected, but my transformed data just
-doesn't look right. Help?!?!
+- Nothing in this world is perfect. My data loading tools experience occasional
+hiccups that result in delayed or duplicated data.
 --
 
-* I want to stage & query data that lives in external file storage (!!)
+- (!!) I want to stage & query an external table that points to files in S3.
 
 ---
 
 # Sources may be right for you!
 
-* Declare `database`, `schema`, and `table` names
-* Test schema integrity (`unique`, `not_null`)
-* Test loading freshness
-* Declare `external` properties
+- Easily declare and update the location of raw tables
+    - `database` + `schema` for each source
+    - `name`/`identifier` for each table
+--
+- Test schema integrity of raw tables
+    - Built-in: `unique`, not_null`, `accepted_values`, `relationships`
+    - Custom: whatever you want!
+--
+- Test the freshness of loaded data, based on thresholds you define
+--
+
+- (!!) Declare `external` properties ([read more](https://github.com/fishtown-analytics/dbt-external-tables))
 
 ---
 
-# Familiar concepts
+# YML
 
 I define my sources in `stripe_source.yml`:
 ```yml
@@ -55,6 +61,31 @@ sources:
     tables:
       - name: payment
 ```
+
+---
+
+# Feeling fresh?
+
+Optionally, specify a `loaded_at_field` and `freshness`:
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    loaded_at_field: _batched_at
+    loader: airflow     # this is just for documentation
+    
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+    
+    tables:
+      - name: payment
+```
+
+---
+
+# SQL
 
 And then I create a staging model, `stg_stripe_payment.sql`:
 
@@ -80,34 +111,37 @@ renamed as (
 
 ---
 
-# And green is good
+.left-column-33[
+# And green is good!
+]
 
-```yml
-sources:
-  - name: stripe
-    loaded_at_field: _batched_at
-    loader: airflow
-    
-    freshness:
-      warn_after: {count: 12, period: hour}
-      error_after: {count: 24, period: hour}
-    
-    tables:
-      - name: payment
+.right-column-66[
+```bash
+dbt source snapshot-freshness
 ```
-
-<img src="/lessons/img/{{page.lesson}}/freshness-viz.png" class="img-center">
+<img src="/lessons/img/{{page.lesson}}/freshness-viz.png" style="width: 100%;" class="img-center">
+]
 
 ---
 
-# A common approach
+# In deployment
+
+A common approach: Test the schema integrity of raw tables _before_
+replacing production models.
 
 ```bash
 dbt test -m source:*            # ensure no duplicates or unexpected nulls
 dbt run                         # only runs if test above succeeds
 dbt test --exclude source:*
-dbt source snapshot-freshness
+dbt source snapshot-freshness   # powers freshness viz in dbt Cloud
 ```
+
+Of course, many deployments are _much_ more complex.
+
+???
+More complex deployments:
+- Blue/green that renames schema/database at last step (if all tests pass) or
+leaves old objects in place (if a test fails)
 
 ---
 
