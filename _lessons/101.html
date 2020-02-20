@@ -14,7 +14,7 @@ class: title, center, middle
 (And what do you call yourselves?)
 
 ---
-## The traditional data team
+# The traditional data team
 - Data engineers:
     - Build data warehouse infrastructure
     - Extract & load data into your warehouse
@@ -27,7 +27,11 @@ class: title, center, middle
 
 
 ---
-## Modern data stack
+# Modern data stack
+<!--
+To-do: Update this SVG
+-->
+
 <img src="/lessons/img/{{page.lesson}}/modern-data-stack-without-dbt.png" style="width: 100%;">
 
 ???
@@ -39,12 +43,11 @@ class: title, center, middle
 Teaching notes:
 - flip back to traditional data team and annotate to show how it doesn't make sense anymore (cross parts out, arrow other parts around, particularly stakeholders not wanting to wait for the analysts)
 ---
-
-
-## Consequences of the modern data stack
+# Consequences of the modern data stack
+.dense-text[
 Have you ever:
 - Had two stakeholder have different values for a KPI, and not been sure what was right?
-- Rewritten the same snippet of SQL, e.g:
+- Rewritten the same snippet of SQL? Or forgotten to write it?
 ```sql
 select * from orders
 where status not in ('cancelled', 'false')
@@ -52,8 +55,11 @@ where status not in ('cancelled', 'false')
     and user_id != 12
 ```
 - Broken all your dashboards because of a bad join?
-- Had data go stale (and only found out when someone else noticed?)
-
+- Had data go stale? And only found out when someone else noticed?
+- Not really been sure where your data came from?
+]
+???
+audience: Share your story of the silliest data problem you've had
 ---
 # Enter: dbt
 
@@ -61,7 +67,9 @@ where status not in ('cancelled', 'false')
 
 
 ???
-* The solution? Transform your data in a shape that's ready for analytics
+* The solution? Transform your data in a shape that's ready for analytics. But don't just do that:
+    - test it
+    - document it
 * Anyone who knows SQL can do this!
 * This role is neither data engineering nor data analysis... it's analytics engineering
 
@@ -72,9 +80,17 @@ where status not in ('cancelled', 'false')
 
 <img src="/lessons/img/{{page.lesson}}/role-comparison.png" style="width: 100%;">
 
-{% include options/next-presentation.html %}
 
 ???
 What do these software engineering best practices look like?
 
 All that and more... after the break!
+
+---
+class: subtitle
+# The analytics engineering mindset
+## - Be curious
+
+## - Learn from each other
+
+{% include options/next-presentation.html %}
