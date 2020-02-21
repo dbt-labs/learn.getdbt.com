@@ -56,7 +56,7 @@ models:
   bind: false
 ```
 .caption[
-[Source](https://github.com/fishtown-analytics/dbt-init/blob/master/starter-project/dbt_project.yml)
+[Example](https://github.com/clrcrl/dbt-learn-ccarroll/blob/master/dbt_project.yml), [Source](https://github.com/fishtown-analytics/dbt-init/blob/master/starter-project/dbt_project.yml)
 ]
 ???
 
@@ -117,7 +117,8 @@ Also use sources when referring to raw data
 ```
 {% endraw %}
 
---
+---
+# Apply configurations at the group level
 
 🙆‍♀️
 ```yml
@@ -156,11 +157,12 @@ A README can help answer:
 ???
 Note: many of these are links to our start project script, so include extra jinja
 ---
-# To-do:
-Add image of README.md
+.center[
+<img src="/lessons/img/{{page.lesson}}/example-readme.png" style="width: 80%;">
+]
 
 .caption[
-  [Example README](https://github.com/fishtown-analytics/dbt-init/tree/master/starter-project)
+  [Example](https://github.com/clrcrl/dbt-learn-ccarroll/), [Source](https://github.com/fishtown-analytics/dbt-init/tree/master/starter-project)
 ]
 ---
 # Add a PR template
@@ -168,8 +170,10 @@ PR templates help you write better PRs (and are great tools for reviewers!)
 * Use headers to prompt someone to fill in the right information
 * Checklists are also useful
 ---
-# to-do
-Add image of PR template
+.center[
+<img src="/lessons/img/{{page.lesson}}/example-pr-template.png" style="width: 80%;">
+]
+
 .caption[
   [Example PR template](https://github.com/fishtown-analytics/dbt-init/blob/master/starter-project/.github/pull_request_template.md)
 ]
