@@ -126,7 +126,7 @@ class: subtitle
 
 
 ---
-# Hold up, what about all those other macros?
+## Hold up, what about all those other macros?
 Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
 .center[
 <img src="/lessons/img/{{page.lesson}}/127-macros.png" style="width: 50%;">
@@ -134,12 +134,12 @@ Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
 ???
 This slide is truly for curious minds.
 --
-
+.dense-text[
 dbt is itself [a package](https://github.com/fishtown-analytics/dbt/tree/dev/barbara-gittings/core/dbt/include/global_project)!
 * a.k.a "the dbt global project"
 * Tests are macros prefixed with `test_`
 * Materializations use macros
-
+]
 ???
 Hint: we might need this information later today!
 
