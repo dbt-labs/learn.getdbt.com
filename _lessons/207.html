@@ -201,7 +201,7 @@ with events as (
 
 ---
 
-# Let's dissect: special Jinja variables
+# Special Jinja variables
 
 ### {% raw %}`{{this}}`{% endraw %}
 
@@ -241,6 +241,7 @@ What's the DDL/DML that dbt is running?
 
 Basically:
 
+- Grab all column names from existing tables*
 - Match **new** and **existing** records on their `unique_key`
 - Delete/update matched **existing** records with **new** ones
 - Insert unmatched **new** records

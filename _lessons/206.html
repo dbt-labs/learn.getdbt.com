@@ -184,14 +184,18 @@ What if you want it _now_?
 
 You may have _two_ transformation workflows:
 
+.left-column[
 - (1) Calculate real-time directional signals on top of _streaming_ datasets
     - Kafka/Kinesis &rarr; KSQL
     - SparkSQL structured streaming
+]
 
+.right-column[
 - Then, that data is funneled into S3/GCS/Blob for permanent storage, and staged 
 in external tables or loaded into your warehouse, allowing you to...
 
 - (2) Calculate all-time historical aggregates from batch incremental transformations
+]
 
 Oy. A lot of our friendly abstractions + assumptions are out the window...
 
