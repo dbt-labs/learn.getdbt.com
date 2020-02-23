@@ -205,7 +205,7 @@ ERROR:  permission denied for relation my_table
 ???
 
 
---
+---
 
 ## Technique: version-controlled grant statements
 
@@ -297,7 +297,7 @@ Consider:
 
 # Other use cases for hooks & operations
 * Creating UDFs at the start of a run ([Discourse](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions/18))
-* Performing warehouse maintenance on Redshift ([package](https://github.com/fishtown-analytics/redshift))
+* Performing warehouse maintenance
 * Staging external tables ([package](https://github.com/fishtown-analytics/redshift))
 
 
@@ -534,75 +534,6 @@ group by 1
 
 ???
 
-
----
-# I need a "single customer view"
---
-
-But my customers have different IDs in:
-* my app
-* Zendesk
-* Shopify
-* Segment
-
-???
-How do you answer how many people did X and then went on to do Y?
-
---
-
-## Technique: user stitching
-
----
-# Anatomy of user stitching
-Create master "customers" table with one record per (best-guess) of a human being, with a unique customer identifier
-
-
-???
-* Pro tip: on Snowflake and BQ, you can list the mapped IDs in an array!
-* Start simple, make it more complex as you go
-
-
----
-# What we have:
-`snowplow.page_views`:
-
-| pageview_id | date         | user_id | anonymous_id |
-|-------------|--------------|---------|--------------|
-| 13jkbse2    | 01/10/2019   |         | 123456       |
-| 372jdka     | 01/29/2019   |         | 123456       |
-| 9nd2353     | 01/31/2019   |         | 123456       |
-| 84jkr939    | 02/03/2019   |         | 123456       |
-| jsd8j2kw    | 03/19/2019   | 1       | 123456       |
-
-`jaffle_shop.customers`:
-
-| customer_id  | email                       |
-|--------------|-----------------------------|
-| 1            | alice@fishtownanalytics.com |
-
-`stripe.customers`:
-
-| customer_id | email                         |
-|-------------|-------------------------------|
-| 73          | alice@fishtownanalytics.com   |
-
----
-
-# What we want:
-| customer_id | snowplow_anonymous_id | stripe_customer_id | email                       |
-|-------------|-----------------------|--------------------|-----------------------------|
-| 1           | 123456                | 73                 | alice@fishtownanalytics.com |
-
-
-???
-What happens when you have duplicate users? You'll need to dedupe them! Maybe you'll have mapping pairs:
-* "mapping pairs" help you say "If a user has _this_ ID in Zendesk, then they have _this_ ID in our customers table (can be many-to-one)
-* Which leads us to...
-
----
-# I have duplicate records
---
-
 ## Technique: deduplication
 
 ---
@@ -665,35 +596,10 @@ from amazon_orders
 
 ]
 
-
----
-# I have KPIs that my business reports
---
-
-## Technique: metrics table
-
----
-# Anatomy of a metrics table
-* One record per day per metrics
-* `ref`s one model for each metric and unions them together
-* Can also compare to previous year values and targets here
-
-| date_day   | metric_channel | metric_name | metric_type | value | past_7 | past_14 | past_21 | ly_value | ... | target |
-|------------|----------------|-------------|-------------|-------|--------|---------|---------|----------|-----|--------|
-| 02/06/2019 | marketing      | leads       | count       | 20    | 200    | 300     | 150     | 15       | ... | 15     |
-| 02/06/2019 | marketing      | mql         | count       | 7     | 40     | 60      | 50      | 3        | ... | 10     |
-| 02/06/2019 | marketing      | sqls        | count       | 2     | 10     | 5       | 20      | 2        | ... | 3      |
-| 02/06/2019 | accounting     | revenue     | amount      | 150   | 3000   | 2000    | 1500    | 20       | ... | 100    |
-
-???
-They can get tricky to handle in the BI layer:
-* You lose the ability to drill into the data when you do this!
-* Further aggregation can mess things up, especially for non-additive metrics (e.g. conversion rates)
-
 ---
 
 class: subtitle, center, middle
-# Fin!
+# You are all now experts!
 
 
 {% endraw %}

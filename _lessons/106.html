@@ -66,12 +66,12 @@ models:
         tests:
           - unique
           - not_null
-          
+
       - name: mrr
         description: Monthly recurring revenue in dollars.
         tests:
           - not_null
-         
+
       - name: change_category
         description: "{{ doc('change_category') }}"
 ```
@@ -114,12 +114,6 @@ class: center, middle
 
 ---
 
-## dbt CLI
-```bash
-dbt docs generate
-dbt docs serve
-```
-
 ## dbt Cloud
 <img src="/lessons/img/{{page.lesson}}/job-config-gen-docs.png" style="width: 90%; float: left;">
 
@@ -136,17 +130,3 @@ Therefore:
 * Data documentation that seeks to accurately describe data transformation _must_
 be updated as part of the same workflow as the transformation logic it seeks to
 describe. If the two are separate, documentation will _always_ lag behind.
-
-
----
-
-name: working-session
-class: subtitle
-
-# Working session
-* Add a docs block for one (or all!) of the following:
-    * a model
-    * a source
-    * a column
-    
-{% include options/next-presentation.html %}

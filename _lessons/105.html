@@ -17,7 +17,7 @@ class: title, center, middle
 - I'm switching my email marketing platform. I want to know which final models depend on that source data.
 --
 
-- I'm switching the tool that extracts and loads _from_ my email 
+- I'm switching the tool that extracts and loads _from_ my email
 marketing platform. The table names used to have underscores, now they don't!
 --
 
@@ -29,7 +29,7 @@ in a different database and schema.
 hiccups that result in delayed or duplicated data.
 --
 
-- (!!) I want to stage & query an external table that points to files in S3.
+- I want to stage & query an external table that points to files in S3.
 
 ---
 
@@ -40,13 +40,13 @@ hiccups that result in delayed or duplicated data.
     - `name`/`identifier` for each table
 --
 - Test schema integrity of raw tables
-    - Built-in: `unique`, not_null`, `accepted_values`, `relationships`
+    - Built-in: `unique`, `not_null`, `accepted_values`, `relationships`
     - Custom: whatever you want!
 --
 - Test the freshness of loaded data, based on thresholds you define
 --
 
-- (!!) Declare `external` properties ([read more](https://github.com/fishtown-analytics/dbt-external-tables))
+- Declare `external` properties ([read more](https://github.com/fishtown-analytics/dbt-external-tables))
 
 ---
 
@@ -74,11 +74,11 @@ sources:
   - name: stripe
     loaded_at_field: _batched_at
     loader: airflow     # this is just for documentation
-    
+
     freshness:
       warn_after: {count: 12, period: hour}
       error_after: {count: 24, period: hour}
-    
+
     tables:
       - name: payment
 ```
@@ -142,13 +142,3 @@ Of course, many deployments are _much_ more complex.
 More complex deployments:
 - Blue/green that renames schema/database at last step (if all tests pass) or
 leaves old objects in place (if a test fails)
-
----
-
-name: working-session
-class: subtitle
-
-# Working session
-* Add `sources` for our two data sources: `jaffle_shop` and `stripe`.
-
-{% include options/next-presentation.html %}

@@ -87,10 +87,10 @@ $ dbt deps
 version: 2
 
 models:
-  - name: companies
+  - name: orders
     tests:
       - dbt_utils.expression_is_true:
-          expression: "assets - liabilities = equity"
+          expression: "order_amount + order_tax = order_total"
 ```
 
 ???
@@ -105,77 +105,17 @@ These models get added to your DAG!
 background-color: #005E7A
 <img src="/lessons/img/{{page.lesson}}/snowplow-package.png" style="width: 100%;">
 
-
 ---
 # Use cases for packages:
+
+--
+
 ## Macros:
 * Versatile macros, especially for “How to Write this in SQL” problems ([dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/))
 * Ad hoc queries/snippets you find yourself writing over and over ([audit_helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/), [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/))
 
+--
+
 ## Models:
 * Common staging models for one data source ([facebook](https://hub.getdbt.com/fishtown-analytics/facebook_ads/latest/))
 * Follow industry standards for boilerplate-yet-complex modeling ([snowplow](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/), [segment](https://hub.getdbt.com/fishtown-analytics/segment/latest/))
-
-
----
-class: subtitle
-# Working session
-## Using macros from a package:
-* Add [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) to your dbt project
-* Use a macro from dbt-utils (e.g. `date_spine` to create a table of all days)
-
-
----
-## Hold up, what about all those other macros?
-Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
-.center[
-<img src="/lessons/img/{{page.lesson}}/127-macros.png" style="width: 50%;">
-]
-???
-This slide is truly for curious minds.
---
-.dense-text[
-dbt is itself [a package](https://github.com/fishtown-analytics/dbt/tree/dev/barbara-gittings/core/dbt/include/global_project)!
-* a.k.a "the dbt global project"
-* Tests are macros prefixed with `test_`
-* Materializations use macros
-]
-???
-Hint: we might need this information later today!
-
----
-background-color: white
-<img src="/lessons/img/{{page.lesson}}/dbt-global-project.jpeg" style="width: 100%;">
-
----
-# Everything's a project!
-So:
-* You have your own dbt project
-* You also have the dbt global project
-* You can also install additional projects as packages
-
----
-
-## What happens if you create a macro with the same name as a global macro?
---
-
-
-If you have a macro in _your project_ with the same name as macro in the _dbt global project_, your version is preferred! This means you can:
-* Change the way dbt generates schema + and relation names
-* Change the way tests are implemented
-* Even change materializations!
-
-.caption[
-[Learn more](https://discourse.getdbt.com/t/did-you-know-dbt-ships-with-its-own-project/764)
-]
----
-class: subtitle
-# Working session
-## Using macros from a package:
-* Add [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) to your dbt project
-* Use a macro from dbt-utils (e.g. `date_spine` to create a table of all days)
-
-## Overriding the dbt global project
-* Change the way that dbt generates schema names ([docs](https://docs.getdbt.com/docs/using-custom-schemas#section-changing-the-way-dbt-generates-a-schema-name)).
-
-{% include options/next-presentation.html %}

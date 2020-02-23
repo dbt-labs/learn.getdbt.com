@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: Data Ops with dbt
+title: Version control and CI/CD
 lesson: 109
 estimated_teaching_time: 15
 teaching_method: live demo + slides. Questions encouraged.
@@ -8,11 +8,19 @@ working_session: true
 ---
 
 class: title, center, middle
-# Data Ops with dbt
+# Version Control &amp; CI/CD
 
 ---
 
-# What's a Pull Request?
+# Git Branching
+
+- Every organization does this a little bit differently
+- Each branch implements a single well-scoped unit of work
+- Commit early &amp; commit often
+
+---
+
+# Pull Requests
 
 - Final step in a git-based workflow
     - You've got a branch
@@ -75,44 +83,6 @@ helpful guides to future contributors!*
 even if it's not merge-ready
     - Some hosting platforms / organizations have **draft** pull requests enabled
     - Others adopt a naming convention: "WIP" or "DO NOT MERGE"
-- **_Caveat:_** At present, dbt Cloud will trigger CI from _all_ new commits
-pushed to an open PR (draft or otherwise)
 
 ???
 The dbt Cloud trigger is something we're thinking about changing!
-
----
-
-# No code yet?
-
-If you...
-- find a bug
-- have an idea for an improvement
-- want to share some long-term thinking
-
-### _Open an [issue](https://guides.github.com/features/issues/)!_
-
-Things break and people have ideas all the time. If you get into a habit now of
-communicating bugs, problems, and in-progress work to your colleagues early and
-often, you'll thank yourself later.
-
----
-
-class: subtitle, center, middle
-# Breathe. You made it through Day One.
-
----
-class: subtitle
-
-# Summary of working sessions from today:
-* [Pre-work](https://tutorial.getdbt.com/learn/setting-up/): Build your first dbt project
-* [103 dbt Fundamentals](/lessons/103#working-session): Add an `orders` model to your project
-* [104 Data Warehouse Design](/lessons/104#working-session): Re-organize your project
-* [105 Testing & CI](/lessons/105#working-session): Add tests to your `orders` model
-* [106 Sources](/lessons/106#working-session): Use sources for `jaffle_shop` and `stripe`
-* [107 Docs](/lessons/107#working-session): Add a docs block to your project
-* [108 Debugging dbt](/lessons/108#working-session): Break things and fix them
-
-When you're ready, open a PR and tag a classmate to review it!
-???
-Open a pull request, and tag a classmate to review it!
