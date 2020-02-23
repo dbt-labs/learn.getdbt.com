@@ -1,203 +1,357 @@
 ---
 layout: presentation
-title: Intro to Data Warehouses
-lesson: 204
+title: Jinja
+lesson: 202
 ---
 
 class: title, center, middle
-# Data Warehouses & You
+
+{% raw %}
+
+# `{{ Jinja }}`
+
+`{% set date = '{% endraw %}{{site.time|slice: 0, 10}}' %}{% raw %}`
 
 ---
 
 
-# What is a data warehouse?
+# Jinja is a templating engine
 
---
-
-<img src="/lessons/img/{{page.lesson}}/galaxy.png" style="width: 60%;" class="img-center">
-
----
-
-# Structured Data
-
-_ordines et columnae sumus._     - Horace, Ode 4.7
-
-&nbsp;
-
-| id | name    | favorite_color | is_creative |
-|----|---------|----------------|-------------|
-| 1  | Alice   | green          | false       |
-| 2  | Barbara | blue           | true        |
-
----
-
-# Storing Data
-
-### CSV
-
-```csv
-id,name,favorite_color,is_creative
-1,Alice,green,false
-2,Barbara,blue,true
-```
-
-### JSON
-
-```json
-{"id": 1, "name": "Alice", "favorite_color": "green", "is_creative": true}
-{"id": 2, "name": "Barbara", "favorite_color": "blue", "is_creative": false}
-```
-
----
-
-# Storing Data
-
-### Parquet
-
-```parquet
-00000000  50 41 52 31 15 04 15 c8  ba 01 15 c8 ba 01 4c 15  |PAR1..........L.|
-00000010  c6 0f 15 04 00 00 00 2a  e9 6c f2 19 00 00 4e 7f  |.......*.l....N.|
-00000020  25 00 00 5e 30 d0 e1 37  00 00 4e 7f 25 00 00 2e  |%..^0..7..N.%...|
-00000030  f9 22 cb 03 00 00 4e 7f  25 00 00 f2 ba cd fb 01  |."....N.%.......|
-00000040  00 00 4e 7f 25 00 00 4e  be 04 ac 10 00 00 4e 7f  |..N.%..N......N.|
-00000050  25 00 00 c4 bc 95 26 18  00 00 4e 7f 25 00 00 a8  |%.....&...N.%...|
-00000060  cd 63 00 1c 00 00 4e 7f  25 00 00 a4 0d 1f 37 16  |.c....N.%.....7.|
-00000070  00 00 4e 7f 25 00 00 92  b3 57 b5 0c 00 00 4e 7f  |..N.%....W....N.|
-00000080  25 00 00 4e 7b 7e 8f 3c  00 00 4e 7f 25 00 00 94  |%..N{~.<..N.%...|
-00000090  2e 7a 95 00 00 00 4e 7f  25 00 00 74 a7 38 2f 3b  |.z....N.%..t.8/;|
-```
-
----
-
-# Databases
+And it's _pythonic_! So it works in ways you'd expect if you've ever
+written python, and even if you haven't.
 
 .left-column[
-- Interfaces into data!
-- Some language (SQL) is used to query the data
-- Data storage is abstracted
-    - Machine-readable optimized file formats
-    - On spinning disks, inside boxes, somewhere in Virginia/Oregon/Ireland
+Other templating engines:
+* Nunjucks (JavaScript, Jinja-inspired)
+* Liquid (Ruby)
 ]
 
 .right-column[
-<img src="/lessons/img/{{page.lesson}}/butterfly.png" class="img-center">
+Applications that use Jinja:
+* Ansible
+* Flask
+* Airflow
+* dbt!
 ]
 
----
-
-# Transactional Databases
-
-.left-column[
-Optimized for:
-- Reads and writes
-- Thousands of concurrent queries
-
-In this category:
-- Postgres
-- MySQL
-- SQL Server
-- ...
-]
-
-.right-column[
-For instance:
-- Get one user’s email address
-- Add seven items to a user’s cart
-- Change a user’s last name
-
-```sql
-select *
-fom products
-where trending = true
-```
-
-<img src="/lessons/img/{{page.lesson}}/superstore.png" style="width: 100%;">
-]
-
----
-
-# Analytic Databases
-
-.left-column[
-Optimized for:
-- "Analytical" queries
-- Importing and exporting data in batches
-
-In this category:
-
-- Amazon Redshift
-- Snowflake
-- Google BigQuery
-- Azure SQL Data Warehouse
-- ....
-]
-
-.right-column[
-For instance:
-- Number of distinct users in Ohio are over 38 years young
-- Rolling 14d average of pageviews per day for the last five years
-]
-
----
-
-# Database Comparisons*
-
-| db            | Latency       | Concurrent Queries | Rows Scanned / Query |
-|---------------|---------------|--------------------|----------------------|
-| Transactional | ~milliseconds | ~thousands         | ~thousands*          |
-| Analytic    | ~seconds      | ~dozens            | >> millions          |
-
----
-
-# What's in a name?
-
-.left-column[
-Transactional Database, a.k.a.:
-- Relational Database
-- RDMS or RDBMS
-- Rowise, Row-oriented, Row Store
-- OLTP
-- e.g. Postgres
-]
-
-.right-column[
-Analytic(al) Database, a.k.a.:
-- Data Warehouse
-- Columnar Database
-- Column-oriented, Column Store
-- OLAP
-- e.g. Redshift
-]
-
----
-
-# Which one is right? (Both!)
-
-- Power your application with a transactional database
-- Analyze data with an analytical database
-
-<img src="/lessons/img/{{page.lesson}}/stack.png" style="width: 90%;">
-
----
-
-# A modern approach
-
-1. Replicate data into a warehouse
-    - Transactional databases
-    - SaaS products
-    - Event tracking
-2. Query the data in the warehouse
-3. Be a cultural change agent for data in your organization
-4. Profit
-
-???
-- RDMS or RDBMS = Relational Database Management System
-- OLTP = Online Transactional Processing
-- OLAP = Online Analytical Processing
+[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)
 
 ---
 
 class: subtitle, middle, center
-# Lunch!
+
+<h1 style="font-size: 300%;" class="remark-inline-code">
+{% ... %}<br>
+{{ ... }}
+</p>
+
+---
+
+# Setting local variables
+
+
+```jinja
+{% set me = 3 %}
+{% set you = 'foo' %}
+```
+
+---
+# Dictionaries
+
+```jinja
+{% set person = {
+    'name': 'me',
+    'number': 3
+} %}
+```
+```jinja
+{{ person.name }}
+{{ person['name'] }}
+```
+--
+```
+me
+me
+```
+
+
+---
+# Arrays
+
+```jinja
+{% set self = ['me', 'myself'] %}
+
+{% do self.append('i') %}
+```
+
+```jinja
+{{ i[0] }}
+{{ i | length }}
+```
+--
+```
+me
+3
+```
+
+---
+
+# And so on
+
+```jinja
+{% set us = [
+  {
+      'name': 'me',
+      'number': 3
+  },
+  {
+      'name': 'you',
+      'details': 'foo'
+  }
+] %}
+
+{{ us[1]['details'] }}
+```
+--
+```
+foo
+```
+
+---
+
+# Conditions
+
+
+```jinja
+{% set temperature = 80 %}
+
+On a day like this, I especially like
+
+{% if temperature > 70 %}
+
+    a refreshing mango sorbet.
+
+{% else %}
+
+    a decadent chocolate ice cream.
+    
+{% endif %}
+```
+
+
+--
+
+```
+On a day like this, I especially like a refreshing mango sorbet.
+```
+
+
+---
+
+# Loops
+
+
+```jinja
+{% set flavors = ['chocolate','vanilla','strawberry'] %}
+
+{% for flavor in flavors %}
+	Today I want {{ flavor }} ice cream!
+{% endfor %}
+```
+
+
+--
+
+```
+Today I want chocolate ice cream!
+Today I want vanilla ice cream!
+Today I want strawberry ice cream!
+```
+
+---
+
+# Wait: Loops???
+
+_Aren't we going to be writing SQL???_
+
+{% endraw %}
+<img src="/lessons/img/{{page.lesson}}/hn-loops.png" style="width: 100%;">
+{% raw %}
+
+--
+
+SQL is a highly performant and _very_ declarative language.
+
+We _are not_ looping across rows in the database.
+
+We _are_ using loops to avoid copy-paste when writing SQL. That compiled
+SQL is then run against the database.
+
+---
+
+# Macros
+
+```jinja
+{% macro hoyquiero(flavor, dessert = 'ice cream') %}
+	Today I want {{ flavor }} {{ dessert }}!
+{% endmacro %}
+
+{{ hoyquiero(flavor = 'chocolate') }}
+{{ hoyquiero('mango', 'sorbet') }}
+```
+--
+```
+Today I want chocolate ice cream!
+Today I want mango sorbet!
+```
+
+---
+
+class: subtitle, center, middle
+# dbtonic Jinja
+
+---
+
+# refs
+
+`{{ ref(stg_stripe_payment) }}`
+
+.grey[`dev_jerco.stg_stripe_payment`]
+
+**`analytics.stg_stripe_payment`**
+
+&nbsp;
+
+Use it always! This is how dbt:
+* Mananages environments
+* Infers all model dependencies (DAG)
+
+---
+
+# project-level vars
+
+
+```yml
+# dbt_project.yml
+
+models:
+  my_dbt_project:
+	vars:
+	  flavor: chocolate    # default value
+```
+
+```sql
+# flavortown.sql
+
+select '{{ var('flavor') }}' as my_favorite_flavor
+```
+--
+```
+select 'chocolate' as my_favorite_flavor
+```
+
+---
+
+# Hot tip
+
+You can override global vars with a CLI flag:
+
+```sql
+# flavortown.sql
+select '{{ var('flavor') }}' as my_favorite_flavor
+```
+
+```bash
+dbt run --vars '{"flavor": "vanilla"}'
+```
+--
+```
+select 'vanilla' as my_favorite_flavor
+```
+
+---
+
+# Logging
+
+```jinja
+{% macro grant_on(user, object, privilege) %}
+
+	grant {{privilege}} on {{object}} to {{user}}
+    
+    {% set message %}
+        User {{user}} is ready to rock & roll with {{privilege}} on {{object}}
+    {% endset %}
+    
+	{% do log(message, info = true) %}
+
+{% endmacro %}
+```
+
+```sql
+{{ grant_on('fishtown_jeremy', 'analytics.stg_stripe_payment', 'select') }}
+```
+--
+```
+User fishtown_jeremy is ready to rock & roll with select on 
+analytics.stg_stripe_payment
+```
+---
+
+# Logging
+
+Especially useful when you're working on:
+- Complicated macros
+- Macros that call other macros
+- Macros that run introspective queries against the database*
+- Macros that are run as operations*
+- Custom materializations*
+
+Topics for later (or another time)!
+
+---
+
+# Whitespace control
+
+Add dashes to remove whitespace from compiled output:
+- `{{ this }}` &rarr; `{{- this -}}`
+- `{% this %}` &rarr; `{%- this -%}`
+
+```jinja
+yeah
+{% this will be an empty line in the compiled code %}
+good.
+{%- but this will not! -%}
+ok.
+```
+--
+```
+yeah
+
+good.ok.
+```
+
+---
+
+# Comments
+
+```sql
+-- this is a SQL comment
+/* as is this */
+```
+```jinja
+{# whereas this is a Jinja comment #}
+```
+
+- Only SQL comments show up in your compiled code
+    - Jinja comments for dbt things
+    - SQL comments for modeling/business logic
+- Be careful about having the two in close proximity!
+
+{% endraw %}
+
+---
+
+class: subtitle, middle, center
+# Let's get templating!
 
 {% include options/next-presentation.html %}

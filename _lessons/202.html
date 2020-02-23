@@ -1,357 +1,230 @@
 ---
 layout: presentation
-title: Jinja
-lesson: 202
+title: Testing & CI
+lesson: 105
+estimated_teaching_time: 30
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
 ---
-
 class: title, center, middle
-
-{% raw %}
-
-# `{{ Jinja }}`
-
-`{% set date = '{% endraw %}{{site.time|slice: 0, 10}}' %}{% raw %}`
-
+# Testing & CI
 ---
 
+# Refresher:
+--
 
-# Jinja is a templating engine
+## 102: The Analytics Engineering Viewpoint
+_**Analytics code should have quality assurance**_
+* _Run automated tests on source data and on transformed data to ensure that SQL works as intended_
+* _Ensure source data is up to date_
 
-And it's _pythonic_! So it works in ways you'd expect if you've ever
-written python, and even if you haven't.
+---
+# Refresher
+## 103: dbt Fundamentals
+_**Tests** are assertions you make about your **models**._
 
+_When you execute the `test` **command** dbt iterates through the schema files (`models/**.yml`) to construct `select` queries._
+
+_These queries return `0` when your assertion is true, otherwise the test fails._
+???
+We've already touched on these concepts a couple of times.
+
+---
+# Examples:
 .left-column[
-Other templating engines:
-* Nunjucks (JavaScript, Jinja-inspired)
-* Liquid (Ruby)
-]
-
-.right-column[
-Applications that use Jinja:
-* Ansible
-* Flask
-* Airflow
-* dbt!
-]
-
-[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)
-
----
-
-class: subtitle, middle, center
-
-<h1 style="font-size: 300%;" class="remark-inline-code">
-{% ... %}<br>
-{{ ... }}
-</p>
-
----
-
-# Setting local variables
-
-
-```jinja
-{% set me = 3 %}
-{% set you = 'foo' %}
-```
-
----
-# Dictionaries
-
-```jinja
-{% set person = {
-    'name': 'me',
-    'number': 3
-} %}
-```
-```jinja
-{{ person.name }}
-{{ person['name'] }}
-```
---
-```
-me
-me
-```
-
-
----
-# Arrays
-
-```jinja
-{% set self = ['me', 'myself'] %}
-
-{% do self.append('i') %}
-```
-
-```jinja
-{{ i[0] }}
-{{ i | length }}
-```
---
-```
-me
-3
-```
-
----
-
-# And so on
-
-```jinja
-{% set us = [
-  {
-      'name': 'me',
-      'number': 3
-  },
-  {
-      'name': 'you',
-      'details': 'foo'
-  }
-] %}
-
-{{ us[1]['details'] }}
-```
---
-```
-foo
-```
-
----
-
-# Conditions
-
-
-```jinja
-{% set temperature = 80 %}
-
-On a day like this, I especially like
-
-{% if temperature > 70 %}
-
-    a refreshing mango sorbet.
-
-{% else %}
-
-    a decadent chocolate ice cream.
-    
-{% endif %}
-```
-
-
---
-
-```
-On a day like this, I especially like a refreshing mango sorbet.
-```
-
-
----
-
-# Loops
-
-
-```jinja
-{% set flavors = ['chocolate','vanilla','strawberry'] %}
-
-{% for flavor in flavors %}
-	Today I want {{ flavor }} ice cream!
-{% endfor %}
-```
-
-
---
-
-```
-Today I want chocolate ice cream!
-Today I want vanilla ice cream!
-Today I want strawberry ice cream!
-```
-
----
-
-# Wait: Loops???
-
-_Aren't we going to be writing SQL???_
-
-{% endraw %}
-<img src="/lessons/img/{{page.lesson}}/hn-loops.png" style="width: 100%;">
-{% raw %}
-
---
-
-SQL is a highly performant and _very_ declarative language.
-
-We _are not_ looping across rows in the database.
-
-We _are_ using loops to avoid copy-paste when writing SQL. That compiled
-SQL is then run against the database.
-
----
-
-# Macros
-
-```jinja
-{% macro hoyquiero(flavor, dessert = 'ice cream') %}
-	Today I want {{ flavor }} {{ dessert }}!
-{% endmacro %}
-
-{{ hoyquiero(flavor = 'chocolate') }}
-{{ hoyquiero('mango', 'sorbet') }}
-```
---
-```
-Today I want chocolate ice cream!
-Today I want mango sorbet!
-```
-
----
-
-class: subtitle, center, middle
-# dbtonic Jinja
-
----
-
-# refs
-
-`{{ ref(stg_stripe_payment) }}`
-
-.grey[`dev_jerco.stg_stripe_payment`]
-
-**`analytics.stg_stripe_payment`**
-
-&nbsp;
-
-Use it always! This is how dbt:
-* Mananages environments
-* Infers all model dependencies (DAG)
-
----
-
-# project-level vars
-
-
 ```yml
-# dbt_project.yml
+version: 2
 
 models:
-  my_dbt_project:
-	vars:
-	  flavor: chocolate    # default value
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+
 ```
+]
+--
+.right-column[
+```sql
+
+select
+  count(*)
+
+from analytics.customers
+where customer_id is null
+
+```
+
+]
+???
+Teacher notes: talk about how these relate
+---
+# Examples:
+.left-column[
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+
+```
+]
+--
+.right-column[
+```sql
+
+select count(*) from (
+  select
+    customer_id
+
+  from analytics.customers
+  group by customer_id
+  having count(*) > 1
+)
+
+```
+]
+
+---
+
+# dbt's built-in tests:
+* `unique`
+* `not_null`
+* `accepted_values`
+* `relationships`
+
+---
+# Q: Why might a test fail?
+--
+
+1. The SQL in your model doesn’t do what you intended.
+
+--
 
 ```sql
-# flavortown.sql
+select
+    customers.customer_id,
+    customer_orders.number_of_orders
+from customers
 
-select '{{ var('flavor') }}' as my_favorite_flavor
-```
---
-```
-select 'chocolate' as my_favorite_flavor
+left join customer_orders using (customer_id)
+
 ```
 
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: number_of_orders
+        tests:
+          - not_null
+```
 ---
+# Q: Why might a test fail?
 
-# Hot tip
-
-You can override global vars with a CLI flag:
+1. The SQL in your model doesn’t do what you intended.
 
 ```sql
-# flavortown.sql
-select '{{ var('flavor') }}' as my_favorite_flavor
+select
+    customers.customer_id,
+    coalesce(customer_orders.number_of_orders, 0) as number_of_orders
+from customers
+
+left join customer_orders using (customer_id)
+
 ```
 
-```bash
-dbt run --vars '{"flavor": "vanilla"}'
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: number_of_orders
+        tests:
+          - not_null
 ```
+
+???
+Examples:
+* Bad deduping
+* Bad joins
+
+---
+# Q: Why might a test fail?
+
+1. The SQL in your model doesn’t do what you intended
 --
-```
-select 'vanilla' as my_favorite_flavor
-```
 
----
+2. An assumption about your source data is wrong.
 
-# Logging
-
-```jinja
-{% macro grant_on(user, object, privilege) %}
-
-	grant {{privilege}} on {{object}} to {{user}}
-    
-    {% set message %}
-        User {{user}} is ready to rock & roll with {{privilege}} on {{object}}
-    {% endset %}
-    
-	{% do log(message, info = true) %}
-
-{% endmacro %}
-```
-
-```sql
-{{ grant_on('fishtown_jeremy', 'analytics.stg_stripe_payment', 'select') }}
-```
 --
-```
-User fishtown_jeremy is ready to rock & roll with select on 
-analytics.stg_stripe_payment
-```
----
-
-# Logging
-
-Especially useful when you're working on:
-- Complicated macros
-- Macros that call other macros
-- Macros that run introspective queries against the database*
-- Macros that are run as operations*
-- Custom materializations*
-
-Topics for later (or another time)!
+    * non-unique IDs
+    * Missing data
+    * NULLs you weren't expecting
 
 ---
+# Q: Why might a test fail?
 
-# Whitespace control
+1. The SQL in your model doesn’t do what you intended.
+2. An assumption about your source data is wrong.
 
-Add dashes to remove whitespace from compiled output:
-- `{{ this }}` &rarr; `{{- this -}}`
-- `{% this %}` &rarr; `{%- this -%}`
-
-```jinja
-yeah
-{% this will be an empty line in the compiled code %}
-good.
-{%- but this will not! -%}
-ok.
-```
 --
-```
-yeah
+3. A previously-true assumption about your underlying source data is no longer true
+--
 
-good.ok.
-```
-
----
-
-# Comments
-
-```sql
--- this is a SQL comment
-/* as is this */
-```
-```jinja
-{# whereas this is a Jinja comment #}
-```
-
-- Only SQL comments show up in your compiled code
-    - Jinja comments for dbt things
-    - SQL comments for modeling/business logic
-- Be careful about having the two in close proximity!
-
-{% endraw %}
+    * A previously unique key is no longer unique
+    * You have a new payment method
 
 ---
+# Q: What should you test?
+--
 
-class: subtitle, middle, center
-# Let's get templating!
+* Good rules of thumb:
+    * Test primary keys (`unique`, `not_null`)
+    * Test fields that you use in downstream models
+
+---
+# Q: When should you run tests?
+--
+
+* Manual: When you first run a project
+* Manual: During development
+* Automated: When you run dbt on a schedule
+* Automated: When you want to merge your code
+
+--
+
+Wait, how do I automate running dbt?
+---
+# Automating dbt runs
+## a.k.a. Running dbt in production
+You need to run dbt on a schedule to keep your data up to date.
+
+Your automated runs should:
+* Use the latest version of my project? → **continuous deployment**
+* Have monitoring and alerting if something goes wrong?
+* Have a way to debug failures?
+* Build & test your code every time you want to merge changes (or "deploy to production") →  **continuous integration**
+
+We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
+---
+<img src="/lessons/img/{{page.lesson}}/dbt-cloud.png" style="width: 100%;">
+
+
+---
+name: working-session
+class: subtitle
+
+# Working session
+* Ensure that your `orders` model has tests on it (and that they pass)
 
 {% include options/next-presentation.html %}
