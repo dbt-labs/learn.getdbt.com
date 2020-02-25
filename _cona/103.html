@@ -6,30 +6,7 @@ estimated_teaching_time: 45
 estimated_working_session: 60
 teaching_method: live demo + slides. Questions encouraged.
 ---
-class: title, center, middle
-# Setting the scene
-
-???
-Note to teacher:
-- This presentation should be accompanied by re-doing the tutorial live.
-- It comes after a number of lessons that are one-sided
-- Ask the audience some questions / encourage participation. There will be some students who know all this already, so give them the opportunity to participate by helping answer questions.
-- If people ask questions that are related to future lessons, jot them down on a shared place so you can cross them off throughout the rest of the course.
-
----
-# Scenario
-
-I'm an analyst working at "The Jaffle Shop". The Jaffle Shop uses our own app for order management:
-.center[
-<img src="/lessons/img/{{page.lesson}}/jaffle-shop-erd.png" style="width: 40%;">
-]
-I have a copy of this data replicated into my warehouse:
-```sql
-select * from raw.jaffle_shop.customers
-```
---
-
-## Why should I transform my data?
+# Why transform data?
 ???
 Hopefully answers like:
 - clean up the data
@@ -39,16 +16,8 @@ Hopefully answers like:
 
 ---
 
-# My project
-* I'm going to transform my data to:
-    * Clean up some dirtiness in my data (e.g. `user_id`)
-    * Build some new fields on my customers model (`number_of_orders` etc.)
-* And then connect my BI tool to the transformed data
----
-
 class: title, center, middle
 # dbt Fundamentals
-
 
 ---
 
@@ -312,19 +281,3 @@ You should be comfortable with these words:
 * configurations
 * tests
 ]
----
-# Knowledge check
-
-You should be able to:
-* Create new models (that depend on other models)
-* Run your models (all of them / one model at a time)
-* Check the SQL that's running
-* Configure your models (from the `dbt_project.yml` file / within a model)
-* Add tests to your models
-* Run your tests (all of them / one model at a time)
-
-???
-Teacher notes:
-* Use this as a checklist that you've covered everything off
-* Emphasize that we're going to launch off from here — use the lunch time to make sure that everyone is following so far.
-* For those who do understand, there's a working session
