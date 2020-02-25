@@ -1,0 +1,220 @@
+---
+layout: presentation
+title: Testing &amp; CI
+lesson: 105
+estimated_teaching_time: 30
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
+---
+class: title, center, middle
+# Testing &amp; CI
+---
+
+# Refresher:
+--
+
+## 102: The Analytics Engineering Viewpoint
+_**Analytics code should have quality assurance**_
+* _Run automated tests on source data and on transformed data to ensure that SQL works as intended_
+* _Ensure source data is up to date_
+
+---
+# Refresher
+## 103: dbt Fundamentals
+_**Tests** are assertions you make about your **models**._
+
+_When you execute the `test` **command** dbt iterates through the schema files (`models/**.yml`) to construct `select` queries._
+
+_These queries return `0` when your assertion is true, otherwise the test fails._
+???
+We've already touched on these concepts a couple of times.
+
+---
+# Examples:
+.left-column[
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+
+```
+]
+--
+.right-column[
+```sql
+
+select
+  count(*)
+
+from analytics.customers
+where customer_id is null
+
+```
+
+]
+???
+Teacher notes: talk about how these relate
+---
+# Examples:
+.left-column[
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+
+```
+]
+--
+.right-column[
+```sql
+
+select count(*) from (
+  select
+    customer_id
+
+  from analytics.customers
+  group by customer_id
+  having count(*) > 1
+)
+
+```
+]
+
+---
+
+# dbt's built-in tests:
+* `unique`
+* `not_null`
+* `accepted_values`
+* `relationships`
+
+---
+# Q: Why might a test fail?
+--
+
+1. The SQL in your model doesn’t do what you intended.
+
+--
+
+```sql
+select
+    customers.customer_id,
+    customer_orders.number_of_orders
+from customers
+
+left join customer_orders using (customer_id)
+
+```
+
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: number_of_orders
+        tests:
+          - not_null
+```
+---
+# Q: Why might a test fail?
+
+1. The SQL in your model doesn’t do what you intended.
+
+```sql
+select
+    customers.customer_id,
+    coalesce(customer_orders.number_of_orders, 0) as number_of_orders
+from customers
+
+left join customer_orders using (customer_id)
+
+```
+
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: number_of_orders
+        tests:
+          - not_null
+```
+
+???
+Examples:
+* Bad deduping
+* Bad joins
+
+---
+# Q: Why might a test fail?
+
+1. The SQL in your model doesn’t do what you intended
+--
+
+2. An assumption about your source data is wrong.
+
+--
+    * non-unique IDs
+    * Missing data
+    * NULLs you weren't expecting
+
+---
+# Q: Why might a test fail?
+
+1. The SQL in your model doesn’t do what you intended.
+2. An assumption about your source data is wrong.
+
+--
+3. A previously-true assumption about your underlying source data is no longer true
+--
+
+    * A previously unique key is no longer unique
+    * You have a new payment method
+
+---
+# Q: What should you test?
+--
+
+* Good rules of thumb:
+    * Test primary keys (`unique`, `not_null`)
+    * Test fields that you use in downstream models
+
+---
+# Q: When should you run tests?
+--
+
+* Manual: When you first run a project
+* Manual: During development
+* Automated: When you run dbt on a schedule
+* Automated: When you want to merge your code
+
+--
+
+Wait, how do I automate running dbt?
+---
+# Automating dbt runs
+## a.k.a. Running dbt in production
+You need to run dbt on a schedule to keep your data up to date.
+
+Your automated runs should:
+* Use the latest version of my project? → **continuous deployment**
+* Have monitoring and alerting if something goes wrong?
+* Have a way to debug failures?
+* Build & test your code every time you want to merge changes (or "deploy to production") →  **continuous integration**
+
+We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
+---
+<img src="/lessons/img/{{page.lesson}}/dbt-cloud.png" style="width: 100%;">

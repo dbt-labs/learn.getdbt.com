@@ -1,0 +1,88 @@
+---
+layout: presentation
+title: Version control and CI/CD
+lesson: 109
+estimated_teaching_time: 15
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
+---
+
+class: title, center, middle
+# Version Control &amp; CI/CD
+
+---
+
+# Git Branching
+
+- Every organization does this a little bit differently
+- Each branch implements a single well-scoped unit of work
+- Commit early &amp; commit often
+
+---
+
+# Pull Requests
+
+- Final step in a git-based workflow
+    - You've got a branch
+    - I've got a branch
+    - We both want to merge into `master`
+- Checkpoint for quality control
+    - Mechanism for review and approval by your colleagues
+    - Automated testing (Continuous Integration)
+- Also called **Merge Requests (MRs)**
+
+---
+
+# Why?
+
+- This is how you ship, deliver, release your work
+    - If it's never merged, did you really do it?
+- You _cannot_ merge code that is not approved
+- Your PR is your _opportunity_ to make the argument that your code _should_ be merged
+    - It's not a chore, it's a powerful tool!
+
+---
+
+.left-column-33[
+### Description
+<img src="/lessons/img/{{page.lesson}}/pr-1.png" style="width: 100%;" class="img-center">
+]
+.right-column-66[
+.left-column[
+### CI
+<img src="/lessons/img/{{page.lesson}}/pr-2.png" class="img-center">
+]
+.right-column[
+### Review
+<img src="/lessons/img/{{page.lesson}}/pr-3.png" class="img-center">
+]
+]
+
+---
+
+# We've got a [guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for that
+
+Pull requests should:
+
+- Tackle a single functional grouping of work.
+- Include a description that explains the context of the changes to the code, as
+well as what the code does. It's useful to include links to relevant cards/tickets,
+other PRs, dbt docs, and screenshots of updated DAGs.
+- Explain in detail any breaking changes after merging this code in production,
+or what needs to be done to merge the code successfully.
+- Show a "green" passing CI build, or explain any failing tests.
+
+You can create _templates_ for pull request descriptions that will serve as
+helpful guides to future contributors!*
+
+---
+
+# In progress?
+
+- WIP PRs can be nice ways to share, collaborate, and comment on code,
+even if it's not merge-ready
+    - Some hosting platforms / organizations have **draft** pull requests enabled
+    - Others adopt a naming convention: "WIP" or "DO NOT MERGE"
+
+???
+The dbt Cloud trigger is something we're thinking about changing!

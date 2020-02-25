@@ -1,0 +1,175 @@
+---
+layout: presentation
+title: The Analytics Engineering Viewpoint
+lesson: 102
+---
+class: title, center, middle
+# The Analytics Engineering Viewpoint
+
+---
+
+class: subtitle, center, middle
+# Analytics code should be version controlled
+
+---
+
+## What is version control?
+
+- Version control helps manage changes to your code:
+    - You can see history, along with context
+    - Your changes have a review process for approval + collaboration
+- Most teams use:
+    - git for version control
+    - GitHub to host their repo
+    - Pull Requests for collaboration & approvals
+- Some teams use complex [git flows](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+
+---
+
+## What does version control look like for analysts?
+- `orders_final_this_one_is_final.xls`
+- Bookmarking the right query in your web editor
+
+---
+
+## What does version control look like for analytics engineers?
+- SQL is code, so…
+- Exactly the same as software engineering:
+    - git for version control
+    - GitHub to host their repo
+    - Pull Requests for collaboration & approvals
+- We have a [git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for those getting started
+
+---
+class: subtitle, center, middle
+# Analytics code should have quality assurance
+
+---
+
+## What is QA?
+* Adding tests to check that your code is reliable
+* Tests give you peace of mind, and allow you to work faster
+* Testing concepts in software engineering:
+    * Unit tests
+    * Integration tests
+
+---
+## What does QA look like in traditional analytics?
+
+- Spreadsheets: add some check columns
+- SQL: inspect a few rows, run a few queries (check for uniqueness etc)
+
+---
+## What does QA look like for analytics engineers?
+- Run automated tests on source data and on transformed data to ensure that SQL works as intended
+- Ensure source data is up to date
+---
+
+class: subtitle, center, middle
+# Analytics should be modular
+---
+
+## What is modularity?
+- Each tool solves a separate class of problems, and can be swapped in and out.
+- Modularity on various scales in software engineering:
+    - Using Stripe for payments
+    - Using a python package for shared problems
+    - Within a codebase, use separate modules (i.e. separate `.py` file)
+    - Within a module, abstract repeated code into functions
+- Easier to define what each module does
+- Allows you to focus on what makes your business unique
+
+???
+Modularity exists on many levels in software engineering. From the macro of which tools you use to solve a problem, to the micro of how you write your code.
+
+---
+
+## What does modularity look like for analysts?
+
+- Typically low modularity in the tech stack
+- One system may cover many parts of your stack, e.g.:
+    - Oracle as your data warehouse + ingestion tool
+    - Looker as your BI + transformation tool
+    - In-house tool for ETL
+- Low modularity in queries: repeated snippets of SQL across many queries
+
+???
+Real life examples:
+- Organizations that write the DML + DDL for every single transformation
+- Really long queries that include business knowledge like "if cancelled_at is after shipped_at then refunded, else cancelled"
+
+---
+
+## What does modularity look like for analytics engineers?
+
+- The modern data stack:
+.center[
+<img src="/lessons/img/101/modern-data-stack.svg" style="width: 80%;">
+]
+- Within a dbt project:
+    - Using packages (more on this later)
+    - Using separate models for different parts of transformation
+
+???
+From the pre-work: how we split up our code into separate "cleaning" and "transforming" models
+
+---
+class: subtitle, center, middle
+# Analytics should use environments
+
+---
+
+## What are environments?
+
+Environments allow you to develop and test code without impacting the users of their software.
+
+- **Production (prod):** the environment that end users interact with.  No one
+can make changes in prod except for real human interaction/
+- **Development (dev):** the environment engineers write code in
+- **Staging / QA / CI / feature branches:** somewhere in between!
+
+Releasing your code into production is called “deployment”.
+
+---
+
+## What do environments look like for analytics engineers?
+- Run dev transformations in your own sandpit schema (`dev_jcohen`), run prod transformations in a trusted schema.
+- Usually use prod data for these transformations
+
+.caption[
+    [Learn more](https://docs.getdbt.com/docs/managing-environments)
+]
+
+---
+class: subtitle, center, middle
+
+# Analytics workflows should be automated
+
+---
+## What do workflows look like in traditional analytics?
+Manual processes:
+1. Once a month: Run this query
+2. Download the CSV
+3. Paste the results into this Google Sheet
+4. Copy and paste the charts into a board presentation
+
+---
+## What do workflows look like for analytics engineers?
+Automated processes:
+1. Data is ingested by a dedicated data loading tools
+2. It is transformed and tested periodically:
+    * The latest version of the code is always used (continuous deployment)
+    * Stakeholders are notified of data quality issues (email, shared chat, etc)
+3. Your BI tools are connected to the production version of the data (environments)
+3. Changes to the code are automatically tested before being merged (continuous integration)
+---
+class: subtitle
+
+# The Analytics Engineering Viewpoint
+* Analytics code should be version controlled
+* Analytics code should have quality assurance
+* Analytics should be modular
+* Analytics should use environments
+* Analytics workflows should be automated
+
+{% include options/next-presentation.html %}
