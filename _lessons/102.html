@@ -30,6 +30,9 @@ class: subtitle, center, middle
 - `orders_final_this_one_is_final.xls`
 - Bookmarking the right query in your web editor
 
+???
+- Instead of `final final v20`, or just bookmarking a change
+- Your future self will thank you
 ---
 
 ## What does version control look like for analytics engineers?
@@ -156,11 +159,11 @@ Manual processes:
 ---
 ## What do workflows look like for analytics engineers?
 Automated processes:
-1. Data is ingested by a dedicated data loading tools
-2. It is transformed and tested periodically:
+1. Data is ingested by Stitch/Fivetran
+2. It is transformed and tested every 4 hours:
     * The latest version of the code is always used (continuous deployment)
-    * Stakeholders are notified of data quality issues (email, shared chat, etc)
-3. Your BI tools are connected to the production version of the data (environments)
+    * Any errors are sent to a Slack channel
+3. Your BI tool is connected to the production version of the data (environments)
 3. Changes to the code are automatically tested before being merged (continuous integration)
 ---
 class: subtitle

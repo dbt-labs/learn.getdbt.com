@@ -48,7 +48,7 @@ class: title, center, middle
 
 .right-column[
 ## Now
-- Off-the-shelf tools can manage >90% of extract + load
+- Off-the-shelf tools (e.g. Stitch, Fivetran) can manage >90% of extract + load
 - Storage and aggregations are cheap
 - Scanning, joining, updating data is expensive
 - Datasets are massive and partitioned
@@ -184,6 +184,7 @@ The graph tells a story:
 .right-column[
 .dense-text[
 ```
+├── README.md
 ├── dbt_project.yml
 └── models
     ├── marts
@@ -197,6 +198,8 @@ The graph tells a story:
         └── shopify
             ├── shopify.yml
             ├── stg_shopify_customers.sql
+            ├── stg_shopify_order_items.sql
+            ├── stg_shopify_orders.sql
             └── stg_shopify_products.sql
 ```
 ]
@@ -412,9 +415,10 @@ group by 1,2
 ---
 
 class: subtitle, middle, center
-# Some Rules of Thumb
-## or,
+# CODA: Some Rules of Thumb
+## or, 
 ## how I learned to stop worrying and love my models
+### long opinions<br>quickly felled<br>unofficially compiled<br>by yours truly
 
 ???
 This is a very special section, for anyone in the room who feels like the
@@ -432,25 +436,25 @@ Every model/object name is snake case + case insensitive.)
 ---
 1. .grey[**Nomenclature.**]
 2. .grey[**Public vs. Private.**]
-3. **Modular model files:** Individual models should max out at a half-dozen
-CTEs / few hundred lines of SQL. The CTEs should be named such that they narrate
+3. **Modular model files:** Individual models should max out at a half-dozen 
+CTEs / few hundred lines of SQL. The CTEs should be named such that they narrate 
 the model's transformation. If one model file is getting too long, split it up
 into multiple ephemeral models.
 ---
 1. .grey[**Nomenclature.**]
 2. .grey[**Public vs. Private.**]
 3. .grey[**Modular model files.**]
-4. **Macros in moderation:** Model code should seek to be _both_ DRY (Don't
+4. **Macros in moderation:** Model code should seek to be _both_ DRY (Don't 
 Repeat Yourself) _and_ easily readable. Use Jinja + macros strongly and sparingly.
 ---
 1. .grey[**Nomenclature.**]
 2. .grey[**Public vs. Private.**]
 3. .grey[**Modular model files.**]
 4. .grey[**Macros in moderation.**]
-5. **Reusable assets:** Final models (facts + dimensions) should be multipotent,
-such that each can power an entire genre of potential queries. Your end user
-or BI tool should be able to answer 80% of its most common questions by
-querying **one (1)** table. Of the remaining 20%, no regularly running query
+5. **Reusable assets:** Final models (facts + dimensions) should be multipotent, 
+such that each can power an entire genre of potential queries. Your end user 
+or BI tool should be able to answer 80% of its most common questions by 
+querying **one (1)** table. Of the remaining 20%, no regularly running query 
 should require more than two join "steps." As soon as an ad hoc query is run
 often, it should be refactored and modeled for accordingly.
 ---
@@ -460,11 +464,11 @@ often, it should be refactored and modeled for accordingly.
 4. .grey[**Macros in moderation.**]
 5. .grey[**Reusable assets.**]
 6. **Documentation, documentation, documentation:** Your data models are your
-product; the BI/query layer is your user experience. Having an untested,
+product; the BI/query layer is your user experience. Having an untested, 
 undocumented model is worse than having no model at all.
 <br>
 <br>
-_Corollary:_ Uncommented, unvetted, unreadable SQL—however clever
+_Corollary:_ Uncommented, unvetted, unreadable SQL—however clever 
 it may be—is _much_ worse than having no code at all.
 
 ---
@@ -474,9 +478,9 @@ it may be—is _much_ worse than having no code at all.
 4. .grey[**Macros in moderation.**]
 5. .grey[**Reusable assets.**]
 6. .grey[**Documentation, documentation, documentation.**]
-7. **Be your own best advocate:** Your dimensional modeling is your colleague's
-feature engineering is your stakeholder's reconciliation of business definitions.
-Analysts, BI users, business partners, and data scientists all can and should be
+7. **Be your own best advocate:** Your dimensional modeling is your colleague's 
+feature engineering is your stakeholder's reconciliation of business definitions. 
+Analysts, BI users, business partners, and data scientists all can and should be 
 beneficiaries of the foundational work you're doing.
 <br>
 <br>
@@ -494,10 +498,19 @@ I think about join "steps" as degrees of Kevin Bacon
 6. .grey[**Documentation, documentation, documentation.**]
 6. .grey[**Be your own best advocate.**]
 
----
-class: subtitle, middle, center
 # YMMV!
-
 Take it in good health, and with many grains of salt.
+
+---
+name: working-session
+class: subtitle
+# Working session
+
+Refactor your project to be consistent with how we (Fishtown) structure our dbt project. Consider
+- model naming
+- organization within directories
+
+## Bonus:
+Try using the [schema](https://docs.getdbt.com/docs/using-custom-schemas#section-what-is-a-custom-schema) configuration to split your models across multiple schemas
 
 {% include options/next-presentation.html %}

@@ -1,0 +1,231 @@
+---
+layout: presentation
+title: End to end case study
+lesson: 208
+---
+class: title, center, middle
+# Designing a data model
+???
+Notes to teacher:
+* This is a real life case study from Slack
+* There's a repo [here](https://github.com/fishtown-analytics/learn-case-study) that contains the WIP code (the real code is in our internal analytics repo)
+* This repo is connected to the `dbt Learn` account. Feel free to open up the IDE for this project, you'll need to put in your creds for the Fishtown Analytics Snowflake accounts (_not_ the Learn account)
+
+
+Speaker track:
+* We recently started putting all of our data from Slack into Snowflake, so we're taking you through what that looked like.
+* I was both the stakeholder and the analyst
+* Emphasis on the word "design" — a ton of consideration for our end user
+---
+
+# Process of modeling
+1. Define the model
+2. Exploratory model building
+3. Refactor
+---
+# 1. Define the model
+---
+# Start at the finish:
+* What’s the business question I’m trying to answer?
+* What data questions do they translate to?
+* What is the dashboard I’m trying to build?
+* What other questions will business  users have when they see this dashboard? How will they want to slice and dice the data?
+* What is the granularity of the model?
+* What fields do I need on my model?
+
+---
+
+# Case study:
+**What’s the business question I’m trying to answer?**
+
+How active is our dbt Slack community?
+<br/>
+<br/>
+<br/>
+**What is the dashboard I'm trying to build?**
+
+Let's draw it!
+
+???
+[to do for future Learns that i'm not part of, insert image here!]
+---
+---
+# Case study
+**What other questions will business users have when they see this dashboard?**
+--
+
+* How many messages get sent a day? Should that number include replies?
+* How many messages get a reply? How quickly? Wait, replies can’t get replies… so we need to filter those out
+* How many replies does a message get?
+* Who is posting the most?
+* What channels are the most active?
+
+---
+# Case study
+**What is the granularity of the model?**
+**What fields do I need?**
+
+--
+
+.left-column[
+`fct_posts`: One record per message that is posted in a channel
+* message_id
+* user_id (user handle?)
+* channel_id (channel name instead?)
+* sent_at
+* n_replies
+* first_reply_at
+]
+
+.right-column[
+`fct_replies`: One record per message that is posted in reply to another message
+* message_id
+* sent_at
+* user_id (user handle?)
+* parent_message_id
+]
+
+Are there other dimensions I want?
+---
+# Hold up!
+???
+Do we need to build this model (in this case yes, because it's a new data source)
+--
+
+Before you go any further, ask yourself:
+* Can we adjust an existing model rather than create a new one?
+* Does this belong in dbt or in the BI layer?
+* Is this an ad-hoc request, or something that is worth spending time on?
+
+---
+class: subtitle
+
+# Exploratory model building
+--
+
+Get to V1
+???
+i.e. get something in the hands of your users that works
+
+Lots of tinkering at this point, helps you understand your data sources
+
+---
+# Work backwards to the {% raw %}{{ source() }}{% endraw %}
+* What data to I have available to fill in the blanks?
+  * Now is the time to interrogate your data.
+* How does the data join together? Do I have the right keys to join across?
+* What assumptions am I making about my data sources? Can I test those?
+
+---
+.center[
+<img src="/lessons/img/{{page.lesson}}/exploratory-data-analysis.jpeg" style="width: 35%;">
+]
+
+.caption[
+  [Source](https://twitter.com/b0rk/status/1182288624018247685?lang=en)
+]
+---
+# Case study
+What data do I have?
+```sql
+select * from raw.slack.messages limit 10;
+select * from raw.slack_historical limit 10;
+```
+
+Great let’s draw a DAG & write a few models!
+???
+Teacher notes:
+- Open up Snowflake and run the following:
+
+
+---
+# Get to V1 of the model
+* Start by putting all your code in one or a few SQL files! (but use CTEs)
+* Develop your dashboard at the same time to check the results
+* What other “sources of truth” do you have for this data? Does your model match?
+* Is it perfect? (Does it need to be?)
+Then `git commit!`
+
+[Version 1 of our models](https://cloud.getdbt.com/accounts/1951/runs/3522578/docs/#!/model/model.learn_case_study.stg_slack__messages)
+
+
+---
+# Case study
+**Process I followed**
+* Defined some sources
+* Defined my staging models (used the [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/) package 🤫). I noticed:
+    * Timestamps are in epoch?
+    * No primary key? The epoch timestamp is the primary key?
+* Built my `fct_` models
+* Looked at the data in aggregate...
+???
+This is where the repo is at. Demonstrate some the cleaning up that has happened, but really at a superficial level.
+
+---
+# V0 Chart:
+## Posts in each channel each week
+.center[
+<img src="/lessons/img/{{page.lesson}}/bad-looker-chart.png"style="width: 60%;">
+]
+
+???
+What's wrong here?
+--
+
+* Number of messages is way too high:
+* A lot of "null" `channel_id`s:
+* `channel_id` isn't actually that useful — use `channel_name` instead
+---
+
+# Iterate to get from V0 → V1
+* Different column names in historical? Only a `channel_name`, not a `channel_id`
+* The data time periods overlap
+* Different grains — nested replies?
+* Messages includes channel joins!
+
+---
+class: subtitle
+
+# Refactor
+---
+
+# As you go, consider:
+* Modularity:
+    * Am I repeating SQL? Can I re-use models already in my project?
+    * Am I mixing cleansing and business logic?
+* Performance
+    * Is my final model fast to query? Is it fast to build?
+    * Simplicity/Abstraction
+    * Can I make this code easier to understand?
+* Correctness:
+    * How correct is this? Does that matter?
+---
+background-color: #005E7A
+class: middle
+
+<img src="/lessons/img/{{page.lesson}}/final-dag.png" style="width: 100%;">
+
+???
+This is what it ended up as! A ton more complicated!
+(To-do: it needs to be at least 3x bigger than this!)
+---
+# Final checklist:
+Before you send a PR to be reviewed, check:
+* Have I used sources?
+* Have I materialized my models appropriately?
+* Does my code match the style guide?
+* Do I have tests and descriptions?
+
+(Check out our [checklist](https://github.com/fishtown-analytics/dbt-init/blob/master/starter-project/.github/pull_request_template.md))
+
+???
+* Note that these are all things we talked about on day two, but 90% of the work in this case study was things we learnt on day one!
+* The actual PR: https://github.com/fishtown-analytics/internal-analytics/pull/110
+---
+class: subtitle
+# Summary
+1. Define the model
+2. Exploratory model building
+3. Refactor
+
+{% include options/next-presentation.html %}

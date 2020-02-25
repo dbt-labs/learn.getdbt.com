@@ -85,6 +85,7 @@ Questions to prompt:
 2. A dbt project
 --
 
+    * created with the `init` command / `initialize` button
     * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
 
 .center[
@@ -101,6 +102,7 @@ Quick side step into models though...
 1. A data warehouse
 
 2. A dbt project
+    * created with the `init` command / `initialize` button
     * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
     * a project contains **models**
 ---
@@ -127,6 +129,8 @@ See if anyone wants to have a go at explaining a model
 3. A connection to your warehouse
 --
 
+    * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
+    * dbt Cloud: a connection
     * contains credentials to connect to your warehouse and a **target schema**
 
 ???
@@ -146,7 +150,7 @@ See if anyone wants to have a go at explaining a model
 4. A command
 
 --
-    * an instruction to build or test models
+    * an instruction, issued from the command line
     * e.g. `dbt run`
 
 
@@ -217,7 +221,6 @@ Good knowledge check questions:
 
 ???
 * Show changing configurations, esp. examples that highlight hierarchical nature
-
 ---
 # What happens when you `dbt run`?
 1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
@@ -225,7 +228,24 @@ Good knowledge check questions:
 3. dbt wraps your **models** in the based on the the **materialization** you **configure** for a model (e.g. `create table as`)
 4. dbt executes this SQL to build your models in your **target schema**
 
+--
+
+# Breathe!
+
+???
+Stop for questions at this point, make sure everyone is following.
+
 ---
+
+# Let's do it again!
+## This time for the Jaffle Shop
+
+???
+Instructions to teacher:
+* Copy the query from the tutorial and run it
+
+---
+
 # Creating dependencies
 * It's often a good idea to split up models
 * Use the `ref` function to do build dependencies between models
@@ -323,8 +343,66 @@ You should be able to:
 * Add tests to your models
 * Run your tests (all of them / one model at a time)
 
+🙋‍♀️ Please let us know if you want to go over any of these
+
 ???
 Teacher notes:
 * Use this as a checklist that you've covered everything off
 * Emphasize that we're going to launch off from here — use the lunch time to make sure that everyone is following so far.
 * For those who do understand, there's a working session
+---
+
+class: subtitle
+# Working session
+We just got some payment data into our warehouse:
+
+```sql
+select * from raw.stripe.payment
+>>>
+| ID | orderID | paymentMethod | AMOUNT | CREATED    |
+|----|---------|---------------|--------|------------|
+| 1  | 1       | credit_card   | 1000   | 2018-01-01 |
+| 2  | 2       | credit_card   | 2000   | 2018-01-02 |
+| 3  | 3       | coupon        | 100    | 2018-01-04 |
+| 4  | 4       | coupon        | 2500   | 2018-01-05 |
+| 5  | 5       | bank_transfer | 1700   | 2018-01-05 |
+
+```
+???
+Notes on the data (for teachers, hopefully the students discover some of these)
+* singular table name
+* no underscores in column names
+* cased column names
+* amount is in cents
+* `created` vs. `created_date`
+
+---
+name: working-session
+class: subtitle
+# Working session
+We just got some payment data into our warehouse:
+
+```sql
+select * from raw.stripe.payment
+```
+
+1. Build an `orders` model with the following fields:
+    * `order_id`
+    * `customer_id`
+    * `amount` (hint: this has to come from payments)
+2. Add a new field to the `customers` model:
+    * `customers.lifetime_value`: the total amount a customer has spent at `jaffle_shop`
+
+{% include options/next-presentation.html %}
+
+???
+Discussion points (leading questions for the next session)
+
+Where did our data come from? How do we know that?
+* All of it was in the `raw` database
+* Grouped into schemas based on the source
+
+When building your models:
+* What did you name the files?
+* How did you organize them in your models directory?
+* Did you test these models? Did you document them?

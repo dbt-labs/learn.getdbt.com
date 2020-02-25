@@ -1,121 +1,418 @@
 ---
 layout: presentation
-title: Packages and projects
-lesson: 203
+title: Data Warehouse Performance
+lesson: 205
 ---
 
 class: title, center, middle
-# Packages
+# Data Warehouse Performance
 
 ---
-# What are packages?
---
 
-Packages are dbt projects that you can install in your _own dbt project_
+name: big-q
+# Q: Why are data warehouses fast?
 
-They have:
-* A `dbt_project.yml` file
-* And contain macros, models etc.
-
-
-???
-Teacher notes:
-* We're starting with a very literal example (using macros), and then going to talk more broadly about packages.
-Before we hit databases, there's a nice story of "woah that's a package, which is just a dbt project? you know what else has a dbt project? (A: dbt)."
-Or, "yo why is there 138 macros in our project when we only added one".
-And from there we can talk a little bit about writing custom tests + using custom schemas + custom aliases + custom overviews. Once you get that concept down, it's so easy to understand how you can get dbt to do things you want it to do
 ---
-# Use case: Using macros from a package
 
-1. Add a `packages.yml` file to your project
+### Transactional
 
---
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
 
-```yml
-# packages.yml
-packages:
-  - package: fishtown-analytics/snowplow
-    version: 0.7.1
+<div style="font-size: 10px;">&nbsp;</div>
 
-  - git: "https://github.com/fishtown-analytics/dbt-utils.git"
-    revision: 0.1.21
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 2  | Barbara | blue           | true        |
 
-```
-???
-* Discuss when to use which syntax
+### Analytical
+
+.left-column[
+.left-column[
+| id |
+|----|   
+| 1  |
+| 2  |
+]
+
+.right-column[
+| name    |
+|---------|
+| Alice   |
+| Barbara |
+]]
+
+.right-column[
+.left-column[
+| favorite_color |
+|----------------|
+| green          |
+| blue           |
+]
+
+.right-column[
+| is_creative |
+|-------------|
+| false       |
+| true        |
+]]
+
 ---
-# Use case: Using macros from a package
 
-1. Add a `packages.yml` file to your project
---
+# Which for which?
 
-2. Run `dbt deps` to install the package (check out the `modules` dir!)
-```shell
-$ dbt deps
-```
-???
-* Show the  modules directory
-* Note that these are .gitignored
----
-# Use case: Using macros from a package
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
 
-1. Add a `packages.yml` file to your project
-2. Run `dbt deps` to install the package
---
-
-3. Access macros from the package
-{% raw %}
+.left-column[
 ```sql
--- models/utils/util_days.sql
-{{ dbt_utils.date_spine(
-    datepart="day",
-    start_date="to_date('01/01/2016', 'mm/dd/yyyy')",
-    end_date="current_date"
-   )
-}}
+select
+
+    name,
+    favorite_color
+
+from users
+where id = 2
 ```
-{% endraw %}
+]
+
+.right-column[
+```sql
+select
+
+    is_creative,
+    count(*)
+
+from users
+group by 1
+```
+]
+
 ---
-# Use case: Using macros from a package
 
-1. Add a `packages.yml` file to your project
-2. Run `dbt deps` to install the package
-3. Access macros from the package
+template: big-q
+name: first-a
 
-```yml
-# models/marts/core/schema.yml
-version: 2
+.left-column[
+### A: They're columnar.
 
-models:
-  - name: orders
-    tests:
-      - dbt_utils.expression_is_true:
-          expression: "order_amount + order_tax = order_total"
+This structure of data storage allows them to .highlight[**limit scanned data**] 
+when executing an "analytical" query.
+]
+
+???
+Why else?
+
+---
+
+# Horizontal scaling
+
+Parallel processing = faster processing!
+
+<img src="/lessons/img/{{page.lesson}}/redshift-nodes.png" class="img-center">
+
+???
+BigQuery runs _every_ query with _thousands_ of worker nodes
+
+---
+
+# Vertical Scaling
+
+.left-column[
+### In the world
+<img src="/lessons/img/{{page.lesson}}/amd-vc.png" class="img-center">
+&nbsp;
+<img src="/lessons/img/{{page.lesson}}/nvidia-gpu.png" class="img-center">
+]
+
+.right-column[
+### In Snowflake
+<img src="/lessons/img/{{page.lesson}}/snowflake-scaling.png" class="img-center">
+]
+
+---
+
+template: first-a
+name: second-a
+
+.right-column[
+### A: They're scalable.
+
+Data warehouses can benefit from .highlight[**horizontal and vertical scaling**].
+]
+
+---
+
+class: subtitle, center, middle
+# So... why are queries slow?
+
+---
+
+# Mental model
+
+- A query, written in SQL, is interpreted by the database optimizer
+- The optimizer writes an execution plan in machine code
+- The execution plan contains a sequence of tasks
+- Some tasks are easy, some are more strenuous
+- Some tasks can be performed in parallel, some to need to wait for others to finish
+
+| Task                | Time  | Time (Relative) |
+|---------------------|-------|-----------------|
+| 1 CPU Cycle         | 0.3ns | 1 second        |
+| Memory Access       | 120ns | 5 minutes       |
+| Disk read           | 1ms   | 1 month         |
+| Internet: SF to NYC | 40ms  | 4 years         |
+
+---
+
+# Conceptual framework
+
+- Scanning data is **_slow_**
+- Moving data around is **_slowww_**
+- Warehouses are "logical" and "physical"
+    - We like to think about the "logical" part of it
+    - Sometimes it’s necessary to consider the "physical"
+- Biggest takeaway?
+    - Your time is valuable
+    - Make choices that keep you focused on the "logical"
+
+---
+
+class: subtitle, center, middle
+# Example: sorting data
+
+---
+
+class: subtitle, center, middle
+## I'm thinking of a number...
+
+???
+- I'm thinking of a number between 1 and 100. What is it?
+- What's the quickest way to figure out what it is?
+- Binary search: Is it greater than 50?
+- This works _if and only if_ the numbers are **sorted**
+
+---
+
+## My favorite place :)
+
+.left-column-66[
+<img src="/lessons/img/{{page.lesson}}/library.png" class="img-center">
+]
+
+--
+
+.right-column-33[
+#### How many books start with the letter "D"?
+]
+
+--
+
+.right-column-33[
+#### How many books were written in 2002?
+]
+
+???
+1. Label each row with a letter. How many books start with the letter "D"?
+2. Label each row with a letter. How many books were written in 2002?
+3. Label each row with a year. How many books were written in 2002?
+
+---
+
+# How to sort?
+
+| order_id | user    | order_date | order_total |
+|----------|---------|------------|-------------|
+| 1        | Alice   | 2019-01-01 | $20.00      |
+| 2        | Barbara | 2019-01-02 | $30.00      |
+| 3        | Alice   | 2019-01-03 | $10.00      |
+| ...      | ...     | ...        | ...         |
+
+
+--
+
+### You need to know how the data will be queried!
+
+```sql
+select *
+from orders
+where order_date >= ‘2019-01-03’
 ```
 
 ???
-* Go through some of the most common macros in dbt-utils (there might be overlap with previous lesson)
----
-# Q: What happens when you add a package with models in it?
---
-
-These models get added to your DAG!
+- Which field should we sort on in order to optimize this query?
 
 ---
-background-color: #005E7A
-<img src="/lessons/img/{{page.lesson}}/snowplow-package.png" style="width: 100%;">
+
+# In practice
+
+.left-column[
+Databases need to sort data for:
+- Filters (`where`)
+- Window functions (`partition by`, `order by`)
+]
+
+.right-column[
+Databases need to move data around for:
+- Uniqueness (`distinct`)
+- Joins
+]
+
+**The optimizer is your friend!**
+
+- If the database optimizer does its job perfectly, you never need to think
+about sorting, distributing, clustering, shuffling, range joining, ...
+- If you _only_ think about the "logical" and _never_ about the "physical,"
+you cannot empathize with the database optimizer, and you will
+write non-performant SQL
+
+???
+- Joins implicitly require finding all unique values for match/comparison, which
+is why they're similar to getting `distinct` values.
+
+Rabbi Hillel's questions, paraphrased:
+- If you are only for the optimizer, who will be for you?
+- If you are only for yourself, who are you?
 
 ---
-# Use cases for packages:
 
---
+### Every query is an optimization problem
 
-## Macros:
-* Versatile macros, especially for “How to Write this in SQL” problems ([dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/))
-* Ad hoc queries/snippets you find yourself writing over and over ([audit_helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/), [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/))
+.left-column[
+`dim_users`
 
---
+| user_id | user_name | age |
+|---------|-----------|-----|
+| 1       | alice     | 27  |
+| 2       | barbara   | 42  |
+| ...     | ...       | ... |
+]
 
-## Models:
-* Common staging models for one data source ([facebook](https://hub.getdbt.com/fishtown-analytics/facebook_ads/latest/))
-* Follow industry standards for boilerplate-yet-complex modeling ([snowplow](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/), [segment](https://hub.getdbt.com/fishtown-analytics/segment/latest/))
+.right-column[
+`fct_orders`
+
+| user_id | order_id | order_total |
+|---------|----------|-------------|
+| 1       | 123      | 75.00       |
+| 2       | 124      | 30.00       |
+| 1       | 125      | 40.00       |
+| ...     | ...      | ...         |
+]
+
+&nbsp;
+
+```sql
+select sum(order_total)
+from fct_users
+join fct_orders using (user_id)
+where age < 30
+```
+
+???
+How to sort + distribute? Totally depends on the query you want to run! Here,
+you should **sort on age** and **distribute on `user_id`**.
+
+---
+
+class: subtitle, center, middle
+# Specific databases
+
+---
+
+# BigQuery partitioning
+
+- BigQuery presents a totally different optimization problem!
+
+- Limiting scanned data is not just a way to have faster queries, it's an
+_economic necessity_.
+
+    - BQ charges based on **total data scanned**, not complexity of computation
+    - You can `partition` tables by a date, timestamp, or integer column, which
+    is analogous to sorting on that column
+
+---
+
+# Snowflake clustering
+
+Snowflake natively stores data in tiny chunks (“micropartitions”) and stores 
+metadata about each partition, such as the min/max value.
+
+This improves performance dramatically via “query pruning”: How many 
+micropartitions need to be scanned to return the results of my query?
+
+---
+
+<img src="/lessons/img/{{page.lesson}}/snowflake-pruned-query.png" class="img-center">
+
+---
+
+# When should we cluster?
+
+Biggest datasets (event streams) are naturally ordered, so data will be 
+distributed across micropartitions based on when it was collected.
+
+When do we need to do more?
+- On especially big tables. Snowflake says >1 TB, we say >100 GB.
+- You’re regularly filtering on a field that is _not_ naturally sorted
+- You're willing to pay more so that a particular query runs fastest
+    - E.g. embedded reporting, exposed to external stakeholders
+
+---
+
+# Apples to apples
+
+.dense-text[
+.left-column[
+### Redshift
+.left-column[
+- Sort keys
+    - Compound
+    - Interleaved
+- Dist style
+    - Single column
+    - Even
+    - All
+]
+.right-column[
+- Maintenance
+    - vacuum
+    - analyze
+- Column compression
+    - ZSTD
+    - LZO
+    - ...
+]
+]
+
+.right-column[
+.left-column[
+### BigQuery
+- Partitioning
+- Clustering
+- Nesting/arraying repeated records
+]
+
+.right-column[
+### Snowflake
+- Clustering (~sorting)
+    - Only for large tables
+]
+]
+]
+
+???
+Draw an arrow from left ("more work") to right ("less work"). A well tuned,
+perfectly optimized Redshift cluster will execute queries _as quickly as_ a
+comparable Snowflake cluster, for a lower price. But a poorly tuned Redshift
+cluster is, well, a cluster.
+
+---
+
+class: subtitle, middle, center
+# Just those three?
+# Wait and see...
+
+{% include options/next-presentation.html %}
