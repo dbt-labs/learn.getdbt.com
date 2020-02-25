@@ -1,0 +1,330 @@
+---
+layout: presentation
+title: dbt Fundamentals
+lesson: 103
+estimated_teaching_time: 45
+estimated_working_session: 60
+teaching_method: live demo + slides. Questions encouraged.
+---
+class: title, center, middle
+# Setting the scene
+
+???
+Note to teacher:
+- This presentation should be accompanied by re-doing the tutorial live.
+- It comes after a number of lessons that are one-sided
+- Ask the audience some questions / encourage participation. There will be some students who know all this already, so give them the opportunity to participate by helping answer questions.
+- If people ask questions that are related to future lessons, jot them down on a shared place so you can cross them off throughout the rest of the course.
+
+---
+# Scenario
+
+I'm an analyst working at "The Jaffle Shop". The Jaffle Shop uses our own app for order management:
+.center[
+<img src="/lessons/img/{{page.lesson}}/jaffle-shop-erd.png" style="width: 40%;">
+]
+I have a copy of this data replicated into my warehouse:
+```sql
+select * from raw.jaffle_shop.customers
+```
+--
+
+## Why should I transform my data?
+???
+Hopefully answers like:
+- clean up the data
+- create news fields
+- build trust/test it
+- stop repeated work
+
+---
+
+# My project
+* I'm going to transform my data to:
+    * Clean up some dirtiness in my data (e.g. `user_id`)
+    * Build some new fields on my customers model (`number_of_orders` etc.)
+* And then connect my BI tool to the transformed data
+---
+
+class: title, center, middle
+# dbt Fundamentals
+
+
+---
+
+# The four ingredients for dbt
+
+???
+To use dbt, you need four things:
+
+--
+
+1. A data warehouse
+???
+* We're using Snowflake, your org might be using BigQuery / Redshift (or heaven forbid, spark)
+* Flip to Snowflake console and show the data
+
+--
+
+    * that can run SQL
+    * with data already loaded in to it
+
+.center[
+<img src="/lessons/img/{{page.lesson}}/data-warehouse.png" style="width: 50%;">
+]
+
+???
+Questions to prompt:
+- How does data get into the warehouse?
+
+---
+# The four ingredients for dbt
+
+1. A data warehouse
+
+2. A dbt project
+--
+
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+
+.center[
+<img src="/lessons/img/{{page.lesson}}/dbt-project.png" style="width: 50%;">
+]
+
+???
+Create the project again/show off the models
+Quick side step into models though...
+
+---
+# The four ingredients for dbt
+
+1. A data warehouse
+
+2. A dbt project
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+---
+## What are models?
+
+???
+See if anyone wants to have a go at explaining a model
+--
+
+* Models are `select` statements that transform data.
+* Stored in the `models` directory, and have a `.sql` extension
+
+
+.center[
+<img src="/lessons/img/{{page.lesson}}/model.png" style="width: 50%;">
+]
+
+---
+# The four ingredients for dbt
+1. A data warehouse
+
+2. A dbt project
+
+3. A connection to your warehouse
+--
+
+    * contains credentials to connect to your warehouse and a **target schema**
+
+???
+* Explain why this lives outside your project:
+    * creds are sensitive and shouldn't be version controlled
+    * target schemas should be different for each user, so shouldn't be hardcoded in a project
+* Explain what a target schema is
+* For CLI users — they might want more info on targets/profiles
+---
+# The four ingredients for dbt
+1. A data warehouse
+
+2. A dbt project
+
+3. A connection to your warehouse
+
+4. A command
+
+--
+    * an instruction to build or test models
+    * e.g. `dbt run`
+
+
+???
+* Run `dbt run`!
+* Explain what dbt is doing (wraps the select statement in DDL and runs it)
+* Show where to see the logs
+
+
+Good knowledge check questions:
+* How did dbt connect to the warehouse? A: connection / profile
+* How did dbt know what schema to use? A: the target schema
+* What happens if you rerun dbt? A: no downtime (this looks different on each warehouse)
+---
+.center[
+<img src="/lessons/img/{{page.lesson}}/dbt-run.png" style="width: 100%;">
+]
+
+
+---
+
+# The four ingredients for dbt
+1. A data warehouse
+
+2. A dbt project
+
+3. A connection to your warehouse
+
+4. A command
+
+---
+# What happens when you `dbt run`?
+1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
+2. dbt parses your **dbt project**
+3. dbt wraps your **models** in the appropriate DML (e.g. `create table as`)
+4. dbt executes this SQL to build your models in your **target schema**
+
+???
+- Behind the scenes, tons more happening: checking if the schema exists etc.
+--
+
+* **How can I see what's happening?**
+    * Check out the `target/` directory and the `logs/` file
+* **How does dbt know the right SQL to use?** (`create table as` vs. `create view as`)
+    * The way that dbt builds a model depends on the **materialization** you **configure** for a model.
+
+---
+
+# What is a materialization?
+
+--
+* `materializations` are build strategies
+* i.e. the SQL that your `select` statement gets wrapped in
+* Models can be materialized as `views` and `tables` (we'll learn more later!)
+* You need to **configure** a model's materialization
+
+---
+#  What is a configuration?
+
+--
+* `configurations` are model settings
+* They can be set in your `dbt_project.yml` file, _and_ in your model file.
+* Configurations are applied _hierarchically_
+* Example configurations:
+    * `materialized='view'`
+    * `tags=['nightly', 'hourly']`
+    * `enabled=True`
+
+???
+* Show changing configurations, esp. examples that highlight hierarchical nature
+
+---
+# What happens when you `dbt run`?
+1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
+2. dbt parses your **dbt project**
+3. dbt wraps your **models** in the based on the the **materialization** you **configure** for a model (e.g. `create table as`)
+4. dbt executes this SQL to build your models in your **target schema**
+
+---
+# Creating dependencies
+* It's often a good idea to split up models
+* Use the `ref` function to do build dependencies between models
+* These dependencies form a **Directed Acyclic Graph (DAG)**
+* dbt uses this DAG to understand the order to run models in
+.center[
+<img src="/lessons/img/{{page.lesson}}/jaffle-shop-dag.png" style="width: 60%;">
+]
+
+---
+# DAGs
+## A real life example:
+.center[
+<img src="/lessons/img/{{page.lesson}}/laundry-dag.png" style="width: 60%;">
+]
+
+---
+background-color: #004C61
+class:subtitle
+## A slightly more complex DAG
+.center[
+<img src="/lessons/img/{{page.lesson}}/example-dag.png" style="width: 100%;">
+]
+
+---
+background-color: #005E7A
+class:subtitle
+# A typical dbt DAG
+.center[
+<img src="/lessons/img/{{page.lesson}}/typical-dag.png" style="width: 50%;">
+]
+
+
+---
+class:subtitle
+# Testing dbt models
+
+???
+* Add some tests to your models
+* Demonstrate running one test at a time
+---
+# What are tests?
+--
+
+**Tests** are assertions you make about your **models**.
+
+When your assertion is true, your tests pass.
+
+Behind the scenes, tests are just `select` statements!
+
+---
+# What happens when you `dbt test`?
+1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
+2. dbt parses your **dbt project**
+3. dbt iterates through the schema files (`models/**.yml`) to construct `select` queries.
+4. dbt executes the SQL for each test: if the number `0` is returned your test passes
+
+
+---
+# Other helpful commands
+CLI:
+* `dbt --help` (and `dbt run --help`)
+* `dbt --version`
+* `dbt debug`
+* `dbt compile`
+
+???
+* Demo each command — for CLI users, it's worth realizing that these are pretty standard CLI commands!
+
+---
+# Knowledge check
+
+You should be comfortable with these words:
+.left-column[
+* dbt project
+* models
+* target schema
+* materializations
+* DAGs
+]
+.right-column[
+* configs
+* refs
+* configurations
+* tests
+]
+---
+# Knowledge check
+
+You should be able to:
+* Create new models (that depend on other models)
+* Run your models (all of them / one model at a time)
+* Check the SQL that's running
+* Configure your models (from the `dbt_project.yml` file / within a model)
+* Add tests to your models
+* Run your tests (all of them / one model at a time)
+
+???
+Teacher notes:
+* Use this as a checklist that you've covered everything off
+* Emphasize that we're going to launch off from here — use the lunch time to make sure that everyone is following so far.
+* For those who do understand, there's a working session

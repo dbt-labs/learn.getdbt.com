@@ -43,6 +43,10 @@ collections:
     output: true
     sort_by: lesson
     permalink: /:collection/:path
+  cona:
+    output: true
+    sort_by: lesson
+    permalink: /:collection/:path
 
 defaults:
 -
