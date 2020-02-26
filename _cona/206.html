@@ -1,7 +1,7 @@
 ---
 layout: presentation
 title: Materializations + Incremental models
-lesson: 206
+lesson: 207
 ---
 
 class: title, center, middle
@@ -42,10 +42,6 @@ class: title, center, middle
 
 ]
 
-.right-column-33[
-<img src="/lessons/img/{{page.lesson}}/material-houses.png" class="img-center">
-]
-
 ---
 
 # Standard materializations
@@ -63,10 +59,6 @@ class: title, center, middle
 - Trickiest part: cross-database support
 - E.g. ["insert by period"](https://github.com/fishtown-analytics/dbt-utils#materializations)
 
-]
-
-.right-column-33[
-<img src="/lessons/img/{{page.lesson}}/material-houses.png" class="img-center">
 ]
 
 ---
@@ -236,8 +228,8 @@ of the runtime
 
 What's the DDL/DML that dbt is running?
 
-- `delete` + `insert` ("upsert") on Redshift and a special Snowflake "strategy"
-- `merge` is default BigQuery + default Snowflake "strategy"
+- `merge` is default
+- Can use `delete+insert` instead
 
 Basically:
 
@@ -265,8 +257,7 @@ with events as (
 -- rest of model --
 ```
 
-- Redshift: It's a good idea to distribute the `sessions` model on `session_id`
-    - dbt will `delete` from the existing table using an implicit inner join
+- Note: clustering matters for performance
 
 ---
 
@@ -381,9 +372,6 @@ and perform relative calculations
 - Recalculate all data for one day and just replace it entirely
     - **Pro:** Very efficient! Filter on partition field, save a join step
     - **Con:** No matching on a `unique_key` = no guarantee of uniqueness
-
-- This is the default on Big Data tech (e.g. Spark), and we've also implemented
-as an optional strategy for BigQuery
 
 ---
 
