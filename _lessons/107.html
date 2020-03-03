@@ -66,12 +66,12 @@ models:
         tests:
           - unique
           - not_null
-          
+
       - name: mrr
         description: Monthly recurring revenue in dollars.
         tests:
           - not_null
-         
+
       - name: change_category
         description: "{{ doc('change_category') }}"
 ```
@@ -144,9 +144,14 @@ name: working-session
 class: subtitle
 
 # Working session
-* Add a docs block for one (or all!) of the following:
+* Add a description for one (or all!) of the following:
     * a model
     * a source
     * a column
-    
+* Use a docs block for one of your descriptions
+
+.caption[
+  [Related dbt documentation](https://docs.getdbt.com/docs/documentation)
+]
+
 {% include options/next-presentation.html %}
