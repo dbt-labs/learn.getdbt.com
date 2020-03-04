@@ -31,7 +31,8 @@ permalink: /lessons/
                 </div>
             </div>
 			<div class="row">
-                {% for lesson in site.lessons %}
+				{% for lesson in site.lessons  %}
+				{% if lesson.lesson >= 101 and lesson.lesson <= 299 %}
                 {% if lesson.lesson == 101 or lesson.lesson == 201 %}
                 <div class="col-md-6">
                     {% if lesson.lesson == 101 %} <h4> Day One: Foundations </h4> {% endif %}
@@ -42,7 +43,8 @@ permalink: /lessons/
                 {% if lesson.lesson == 109 or lesson.lesson == 209 %}
                         </ul>
                     </div>
-                {% endif %}
+				{% endif %}
+				{% endif %}
                 {% endfor %}
 			</div>
 		</div>

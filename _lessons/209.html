@@ -191,7 +191,7 @@ left join {{ ref('country_codes') }} as country_codes
 
 ---
 
-# I am getting permission denied errors on relations that dbt creates
+## I am getting permission denied errors on relations that dbt creates
 --
 
 ```txt
@@ -207,7 +207,7 @@ ERROR:  permission denied for relation my_table
 
 --
 
-## Technique: version-controlled grant statements
+### Technique: version-controlled grant statements
 
 ???
 We want to ensure that as soon as dbt creates a relation, my BI tool can `select` from it
@@ -415,8 +415,8 @@ We already know that:
 - This is a thing you won't do very often, so it's okay to not know this off by heart!
 
 ---
-# Example
-
+## Example
+.denser-text[
 ```sql
 -- macros/test_unique.sql
 {% macro test_unique(model) %}
@@ -449,6 +449,7 @@ from aggregated
 
 {% endmacro %}
 ```
+]
 ---
 # Example
 
@@ -499,7 +500,7 @@ group by 1
 
 having total_amount < 0
 ```
-Run with `dbt test`
+Run with `dbt test` (or `dbt test --data`)
 .caption[
   [Learn more](https://docs.getdbt.com/docs/testing)
 ]

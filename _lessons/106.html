@@ -17,7 +17,7 @@ class: title, center, middle
 - I'm switching my email marketing platform. I want to know which final models depend on that source data.
 --
 
-- I'm switching the tool that extracts and loads _from_ my email 
+- I'm switching the tool that extracts and loads _from_ my email
 marketing platform. The table names used to have underscores, now they don't!
 --
 
@@ -74,11 +74,11 @@ sources:
   - name: stripe
     loaded_at_field: _batched_at
     loader: airflow     # this is just for documentation
-    
+
     freshness:
       warn_after: {count: 12, period: hour}
       error_after: {count: 24, period: hour}
-    
+
     tables:
       - name: payment
 ```
@@ -149,6 +149,17 @@ name: working-session
 class: subtitle
 
 # Working session
-* Add `sources` for our two data sources: `jaffle_shop` and `stripe`.
+* Add `sources` for our two data sources: `jaffle_shop` and `stripe` (make sure you select from the `{{ source }}` in your models)
+* Add a freshness block to at least one source, and snapshot the freshness
+    * Note: use a dummy `loaded_at_field` to get the freshness test to pass:
+    ```yml
+    loaded_at_field: "current_timestamp"
+    freshness: ...
+    ```
+* Add tests to these sources, and try running these tests
+
+.caption[
+  [Related dbt documentation](https://docs.getdbt.com/docs/using-sources)
+]
 
 {% include options/next-presentation.html %}
