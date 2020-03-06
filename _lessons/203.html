@@ -118,14 +118,7 @@ background-color: #005E7A
 
 
 ---
-class: subtitle
-# Working session
-## Using macros from a package:
-* Add [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) to your dbt project
-* Use a macro from dbt-utils (e.g. `date_spine` to create a table of all days)
 
-
----
 ## Hold up, what about all those other macros?
 Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
 .center[
@@ -176,6 +169,6 @@ class: subtitle
 * Create a new model that uses the `date_spine` macro to create a table of all days (check the [usage docs](https://github.com/fishtown-analytics/dbt-utils#date_spine-source))
 
 ## Overriding the dbt global project
-* Change the way that dbt generates schema names ([related dbt documentation](https://docs.getdbt.com/docs/using-custom-schemas#section-changing-the-way-dbt-generates-a-schema-name)).
+* Override the uniqueness test ([here](https://github.com/fishtown-analytics/dbt/blob/dev/octavius-catto/core/dbt/include/global_project/macros/schema_tests/unique.sql)) to use a CTE rather than a subquery.
 
 {% include options/next-presentation.html %}
