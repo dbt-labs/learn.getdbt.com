@@ -188,7 +188,7 @@ with events as (
 
     select * from {{ref('events')}}
     
-    {% if is_incremental %}
+    {% if is_incremental() %}
     where event_timestamp >= (select max(session_start) from {{this}})
     {% endif %}
 
