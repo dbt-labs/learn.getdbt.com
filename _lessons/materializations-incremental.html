@@ -1,7 +1,6 @@
 ---
 layout: presentation
 title: Materializations + Incremental models
-lesson: 207
 ---
 
 class: title, center, middle
@@ -43,7 +42,7 @@ class: title, center, middle
 ]
 
 .right-column-33[
-<img src="/lessons/img/{{page.lesson}}/material-houses.png" class="img-center">
+<img src="/ui/img{{page.id}}/material-houses.png" class="img-center">
 ]
 
 ---
@@ -66,7 +65,7 @@ class: title, center, middle
 ]
 
 .right-column-33[
-<img src="/lessons/img/{{page.lesson}}/material-houses.png" class="img-center">
+<img src="/ui/img{{page.id}}/material-houses.png" class="img-center">
 ]
 
 ---
@@ -80,7 +79,7 @@ class: title, center, middle
 
 # Why?
 
-<img src="/lessons/img/{{page.lesson}}/fr-run-timing.png" class="img-center">
+<img src="/ui/img{{page.id}}/fr-run-timing.png" class="img-center">
 
 ---
 
@@ -119,7 +118,7 @@ the ways that things can go wrong.
 ]
 
 .right-column[
-<img src="/lessons/img/{{page.lesson}}/rodin-thinker.png" style="border-radius: 50%;" class="img-center">
+<img src="/ui/img{{page.id}}/rodin-thinker.png" style="border-radius: 50%;" class="img-center">
 ]
 ]   
 
@@ -165,9 +164,9 @@ class: subtitle, center, middle
 
 ### [The Discourse](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
 
-<img src="/lessons/img/{{page.lesson}}/incr-discourse-stats.png" class="img-center">
+<img src="/ui/img{{page.id}}/incr-discourse-stats.png" class="img-center">
 &nbsp;
-<img src="/lessons/img/{{page.lesson}}/incr-discourse-intro.png" class="img-center">
+<img src="/ui/img{{page.id}}/incr-discourse-intro.png" class="img-center">
 
 ---
 
@@ -222,7 +221,7 @@ If all of the conditions are met, `is_incremental()` returns `true`.
 
 # How does this actually work?
 
-<img src="/lessons/img/{{page.lesson}}/how-deeper.png" class="img-center">
+<img src="/ui/img{{page.id}}/how-deeper.png" class="img-center">
 
 How is this idempotent?
 
@@ -319,7 +318,7 @@ select * from indexed
 
 # Late-arriving facts
 
-<img src="/lessons/img/{{page.lesson}}/how-late-arriving.png" class="img-center">
+<img src="/ui/img{{page.id}}/how-late-arriving.png" class="img-center">
 
 --
 
@@ -335,7 +334,7 @@ How can we correctly calculate the _entire_ session?
 
 .left-column-66[
 #### Percent of overall events, by days between firing + collection
-<img src="/lessons/img/{{page.lesson}}/prop-late-arriving.png" class="img-center">
+<img src="/ui/img{{page.id}}/prop-late-arriving.png" class="img-center">
 ]
 
 .right-column-33[
@@ -349,7 +348,7 @@ How can we correctly calculate the _entire_ session?
 
 # "Close enough & performant"
 
-<img src="/lessons/img/{{page.lesson}}/how-close-enough.png" class="img-center">
+<img src="/ui/img{{page.id}}/how-close-enough.png" class="img-center">
 
 - _Always_ recalculate the 3 previous days
 - Empirically this will account for 99.93% of all events on the first try
@@ -359,7 +358,7 @@ How can we correctly calculate the _entire_ session?
 
 # "Always correct & slow"
 
-<img src="/lessons/img/{{page.lesson}}/how-always-correct.png" class="img-center">
+<img src="/ui/img{{page.id}}/how-always-correct.png" class="img-center">
 
 - If a user has a new event, recalculate _all_ sessions for that user
 - This works with window functions! But it's **_slowwwww_**...
@@ -368,7 +367,7 @@ How can we correctly calculate the _entire_ session?
 
 # Too clever by half
 
-<img src="/lessons/img/{{page.lesson}}/how-too-clever.png" class="img-center">
+<img src="/ui/img{{page.id}}/how-too-clever.png" class="img-center">
 
 - If a user has a new session, pull the user's _most recent session only_,
 and perform relative calculations
@@ -404,4 +403,4 @@ the database) that is **necessarily a trade-off**.
 class: subtitle, middle, center
 ### Made it :)
 
-{% include options/next-presentation.html %}
+

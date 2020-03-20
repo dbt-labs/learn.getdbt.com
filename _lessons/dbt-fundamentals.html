@@ -1,7 +1,6 @@
 ---
 layout: presentation
 title: dbt Fundamentals
-lesson: 103
 estimated_teaching_time: 45
 estimated_working_session: 60
 teaching_method: live demo + slides. Questions encouraged.
@@ -21,7 +20,7 @@ Note to teacher:
 
 I'm an analyst working at "The Jaffle Shop". The Jaffle Shop uses our own app for order management:
 .center[
-<img src="/lessons/img/{{page.lesson}}/jaffle-shop-erd.png" style="width: 40%;">
+<img src="/ui/img{{page.id}}/jaffle-shop-erd.png" style="width: 40%;">
 ]
 I have a copy of this data replicated into my warehouse:
 ```sql
@@ -70,7 +69,7 @@ To use dbt, you need four things:
     * with data already loaded in to it
 
 .center[
-<img src="/lessons/img/{{page.lesson}}/data-warehouse.png" style="width: 50%;">
+<img src="/ui/img{{page.id}}/data-warehouse.png" style="width: 50%;">
 ]
 
 ???
@@ -89,7 +88,7 @@ Questions to prompt:
     * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
 
 .center[
-<img src="/lessons/img/{{page.lesson}}/dbt-project.png" style="width: 50%;">
+<img src="/ui/img{{page.id}}/dbt-project.png" style="width: 50%;">
 ]
 
 ???
@@ -117,7 +116,7 @@ See if anyone wants to have a go at explaining a model
 
 
 .center[
-<img src="/lessons/img/{{page.lesson}}/model.png" style="width: 50%;">
+<img src="/ui/img{{page.id}}/model.png" style="width: 50%;">
 ]
 
 ---
@@ -166,7 +165,7 @@ Good knowledge check questions:
 * What happens if you rerun dbt? A: no downtime (this looks different on each warehouse)
 ---
 .center[
-<img src="/lessons/img/{{page.lesson}}/dbt-run.png" style="width: 100%;">
+<img src="/ui/img{{page.id}}/dbt-run.png" style="width: 100%;">
 ]
 
 
@@ -252,14 +251,14 @@ Instructions to teacher:
 * These dependencies form a **Directed Acyclic Graph (DAG)**
 * dbt uses this DAG to understand the order to run models in
 .center[
-<img src="/lessons/img/{{page.lesson}}/jaffle-shop-dag.png" style="width: 60%;">
+<img src="/ui/img{{page.id}}/jaffle-shop-dag.png" style="width: 60%;">
 ]
 
 ---
 # DAGs
 ## A real life example:
 .center[
-<img src="/lessons/img/{{page.lesson}}/laundry-dag.png" style="width: 60%;">
+<img src="/ui/img{{page.id}}/laundry-dag.png" style="width: 60%;">
 ]
 
 ---
@@ -267,7 +266,7 @@ background-color: #004C61
 class:subtitle
 ## A slightly more complex DAG
 .center[
-<img src="/lessons/img/{{page.lesson}}/example-dag.png" style="width: 100%;">
+<img src="/ui/img{{page.id}}/example-dag.png" style="width: 100%;">
 ]
 
 ---
@@ -275,7 +274,7 @@ background-color: #005E7A
 class:subtitle
 # A typical dbt DAG
 .center[
-<img src="/lessons/img/{{page.lesson}}/typical-dag.png" style="width: 50%;">
+<img src="/ui/img{{page.id}}/typical-dag.png" style="width: 50%;">
 ]
 
 
@@ -393,7 +392,7 @@ select * from raw.stripe.payment
 2. Add a new field to the `customers` model:
     * `customers.lifetime_value`: the total amount a customer has spent at `jaffle_shop`
 
-{% include options/next-presentation.html %}
+
 
 ???
 Discussion points (leading questions for the next session)

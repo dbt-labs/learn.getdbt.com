@@ -1,7 +1,6 @@
 ---
 layout: presentation
 title: Packages and projects
-lesson: 203
 ---
 
 class: title, center, middle
@@ -103,7 +102,7 @@ These models get added to your DAG!
 
 ---
 background-color: #005E7A
-<img src="/lessons/img/{{page.lesson}}/snowplow-package.png" style="width: 100%;">
+<img src="/ui/img{{page.id}}/snowplow-package.png" style="width: 100%;">
 
 
 ---
@@ -122,7 +121,7 @@ background-color: #005E7A
 ## Hold up, what about all those other macros?
 Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
 .center[
-<img src="/lessons/img/{{page.lesson}}/127-macros.png" style="width: 50%;">
+<img src="/ui/img{{page.id}}/127-macros.png" style="width: 50%;">
 ]
 ???
 This slide is truly for curious minds.
@@ -138,7 +137,7 @@ Hint: we might need this information later today!
 
 ---
 background-color: white
-<img src="/lessons/img/{{page.lesson}}/dbt-global-project.jpeg" style="width: 100%;">
+<img src="/ui/img{{page.id}}/dbt-global-project.jpeg" style="width: 100%;">
 
 ---
 # Everything's a project!
@@ -171,4 +170,4 @@ class: subtitle
 ## Overriding the dbt global project
 * Override the uniqueness test ([here](https://github.com/fishtown-analytics/dbt/blob/dev/octavius-catto/core/dbt/include/global_project/macros/schema_tests/unique.sql)) to use a CTE rather than a subquery.
 
-{% include options/next-presentation.html %}
+

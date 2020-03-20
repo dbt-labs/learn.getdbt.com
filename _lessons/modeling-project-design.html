@@ -1,7 +1,6 @@
 ---
 layout: presentation
-title: Data Warehouse Design
-lesson: 104
+title: Designing a data modeling project
 estimated_teaching_time: 60
 teaching_method: slides
 working_session: false
@@ -31,7 +30,7 @@ class: title, center, middle
 ]
 
 .right-column-66[
-<img src="/lessons/img/{{page.lesson}}/fact-dims.png" class="img-center">
+<img src="/ui/img{{page.id}}/fact-dims.png" class="img-center">
 ]
 
 ---
@@ -100,7 +99,7 @@ Corr says: 7Ws
 
 # Before
 
-<img src="/lessons/img/{{page.lesson}}/fact-sales-erd.png" class="img-center">
+<img src="/ui/img{{page.id}}/fact-sales-erd.png" class="img-center">
 
 ---
 
@@ -130,7 +129,7 @@ GROUP BY
 
 # After
 
-<img src="/lessons/img/{{page.lesson}}/fact-sales-dag.png" class="img-center">
+<img src="/ui/img{{page.id}}/fact-sales-dag.png" class="img-center">
 
 ---
 
@@ -218,7 +217,7 @@ find, and easy to infer contents?
 ]
 
 .right-column-33[
-<img src="/lessons/img/{{page.lesson}}/mode-sidebar.png" style="width: 60%;" class="img-center">
+<img src="/ui/img{{page.id}}/mode-sidebar.png" style="width: 60%;" class="img-center">
 ]
 
 ---
@@ -230,9 +229,9 @@ class: subtitle, center, middle
 
 ## [The Discourse](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)
 
-<img src="/lessons/img/{{page.lesson}}/discourse-stats.png" class="img-center">
+<img src="/ui/img{{page.id}}/discourse-stats.png" class="img-center">
 &nbsp;
-<img src="/lessons/img/{{page.lesson}}/discourse-intro.png" class="img-center">
+<img src="/ui/img{{page.id}}/discourse-intro.png" class="img-center">
 
 ---
 
@@ -311,7 +310,7 @@ class: subtitle, center, middle
 +
 <span style="color: navy;">dim}</span></h3>
 
-<img src="/lessons/img/{{page.lesson}}/dag-grouped.png" style="width: 100%;">
+<img src="/ui/img{{page.id}}/dag-grouped.png" style="width: 100%;">
 
 ???
 Instructor: draw circles/boxes around the different "model groups" (sources,
@@ -411,7 +410,7 @@ group by 1,2
 
 # Who can write that SQL?
 
-<img src="/lessons/img/{{page.lesson}}/bi-logos.png" style="width: 40%;" class="img-center">
+<img src="/ui/img{{page.id}}/bi-logos.png" style="width: 40%;" class="img-center">
 ---
 
 class: subtitle, middle, center
@@ -513,4 +512,4 @@ Refactor your project to be consistent with how we (Fishtown) structure our dbt 
 ## Bonus:
 Try using the [schema](https://docs.getdbt.com/docs/using-custom-schemas#section-what-is-a-custom-schema) configuration to split your models across multiple schemas
 
-{% include options/next-presentation.html %}
+

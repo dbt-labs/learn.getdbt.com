@@ -41,7 +41,6 @@ collections:
     permalink: /:path/
   lessons:
     output: true
-    sort_by: lesson
     permalink: /:collection/:path
 
 defaults:
