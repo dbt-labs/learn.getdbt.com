@@ -39,6 +39,9 @@ collections:
   content:
     output: true
     permalink: /:path/
+  lessons:
+    output: true
+    permalink: /:collection/:path
 
 defaults:
 -
