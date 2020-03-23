@@ -1,0 +1,32 @@
+- day: 1
+  title: "Day One: Foundations"
+  sessions:
+    - name: Morning
+      lessons:
+        - slug: who-is-analytics-engineer
+        - slug: analytics-engineering-viewpoint
+        - slug: dbt-fundamentals
+    - name: Afternoon
+      lessons:
+        - slug: modeling-project-design
+        - slug: testing-ci
+        - slug: sources
+        - slug: docs
+        - slug: debugging-dbt
+        - slug: pull-requests
+- day: 2
+  title: "Day Two: Applications"
+  sessions:
+    - name: Morning
+      lessons:
+        - slug: polish-project
+        - slug: jinja
+        - slug: packages
+        - slug: intro-data-warehouses
+    - name: Afternoon
+      lessons:
+        - slug: data-warehouse-performance
+        - slug: big-data-tech
+        - slug: materializations-incremental
+        - slug: slack-case-study
+        - slug: techniques-trade

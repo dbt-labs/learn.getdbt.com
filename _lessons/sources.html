@@ -1,0 +1,164 @@
+---
+layout: presentation
+title: Sources
+estimated_teaching_time: 30
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
+---
+
+class: title, center, middle
+# Sources
+
+---
+
+# If you've ever had this happen...
+
+- I'm switching my email marketing platform. I want to know which final models depend on that source data.
+--
+
+- I'm switching the tool that extracts and loads _from_ my email
+marketing platform. The table names used to have underscores, now they don't!
+--
+
+- I'm switching from Redshift to Snowflake. All of my source data will be
+in a different database and schema.
+--
+
+- Nothing in this world is perfect. My data loading tools experience occasional
+hiccups that result in delayed or duplicated data.
+--
+
+- (!!) I want to stage & query an external table that points to files in S3.
+
+---
+
+# Sources may be right for you!
+
+- Easily declare and update the location of raw tables
+    - `database` + `schema` for each source
+    - `name`/`identifier` for each table
+--
+- Test schema integrity of raw tables
+    - Built-in: `unique`, not_null`, `accepted_values`, `relationships`
+    - Custom: whatever you want!
+--
+- Test the freshness of loaded data, based on thresholds you define
+--
+
+- (!!) Declare `external` properties ([read more](https://github.com/fishtown-analytics/dbt-external-tables))
+
+---
+
+# YML
+
+I define my sources in `stripe_source.yml`:
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    tables:
+      - name: payment
+```
+
+---
+
+# Feeling fresh?
+
+Optionally, specify a `loaded_at_field` and `freshness`:
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    loaded_at_field: _batched_at
+    loader: airflow     # this is just for documentation
+
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+
+    tables:
+      - name: payment
+```
+
+---
+
+# SQL
+
+And then I create a staging model, `stg_stripe_payment.sql`:
+
+{% raw %}
+```sql
+with source as (
+
+    select * from {{source('stripe', 'payment')}}
+
+),
+
+renamed as (
+
+...
+```
+{% endraw %}
+
+---
+
+# Sources are green...
+
+<img src="/ui/img{{page.id}}/dag-source.png" class="img-center">
+
+---
+
+.left-column-33[
+# And green is good!
+]
+
+.right-column-66[
+```bash
+dbt source snapshot-freshness
+```
+<img src="/ui/img{{page.id}}/freshness-viz.png" style="width: 100%;" class="img-center">
+]
+
+---
+
+# In deployment
+
+A common approach: Test the schema integrity of raw tables _before_
+replacing production models.
+
+```bash
+dbt test -m source:*            # ensure no duplicates or unexpected nulls
+dbt run                         # only runs if test above succeeds
+dbt test --exclude source:*
+dbt source snapshot-freshness   # powers freshness viz in dbt Cloud
+```
+
+Of course, many deployments are _much_ more complex.
+
+???
+More complex deployments:
+- Blue/green that renames schema/database at last step (if all tests pass) or
+leaves old objects in place (if a test fails)
+
+---
+
+name: working-session
+class: subtitle
+
+# Working session
+* Add `sources` for our two data sources: `jaffle_shop` and `stripe` (make sure you select from the `{{ source }}` in your models)
+* Add a freshness block to at least one source, and snapshot the freshness
+    * Note: use a dummy `loaded_at_field` to get the freshness test to pass:
+    ```yml
+    loaded_at_field: "current_timestamp"
+    freshness: ...
+    ```
+* Add tests to these sources, and try running these tests
+
+.caption[
+  [Related dbt documentation](https://docs.getdbt.com/docs/using-sources)
+]
+
+{% include options/next_presentation.html %}

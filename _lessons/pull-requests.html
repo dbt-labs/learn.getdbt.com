@@ -1,0 +1,120 @@
+---
+layout: presentation
+title: Pull Requests
+estimated_teaching_time: 15
+teaching_method: live demo + slides. Questions encouraged.
+working_session: true
+---
+
+class: title, center, middle
+# Pull Requests
+
+---
+
+# What's a PR?
+
+- Final step in a git-based workflow
+    - You've got a branch
+    - I've got a branch
+    - We both want to merge into `master`
+- Checkpoint for quality control
+    - Mechanism for review and approval by your colleagues
+    - Automated testing (Continuous Integration)
+- Also called **Merge Requests (MRs)**
+
+---
+
+# Why?
+
+- This is how you ship, deliver, release your work
+    - If it's never merged, did you really do it?
+- You _cannot_ merge code that is not approved
+- Your PR is your _opportunity_ to make the argument that your code _should_ be merged
+    - It's not a chore, it's a powerful tool!
+
+---
+
+.left-column-33[
+### Description
+<img src="/ui/img{{page.id}}/pr-1.png" style="width: 100%;" class="img-center">
+]
+.right-column-66[
+.left-column[
+### CI
+<img src="/ui/img{{page.id}}/pr-2.png" class="img-center">
+]
+.right-column[
+### Review
+<img src="/ui/img{{page.id}}/pr-3.png" class="img-center">
+]
+]
+
+---
+
+# We've got a [guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md) for that
+
+Pull requests should:
+
+- Tackle a single functional grouping of work.
+- Include a description that explains the context of the changes to the code, as
+well as what the code does. It's useful to include links to relevant cards/tickets,
+other PRs, dbt docs, and screenshots of updated DAGs.
+- Explain in detail any breaking changes after merging this code in production,
+or what needs to be done to merge the code successfully.
+- Show a "green" passing CI build, or explain any failing tests.
+
+You can create _templates_ for pull request descriptions that will serve as
+helpful guides to future contributors!*
+
+---
+
+# In progress?
+
+- WIP PRs can be nice ways to share, collaborate, and comment on code, 
+even if it's not merge-ready
+    - Some hosting platforms / organizations have **draft** pull requests enabled
+    - Others adopt a naming convention: "WIP" or "DO NOT MERGE"
+- **_Caveat:_** At present, dbt Cloud will trigger CI from _all_ new commits 
+pushed to an open PR (draft or otherwise)
+
+???
+The dbt Cloud trigger is something we're thinking about changing!
+
+---
+
+# No code yet?
+
+If you...
+- find a bug
+- have an idea for an improvement
+- want to share some long-term thinking
+
+### _Open an [issue](https://guides.github.com/features/issues/)!_
+
+Things break and people have ideas all the time. If you get into a habit now of 
+communicating bugs, problems, and in-progress work to your colleagues early and
+often, you'll thank yourself later.
+
+---
+
+class: subtitle, center, middle
+# Breathe. You made it through Day One.
+
+---
+class: subtitle
+
+# Summary of working sessions from today:
+* [Pre-work](https://tutorial.getdbt.com/learn/setting-up/): Build your first dbt project
+* [103 dbt Fundamentals](/lessons/103#working-session): Add an `orders` model to your project
+* [104 Data Warehouse Design](/lessons/104#working-session): Re-organize your project
+* [105 Testing & CI](/lessons/105#working-session): Add tests to your `orders` model
+* [106 Sources](/lessons/106#working-session): Use sources for `jaffle_shop` and `stripe`
+* [107 Docs](/lessons/107#working-session): Add a docs block to your project
+* [108 Debugging dbt](/lessons/108#working-session): Break things and fix them
+
+When you're ready, open a PR and tag a classmate to review it!
+
+{% include options/next_presentation.html %}
+
+???
+Open a pull request, and tag a classmate to review it!
