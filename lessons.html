@@ -2,40 +2,6 @@
 layout: page
 title: Lessons
 permalink: /lessons/
-curriculum:
-  - day: 1
-    title: "Day One: Foundations"
-    sessions:
-      - name: Morning
-        lessons:
-          - slug: who-is-analytics-engineer
-          - slug: analytics-engineering-viewpoint
-          - slug: dbt-fundamentals
-      - name: Afternoon
-        lessons:
-          - slug: modeling-project-design
-          - slug: testing-ci
-          - slug: sources
-          - slug: docs
-          - slug: debugging-dbt
-          - slug: pull-requests
-  - day: 2
-    title: "Day Two: Applications"
-    sessions:
-      - name: Morning
-        lessons:
-          - slug: polish-project
-          - slug: jinja
-          - slug: packages
-          - slug: intro-data-warehouses
-      - name: Afternoon
-        lessons:
-          - slug: data-warehouse-performance
-          - slug: big-data-tech
-          - slug: materializations-incremental
-          - slug: slack-case-study
-          - slug: techniques-trade
-
 ---
 
 <meta name="robots" content="noindex">
@@ -65,16 +31,17 @@ curriculum:
                 </div>
             </div>
 			<div class="row">
-				{% for day in page.curriculum %}
+				{% for day in site.data.curriculum %}
 						<div class="col-md-6">
 							<h4> {{day.title}} </h4>
                             {% for session in day.sessions %}
                             <h5>{{session.name}}</h5>
 								<ul class='list-icons text-med text-heading text-left'>
-									{% for les in session.lessons %}
-										{% assign lesson_id = "/lessons/" | append: les.slug %}
-										{% assign lesson = site.lessons | where: 'id', lesson_id %}
-										<li><span class='arrow-right text-blue text-medium list-icon'></span><a href="{{lesson[0].id}}">{{lesson[0].title}}</a></li>
+									{% for lsn in session.lessons %}
+										{% assign lesson_id = "/lessons/" | append: lsn.slug %}
+										{% assign match = site.lessons | where: 'id', lesson_id %}
+                                        {% assign lesson = match[0] %}
+										<li><span class='arrow-right text-blue text-medium list-icon'></span><a href="{{lesson.id}}">{{lesson.title}}</a></li>
 									{% endfor %}
 								</ul>
                             {% endfor %}
