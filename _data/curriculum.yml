@@ -20,7 +20,8 @@
     - name: Morning
       lessons:
         - slug: polish-project
-        - slug: jinja
+        - slug: intro-to-jinja
+        - slug: dbtonic-jinja
         - slug: packages
         - slug: intro-data-warehouses
     - name: Afternoon

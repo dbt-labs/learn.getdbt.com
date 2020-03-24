@@ -1,0 +1,339 @@
+---
+layout: presentation
+title: Intro to Jinja
+---
+
+class: title, center, middle
+
+{% raw %}
+
+# `{{ Jinja }}`
+
+`{% set date = '{% endraw %}{{site.time|slice: 0, 10}}' %}{% raw %}`
+
+---
+
+
+# Jinja is a templating engine
+
+And it's _pythonic_! So it works in ways you'd expect if you've ever
+written python, and even if you haven't.
+
+.left-column[
+Other templating engines:
+* Nunjucks (JavaScript, Jinja-inspired)
+* Liquid (Ruby)
+]
+
+.right-column[
+Applications that use Jinja:
+* Ansible
+* Flask
+* Airflow
+* dbt!
+]
+
+[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)
+---
+class: subtitle
+
+# Let's look at some (non-SQL) examples!
+--
+{% endraw %}
+.center[
+<img src="/ui/img{{page.id}}/bad-jinja-email.png" style="width: 75%;">
+]
+{% raw %}
+
+---
+
+class: subtitle, middle, center
+
+<h1 style="font-size: 300%;" class="remark-inline-code">
+{% ... %}<br>
+{{ ... }}
+</p>
+
+---
+
+# Setting local variables
+
+
+```jinja
+{% set me = 3 %}
+{% set you = 'foo' %}
+```
+
+---
+# Dictionaries
+
+```jinja
+{% set person = {
+    'name': 'me',
+    'number': 3
+} %}
+```
+```jinja
+{{ person.name }}
+{{ person['name'] }}
+```
+--
+
+```
+me
+me
+```
+
+
+---
+# Arrays
+
+```jinja
+{% set self = ['me', 'myself'] %}
+
+{% do self.append('i') %}
+```
+
+```jinja
+{{ self[0] }}
+{{ self | length }}
+```
+--
+
+```
+me
+3
+```
+
+---
+
+# And so on
+
+```jinja
+{% set us = [
+  {
+      'name': 'me',
+      'number': 3
+  },
+  {
+      'name': 'you',
+      'details': 'foo'
+  }
+] %}
+
+{{ us[1]['details'] }}
+```
+--
+```
+foo
+```
+
+---
+
+# Conditions
+
+
+```jinja
+{% set temperature = 80 %}
+
+On a day like this, I especially like
+
+{% if temperature > 70 %}
+
+    a refreshing mango sorbet.
+
+{% else %}
+
+    a decadent chocolate ice cream.
+
+{% endif %}
+```
+
+
+--
+
+```
+On a day like this, I especially like a refreshing mango sorbet.
+```
+
+
+---
+
+# Loops
+
+
+```jinja
+{% set flavors = ['chocolate', 'vanilla', 'strawberry'] %}
+
+{% for flavor in flavors %}
+	Today I want {{ flavor }} ice cream!
+{% endfor %}
+```
+
+
+--
+
+```
+Today I want chocolate ice cream!
+Today I want vanilla ice cream!
+Today I want strawberry ice cream!
+```
+
+---
+
+# Macros
+
+```jinja
+{% macro hoyquiero(flavor, dessert = 'ice cream') %}
+	Today I want {{ flavor }} {{ dessert }}!
+{% endmacro %}
+
+{{ hoyquiero(flavor = 'chocolate') }}
+{{ hoyquiero('mango', 'sorbet') }}
+```
+--
+```
+Today I want chocolate ice cream!
+Today I want mango sorbet!
+```
+
+---
+
+# How does this fit in with SQL?
+
+We use Jinja to generate SQL!
+
+* SQL still transforms the data - it's a highly performant and _very_ declartive language
+* Jinja helps us write better SQL
+
+--
+
+### Let's see it in action!
+---
+
+## Jinja challenge
+.denser-text[
+I have a payments table like this:
+
+
+| payment_id | order_id | payment_method | amount | created_at |
+|------------|----------|----------------|--------|------------|
+| 1          | 1        | credit_card    | 10     | 2018-01-01 |
+| ...        | ...      | ...            | ...    | ...        |
+| 29         | 25       | credit_card    | 22     | 2018-01-28 |
+| 28         | 25       | bank_transfer  | 20     | 2018-01-28 |
+| 30         | 25       | coupon         | 16     | 2018-01-28 |
+
+]
+
+--
+
+.denser-text[
+Here's the SQL:
+```sql
+select * from {{ ref('stg_stripe__payments') }}
+```
+]
+--
+
+---
+## Jinja challenge
+.denser-text[
+I have a payments table like this:
+
+| payment_id | order_id | payment_method | amount | created_at |
+|------------|----------|----------------|--------|------------|
+| 1          | 1        | credit_card    | 10     | 2018-01-01 |
+| ...        | ...      | ...            | ...    | ...        |
+| 29         | 25       | credit_card    | 22     | 2018-01-28 |
+| 28         | 25       | bank_transfer  | 20     | 2018-01-28 |
+| 30         | 25       | coupon         | 16     | 2018-01-28 |
+
+]
+--
+.denser-text[
+
+I want a table like this:
+
+| order_id | bank_transfer_amount | coupon_amount | credit_card_amount | gift_card_amount |
+|----------|----------------------|---------------|--------------------|------------------|
+| 1        | 0                    | 0             | 10                 | 0                |
+| ...      | ...                  | ...           | ...                | ...              |
+| 25       | 20                   | 16            | 22                 | 0                |
+
+]
+--
+.denser-text[
+What SQL should I write to do this?
+]
+---
+class: subtitle
+
+# Working session
+
+We want every student to be writing code while working together.
+
+1. **As a class**: write the SQL to transform this data (every student should have working SQL)
+2. **As a class**: use _some_ Jinja in this SQL
+3. **In your breakout groups**:
+    * Refactor!
+    * Each breakout group will have a Teacher's Assistant
+    * Let us know in Slack when you have finished refactoring
+4. **As a class**: one person from each breakout group will present their solution
+
+
+???
+
+```sql
+with payments as (
+    select * from {{ ref('stg_stripe__payments') }}
+),
+
+aggregated as (
+
+    select
+      order_id,
+      sum(case when payment_method = 'bank_transfer' then amount else 0 end) as bank_transfer_amount,
+      sum(case when payment_method = 'coupon' then amount else 0 end) as coupon_amount,
+      sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount,
+      sum(case when payment_method = 'gift_card' then amount else 0 end) as gift_card_amount
+
+    from payments
+
+    group by 1
+
+)
+
+select * from aggregated
+```
+
+```sql
+with payments as (
+    select * from {{ ref('stg_stripe__payments') }}
+),
+
+aggregated as (
+
+    select
+      order_id
+      {% for payment_method in ['bank_transfer', 'coupon', 'credit_card', 'gift_card'] %}
+      , sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount
+      {% endfor %}
+
+    from payments
+
+    group by 1
+
+)
+
+select * from aggregated
+```
+
+
+{% endraw %}
+
+---
+class: subtitle, middle, center
+# Let's jinja!
+
+{% include options/next_presentation.html %}
