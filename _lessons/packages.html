@@ -33,11 +33,8 @@ And from there we can talk a little bit about writing custom tests + using custo
 ```yml
 # packages.yml
 packages:
-  - package: fishtown-analytics/snowplow
-    version: 0.7.1
-
-  - git: "https://github.com/fishtown-analytics/dbt-utils.git"
-    revision: 0.1.21
+  - package: fishtown-analytics/dbt_utils
+    version: 0.2.5
 
 ```
 ???
@@ -161,13 +158,23 @@ If you have a macro in _your project_ with the same name as macro in the _dbt gl
 [Learn more](https://discourse.getdbt.com/t/did-you-know-dbt-ships-with-its-own-project/764)
 ]
 ---
+# Knowledge check
+
+You should:
+* Be able to explain what a package is
+* Be able to install a package in your own project and use macros from the package
+* Understand that dbt itself is package
+
+---
 class: subtitle
 # Working session
-## Using macros from a package:
-* Add [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) to your dbt project (installation instructions are on the hub site)
-* Create a new model that uses the `date_spine` macro to create a table of all days (check the [usage docs](https://github.com/fishtown-analytics/dbt-utils#date_spine-source))
 
-## Overriding the dbt global project
+Over to you! Use this time to implement some Jinja (maybe from a package) in your own project.
+
+If you're looking for inspiration:
+* Try creating a table of all days using the `date_spine` macro (check the [usage docs](https://github.com/fishtown-analytics/dbt-utils#date_spine-source))
 * Override the uniqueness test ([here](https://github.com/fishtown-analytics/dbt/blob/dev/octavius-catto/core/dbt/include/global_project/macros/schema_tests/unique.sql)) to use a CTE rather than a subquery.
+* Union two models together using the `union_relations` macro
+* Whatever you want!
 
 {% include options/next_presentation.html %}
