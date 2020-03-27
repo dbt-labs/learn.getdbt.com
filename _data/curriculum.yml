@@ -23,11 +23,9 @@
         - slug: intro-to-jinja
         - slug: dbtonic-jinja
         - slug: packages
-        - slug: intro-data-warehouses
     - name: Afternoon
       lessons:
-        - slug: data-warehouse-performance
-        - slug: big-data-tech
         - slug: materializations-incremental
+        - slug: data-warehouses
         - slug: slack-case-study
         - slug: techniques-trade

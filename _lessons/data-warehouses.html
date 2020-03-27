@@ -1,0 +1,524 @@
+---
+layout: presentation
+title: Data Warehouses
+---
+
+class: title, center, middle
+# Data Warehouses
+
+---
+
+# Why are we talking about data warehouses?
+
+- The advent of Redshift (et al) was **_the_** instigating event in making
+the modern data stack possible
+- dbt is nothing without the supercomputer that runs its SQL
+
+<img src="/ui/img{{page.id}}/modern-data-stack.svg" style="width: 100%;" class="img-center">
+
+---
+
+# What is a data warehouse?
+
+--
+
+<img src="/ui/img{{page.id}}/galaxy.png" style="width: 60%;" class="img-center">
+
+---
+
+# Structured Data
+
+_ordines et columnae sumus._     - Horace, Ode 4.7
+
+&nbsp;
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+---
+
+# Storing Data
+
+### CSV
+
+```csv
+id,name,favorite_color,is_creative
+1,Alice,green,false
+2,Barbara,blue,true
+```
+
+### JSON
+
+```json
+{"id": 1, "name": "Alice", "favorite_color": "green", "is_creative": false}
+{"id": 2, "name": "Barbara", "favorite_color": "blue", "is_creative": true}
+```
+
+---
+
+# Storing Data
+
+### Parquet
+
+```parquet
+00000000  50 41 52 31 15 04 15 c8  ba 01 15 c8 ba 01 4c 15  |PAR1..........L.|
+00000010  c6 0f 15 04 00 00 00 2a  e9 6c f2 19 00 00 4e 7f  |.......*.l....N.|
+00000020  25 00 00 5e 30 d0 e1 37  00 00 4e 7f 25 00 00 2e  |%..^0..7..N.%...|
+00000030  f9 22 cb 03 00 00 4e 7f  25 00 00 f2 ba cd fb 01  |."....N.%.......|
+00000040  00 00 4e 7f 25 00 00 4e  be 04 ac 10 00 00 4e 7f  |..N.%..N......N.|
+00000050  25 00 00 c4 bc 95 26 18  00 00 4e 7f 25 00 00 a8  |%.....&...N.%...|
+00000060  cd 63 00 1c 00 00 4e 7f  25 00 00 a4 0d 1f 37 16  |.c....N.%.....7.|
+00000070  00 00 4e 7f 25 00 00 92  b3 57 b5 0c 00 00 4e 7f  |..N.%....W....N.|
+00000080  25 00 00 4e 7b 7e 8f 3c  00 00 4e 7f 25 00 00 94  |%..N{~.<..N.%...|
+00000090  2e 7a 95 00 00 00 4e 7f  25 00 00 74 a7 38 2f 3b  |.z....N.%..t.8/;|
+```
+
+---
+
+# Databases
+
+.left-column[
+- Interfaces into data!
+- Some language (SQL) is used to query the data
+- Data storage is abstracted
+    - Machine-readable optimized file formats
+    - On spinning disks, inside boxes, somewhere in Virginia/Oregon/Ireland
+]
+
+.right-column[
+<img src="/ui/img{{page.id}}/butterfly.png" class="img-center">
+]
+
+---
+
+# Transactional Databases
+
+.left-column[
+Optimized for:
+- Reads and writes
+- Thousands of concurrent queries
+
+In this category:
+- Postgres
+- MySQL
+- SQL Server
+- ...
+]
+
+.right-column[
+For instance:
+- Get one user’s email address
+- Add seven items to a user’s cart
+- Change a user’s last name
+
+```sql
+select *
+from products
+where trending = true
+```
+
+<img src="/ui/img{{page.id}}/superstore.png" style="width: 100%;">
+]
+
+---
+
+# Analytic Databases
+
+.left-column[
+Optimized for:
+- "Analytical" queries
+- Importing and exporting data in batches
+
+In this category:
+
+- Amazon Redshift
+- Snowflake
+- Google BigQuery
+- Azure SQL Data Warehouse
+- ....
+]
+
+.right-column[
+For instance:
+- Number of distinct users in Ohio are over 38 years young
+- Rolling 14d average of pageviews per day for the last five years
+]
+
+---
+
+# Database Comparisons*
+
+| db            | Latency       | Concurrent Queries | Rows Scanned / Query |
+|---------------|---------------|--------------------|----------------------|
+| Transactional | ~milliseconds | ~thousands         | ~thousands*          |
+| Analytic    | ~seconds      | ~dozens            | >> millions          |
+
+---
+
+# What's in a name?
+
+.left-column[
+Transactional Database, a.k.a.:
+- Relational Database
+- RDMS or RDBMS
+- Rowise, Row-oriented, Row Store
+- OLTP
+- e.g. Postgres
+]
+
+.right-column[
+Analytic(al) Database, a.k.a.:
+- Data Warehouse
+- Columnar Database
+- Column-oriented, Column Store
+- OLAP
+- e.g. Redshift
+]
+
+---
+
+# Which one is right? (Both!)
+
+- Power your application with a transactional database
+- Analyze data with an analytical database
+
+<img src="/ui/img{{page.id}}/stack.png" style="width: 90%;">
+
+---
+
+# A modern approach
+
+1. Replicate data into a warehouse
+    - Transactional databases
+    - SaaS products
+    - Event tracking
+2. Query the data in the warehouse
+3. Be a cultural change agent for data in your organization
+4. Profit
+
+???
+- RDMS or RDBMS = Relational Database Management System
+- OLTP = Online Transactional Processing
+- OLAP = Online Analytical Processing
+
+---
+
+class: title, center, middle
+# Modern Data Warehouses
+### "You better shop around" - The Miracles
+
+---
+
+name: big-q
+# Q: Why are data warehouses fast?
+
+---
+
+template: big-q
+name: first-a
+
+.left-column[
+### A: They're columnar.
+
+This structure of data storage allows them to .highlight[**limit scanned data**] 
+when executing an "analytical" query.
+]
+
+---
+
+template: first-a
+name: second-a
+
+.right-column[
+### A: They're scalable.
+
+Data warehouses can benefit from .highlight[**horizontal and vertical scaling**].
+- _horizontal = more computers_
+- _vertical = better computers_
+]
+
+---
+
+class: subtitle, center, middle
+# So... why are queries slow?
+
+---
+
+# Mental model
+
+- A query, written in SQL, is interpreted by the database optimizer
+- The optimizer writes an execution plan in machine code
+- The execution plan contains a sequence of tasks
+- Some tasks are easy, some are more strenuous
+- Some tasks can be performed in parallel, some to need to wait for others to finish
+
+| Task                | Time  | Time (Relative) |
+|---------------------|-------|-----------------|
+| 1 CPU Cycle         | 0.3ns | 1 second        |
+| Memory Access       | 120ns | 5 minutes       |
+| Disk read           | 1ms   | 1 month         |
+| Internet: SF to NYC | 40ms  | 4 years         |
+
+---
+
+# Conceptual framework
+
+- Scanning data is **_slow_**
+- Moving data around is **_slowww_**
+- Warehouses are "logical" and "physical"
+    - We like to think about the "logical" part of it
+    - Sometimes it’s necessary to consider the "physical"
+- Biggest takeaway?
+    - Your time is valuable
+    - Make choices that keep you focused on the "logical"
+
+---
+
+# In practice
+
+.left-column[
+Databases need to sort data for:
+- Filters (`where`)
+- Window functions (`partition by`, `order by`)
+]
+
+.right-column[
+Databases need to move data around for:
+- Uniqueness (`distinct`)
+- Joins
+]
+
+**The optimizer is your friend!**
+
+- If the database optimizer does its job perfectly, you never need to think
+about sorting, distributing, clustering, shuffling, range joining, ...
+- If you _only_ think about the "logical" and _never_ about the "physical,"
+you cannot empathize with the database optimizer, and you will
+write non-performant SQL
+
+???
+- Joins implicitly require finding all unique values for match/comparison, which
+is why they're similar to getting `distinct` values.
+
+Rabbi Hillel's questions, paraphrased:
+- If you are only for the optimizer, who will be for you?
+- If you are only for yourself, who are you?
+
+---
+
+# Apples to apples
+
+.denser-text[
+.left-column-66[
+.left-column[
+### Redshift
+- Sort keys: compound or interleaved?
+- Dist style: single column, even, or all?
+- Maintenance: vacuum, analyze
+- Column compression: ZSTD, LZO, ...
+- Scaling: classic resize? RA3?
+]
+
+.right-column[
+### BigQuery
+- Partitioning
+- Clustering
+- Nesting/arraying repeated records
+]
+]
+
+.right-column-33[
+### Snowflake
+- Clustering (~sorting)
+    - Only for large tables
+]
+]
+
+???
+Draw an arrow from left ("more work") to right ("less work"). A well tuned,
+perfectly optimized Redshift cluster will execute queries _as quickly as_ a
+comparable Snowflake cluster, for a lower price. But a poorly tuned Redshift
+cluster is, well, a cluster.
+
+---
+
+# Apples to oranges...
+
+| name     | tech                   | stored as | storage/ compute | optimization | semi-structured data | "external" data | intuition |
+|----------|------------------------|-----------|------------------|--------------|----------------------|-----------------|-----------|
+| Postgres | transactional database | rows      | same             | indexes      | some support         | via extensions? | everything works the way you expect |
+| Redshift | analytic database      | columns   | tightly coupled  | sort + dist  | minimal support      | S3 via Spectrum | most things |
+
+???
+### Postgres
+- Stores rows of structured, tabular data
+- High concurrency, decent parallelization
+- Compute and storage are tightly locked
+- Performance optimization via indexes
+- Decent support for semi-structured (JSON) data (as of version 9!)
+- Shaky support for querying "foreign" data (via extensions)
+- Everything works the way you expect
+]
+
+### Redshift
+- Stores columns of structured, tabular data in proprietary file format
+- Massively parallel query execution across multiple workers
+- Compute and storage are interrelated
+- Performance optimization via sorting, distribution
+- Minimal support for semi- and unstructured data (JSON)
+- Decent support for querying "external" data in S3 (via Spectrum)
+- Most things work the way you expect
+
+--
+| Spark | processing engine | files | separate | file formats, metadata | first-class support | all data is external | <span class="highlight">no guarantees</span> |
+
+# ...to kumquats
+
+???
+
+### Spark
+- "Data Lake": All data is stored externally
+- Storage and compute are _completely_ separate. You pay for them independently.
+- Performance optimization means storing in a columnar file format (parquet)
+with excellent metadata
+- Semi- and unstructured data is a first-class citizen, with pretty good SQL
+functionality
+- There's no guarantee that things will work the way you expect!
+
+
+---
+
+# "Data Lake"
+
+- Spark, Presto, Athena, ...
+- Incredibly powerful and cost-effective
+- Not limited to SQL!
+- Large user base and target audience
+    - primarily data engineers
+    - some data scientists
+- Harder to use, and harder to reason about
+- You _can_ run dbt on them!
+    - Some nice-to-have features are less well supported 
+
+---
+
+# What is a modern data warehouse?
+
+It offers the best of both worlds:
+    
+- Intuitive **user experience** of a database: users, groups/roles,
+authentication, permissions, information schema, everything is SQL
+
+- Flexible and scalable **performance** of a data lake and distributed
+processing technology
+
+---
+
+# Who is best in class?
+
+- Snowflake + BigQuery: data lakes posing as data warehouses
+- Redshift is playing catch-up with Spectrum + RA3 nodes
+
+### What sets them apart?
+- Support for semi-structured data
+- Support for external data
+- Separation of compute + storage
+
+These are features that, five years ago, were only found in Spark.
+
+---
+
+# Semi-structured data
+
+It's common that 90% of your data is tabular/structured, but there's a little
+bit that makes more sense as JSON!
+
+| bldg_id | location | occupancy | vacant_units | amenities |
+|---------|-------------|-----------|--------------|----------------------------------------------------------------------------|
+| 1 | Rittenhouse | 54 | `[2, 3, 9]` | `{"doorman": true, "pets_allowed": true, "pet_deposit": 1000}` |
+| 2 | Fairmount | 8 | `[]` | `{ "yard_size_sqft": 100 }` |
+| 3 | Austin, TX | 5 | `[1]` | `{ "yard_size_sqft": 1000, "pets_allowed": true }` |
+
+vs.
+
+| bldg_id | location | occupancy | vacant_unit_1 | num_vacant | doorman | pets_allowed | pet_deposit | yard_size_sqft |
+|---------|-------------|-----------|--------------|----------------------------------------------------------------------------|
+| 1 | Rittenhouse | 54 | 2 | 3 | true | true | 1000 | |
+| 2 | Fairmount | 8 | | 0 | | | | 100 |
+| 3 | Austin, TX | 5 | 1 | 1 | | true | | 1000 |
+
+---
+
+# Semi-structured data
+
+Can your database read unstructured data?
+
+| JSON support           | Redshift                         | Snowflake                   | BigQuery                 |
+|------------------------|----------------------------------|-----------------------------|--------------------------|
+| Unnesting dictionaries | Kind of: `json_extract_path_text`| `amenities:doorman`         | `amenities.doorman`      |
+| Flattening arrays      | Not natively                     | `lateral flatten`           | `cross join unnest`      |
+| Loading data           | Flatten + unnest first           | Load as-is (`variant` blob) | Load as repeated records |
+
+Can it _write_ columns of semi-structured data?
+
+| JSON support           | Redshift      | Snowflake                      | BigQuery          |
+|------------------------|---------------|--------------------------------|-------------------|
+| Creating dictionaries  | No            | `object_construct`             | `struct`          |
+| Creating arrays        | No            | `array_construct`, `array_agg` | `[]`, `array_agg` |
+
+---
+
+# External data
+
+Can your database query files living in S3, Google Cloud Storage, Azure Blob storage...?
+
+| External support                | Redshift                            | Snowflake                           | BigQuery                          |
+|---------------------------------|-------------------------------------|-------------------------------------|-----------------------------------|
+| COPY from/to                    | S3                                  | S3/GCS/Azure                        | GCS + G Drive                     |
+| Read from external tables       | Via Spectrum. Manual partitioning   | All via DDL, automatic partitioning | Powerful schema inference, no DDL |
+| External-only transformation    | Limited (cf. Athena)                | Extensive                           | Limited                           |
+
+.caption[Read more about [dbt + external tables](https://github.com/fishtown-analytics/dbt-external-tables)]
+
+---
+
+# Scaling: storage vs. compute
+
+What if you want more storage, without needing to pay for more compute nodes?
+- Resources are scarce and analysts shouldn't compete with each other
+- Event volume is _large_ and you can't store it all in-warehouse
+
+--
+
+What if you want it _now_?
+- Scaling storage is easy: more files in S3/GCS/Blob
+- Scaling compute is harder
+- Data is never stored "on disk," it is always read from file storage
+    - Any caching is lost when compute spins down
+
+---
+
+# What if you have petabytes of data?
+
+<img src="/ui/img{{page.id}}/jt-billion-rows.png" class="img-center">
+
+---
+
+# Different modeling paradigms
+    
+- All models are materialized incrementally
+    - Replace discrete partitions, rather than merging/matching records*
+    - Full refresh: never, or manually trigger
+- Testing is relative
+    - E.g. test that `unique` failures are < 1% of all rows
+- Tables are "sharded" by a top-level identifier
+    - region, account, client, etc.
+
+---
+
+class: subtitle, middle, center
+## Made it :)
+
+{% include options/next_presentation.html %}

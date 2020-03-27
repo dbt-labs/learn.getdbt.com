@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: Materializations + Incremental models
+title: dbt Materializations & Incremental Models
 ---
 
 class: title, center, middle
@@ -8,19 +8,24 @@ class: title, center, middle
 
 ---
 
-
 # What is a materialization?
 
-- A wrapper for your SQL
-    - Includes all the boilerplate DDL/DML: `create`, `alter`, `drop`, ...
+--
 
-- An abstraction on top of the database
-    - Does this model already exists in the database? What if it's materialized 
-    as a table, but it currently exists as a view?
-    - What if Redshift uses `alter table` for views, but Snowflake uses `alter view`?
-    - What if we want to build this model incrementally?
-        - Does it have the same structure as the existing version?
-        - What data is "new"?
+.left-column[
+1. A special kind of **Jinja macro** that wraps your model SQL
+    - Includes all the boilerplate DDL/DML: `create`, `alter`, `drop`, ...
+]
+
+--
+
+.right-column[
+2. An abstraction on top of the **database**
+    - Does this model already exists in the database?
+    - What if it exists as a table, but I want it to be a view?
+    - What if Redshift uses `alter table` for views, but Snowflake uses 
+    `alter view`? (It's true!)
+]
 
 ---
 
@@ -32,11 +37,11 @@ class: title, center, middle
 - View
 - Ephemeral
 - Incremental
+- Snapshot*
 
 ### You can write your own!
 
-- Just special Jinja macros, calling other macros
-- Trickiest part: cross-database support
+- Just like you can write your own macros, schema tests, etc.
 - E.g. ["insert by period"](https://github.com/fishtown-analytics/dbt-utils#materializations)
 
 ]
@@ -45,124 +50,251 @@ class: title, center, middle
 <img src="/ui/img{{page.id}}/material-houses.png" class="img-center">
 ]
 
----
-
-# Standard materializations
-
-.left-column-66[
-
-- Table
-- View
-- Ephemeral
-- .highlight[Incremental]
-
-### You can write your own!
-
-- Just special Jinja macros, calling other macros
-- Trickiest part: cross-database support
-- E.g. ["insert by period"](https://github.com/fishtown-analytics/dbt-utils#materializations)
-
-]
-
-.right-column-33[
-<img src="/ui/img{{page.id}}/material-houses.png" class="img-center">
-]
+???
+- Materializations are some of the trickiest macros we write
 
 ---
 
+# Imagine: all the people
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+---
+
+# We have a model
+
+`models/creative_people.sql`
+
+```sql
+select
+
+    id,
+    name,
+    favorite_color
+
+from raw_people
+where is_creative = true
+```
+
+---
+
+# Table
+
+In the database: `analytics.people`
+
+| id | name    | favorite_color |
+|----|---------|----------------|
+| 2  | Barbara | blue           |
+
+--
+
+If we run:
+```sql
+select * from analytics.people
+```
+We will see:
+
+| id | name    | favorite_color |
+|----|---------|----------------|
+| 2  | Barbara | blue           |
+
+---
+
+# View
+
+In the database: `analytics.people`
+
+```sql
+select * from raw_people
+where is_creative = true
+```
+
+--
+
+If we run:
+```sql
+select * from analytics.people
+```
+We will see:
+
+| id | name    | favorite_color |
+|----|---------|----------------|
+| 2  | Barbara | blue           |
+
+---
+
+# Ephemeral
+
+- Does not exist in the database
+- Reusable code snippet
+- Interpolated as CTE in a model that `ref`s this model
+
+--
+
+If we run:
+```sql
+select * from analytics.people
+```
+We will see:
+```sql
+Database Error
+```
+
+---
+
+# What if...
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+--
+| 3  | Casper  | red            | true        |
+
+--
+
+### What would you do?
+
+* **Table:** Rebuild whole thing from scratch! Brute force always works.
+* **View:** Recalculate every time I'm queried. Always up to date, often slow.
+* **Ephemeral:** That's not really my problem, yanno? I just sorta go with the flow.
+
+--
+* **Incremental:** I've got an idea!
+
+---
+
+.left-column[
+# The Big Idea
+
+* Let's keep the old table, and we'll just _add_ the _new_ records
+* Less wasteful and probably faster
+* We just need to know:
+    * What we mean by "new"
+    * What we mean by "add"
+]
+
+.right-column[
+<img src="/ui/img{{page.id}}/patrick-meme.png" style="width: 65%;" class="img-center">
+]
+
+---
+
+layout: true
+# Who is new?
+
+And how do you know?
+
+---
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+| .highlight[3]  | Casper  | red            | true        |
+
+--
+
+- The auto-increment ID from our source data system is greater than the previous
+greatest autoincremented ID
+- Good thing we can always trust our source data system... right?
+
+---
+
+| id | name    | favorite_color | is_creative | created_date |
+|----|---------|----------------|-------------|--------------|
+| 1  | Alice   | green          | false       | 2020-03-01   |
+| 2  | Barbara | blue           | true        | 2020-03-02   |
+| 3  | Casper  | red            | true        | .highlight[2020-03-03]   |
+
+- I know! A date when the record was initially created
+- _Much_ more reliable than an auto-increment ID
+
+---
+
+| id | name    | favorite_color     | is_creative | created_date | updated_date |
+|----|---------|--------------------|-------------|--------------|--------------|
+| 1  | Alice   | green              | false       | 2020-03-01   | 2020-03-01   |
+| 2  | Barbara | .highlight[yellow] | true        | 2020-03-02   | .highlight[2020-03-04]   |
+| 3  | Casper  | red                | true        | 2020-03-03   | 2020-03-03   |
+
+--
+| 4  | Zelda   | indigo             | true        | .highlight[2020-03-02]   | .highlight[2020-03-02]   |
+
+--
+
+- Did you know _that_ could happen?
+- Or that _that_ could happen?
+
+---
+
+layout: false
 class: title, center, middle
+
 # Incremental models
 
-`where updated_at >= '{{site.time|slice: 0, 10}}'`
+`where updated_date >= '{{site.time|slice: 0, 10}}'`
 
 ---
 
 # Why?
 
-<img src="/ui/img{{page.id}}/fr-run-timing.png" class="img-center">
+* It costs time (and money) to transform data
+* Historical data doesn't (shouldn't) change)
+* If you can get away _without_ re-transforming historical data, you save time and money
+
+### Good candidates
+- Immutable event streams: tall + skinny table, append-only, no updates
+- If there _are_ any updates, a reliable `updated_at` field
 
 ---
 
 # Why not?
 
-**Performance first:** Incremental modeling is an optimization problem, 
-specific to _your_ database. It requires a deep understanding of the 
-performance features we've been discussing.
-
-**Quiet failure mode:** The implementation is straightforward, the 
-implications are complex and subtle. You need to think in advance about all 
-the ways that things can go wrong.
-
----
-
-# When?
-
-.left-column[
-### If you're...
-- Just starting out
-- Relatively small data (< 10mm rows, ~10 GB / table)
-- Able to query views with low latency
-- Building table models in < 90s seconds
-
-### _don't worry about it!_
-]
-
---
-
-.right-column[
-.left-column[
-### If you're...
-- Maturing as an organization
-- Modeling a lot of unchanging historical data (> TB)
-- Seeing table models take 5+ minutes to build
-]
-
-.right-column[
-<img src="/ui/img{{page.id}}/rodin-thinker.png" style="border-radius: 50%;" class="img-center">
-]
-]   
+* It's tricky, and there are trade-offs!
+* Which is costlier: database time ($$), or human analyst time ($$$$)?
+* It's probably not worth it if:
+    * You have small-ish data
+    * Your data changes constantly: new columns, renamed columns, etc.
+    * Your data is updated in unpredictable ways
+    * Your transformation performs comparisons or calculations that require 
+    _other_ rows (table + view)
 
 ---
 
-# Who?
+# And if it works?
 
-.left-column[
-### Great candidates
-- Sources
-    - Immutable event streams (append-only, no updates)
-    - Reliable `updated_at` field if any updates
-- Fact table structure (tall + skinny)
-]
---
-.right-column[
-### Not-so-great
-- Transformations that involve:
-    - Joins
-    - Slowly changing dimensions (SCDs)
-    - Window functions
-    - High proportion of **late-arriving facts**
-]
+<img src="/ui/img{{page.id}}/fr-run-timing.png" class="img-center">
+
+---
+
+# Our hands-on example: Snowplow events
+
+* Page views and pings on **learn.getdbt.com**! One was fired just now, as you're reading this. And... now :)
+* Create a source like so:
+
+```yml
+version: 2
+
+sources:
+  - name: snowplow
+    database: raw
+    loaded_at_field: collector_tstamp
     
-???
-Talk through each of these:
-- Joins: update cadence between join tables may differ
-- SCDs: too many updates! just rebuild from scratch each time
-- Window functions: you'll be calculating on top of _part_, never _whole_
-- Late-arriving facts: we're going to talk about this!
+    freshness:
+      error_after: {count: 1, period: hour}
+  
+    tables:
+      - name: event
+```
 
 ---
 
-class: subtitle, center, middle
-# How?
-
---
-
-### ...simple vs. correct?
-### ...to make it performant on my database?
-
----
-
-### [The Discourse](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
+### Some [light reading](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
 
 <img src="/ui/img{{page.id}}/incr-discourse-stats.png" class="img-center">
 &nbsp;
@@ -172,54 +304,102 @@ class: subtitle, center, middle
 
 # "The big easy"
 
-.dense-text[
-_Keep it simple:_ This model rolls up **events** into **sessions**. A session 
-contains one or more events with the same `session_id`.
+_Keep it simple:_ This model rolls up **events** into **page views**. A page view 
+contains one or more events with the same `page_view_id`.
+* _Why do we roll up events into page views and sessions?_
+
+The full model SQL is on the next slide. There's a _lot_ happening here. Pay close attention to:
+* `unique_key`
+* `is_incremental()`
+
+_What do these mean?_ ([docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models/))
+
+---
 
 {% raw %}
+.denser-text[
 ```sql
 {{config(
     materialized = 'incremental',
-    unique_key = 'session_id'
+    unique_key = 'page_view_id'
 )}}
 
 with events as (
 
-    select * from {{ref('events')}}
+    select * from {{source('snowplow','event')}}
     
     {% if is_incremental() %}
-    where event_timestamp >= (select max(session_start) from {{this}})
+    where collector_tstamp >= (select max(max_collector_tstamp) from {{ this }})
     {% endif %}
 
 ),
 
--- rest of model --
+page_views as (
+
+    select
+
+        domain_sessionid as session_id,
+        domain_userid as anonymous_user_id,
+        web_page_context.value:data.id::varchar as page_view_id,
+        page_url,
+
+        count(*) * 10 as approx_time_on_page,
+        min(derived_tstamp) as page_view_start,
+        max(collector_tstamp) as max_collector_tstamp
+        
+    from events,
+    lateral flatten (input => parse_json(contexts):data) web_page_context
+    group by 1,2,3,4
+
+)
+
+select * from page_views
 ```
+]   
 {% endraw %}
-]
 
 ---
 
 # Special Jinja variables
 
-### {% raw %}`{{this}}`{% endraw %}
+### {% raw %}`{{ this }}`{% endraw %}
 
 Represents the currently existing database object mapped to this model.
 
 ### `is_incremental()`
 
 Checks four conditions:
-1. Does this model already exist as an object in the database? (Yes!)
-2. Is the database object a table? (Yes!)
-3. Is this model configured with an incremental materialization? (Yes!)
-4. Was the `--full-refresh` flag passed to this `dbt run`? (No!)
+.dense-text[
+1. Does this model already exist as an object in the database?
+2. Is that database object a table?
+3. Is this model configured with `materialized = 'incremental'`?
+4. Was the `--full-refresh` flag passed to this `dbt run`?
+]
+
+Yes Yes Yes No == an incremental run
 
 ???
 If all of the conditions are met, `is_incremental()` returns `true`.
 
 ---
 
-# How does this actually work?
+# Try it out!
+
+* What SQL does dbt use when first building the `sessions` model?
+* What SQL does dbt use for every run thereafter?
+* How long does each run take?
+* Convince yourself that it's working: {% raw %}
+```sql
+select * from {{source('snowplow','event')}}
+where collector_tstamp >= (
+        select max(max_collector_tstamp) from {{ ref('page_views') }}
+)
+```
+{% endraw %}
+
+---
+
+# Conceptual framework
 
 <img src="/ui/img{{page.id}}/how-deeper.png" class="img-center">
 
@@ -235,37 +415,15 @@ of the runtime
 
 What's the DDL/DML that dbt is running?
 
-- `delete` + `insert` ("upsert") on Redshift and a special Snowflake "strategy"
-- `merge` is default BigQuery + default Snowflake "strategy"
+1. Create a temp table of new records
+2. Reconcile the existing table with the temp table, using one of:
+    - `merge`
+    - `delete` + `insert` ("upsert")
+    - `insert overwrite` ("replace") _entire partitions_
 
-Basically:
-
-- Grab all column names from existing tables*
-- Match **new** and **existing** records on their `unique_key`
-- Delete/update matched **existing** records with **new** ones
-- Insert unmatched **new** records
-
----
-
-# For best results
-
-- The source `events` model is sorted by `event_timestamp`
-- The model is sorted by `session_start`
-
-```sql
-with events as (
-
-    select * from dev_jerco.events
-    
-    where event_timestamp >= (select max(session_start) from dev_jerco.sessions)
-
-),
-
--- rest of model --
-```
-
-- Redshift: It's a good idea to distribute the `sessions` model on `session_id`
-    - dbt will `delete` from the existing table using an implicit inner join
+Depends on:
+- database support
+- user input: `incremental_strategy` ([docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models/#what-is-an-incremental_strategy))
 
 ---
 
@@ -274,72 +432,75 @@ class: subtitle, center, middle
 
 ---
 
-### Imagine some sessionization logic
+## Take our logic a step further
 
-.left-column[
+.denser-text[
+{% raw %}
+With the rest of the model as before, we're going to add a new CTE. Replace
+
 ```sql
-sessionized as (
+)
 
-    select
-    
-        session_id,
-        user_id,
-        count(*) as events_in_session
-        
-    from events
-    group by 1
+select * from page_views
+```
 
+with
+
+```sql
 ),
 
-...
-```
-]
-
-.right-column[
-```sql
 indexed as (
 
     select *,
     
-         row_number() over (
-            partition by user_id
-            order by event_timestamp
-        ) as session_index
+        row_number() over (
+            partition by session_id
+            order by page_view_start
+        ) as page_view_in_session_index
     
-    from sessionized
+    from page_views
 
 )
 
 select * from indexed
 ```
+and give it a run!
 ]
+{% endraw %}
 
 ---
 
-# Late-arriving facts
+# Late-arriving events
 
 <img src="/ui/img{{page.id}}/how-late-arriving.png" class="img-center">
 
---
+What if a session is split across our automated runs?
 
-The session is split across our `where` filter. In the simple approach,
-we would replace the first half-session (computed from first half of events)
-with the second half-session.
-
-How can we correctly calculate the _entire_ session?
+We end up transforming half the page views in one incremental run, and half in another.
 
 ---
 
-# How common?
+# What to do?
+
+In the simple approach, we would calculate two sets of page views:
+* Computed from first half of events in the session. `page_view_in_session_index` is 1, 2, 3...
+* Computed from second half of events in the session. `page_view_in_session_index` is 1, 2, 3...
+
+How can we correctly calculate page views for the _entire_ session?
+
+---
+
+# How common are late arrivals?
 
 .left-column-66[
-#### Percent of overall events, by days between firing + collection
 <img src="/ui/img{{page.id}}/prop-late-arriving.png" class="img-center">
+X: days between firing + collection    
+Y: % of all events
 ]
 
 .right-column-33[
-- 2.5 months of Snowplow data, 285mm events
-- 99.82% arrive within 1 hr of firing
+- Dataset: 2.5 months of Snowplow data, 285mm events
+- 99.82% of events arrive within 1 hr of firing
 - 99.88% within 24 hr
 - .highlight[99.93% within 72 hr]
 ]
@@ -351,8 +512,36 @@ How can we correctly calculate the _entire_ session?
 <img src="/ui/img{{page.id}}/how-close-enough.png" class="img-center">
 
 - _Always_ recalculate the 3 previous days
-- Empirically this will account for 99.93% of all events on the first try
+- Empirically, this will work for 99.93% of all events on the first try
 - Full refresh on a weekly basis
+
+---
+
+# Imagine just one step further...
+
+.dense-text[
+```sql
+indexed as (
+
+    select *,
+    
+        row_number() over (
+            partition by session_id
+            order by page_view_start
+        ) as page_view_in_session_index,
+        
+        row_number() over (
+            partition by anonymous_user_id
+            order by page_view_stat
+        ) as page_view_for_user_index
+    
+    from page_views
+
+)
+
+select * from indexed
+```
+]
 
 ---
 
@@ -360,7 +549,7 @@ How can we correctly calculate the _entire_ session?
 
 <img src="/ui/img{{page.id}}/how-always-correct.png" class="img-center">
 
-- If a user has a new event, recalculate _all_ sessions for that user
+- If a user has a new event, recalculate _all_ page views for that user
 - This works with window functions! But it's **_slowwwww_**...
 
 ---
@@ -369,38 +558,39 @@ How can we correctly calculate the _entire_ session?
 
 <img src="/ui/img{{page.id}}/how-too-clever.png" class="img-center">
 
-- If a user has a new session, pull the user's _most recent session only_,
+- Whenever a user has a new session, pull the user's _most recent session only_,
 and perform relative calculations
 - This takes some hard thinking! E.g. [Segment package](https://github.com/fishtown-analytics/segment/blob/master/macros/cross-adapter-modeling/sessionization/segment_web_sessions.sql#L75)
 
 ---
 
-# Another approach: overwrite partitions
+# What about _truly_ massive datasets?
 
-- Recalculate all data for one day and just replace it entirely
-    - **Pro:** Very efficient! Filter on partition field, save a join step
-    - **Con:** No matching on a `unique_key` = no guarantee of uniqueness
+Bigger datasets (and Big Data technologies) are different cost-optimization problems.
+- Always rebuild past 3 days. Fully ignore late arrivals.
+- Always replace data at the _partition level_.
+- No unique keys.
+- Targeted lookback? No way: too much extra data to scan.
 
-- This is the default on Big Data tech (e.g. Spark), and we've also implemented
-as an optional strategy for BigQuery
+We're going to talk about this next :)
 
 ---
 
 # It's the modeling, silly
 
-- Keep the inputs and transformations of your incremental models as
+Keep the inputs and transformations of your incremental models as
 singular, simple, and immutable as possible.
-    - Slowly changing dimensions, like a `product_name` that the company
-    regularly rebrands? Join from a `dim` table.
-    - Window functions for quality-of-life counters? Fix it in post
-    (downstream table). This is how our Snowplow package calculates user's `session_index`.
+- Slowly changing dimensions, like a `product_name` that the company
+regularly rebrands? Join from a `dim` table.
+- Window functions for quality-of-life counters? Fix it in post—i.e., a separate model.
+This is how our Snowplow package calculates each user's `session_index`.
 
-- Rethink! Incrementality introduces a level of complexity (for you and for
+Rethink! Incrementality introduces a level of complexity (for you and for
 the database) that is **necessarily a trade-off**.
 
 ---
 
 class: subtitle, middle, center
-### Made it :)
+## How are we feeling?
 
 {% include options/next_presentation.html %}
