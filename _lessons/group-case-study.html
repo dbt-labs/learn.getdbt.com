@@ -1,0 +1,36 @@
+---
+layout: presentation
+title: Group case study
+---
+
+class: title, center, middle
+# Group case study
+
+---
+
+## Client:
+Events Manager
+
+## Context
+"I've been selling tickets to events lately. I want a report that tells me how many tickets I've sold, and how many I've refunded for each event."
+
+## Available data:
+```sql
+select * from raw.ticket_tailor.orders;
+select * from raw.learn_stripe.charges;
+select * from raw.learn_stripe.refunds;
+```
+
+---
+
+# Discussion
+* What queries should go in dbt? Which part in out modeling tool?
+* How should you tackle this project?
+
+---
+
+# Over to you!
+
+Take what you've learned in this course and start working on this issue!
+
+Time is limited — if you can't get something done in time, jot it down as a "to do" somewhere.
