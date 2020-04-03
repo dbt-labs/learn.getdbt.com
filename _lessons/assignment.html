@@ -75,3 +75,15 @@ Try using the [schema](https://docs.getdbt.com/docs/using-custom-schemas#section
 If you've been following a git flow (see earlier slide):
 * Create a deployment environment (related [tutorial](https://docs.getdbt.com/tutorial/deploy-your-project/))
 * Set up continuous integration (related [docs](https://docs.getdbt.com/tutorial/deploy-your-project/))
+
+---
+
+# 4. Add sources to your project
+
+* Add `sources` for our two data sources: `jaffle_shop` and `stripe`
+* Update your `raw.<schema>.<table>` references in your models with `{{ source() }}` functions
+* Add a freshness block to at least one source (find a table that has a column that indicates when the row was loaded), and snapshot the freshness
+* Add tests to these sources, and try running these tests
+
+## Related resources:
+* [docs.getdbt.com](https://docs.getdbt.com/docs/using-sources)
