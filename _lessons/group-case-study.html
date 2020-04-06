@@ -1,0 +1,54 @@
+---
+layout: presentation
+title: Group case study
+---
+
+class: title, center, middle
+# Group case study
+
+---
+
+## Client:
+Events Manager
+
+## Context
+"I've been selling tickets to events lately. I want a report that tells me how many tickets I've sold, and how many I've refunded for each event."
+
+## Available data:
+```sql
+select * from raw.ticket_tailor.orders;
+select * from raw.learn_stripe.charges;
+select * from raw.learn_stripe.refunds;
+```
+
+---
+
+# Discussion
+* Which parts should go in dbt? Which in our BI tool?
+* How should you tackle this project?
+
+---
+
+# My typical process
+.denser-text[
+1. **What am I trying to build?**
+    - Draw a dashboard or the table of data
+    - Identify the grain
+2. **What data sources do I have? How do they join together?**
+    - Add sources
+    - State assumptions (as tests)
+3. **Create V1**
+    - Write a query that works
+    - Jot down to-dos
+4. **Refactor**
+    - Make my code align with best practices
+5. **Create a PR**
+    - Send it to someone to review!
+]
+---
+
+# Over to you!
+
+Take what you've learned in this course and start working on this issue!
+
+Time is limited — if you can't get something done in time, jot it down as a "to do" somewhere.
