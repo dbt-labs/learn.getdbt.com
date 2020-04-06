@@ -205,6 +205,8 @@ Good knowledge check questions:
 * i.e. the SQL that your `select` statement gets wrapped in
 * Models can be materialized as `views` and `tables` (we'll learn more later!)
 * You need to **configure** a model's materialization
+* If you weren't using dbt, this would look like writing a lot of DDL in the
+Snowflake console
 
 ---
 #  What is a configuration?
@@ -248,6 +250,7 @@ Instructions to teacher:
 # Creating dependencies
 * It's often a good idea to split up models
 * Use the `ref` function to do build dependencies between models
+    * Includes schema (environment) automatically
 * These dependencies form a **Directed Acyclic Graph (DAG)**
 * dbt uses this DAG to understand the order to run models in
 .center[
@@ -279,7 +282,7 @@ class:subtitle
 
 
 ---
-class:subtitle
+class: subtitle, middle, center
 # Testing dbt models
 
 ???
@@ -292,6 +295,8 @@ class:subtitle
 **Tests** are assertions you make about your **models**.
 
 When your assertion is true, your tests pass.
+
+You configure tests in YML, in the `models` directory.
 
 Behind the scenes, tests are just `select` statements!
 
@@ -322,13 +327,12 @@ You should be comfortable with these words:
 * dbt project
 * models
 * target schema
-* materializations
 * DAGs
 ]
 .right-column[
 * configs
+* materializations
 * refs
-* configurations
 * tests
 ]
 ---
