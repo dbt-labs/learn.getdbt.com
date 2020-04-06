@@ -52,58 +52,99 @@ not docs.getdbt.com, though those are also great
 
 ---
 
-### Example (from the [MRR playbook](https://github.com/fishtown-analytics/mrr-playbook))
+### Adding descriptions
+
+Descriptions go in `.yml` files in your `models/` directory. They can be applied to models, sources, and columns.
 
 {% raw %}
-```yml
-models:
-  - name: mrr
-    description: "{{ doc('mrr') }}"
 
+.left-column[
+.denser-text[
+
+```yml
+version: 2
+
+models:
+  - name: fct_orders
+    description: One record per order
     columns:
-      - name: id
+      - name: order_id
         tests:
           - unique
           - not_null
 
-      - name: mrr
-        description: Monthly recurring revenue in dollars.
+      - name: status
+        description: "{{ doc('order_status') }}"
         tests:
-          - not_null
+          - accepted_values:
+              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
 
-      - name: change_category
-        description: "{{ doc('change_category') }}"
+      - name: amount
+        description: Amount in USD
 ```
+]
+]
+
+.right-column[
+.denser-text[
+
+```yml
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: A replica of the postgres database
+    database: raw
+    tables:
+      - name: orders
+        description: One record per order
+
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+
+          - name: status
+            description: "{{ doc('order_status') }}"
+            tests:
+              - accepted_values:
+                  values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+
+```
+
+]
+]
+
+--
+
+What's the `{{ doc('order_status') }}`?
 
 ---
 
+### Example for sources
+
+
 ### `docs` blocks
 
-.dense-text[
+`docs` blocks allow you to write long-form descriptions. They go in `.md` files in your `models/` directory, and need the `{% docs('my_doc') %}` and `{% enddocs %}` tags.
+
 ```md
-{% docs mrr %}
-This model represents one record per month, per account (months have been filled
-in to include any periods of inactivity).
+{% docs order_status %}
+One of the following values:
 
-This model classifies each month as one of: `new`, `reactivation`, `upgrade`,
-`downgrade`, or `churn`.
-
-{% enddocs %}
-
-{% docs change_category %}
-
-| Category       | Definition                                                                                              |
-|----------------|---------------------------------------------------------------------------------------------------------|
-| new            | The customer is a new customer that has not had a previous subscription                                 |
-| churn          | Last month the customer paid for a subscription, but this month is not. A customer can churn many times |
-| upgrade        | The customer has increased their usage and is now paying you more money per month                       |
-| downgrade      | The customer has decreased their usage and is now paying you less money per month                       |
-| reactivation   | A previously churned customer has started subscribing again                                             |
-| (null)         | No change compared to last month                                                                        |
+| status         | definition                                                 |
+|----------------|------------------------------------------------------------|
+| placed         | Order placed but note yet shipped                          |
+| shipped        | Order has been shipped but hasn't yet been delivered       |
+| completed      | Order has been received by customers                       |
+| return_pending | Customer has indicated they would like to return this item |
+| returned       | Item has been returned                                     |
 
 {% enddocs %}
+
 ```
-]
+
 {% endraw %}
 
 ---
@@ -139,19 +180,8 @@ describe. If the two are separate, documentation will _always_ lag behind.
 
 ---
 
-name: working-session
 class: subtitle
 
-# Working session
-* Add a description for one (or all!) of the following:
-    * a model
-    * a source
-    * a column
-* Use a docs block for one of your descriptions
-* [dbt CLI users only] Generate the documentation website
-
-.caption[
-  [Related dbt documentation](https://docs.getdbt.com/docs/documentation)
-]
+# Questions?
 
 {% include options/next_presentation.html %}
