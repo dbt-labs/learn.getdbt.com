@@ -28,12 +28,12 @@ Notes for teacher:
 ### On Monday:
 | order_id | status  | created_at | updated_at |
 |----------|---------|------------|------------|
-| 1        | pending | 2019-01-01 | 2020-02-20 |
+| 1        | pending | 2020-01-01 | 2020-02-20 |
 
 ### On Tuesday:
 | order_id | status  | created_at | updated_at |
 |----------|---------|------------|------------|
-| 1        | shipped | 2019-01-01 | 2020-02-21 |
+| 1        | shipped | 2020-01-01 | 2020-02-21 |
 
 ???
 Imagine you have an orders table where the status field can be overwritten as the order is processed. One day you query the table and get back this result, but the next day you get this result.
@@ -48,8 +48,8 @@ You can no longer answer:
 
 | order_id | status  | updated_at | dbt_valid_from | dbt_valid_to |
 |----------|---------|------------|----------------|--------------|
-| 1        | pending | 2019-01-01 | 2019-01-01     | 2019-01-02   |
-| 1        | shipped | 2019-01-02 | 2019-01-02     | null         |
+| 1        | pending | 2020-01-01 | 2020-01-01     | 2020-01-02   |
+| 1        | shipped | 2020-01-02 | 2020-01-02     | null         |
 
 ???
 We want to turn our **mutable** data into **immutable data**
@@ -73,6 +73,7 @@ We want to turn our **mutable** data into **immutable data**
 
 # Anatomy of a snapshot
 A `.sql` file in the `snapshots` directory:
+.dense-text[
 ```sql
 -- snapshots/orders_snapshot.sql
 {% snapshot orders_snapshot %}
@@ -91,8 +92,8 @@ A `.sql` file in the `snapshots` directory:
     select * from {{ source('jaffle_shop', 'orders') }}
 
 {% endsnapshot %}
-
 ```
+]
 
 ???
 - Snapshots are simple select statements which define a dataset. They live in the snapshots directory, and are enclosed in Jinja tags
@@ -143,7 +144,7 @@ Seeds are CSV files that you can `ref` in your project
 
 `data/country_codes.csv`:
 ```txt
-country_code, country_name
+country_code,country_name
 AU,Australia
 UK,United Kingdom
 US,United States
@@ -187,6 +188,40 @@ left join {{ ref('country_codes') }} as country_codes
 # Other use cases for seeds
 * Email addresses to exclude
 * List of employee accounts
+
+---
+
+## I need to run some models hourly, and some models nightly.
+--
+
+### Technique: tags!
+---
+
+In dbt_project.yml:
+```yml
+models:
+  my_project:
+    marts:
+      product:
+        tags: ["run: hourly"]
+      finance:
+        tags:
+          - "run: daily"
+          - "very important"
+```
+
+In a model:
+```sql
+{{config(
+    materialized = 'table',
+    tags = ["run: hourly"]
+)}}
+```
+
+In deployment:
+```
+dbt run -m tags:"run: hourly"
+```
 
 ---
 
@@ -501,7 +536,7 @@ having total_amount < 0
 ```
 Run with `dbt test` (or `dbt test --data`)
 .caption[
-  [Learn more](https://docs.getdbt.com/docs/testing)
+  N.B. Data tests return **rows**, whereas schema tests return a **number**, `count(*)`. [Learn more](https://docs.getdbt.com/docs/testing)
 ]
 
 ---
@@ -564,6 +599,7 @@ Create master "customers" table with one record per (best-guess) of a human bein
 
 ---
 # What we have:
+.denser-text[
 `snowplow.page_views`:
 
 | pageview_id | date         | user_id | anonymous_id |
@@ -585,6 +621,7 @@ Create master "customers" table with one record per (best-guess) of a human bein
 | customer_id | email                         |
 |-------------|-------------------------------|
 | 73          | alice@fishtownanalytics.com   |
+]
 
 ---
 
@@ -592,7 +629,6 @@ Create master "customers" table with one record per (best-guess) of a human bein
 | customer_id | snowplow_anonymous_id | stripe_customer_id | email                       |
 |-------------|-----------------------|--------------------|-----------------------------|
 | 1           | 123456                | 73                 | alice@fishtownanalytics.com |
-
 
 ???
 What happens when you have duplicate users? You'll need to dedupe them! Maybe you'll have mapping pairs:
