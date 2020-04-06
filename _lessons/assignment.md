@@ -23,8 +23,7 @@ If you get stuck, we do have worked solutions. Use these as a last resort — wr
 # Common pitfalls
 
 1. Forgetting to `save` a file before running it. We've _all_ been there. Over time it becomes muscle memory. A dot next to a filename indicates that a file isn't saved.
-
-2. [dbt Cloud users]: Hitting the `run` button, rather than executing `dbt run` in the terminal prompt
+2. dbt Cloud users: Hitting the `run` button, rather than executing `dbt run` in the terminal prompt
     * The `run sql` button executes whatever SQL statement is on your screen
     * The `dbt run` command builds relations in your database
 <center>
