@@ -7,26 +7,51 @@ working_session: false
 ---
 
 class: title, center, middle
-# Data Warehouse Design
+# Designing a data modeling project
 
 ---
 
-# Talk of the town
+# "Data Warehouse Design"
+
+### You may have heard of:
 
 - Dimensional modeling _(Kimball 1996)_
+- Agile / BEAM (Business Event Analysis & Modelling) _(Corr 2011)_
+- Data Vault
 - Data normalization
 - Snowflake / star schema
-- Data “marts”
-- Agile / BEAM (Business Event Analysis & Modelling) _(Corr 2011)_
+- Data "marts"
 
 ---
 
-# Back in the nineties
+### The goal of this presentation is to:
+
+- Describe the problem space
+- Appreciate the history of our field
+- Propose Fishtown's approach, which heavily leverages dbt
+- Pass down a few words from the wise
+
+--
+
+### The goal of this presentation is _not_ to:
+
+- Resolve theological disputes
+- Prescribe what's possible with dbt. If you want to generate a star schema 
+using dbt, you absolutely can! It's all just SQL.
+
+--
+
+### Ready?
+
+---
+
+# Back in the nineties (aughts)
 
 .left-column-33[
-- Data is data is data is data
-- Fuzzy distinction between "source" and "transformed" data
-- (Secretly, teams of data engineers are running all the pipelines)
+- This is _data_. You are a _Data Analyst_.
+- What's data? It's the tables you have in your database, silly!
+- (Secretly, there are teams of data engineers who manage dozens/hundreds of pipelines
+that generate/update this star schema every day)
 ]
 
 .right-column-66[
@@ -67,6 +92,26 @@ two competing interests:
 _As modern data practitioners, we are inheritors of a decades-long history. It
 is our task to determine for the present day which concepts are still necessary, and which
 implementation strategies are still applicable._
+
+---
+
+# I got an email!
+
+```
+Dear Analyst,
+
+I would like to know how many widgets we sold in 1997 (last year).
+
+Just widgets in our TV category, that is.
+
+Oh, and if you could slice that number by the brand name of the widget, and 
+dice it by the country where we sold them, that'd be rad.
+
+Thanks!
+
+Tristan
+SVP Marketing Analytics
+```
 
 ---
 
@@ -148,6 +193,20 @@ where date_trunc('year', sale_date) = '1997-01-01'
 
 group by 1,2
 ```
+
+---
+
+# Upshot
+
+This is a _much_ more opinionated, ad hoc data model.
+
+Why do I feel okay about that?
+- It's generated using SQL
+	- Written by analysts
+	- Accessible to end users
+- The data model is a product, not a service
+	- The underlying transformations are tested and documented
+	- There are multiple "interfaces" for end users to adjudicate its quality
 
 ---
 
