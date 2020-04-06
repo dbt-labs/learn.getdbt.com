@@ -1,11 +1,11 @@
 ---
-layout: presentation
+layout: page
 title: Group assignment
 ---
 
-class: title, center, middle
-# Group assignment
 
+# Group assignment
+{% raw %}
 ---
 
 # How to work through this assignment
@@ -103,3 +103,5 @@ If you've been following a git flow (see earlier slide):
 * [docs.getdbt.com](https://docs.getdbt.com/docs/documentation)
 
 ---
+
+{% endraw %}
