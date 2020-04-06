@@ -144,21 +144,8 @@ leaves old objects in place (if a test fails)
 
 ---
 
-name: working-session
 class: subtitle
 
-# Working session
-* Add `sources` for our two data sources: `jaffle_shop` and `stripe` (make sure you select from the `{{ source }}` in your models)
-* Add a freshness block to at least one source, and snapshot the freshness
-    * Note: use a dummy `loaded_at_field` to get the freshness test to pass:
-    ```yml
-    loaded_at_field: "current_timestamp"
-    freshness: ...
-    ```
-* Add tests to these sources, and try running these tests
-
-.caption[
-  [Related dbt documentation](https://docs.getdbt.com/docs/using-sources)
-]
+# Questions?
 
 {% include options/next_presentation.html %}
