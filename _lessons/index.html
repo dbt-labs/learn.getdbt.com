@@ -1,0 +1,21 @@
+---
+layout: overview
+title: Lessons
+---
+
+{% for day in site.data.curriculum %}
+		<div class="col-md-6">
+			<h4> {{day.title}} </h4>
+            {% for session in day.sessions %}
+            <h5>{{session.name}}</h5>
+				<ul class='list-icons text-med text-heading text-left'>
+					{% for lsn in session.lessons %}
+						{% assign lesson_id = "/lessons/" | append: lsn.slug %}
+						{% assign match = site.lessons | where: 'id', lesson_id %}
+                        {% assign lesson = match[0] %}
+						<li><span class='arrow-right text-blue text-medium list-icon'></span><a href="{{lesson.id}}">{{lesson.title}}</a></li>
+					{% endfor %}
+				</ul>
+            {% endfor %}
+		</div>
+{% endfor %}
