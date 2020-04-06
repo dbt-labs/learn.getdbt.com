@@ -14,6 +14,7 @@
         - slug: docs
         - slug: debugging-dbt
         - slug: pull-requests
+        - slug: assignment
 - day: 2
   title: "Day Two: Applications"
   sessions:
