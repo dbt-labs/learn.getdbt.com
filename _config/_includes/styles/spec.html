@@ -4,7 +4,7 @@
 <div class="panel panel-large mobile-expand">
 	<div class="panel-body">
 		<div id="{{ entry.title | slugify }}-example">
-			{% capture baseui %}="{{site.baseurl}}/ui{% endcapture %}
+			{% capture baseui %}="{{site.baseurl}}ui{% endcapture %}
 			{{ entry.content | markdownify | replace: '="/ui',baseui }}
 		</div>
 	</div>

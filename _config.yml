@@ -11,7 +11,7 @@ robots: true
 # --------------------------------------------------
 # Site imagery
 
-favicon: /favicon.ico
+favicon: favicon.ico
 avatar: learn.getdbt.com/ui/img/graph/avatar.png
 poster: learn.getdbt.com/ui/img/graph/poster.png
 
@@ -20,7 +20,7 @@ poster: learn.getdbt.com/ui/img/graph/poster.png
 
 url: "http://learn.getdbt.com"
 baseurl: "/"
-stylesurl: "/www.getdbt.com"
+stylesurl: "www.getdbt.com"
 
 # css container
 namespace: dbt
