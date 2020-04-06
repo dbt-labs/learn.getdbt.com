@@ -1,12 +1,9 @@
 ---
-layout: page
+layout: overview
 title: Group assignment
 ---
 
-
-# Group assignment
 {% raw %}
----
 
 # How to work through this assignment
 
