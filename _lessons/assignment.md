@@ -25,11 +25,11 @@ If you get stuck, we do have worked solutions. Use these as a last resort — wr
 1. Forgetting to `save` a file before running it. We've _all_ been there. Over time it becomes muscle memory. A dot next to a filename indicates that a file isn't saved.
 
 2. [dbt Cloud users]: Hitting the `run` button, rather than executing `dbt run` in the terminal prompt
-    * The `run` button executes whatever SQL statement is on your screen
+    * The `run sql` button executes whatever SQL statement is on your screen
     * The `dbt run` command builds relations in your database
-
+<center>
 <img src="/ui/img{{page.id}}/run-sql-vs-dbt-run.png" style="width: 80%;">
-
+</center>
 
 ---
 
@@ -56,8 +56,9 @@ For each exercise, we recommend you follow a git flow.
     - Click the "New pull request" button
 4. [Bonus] Assign it to a classmate to review:
     - You will need to add your classmate as a [collaborator](https://help.github.jp/enterprise/2.11/user/articles/inviting-collaborators-to-a-personal-repository/)
-
+<center>
 <img src="/ui/img{{page.id}}/create-new-branch.png" style="width: 50%;">
+</center>
 
 ¹Stuck on what to name your branch or what a good commit message it? We've got a [guide for that](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md)!
 ²Check out our tips on good pull requests [here](pull-requests)
