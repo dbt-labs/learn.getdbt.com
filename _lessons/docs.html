@@ -43,6 +43,24 @@ class: subtitle, middle, center
 
 ---
 
+
+# Our strong opinions!
+.denser-text[
+* Code is _surface area_. Testing and documentation are _coverage_.
+* Untested, undocumented code _cannot be trusted_. In some sense, it is worse than having no code at all.
+* Reliable documentation is _key_ to scaling a data team.¹
+* The generation of data documentation should be automated.
+* Data documentation should include both:
+    * Inferred information from the codebase/database
+    * Manual inputs ("this field means that")
+* The process to update documentation _must_ be part of the same workflow as the transformations it seeks to describe. If the two are separate, documentation will _always_ lag behind.
+
+.caption[
+¹We aren't the only ones that think this — see Lyft's [Amundsen](https://github.com/lyft/amundsen), or Great Expectation's [documentation](https://docs.greatexpectations.io/en/latest/features/data_docs.html#data-docs) feature.
+]
+]
+---
+
 class: subtitle, middle, center
 
 ## dbt docs
@@ -53,9 +71,9 @@ not docs.getdbt.com, though those are also great
 ---
 
 ### Adding descriptions
-
-Descriptions go in `.yml` files in your `models/` directory. They can be applied to models, sources, and columns.
-
+.dense-text[
+Descriptions can be added to models, sources, and column (in your existing `.yml` files)
+]
 {% raw %}
 
 .left-column[
@@ -98,7 +116,6 @@ sources:
     tables:
       - name: orders
         description: One record per order
-
         columns:
           - name: id
             tests:
@@ -117,25 +134,25 @@ sources:
 ]
 
 --
-
+.dense-text[
 What's the `{{ doc('order_status') }}`?
+]
 
 ---
-
-### Example for sources
-
-
 ### `docs` blocks
 
-`docs` blocks allow you to write long-form descriptions. They go in `.md` files in your `models/` directory, and need the `{% docs('my_doc') %}` and `{% enddocs %}` tags.
+`docs` blocks allow you to write long-form descriptions.
 
+Docs blocks are added to `.md` files in your `models/` directory.
+
+.denser-text[
 ```md
 {% docs order_status %}
 One of the following values:
 
 | status         | definition                                                 |
 |----------------|------------------------------------------------------------|
-| placed         | Order placed but note yet shipped                          |
+| placed         | Order placed but not yet shipped                           |
 | shipped        | Order has been shipped but hasn't yet been delivered       |
 | completed      | Order has been received by customers                       |
 | return_pending | Customer has indicated they would like to return this item |
@@ -144,14 +161,27 @@ One of the following values:
 {% enddocs %}
 
 ```
-
+]
 {% endraw %}
 
 ---
+# Generating documentation
+.denser-text[
+When dbt generates documentation it takes into account:
+* Everything it knows about your project:
+    * Descriptions (ofc!)
+    * Model dependencies
+    * Model SQL
+    * Sources
+    * Tests
+* Additional things about your warehouse (from the information schema)
+    * Column names and types (even if they aren't documented!)
+    * Table stats
 
-class: center, middle
-# [Voila !](https://www.getdbt.com/mrr-playbook/#!/model/model.acme.mrr)
+This information is used to populate a documentation website.
 
+For example: [dbt Learn demonstration project](https://cloud.getdbt.com/accounts/1951/runs/4352683/docs/#!/overview), [out MRR playbook](https://www.getdbt.com/mrr-playbook/#!/model/model.acme.mrr), [GitLab's dbt project](https://dbt.gitlabdata.com/).
+]
 ---
 
 ## dbt CLI
@@ -165,23 +195,30 @@ dbt docs serve
 
 ---
 
-# Our strong opinions!
+# What should I document?
 
-Given:
-* Code is _surface area_. Testing and documentation are _coverage_.
-* Untested, undocumented code _cannot be trusted_. In some sense, it is worse
-than having no code at all.
+.dense-text[
+Our rule of thumb: anything that is not immediately obvious.
 
-Therefore:
-* Data documentation that seeks to accurately describe data transformation _must_
-be updated as part of the same workflow as the transformation logic it seeks to
-describe. If the two are separate, documentation will _always_ lag behind.
-
-
+For example:
+* Sources:
+    - How the source data came to be in the warehouse
+    - Known caveats
+    - The definitions of poorly named fields and tables
+* Final models:
+    - The grain of the model. Potentially a descrition of how the model was built.
+    - Column definitions, especially for columns that include business logic
+* Intermediate models
+    - As required
+]
 ---
 
 class: subtitle
 
-# Questions?
+# Knowledge check
+
+You should be able to:
+* Add descriptions to your dbt project
+* Generate documentation for your project
 
 {% include options/next_presentation.html %}
