@@ -24,7 +24,7 @@ Before we hit databases, there's a nice story of "woah that's a package, which i
 Or, "yo why is there 138 macros in our project when we only added one".
 And from there we can talk a little bit about writing custom tests + using custom schemas + custom aliases + custom overviews. Once you get that concept down, it's so easy to understand how you can get dbt to do things you want it to do
 ---
-# Use case: Using macros from a package
+## Use case: Using macros from a package
 
 1. Add a `packages.yml` file to your project
 
@@ -37,10 +37,10 @@ packages:
     version: 0.2.5
 
 ```
-???
-* Discuss when to use which syntax
+Note: you can also install a package from a git URL, or from a local directory.
+
 ---
-# Use case: Using macros from a package
+## Use case: Using macros from a package
 
 1. Add a `packages.yml` file to your project
 --
@@ -53,7 +53,7 @@ $ dbt deps
 * Show the  modules directory
 * Note that these are .gitignored
 ---
-# Use case: Using macros from a package
+## Use case: Using macros from a package
 
 1. Add a `packages.yml` file to your project
 2. Run `dbt deps` to install the package
@@ -72,7 +72,7 @@ $ dbt deps
 ```
 {% endraw %}
 ---
-# Use case: Using macros from a package
+## Use case: Using macros from a package
 
 1. Add a `packages.yml` file to your project
 2. Run `dbt deps` to install the package
@@ -83,19 +83,19 @@ $ dbt deps
 version: 2
 
 models:
-  - name: companies
+  - name: fct_orders
     tests:
       - dbt_utils.expression_is_true:
-          expression: "assets - liabilities = equity"
+          expression: "amount > 0"
 ```
 
 ???
 * Go through some of the most common macros in dbt-utils (there might be overlap with previous lesson)
 ---
-# Q: What happens when you add a package with models in it?
+## Q: What happens when you add a package that contains models?
 --
 
-These models get added to your DAG!
+These models get added to your project and will be run when you `dbt run`!
 
 ---
 background-color: #005E7A
@@ -103,12 +103,12 @@ background-color: #005E7A
 
 
 ---
-# Use cases for packages:
-## Macros:
+## Use cases for packages:
+### Macros:
 * Versatile macros, especially for “How to Write this in SQL” problems ([dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/))
 * Ad hoc queries/snippets you find yourself writing over and over ([audit_helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/), [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/))
 
-## Models:
+### Models:
 * Common staging models for one data source ([facebook](https://hub.getdbt.com/fishtown-analytics/facebook_ads/latest/))
 * Follow industry standards for boilerplate-yet-complex modeling ([snowplow](https://hub.getdbt.com/fishtown-analytics/snowplow/latest/), [segment](https://hub.getdbt.com/fishtown-analytics/segment/latest/))
 
@@ -149,10 +149,10 @@ So:
 --
 
 
-If you have a macro in _your project_ with the same name as macro in the _dbt global project_, your version is preferred! This means you can:
-* Change the way dbt generates schema + and relation names
-* Change the way tests are implemented
-* Even change materializations!
+dbt will use _your_ version! This means you can:
+* Change the way tests are implemented ([docs](https://docs.getdbt.com/docs/writing-code-in-dbt/extending-dbts-programming-environment/custom-schema-tests/))
+* Generate a custom overview for your documentation site ([docs](https://docs.getdbt.com/docs/building-a-dbt-project/testing-and-documentation/documentation-website/#setting-a-custom-overview))
+* ⚠️ Change how materializations work ([Example](https://www.loom.com/share/1507ac7baee043d784a65c770d387de1)).
 
 .caption[
 [Learn more](https://discourse.getdbt.com/t/did-you-know-dbt-ships-with-its-own-project/764)
@@ -162,7 +162,7 @@ If you have a macro in _your project_ with the same name as macro in the _dbt gl
 
 You should:
 * Be able to explain what a package is
-* Be able to install a package in your own project and use macros from the package
+* Be able to install a package in your own project and use macros/models from the package
 * Understand that dbt itself is package
 
 ---
