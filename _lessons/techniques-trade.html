@@ -196,33 +196,33 @@ left join {{ ref('country_codes') }} as country_codes
 
 ### Technique: tags!
 ---
-
+.dense-text[
 In dbt_project.yml:
 ```yml
 models:
   my_project:
     marts:
       product:
-        tags: ["run: hourly"]
+        tags: ["hourly"]
       finance:
         tags:
-          - "run: daily"
-          - "very important"
+          - "daily"
+          - "important"
 ```
 
 In a model:
 ```sql
 {{config(
     materialized = 'table',
-    tags = ["run: hourly"]
+    tags = ["hourly"]
 )}}
 ```
 
 In deployment:
 ```
-dbt run -m tags:"run: hourly"
+dbt run -m tags:hourly
 ```
-
+]
 ---
 
 ## I am getting permission denied errors on relations that dbt creates
