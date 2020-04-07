@@ -15,5 +15,4 @@ To run locally:
 3. Install the `www.getdbt.com` repo to get the right fonts:
     * `git submodule init`
     * `git submodule update`
-4. Serve the website: `bundle exec jekyll serve --incremental --baseurl '' -w --port 5017`
-5. Navigate to `http://127.0.0.1:5017/`
+4. Serve the website: `bundle exec jekyll serve --incremental --baseurl '' -w --port 5017 -o`
