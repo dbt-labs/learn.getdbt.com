@@ -215,6 +215,8 @@ We use Jinja to generate SQL!
 .denser-text[
 I have a payments table like this:
 
+`select * from {{ ref('stg_stripe__payments') }}`
+
 
 | payment_id | order_id | payment_method | amount | created_at |
 |------------|----------|----------------|--------|------------|
@@ -226,30 +228,6 @@ I have a payments table like this:
 
 ]
 
---
-
-.denser-text[
-Here's the SQL:
-```sql
-select * from {{ ref('stg_stripe__payments') }}
-```
-]
---
-
----
-## Jinja challenge
-.denser-text[
-I have a payments table like this:
-
-| payment_id | order_id | payment_method | amount | created_at |
-|------------|----------|----------------|--------|------------|
-| 1          | 1        | credit_card    | 10     | 2018-01-01 |
-| ...        | ...      | ...            | ...    | ...        |
-| 29         | 25       | credit_card    | 22     | 2018-01-28 |
-| 28         | 25       | bank_transfer  | 20     | 2018-01-28 |
-| 30         | 25       | coupon         | 16     | 2018-01-28 |
-
-]
 --
 .denser-text[
 
@@ -264,24 +242,26 @@ I want a table like this:
 ]
 --
 .denser-text[
-What SQL should I write to do this?
+How do I do this in SQL?
 ]
 ---
 class: subtitle
 
 # Working session
 
-We want every student to be writing code while working together.
+**Challenge:** Use SQL + Jinja to "pivot" the payments data.
 
-1. **As a class**: write the SQL to transform this data (every student should have working SQL)
-2. **As a class**: use _some_ Jinja in this SQL
+.denser-text[
+
+1. **As a class**: write this in pure SQL
+2. **As a class**: use _some_ Jinja + SQL
 3. **In your breakout groups**:
     * Refactor!
     * Each breakout group will have a Teacher's Assistant
     * Let us know in Slack when you have finished refactoring
 4. **As a class**: one person from each breakout group will present their solution
 
-
+]
 ???
 
 ```sql

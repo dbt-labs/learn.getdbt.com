@@ -12,7 +12,7 @@ class: title, center, middle
 Events Manager
 
 ## Context
-"I've been selling tickets to events lately. I want a report that tells me how many tickets I've sold, and how many I've refunded for each event."
+"I've been selling tickets to events lately. I want a report showing how many tickets I've sold and refunded for each event."
 
 ## Available data:
 ```sql
@@ -25,7 +25,7 @@ select * from raw.learn_stripe.refunds;
 
 # Discussion
 * Which parts should go in dbt? Which in our BI tool?
-* How should you tackle this project?
+* How would you break up this project?
 
 ---
 
@@ -35,20 +35,30 @@ select * from raw.learn_stripe.refunds;
     - Draw a dashboard or the table of data
     - Identify the grain
 2. **What data sources do I have? How do they join together?**
-    - Add sources
-    - State assumptions (as tests)
-3. **Create V1**
-    - Write a query that works
-    - Jot down to-dos
+    - Add sources to our dbt project
+    - Add assumptions about sources as tests
+3. **Create V0**
+    - Write a query that works & validate the results
+    - Jot down to-dos as I go
 4. **Refactor**
     - Make my code align with best practices
 5. **Create a PR**
     - Send it to someone to review!
 ]
 ---
-
+class:subtitle
 # Over to you!
 
 Take what you've learned in this course and start working on this issue!
 
+> _Create a report showing how many tickets I've sold and refunded for each event._
+
+```sql
+select * from raw.ticket_tailor.orders;
+select * from raw.learn_stripe.charges;
+select * from raw.learn_stripe.refunds;
+```
+
 Time is limited — if you can't get something done in time, jot it down as a "to do" somewhere.
+
+{% include options/next_presentation.html %}
