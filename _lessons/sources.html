@@ -94,7 +94,12 @@ They help users understand where data comes from (lineage)
 ---
 
 # Testing sources
+
+.denser-text[
+
 You can add tests to sources! And you should!
+]
+
 .denser-text[
 ```yml
 version: 2
@@ -110,19 +115,25 @@ sources:
               - not_null
               - unique
 ```
+]
+
+.denser-text[
 
 Being thoughtful about where you test helps you understand whether tests are failing because:
 - The assumptions about your source data are no longer true
 - Or your SQL has changed
 
 This allows you to debug more quickly!
+
 ]
 
 ---
 # Feeling fresh?
 
 Optionally, specify a `loaded_at_field` and `freshness`:
+
 .denser-text[
+
 ```yml
 version: 2
 
@@ -138,11 +149,12 @@ sources:
 
     tables:
       - name: payment
-```
-Then run `dbt source snapshot-freshness`
 
+```
 
 ]
+
+Then run `dbt source snapshot-freshness`
 
 ---
 ## Snapshotting freshness
