@@ -157,13 +157,13 @@ Corr says: 7Ws
 
 ---
 
-# Before: snowflake schema (ca. 2000s)
+### Before: snowflake schema (ca. 2000s)
 
 <img src="/ui/img{{page.id}}/fact-sales-erd.png" class="img-center">
 
 ---
 
-# Before: snowflake schema (ca. 2000s)
+### Before: snowflake schema (ca. 2000s)
 
 ```sql
 SELECT
@@ -187,13 +187,27 @@ GROUP BY
 
 ---
 
-# After: denormalized model (2020)
+### After: denormalized model (2020)
+
+.denser-text[
+
+| sale_date | units_sold | store_id | store_number | state_province | country | ean_code      | product_name | brand_name   | product_category_name |
+|-----------|------------|----------|--------------|----------------|---------|---------------|--------------|--------------|-----------------------|
+|1997-01-01 | 7          | 1234     | 12           | PA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+|1997-01-02 | 8          | 1234     | 12           | MA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+|1997-01-03 | 9          | 1234     | 12           | NSW            | AU      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+
+]
+
+---
+
+### After: denormalized model (2020)
 
 <img src="/ui/img{{page.id}}/fact-sales-dag.png" class="img-center">
 
 ---
 
-# After: denormalized model (2020)
+### After: denormalized model (2020)
 
 ```sql
 select
@@ -370,6 +384,17 @@ class: subtitle, center, middle
 - Often built on top of an immutable event stream
 - Tables (maybe incremental)*
 ]]]
+
+---
+
+# Source- vs. business-conformed
+
+dbt sits between **source data** and **business intelligence**.
+
+- Staging models should respect the nomenclature and structure of raw source tables
+- Final dimensions and facts should exist in terms the organization understands
+
+<img src="/ui/img{{page.id}}/dag-payments-union.png" style="width: 100%;">
 
 ---
 
