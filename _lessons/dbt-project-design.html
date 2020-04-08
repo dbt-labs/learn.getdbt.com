@@ -1,19 +1,55 @@
 ---
 layout: presentation
-title: Designing a data modeling project
+title: dbt Project Design
 estimated_teaching_time: 60
 teaching_method: slides
 working_session: false
 ---
 
 class: title, center, middle
-# Designing a data modeling project
+# dbt Project Design
 
 ---
 
-# "Data Warehouse Design"
+# So, I have raw data.
 
-### You may have heard of:
+.grey[_What do I do with it?_]
+
+--
+
+Model it!
+
+--
+
+.grey[_How?_]
+
+--
+
+With dbt!
+
+--
+
+.grey[_Cool._]
+
+---
+
+# Begging two questions
+
+**What is the final data artifact that I’m trying to share with a stakeholder?**
+- Also called "data model design," "data warehouse design," or "warehousing"
+- It's a careful balance between several trade-offs: technological limitations, stakeholder needs, correctness vs. complexity, flexibility vs. rigidity
+- Hard to have generic answers! Could fill a book (or several). It's a fascinating topic that we'll cover _very_ briefly
+
+--
+
+**How can I execute the _creation_ of that final artifact?**
+- With dbt!
+- The _real_ interest of this presentation
+
+.caption[[Unrelated](https://en.wikipedia.org/wiki/Begging_the_question)]
+---
+
+# You may have heard of:
 
 - Dimensional modeling _(Kimball 1996)_
 - Agile / BEAM (Business Event Analysis & Modelling) _(Corr 2011)_
@@ -24,34 +60,28 @@ class: title, center, middle
 
 ---
 
-### The goal of this presentation is to:
+# Our take
 
-- Describe the problem space
-- Appreciate the history of our field
-- Propose Fishtown's approach, which heavily leverages dbt
-- Pass down a few words from the wise
+Any set of best practices in model design have always needed to balance between
+two competing interests:
 
---
+- **Intuition:** speed of comprehension for human analysts
 
-### The goal of this presentation is _not_ to:
+- **Performance:** speed of operation for (non-human) database
 
-- Resolve theological disputes
-- Prescribe what's possible with dbt. If you want to generate a star schema 
-using dbt, you absolutely can! It's all just SQL.
-
---
-
-### Ready?
+As modern data practitioners, we are inheritors of a decades-long history. It
+is our task to determine for the present day which concepts are still necessary, and which
+implementation strategies are still applicable.
 
 ---
 
 # Back in the nineties (aughts)
 
 .left-column-33[
-- This is _data_. You are a _Data Analyst_.
-- What's data? It's the tables you have in your database, silly!
-- (Secretly, there are teams of data engineers who manage dozens/hundreds of pipelines
-that generate/update this star schema every day)
+- Database technology privileges **highly normalized star schemas.**
+- Data Engineers expect to build them.
+- Data Analysts expect to query them.
+- These two groups don't have much else in common.
 ]
 
 .right-column-66[
@@ -67,35 +97,20 @@ that generate/update this star schema every day)
 - Data Engineers own ETL (“Extract-Transform-Load”)
 - Storage and aggregations are expensive
 - Joins are cheap
-- Data is federated between dozens/hundreds of objects
+- Datasets are federated between dozens/hundreds of objects
 ]
 
 .right-column[
 ## Now
 - Off-the-shelf tools (e.g. Stitch, Fivetran) can manage >90% of extract + load
 - Storage and aggregations are cheap
-- Scanning, joining, updating data is expensive
-- Datasets are massive and partitioned
+- Joins are expensive
+- Massive datasets are updated in batches and queried in partitions
 ]
 
 ---
 
-# Balancing act
-
-Any set of best practices in model design have always needed to balance between
-two competing interests:
-
-- **Intuition:** speed of comprehension for human analysts
-
-- **Performance:** speed of operation for (non-human) database
-
-_As modern data practitioners, we are inheritors of a decades-long history. It
-is our task to determine for the present day which concepts are still necessary, and which
-implementation strategies are still applicable._
-
----
-
-# I got an email!
+# I've got email!
 
 ```
 Dear Analyst,
@@ -142,13 +157,13 @@ Corr says: 7Ws
 
 ---
 
-# Before
+# Before: snowflake schema (ca. 2000s)
 
 <img src="/ui/img{{page.id}}/fact-sales-erd.png" class="img-center">
 
 ---
 
-# Before
+# Before: snowflake schema (ca. 2000s)
 
 ```sql
 SELECT
@@ -172,13 +187,13 @@ GROUP BY
 
 ---
 
-# After
+# After: denormalized model (2020)
 
 <img src="/ui/img{{page.id}}/fact-sales-dag.png" class="img-center">
 
 ---
 
-# After
+# After: denormalized model (2020)
 
 ```sql
 select
@@ -196,23 +211,55 @@ group by 1,2
 
 ---
 
-# Upshot
+# _ad hoc_ or _agile_ analytics
 
-This is a _much_ more opinionated, ad hoc data model.
+.denser-text[
 
-Why do I feel okay about that?
-- It's generated using SQL
-	- Written by analysts
-	- Accessible to end users
-- The data model is a product, not a service
-	- The underlying transformations are tested and documented
-	- There are multiple "interfaces" for end users to adjudicate its quality
+.left-column[
+### Given
+
+- The technology we use is _powerful_. This isn't Kimball's database.
+- Designing and naming things for human intuition is _hard_. You won't get
+it right the first time, every time.
+- You're building a data product; you're not a data service provider. 
+Your goal should be to power reports that can be self-service.
+]
+
+.right-column[
+### Therefore
+
+- Build the data models you need, when you need them.
+- Think about the same things as always:
+	- 1. Business meaning
+	- 2. Nomenclature
+	- 3. Primary key
+- Write all data transformation in SQL.
+- Build with layers of abstraction so that you can make changes later.
+]
+]
+
+---
+
+# Do you have to listen to us?
+
+No!
+
+If you want to build a snowflake schema or Data Vault 2.0 using dbt, 
+you totally can. It's all just SQL.
+
+Remember our two questions:
+
+1. What is the final data artifact that I’m trying to share with a stakeholder?
+2. How can I execute the _creation_ of that final artifact?
+
+If you have a good answer to question 2, it's okay if your answer to question 1 
+isn't _100% perfect_ or needs to change over time.
 
 ---
 
 class: subtitle, center, middle
 
-# Interfaces
+# Interfaces to your data product
 
 ---
 
@@ -222,7 +269,7 @@ class: subtitle, center, middle
 
 _Which data sources, processes, and assumptions do our sales calculations depend on?_
 
-The graph tells a story:
+The DAG tells a story:
 
 <h3 style="text-align: center;"><span style="color: green;">Source</span>
 &rarr;
@@ -286,11 +333,11 @@ class: subtitle, center, middle
 
 ---
 
-## [The Discourse](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)
-
 <img src="/ui/img{{page.id}}/discourse-stats.png" class="img-center">
 &nbsp;
 <img src="/ui/img{{page.id}}/discourse-intro.png" class="img-center">
+
+.center[[Read it!](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)]
 
 ---
 
@@ -379,31 +426,45 @@ be grouped together in all three interfaces.
 ---
 
 class: subtitle, center, middle
-# So what are BI tools for, anyway?
-
-???
-It's not uncommon that we deliver this presentation and students walk away
-with the unfounded assertion that dbt can do _everything_. Why are they paying
-so much for their BI tool??
+# dbt + BI
 
 ---
 
-## The same things they’ve always been good at!
+# What BI tool(s) do you use?
 
+- What do you use them for?
+- What _should_ you use them for?
+
+---
+
+## The things they've always been good at!
+
+.left-column-33[
 - User Interface
     - Point-and-click
-    - Self-service
-    - Accessible to less technical users
+    - Self-service filters, drill-downs
+    - Accessible to users who may be less technical
+]
+.right-column-66[
+.left-column[
 - Viz!
     - Out-of-the-box
+	- Color palettes ("my brand!")
     - Frameworks/libraries
-- Reporting nice-to-haves
-    - Dynamic parameters
-    - Scheduling, alerting, PDF’ing and CSV’ing
+]
+.right-column[
+- Nice-to-haves
+    - Dynamic user input
+    - Scheduling
+	- Alerting
+	- PDF’ing
+	- CSV’ing
+]
+]
 
 ---
 
-## Not the things they're bad at... :)
+## Not the things they're less good at
 
 - Multilayered data transformation with complex ordered dependencies
 - Enforcing a single sources of truth
@@ -473,10 +534,8 @@ group by 1,2
 ---
 
 class: subtitle, middle, center
-# CODA: Some Rules of Thumb
-## or,
-## how I learned to stop worrying and love my models
-### long opinions<br>quickly felled<br>unofficially compiled<br>by yours truly
+# Words to the wise
+### from one data modeler to another
 
 ???
 This is a very special section, for anyone in the room who feels like the
@@ -560,5 +619,19 @@ I think about join "steps" as degrees of Kevin Bacon
 Take it in good health, and with many grains of salt.
 ---
 class: subtitle
+
+# Knowledge check
+
+- There are many data modeling/warehousing schools of belief
+- Database technology has changed dramatically over the past decade
+- The _how_ of modeling is just as important as the _what_
+
+When creating a dbt project:
+- Stage your raw source data before transforming it
+- Every model should have a primary key
+- Think about how your models fit into the bigger picture:
+	- Graph
+	- Codebase
+	- Database
 
 {% include options/next_presentation.html %}

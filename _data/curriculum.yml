@@ -8,7 +8,7 @@
         - slug: dbt-fundamentals
     - name: Afternoon
       lessons:
-        - slug: modeling-project-design
+        - slug: dbt-project-design
         - slug: testing-ci
         - slug: sources
         - slug: docs
