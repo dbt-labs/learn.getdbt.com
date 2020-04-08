@@ -38,8 +38,8 @@ hiccups that result in delayed or duplicated data.
     - `database` + `schema` for each source
     - `name`/`identifier` for each table
 --
-- Test schema integrity of raw tables
-    - Built-in: `unique`, not_null`, `accepted_values`, `relationships`
+- Test data integrity of raw tables
+    - Built-in: `unique`, `not_null`, `accepted_values`, `relationships`
     - Custom: whatever you want!
 --
 - Test the freshness of loaded data, based on thresholds you define
@@ -49,50 +49,32 @@ hiccups that result in delayed or duplicated data.
 
 ---
 
-# YML
+# Defining sources
+Sources are defined in `.yml` files in your `models/` directory.
 
-I define my sources in `stripe_source.yml`:
+(They can co-exist with `models:` blocks)
+
 ```yml
 version: 2
 
 sources:
   - name: stripe
+    database: raw
     tables:
       - name: payment
 ```
 
 ---
 
-# Feeling fresh?
+# Selecting from sources
 
-Optionally, specify a `loaded_at_field` and `freshness`:
-```yml
-version: 2
-
-sources:
-  - name: stripe
-    loaded_at_field: _batched_at
-    loader: airflow     # this is just for documentation
-
-    freshness:
-      warn_after: {count: 12, period: hour}
-      error_after: {count: 24, period: hour}
-
-    tables:
-      - name: payment
-```
-
----
-
-# SQL
-
-And then I create a staging model, `stg_stripe_payment.sql`:
+Use the {% raw %}`{{ source() }}`{% endraw %} function to select from a source in a model:
 
 {% raw %}
 ```sql
 with source as (
 
-    select * from {{source('stripe', 'payment')}}
+    select * from {{ source('stripe', 'payment') }}
 
 ),
 
@@ -104,14 +86,128 @@ renamed as (
 
 ---
 
-# Sources are green...
+# Sources are rendered as green nodes
+They help users understand where data comes from (lineage)
 
 <img src="/ui/img{{page.id}}/dag-source.png" class="img-center">
 
 ---
 
+# Testing sources
+
+.denser-text[
+
+You can add tests to sources! And you should!
+]
+
+.denser-text[
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    database: raw
+    tables:
+      - name: payment
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+```
+]
+
+.denser-text[
+
+Being thoughtful about where you test helps you understand whether tests are failing because:
+- The assumptions about your source data are no longer true
+- Or your SQL has changed
+
+This allows you to debug more quickly!
+
+]
+
+---
+# Feeling fresh?
+
+Optionally, specify a `loaded_at_field` and `freshness`:
+
+.denser-text[
+
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    database: raw
+    loaded_at_field: _batched_at
+    loader: airflow     # this is just for documentation
+
+    freshness:
+      warn_after: {count: 12, period: hour}
+      error_after: {count: 24, period: hour}
+
+    tables:
+      - name: payment
+
+```
+
+]
+
+Then run `dbt source snapshot-freshness`
+
+---
+## Snapshotting freshness
+
+.denser-text[
+```yml
+$  dbt source snapshot-freshness
+Running with dbt=0.16.0
+Found 5 models, 20 tests, 0 snapshots, 0 analyses, 130 macros, 0 operations, 0 seed files, 3 sources
+
+12:03:01 | Concurrency: 4 threads (target='learn')
+12:03:01 |
+12:03:01 | 1 of 1 START freshness of stripe.payment............................. [RUN]
+12:03:04 | 1 of 2 PASS freshness of stripe.payment.............................. [PASS in 2.59s]
+12:03:04 | Done.
+```
+]
+
+### How does dbt check freshness?
+
+--
+
+.denser-text[
+* dbt runs a SQL statement
+{% raw %}
+.left-column[
+```sql
+select
+    max({{ loaded_at_field }}) as max_loaded_at,
+    {{ current_timestamp() }} as snapshotted_at
+from {{ source }}
+```
+{% endraw %}
+]
+
+.right-column[
+```sql
+select
+    max(_batched_at) as max_loaded_at,
+    convert_timezone('UTC', current_timestamp()) as snapshotted_at
+from raw.stripe.payment
+```
+]
+* Then it uses python to determine whether the delta is within the right range
+]
+---
+
+
 .left-column-33[
-# And green is good!
+## In dbt Cloud:
+
+Adding this step to a job helps you understand if one of your data sources is out of date.
+
 ]
 
 .right-column-66[
@@ -129,13 +225,13 @@ A common approach: Test the schema integrity of raw tables _before_
 replacing production models.
 
 ```bash
-dbt test -m source:*            # ensure no duplicates or unexpected nulls
+dbt test -m source:*            # ensure no duplicates or unexpected nulls -- the job won't continue if these tests fail
 dbt run                         # only runs if test above succeeds
-dbt test --exclude source:*
+dbt test --exclude source:*     # or you can even skip these!
 dbt source snapshot-freshness   # powers freshness viz in dbt Cloud
 ```
 
-Of course, many deployments are _much_ more complex.
+Another option: `snapshot-freshness` first, so that your job won't run on stale data.
 
 ???
 More complex deployments:
@@ -146,6 +242,12 @@ leaves old objects in place (if a test fails)
 
 class: subtitle
 
-# Questions?
+# Knowledge check
+
+You should be able to:
+* Define sources
+* Select from a source in a model
+* Add tests to a source
+* Check the freshness of your source
 
 {% include options/next_presentation.html %}
