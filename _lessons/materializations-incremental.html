@@ -12,20 +12,16 @@ class: title, center, middle
 
 --
 
-.left-column[
 1. A special kind of **Jinja macro** that wraps your model SQL
     - Includes all the boilerplate DDL/DML: `create`, `alter`, `drop`, ...
-]
 
 --
 
-.right-column[
 2. An abstraction on top of the **database**
     - Does this model already exists in the database?
     - What if it exists as a table, but I want it to be a view?
     - What if Redshift uses `alter table` for views, but Snowflake uses 
     `alter view`? (It's true!)
-]
 
 ---
 
@@ -55,7 +51,7 @@ class: title, center, middle
 
 ---
 
-# Imagine: all the people
+# Imagine: some people
 
 | id | name    | favorite_color | is_creative |
 |----|---------|----------------|-------------|
@@ -64,14 +60,14 @@ class: title, center, middle
 
 ---
 
-# We have a model
+# Imagine: a model
 
 `models/creative_people.sql`
 
 ```sql
 select
 
-    id,
+    id as person_id,
     name,
     favorite_color
 
@@ -85,7 +81,7 @@ where is_creative = true
 
 In the database: `analytics.people`
 
-| id | name    | favorite_color |
+| person_id | name    | favorite_color |
 |----|---------|----------------|
 | 2  | Barbara | blue           |
 
@@ -97,7 +93,7 @@ select * from analytics.people
 ```
 We will see:
 
-| id | name    | favorite_color |
+| person_id | name    | favorite_color |
 |----|---------|----------------|
 | 2  | Barbara | blue           |
 
@@ -108,7 +104,8 @@ We will see:
 In the database: `analytics.people`
 
 ```sql
-select * from raw_people
+select id as person_id, name, favorite_color
+from raw_people
 where is_creative = true
 ```
 
@@ -120,7 +117,7 @@ select * from analytics.people
 ```
 We will see:
 
-| id | name    | favorite_color |
+| person_id | name    | favorite_color |
 |----|---------|----------------|
 | 2  | Barbara | blue           |
 
@@ -176,6 +173,7 @@ Database Error
 * We just need to know:
     * What we mean by "new"
     * What we mean by "add"
+* As long as we have good answers, we're in good shape
 ]
 
 .right-column[
@@ -200,8 +198,11 @@ And how do you know?
 --
 
 - The auto-increment ID from our source data system is greater than the previous
-greatest autoincremented ID
-- Good thing we can always trust our source data system... right?
+greatest auto-increment ID
+- We can put unquestioning trust in our source data systems,
+and have never been burned before
+--
+... loljk
 
 ---
 
@@ -211,8 +212,11 @@ greatest autoincremented ID
 | 2  | Barbara | blue           | true        | 2020-03-02   |
 | 3  | Casper  | red            | true        | .highlight[2020-03-03]   |
 
-- I know! A date when the record was initially created
+- A date when the record was initially created
 - _Much_ more reliable than an auto-increment ID
+- Records can only be created once and never updated later
+--
+... right?
 
 ---
 
@@ -244,7 +248,7 @@ class: title, center, middle
 # Why?
 
 * It costs time (and money) to transform data
-* Historical data doesn't (shouldn't) change)
+* Historical data doesn't (shouldn't) change
 * If you can get away _without_ re-transforming historical data, you save time and money
 
 ### Good candidates
@@ -272,7 +276,7 @@ class: title, center, middle
 
 ---
 
-# Our hands-on example: Snowplow events
+# Example: Snowplow events
 
 * Page views and pings on **learn.getdbt.com**! One was fired just now, as you're reading this. And... now :)
 * Create a source like so:
@@ -294,11 +298,66 @@ sources:
 
 ---
 
-### Some [light reading](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)
+### We've got a model: events &rarr; page views
+
+.denser-text[
+{% raw %}
+```sql
+with events as (
+
+    select * from {{source('snowplow','event')}}
+
+),
+
+page_views as (
+
+    select
+
+        domain_sessionid as session_id,
+        domain_userid as anonymous_user_id,
+        web_page_context.value:data.id::varchar as page_view_id,
+        page_url,
+
+        count(*) * 10 as approx_time_on_page,
+        min(derived_tstamp) as page_view_start,
+        max(collector_tstamp) as max_collector_tstamp
+        
+    from events,
+    lateral flatten (input => parse_json(contexts):data) web_page_context
+    group by 1,2,3,4
+
+)
+
+select * from page_views
+```
+{% endraw %}
+]
+
+---
+
+# Tactics
+
+- Why do we roll up events into page views and sessions?
+- How do we want to materialize this model?
+
+--
+    - Start with `view`
+    - When it takes too long to query, switch to `table`
+    - When it takes too long to build, switch to `incremental`
+
+--
+
+- How can we make this incremental?
+
+---
+
+class: middle
 
 <img src="/ui/img{{page.id}}/incr-discourse-stats.png" class="img-center">
 &nbsp;
 <img src="/ui/img{{page.id}}/incr-discourse-intro.png" class="img-center">
+
+.center[[Read it!](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)]
 
 ---
 
@@ -306,9 +365,9 @@ sources:
 
 _Keep it simple:_ This model rolls up **events** into **page views**. A page view 
 contains one or more events with the same `page_view_id`.
-* _Why do we roll up events into page views and sessions?_
 
-The full model SQL is on the next slide. There's a _lot_ happening here. Pay close attention to:
+
+The full model SQL is on the next slide. It's very similar to the model code we had previously, with a few additions. Pay close attention to:
 * `unique_key`
 * `is_incremental()`
 
@@ -385,7 +444,7 @@ If all of the conditions are met, `is_incremental()` returns `true`.
 
 # Try it out!
 
-* What SQL does dbt use when first building the `sessions` model?
+* What SQL does dbt use when first building the `page_views` model?
 * What SQL does dbt use for every run thereafter?
 * How long does each run take?
 * Convince yourself that it's working: {% raw %}
@@ -411,7 +470,7 @@ of the runtime
 
 ---
 
-# Under the hood: database specifics
+# Under the hood
 
 What's the DDL/DML that dbt is running?
 
@@ -470,7 +529,7 @@ and give it a run!
 
 ---
 
-# Late-arriving events
+# What if...
 
 <img src="/ui/img{{page.id}}/how-late-arriving.png" class="img-center">
 
@@ -486,11 +545,14 @@ In the simple approach, we would calculate two sets of page views:
 * Computed from first half of events in the session. `page_view_in_session_index` is 1, 2, 3...
 * Computed from second half of events in the session. `page_view_in_session_index` is 1, 2, 3...
 
-How can we correctly calculate page views for the _entire_ session?
+Why does this happen?
+
+- Running dbt in the middle of a session
+- Late-arriving events
 
 ---
 
-# How common are late arrivals?
+# Late-arriving events
 
 .left-column-66[
 <img src="/ui/img{{page.id}}/prop-late-arriving.png" class="img-center">
@@ -517,7 +579,7 @@ Y: % of all events
 
 ---
 
-# Imagine just one step further...
+# Take it one step further
 
 .dense-text[
 ```sql
@@ -590,7 +652,14 @@ the database) that is **necessarily a trade-off**.
 
 ---
 
-class: subtitle, middle, center
-## How are we feeling?
+class: subtitle
+# Knowledge check
+
+You should be able to:
+- Configure `incremental` models
+- Identify whether data sources are good or bad candidates
+- Understand the trade-offs of transforming data incrementally
+
+### Questions?
 
 {% include options/next_presentation.html %}
