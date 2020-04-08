@@ -110,8 +110,7 @@ sources:
               - not_null
               - unique
 ```
-]
-.dense-text[
+
 Being thoughtful about where you test helps you understand whether tests are failing because:
 - The assumptions about your source data are no longer true
 - Or your SQL has changed
@@ -187,7 +186,7 @@ select
 from raw.stripe.payment
 ```
 ]
-* Then it uses python to determine whether the delta between the two timestamps is within the right range
+* Then it uses python to determine whether the delta is within the right range
 ]
 ---
 
