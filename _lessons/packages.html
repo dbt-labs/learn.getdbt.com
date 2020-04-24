@@ -103,6 +103,25 @@ background-color: #005E7A
 
 
 ---
+## Use case: Using models from a package
+We're going to install GitLab's [snowflake-spend package](https://gitlab.com/gitlab-data/snowflake_spend)
+
+```yml
+# packages.yml
+packages:
+  - git: https://gitlab.com/gitlab-data/snowflake_spend.git
+    revision: v1.1.0
+
+
+```
+
+As per their instructions, we also need to add a [seed file](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/snowflake_contract_rates.csv)¹ to our project
+
+Then: `dbt deps`, `dbt seed`, `dbt run`.
+
+.caption[¹ More on these later]
+
+---
 ## Use cases for packages:
 ### Macros:
 * Versatile macros, especially for “How to Write this in SQL” problems ([dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/))
