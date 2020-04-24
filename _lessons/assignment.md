@@ -36,7 +36,7 @@ If you get stuck, we do have worked solutions. Use these as a last resort — wr
 
 Before going further, make sure:
 1. You have completed the [pre-work](https://docs.getdbt.com/learn/setting-up/)
-2. You have added a `fct_orders` model to your project (from [this morning's session](dbt-fundamentals#working-session))
+2. You have added an `orders` or `fct_orders` model to your project (from [this morning's session](dbt-fundamentals#working-session))
 3. Your project is in a repository owned by your personal GitHub account, and is set to public
 4. You can run `dbt run` and `dbt test` without any errors
 
@@ -66,6 +66,8 @@ For each exercise, we recommend you follow a git flow.
 
 ### 1. Refactor your project
 
+_This exercise is optional — feel free to come back to it as a bonus exercise._
+
 Based on our discussion in [Designing a data modeling project](modeling-project-design), refactor your project to be consistent with how we (Fishtown) structure our dbt projects. Consider
 * model naming
 * organization within directories
@@ -75,7 +77,7 @@ Based on our discussion in [Designing a data modeling project](modeling-project-
 
 ### 2. Add more tests to your project
 
-* Ensure that your `orders` model has at least one test on it (and it passes)
+* Ensure that your `fct_orders` / `orders` model has at least one test on it (and it passes)
 
 #### Related resources:
 * [docs.getdbt.com](https://docs.getdbt.com/docs/testing#section-schema-tests)
