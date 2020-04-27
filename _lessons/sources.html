@@ -14,18 +14,26 @@ class: title, center, middle
 # If you've ever had this happen...
 
 - I'm switching my email marketing platform. I want to know which final models depend on that source data.
---
 
-- I'm switching the tool that extracts and loads _from_ my email
-marketing platform. The table names used to have underscores, now they don't!
 --
 
 - I'm switching from Redshift to Snowflake. All of my source data will be
 in a different database and schema.
+
+--
+
+- Someone asked me "where does this data _really_ come from?"
+
 --
 
 - Nothing in this world is perfect. My data loading tools experience occasional
 hiccups that result in delayed or duplicated data.
+
+--
+
+- Something that was once true about my source data is no longer true (e.g. a
+new payment method was introduced)
+
 --
 
 - (!!) I want to stage & query an external table that points to files in S3.
@@ -58,10 +66,12 @@ Sources are defined in `.yml` files in your `models/` directory.
 version: 2
 
 sources:
-  - name: stripe
+  - name: jaffle_shop
     database: raw
     tables:
-      - name: payment
+      - name: customers
+      - name: orders
+
 ```
 
 ---
@@ -74,7 +84,7 @@ Use the {% raw %}`{{ source() }}`{% endraw %} function to select from a source i
 ```sql
 with source as (
 
-    select * from {{ source('stripe', 'payment') }}
+    select * from {{ source('jaffle_shop', 'customers') }}
 
 ),
 
@@ -105,10 +115,10 @@ You can add tests to sources! And you should!
 version: 2
 
 sources:
-  - name: stripe
+  - name: jaffle_shop
     database: raw
     tables:
-      - name: payment
+      - name: customers
         columns:
           - name: id
             tests:
@@ -138,17 +148,18 @@ Optionally, specify a `loaded_at_field` and `freshness`:
 version: 2
 
 sources:
-  - name: stripe
+  - name: jaffle_shop
     database: raw
-    loaded_at_field: _batched_at
-    loader: airflow     # this is just for documentation
-
-    freshness:
-      warn_after: {count: 12, period: hour}
-      error_after: {count: 24, period: hour}
 
     tables:
-      - name: payment
+      - name: customers
+
+      - name: orders
+        loaded_at_field: _etl_loaded_at
+
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
 
 ```
 
@@ -161,15 +172,15 @@ Then run `dbt source snapshot-freshness`
 
 .denser-text[
 ```yml
-$  dbt source snapshot-freshness
+$ dbt source snapshot-freshness
 Running with dbt=0.16.0
 Found 5 models, 20 tests, 0 snapshots, 0 analyses, 130 macros, 0 operations, 0 seed files, 3 sources
 
-12:03:01 | Concurrency: 4 threads (target='learn')
-12:03:01 |
-12:03:01 | 1 of 1 START freshness of stripe.payment............................. [RUN]
-12:03:04 | 1 of 2 PASS freshness of stripe.payment.............................. [PASS in 2.59s]
-12:03:04 | Done.
+17:29:17 | Concurrency: 4 threads (target='learn')
+17:29:17 |
+17:29:17 | 1 of 1 START freshness of jaffle_shop.orders......................... [RUN]
+17:29:20 | 1 of 1 WARN freshness of jaffle_shop.orders.......................... [WARN in 2.91s]
+17:29:21 | Done.
 ```
 ]
 
