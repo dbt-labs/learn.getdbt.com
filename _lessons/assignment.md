@@ -14,8 +14,6 @@ Then, try using the resources available to you during dbt Learn, including:
 * Ask someone in your breakout group (including your tutor)
 * Ask in our shared Slack channel
 
-When you're ready to open a pull request, take a look at another quick [presentation](https://learn.getdbt.com/lessons/pull-requests) and Fishtown's [git guide](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md).
-
 If you get _really_ stuck, we do have worked solutions. Use these as a last resort — writing code that doesn't work is part of the learning experience!
 * Each exercise maps to a separate pull request [here](https://github.com/fishtown-analytics/dbt-learn-demo/pulls?q=is%3Apr+is%3Amerged+). You can use to see how we completed this exercise. Remember that the code is only half of the exercise, you should also be comfortable running the related dbt commands.
 * If you get yourself into an absolute tangle, consider forking the above [demo repo](https://github.com/fishtown-analytics/dbt-learn-demo/) to get back on track.
