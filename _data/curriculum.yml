@@ -4,7 +4,6 @@
     - name: Morning
       lessons:
         - slug: who-is-analytics-engineer
-        - slug: analytics-engineering-viewpoint
         - slug: dbt-fundamentals
     - name: Afternoon
       lessons:
@@ -13,8 +12,6 @@
         - slug: sources
         - slug: docs
         - slug: assignment
-        - slug: debugging-dbt
-        - slug: pull-requests
 
 - day: 2
   title: "Day Two: Applications"

@@ -79,7 +79,7 @@ where is_creative = true
 
 # Table
 
-In the database: `analytics.people`
+In the database: `analytics.creative_people`
 
 | person_id | name    | favorite_color |
 |----|---------|----------------|
@@ -89,7 +89,7 @@ In the database: `analytics.people`
 
 If we run:
 ```sql
-select * from analytics.people
+select * from analytics.creative_people
 ```
 We will see:
 
@@ -101,7 +101,7 @@ We will see:
 
 # View
 
-In the database: `analytics.people`
+In the database: `analytics.creative_people`
 
 ```sql
 select id as person_id, name, favorite_color
@@ -113,7 +113,7 @@ where is_creative = true
 
 If we run:
 ```sql
-select * from analytics.people
+select * from analytics.creative_people
 ```
 We will see:
 
@@ -133,7 +133,7 @@ We will see:
 
 If we run:
 ```sql
-select * from analytics.people
+select * from analytics.creative_people
 ```
 We will see:
 ```sql
@@ -444,14 +444,14 @@ If all of the conditions are met, `is_incremental()` returns `true`.
 
 # Try it out!
 
-* What SQL does dbt use when first building the `page_views` model?
+* What SQL does dbt use when first building the `fct_page_views` model?
 * What SQL does dbt use for every run thereafter?
 * How long does each run take?
 * Convince yourself that it's working: {% raw %}
 ```sql
 select * from {{source('snowplow','event')}}
 where collector_tstamp >= (
-        select max(max_collector_tstamp) from {{ ref('page_views') }}
+        select max(max_collector_tstamp) from {{ ref('fct_page_views') }}
 )
 ```
 {% endraw %}

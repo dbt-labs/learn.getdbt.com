@@ -7,14 +7,14 @@ title: Group assignment
 
 To get the most value out of this assignment, we recommend that you try to work through each problem as follows:
 * First, attempt to complete the exercise by using [docs.getdbt.com](https://docs.getdbt.com/). Learning how to read docs is a skill that will serve you well as you continue to use dbt!
-* If you hit errors, check out our [debugging](debugging) presentation for tips.
-* Then, check the related [lesson slides](https://learn.getdbt.com/lessons) for relevant code snippets.
+* Check the related [lesson slides](https://learn.getdbt.com/lessons) for relevant code snippets.
+* If you hit errors, check out a quick [debugging](debugging) presentation for tips.
 
 Then, try using the resources available to you during dbt Learn, including:
 * Ask someone in your breakout group (including your tutor)
 * Ask in our shared Slack channel
 
-If you get stuck, we do have worked solutions. Use these as a last resort — writing code that doesn't work is part of the learning experience!
+If you get _really_ stuck, we do have worked solutions. Use these as a last resort — writing code that doesn't work is part of the learning experience!
 * Each exercise maps to a separate pull request [here](https://github.com/fishtown-analytics/dbt-learn-demo/pulls?q=is%3Apr+is%3Amerged+). You can use to see how we completed this exercise. Remember that the code is only half of the exercise, you should also be comfortable running the related dbt commands.
 * If you get yourself into an absolute tangle, consider forking the above [demo repo](https://github.com/fishtown-analytics/dbt-learn-demo/) to get back on track.
 
