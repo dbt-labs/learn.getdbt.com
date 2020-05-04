@@ -68,7 +68,7 @@ For each exercise, we recommend you follow a git flow.
 
 _This exercise is optional — feel free to come back to it as a bonus exercise._
 
-Based on our discussion in [Designing a data dbt project](dbt-project-design), refactor your project to be consistent with how we (Fishtown) structure our dbt projects. Consider
+Based on our discussion in [Designing a dbt project](dbt-project-design), refactor your project to be consistent with how we (Fishtown) structure our dbt projects. Consider
 * model naming
 * organization within directories
 
