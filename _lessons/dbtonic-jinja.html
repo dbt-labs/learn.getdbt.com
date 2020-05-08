@@ -177,7 +177,7 @@ good.ok.
 * Macros are written in `.sql` files in the `macros` directory
 
 ```sql
--- macros/cents_to_usd.sql
+-- macros/cents_to_dollars.sql
 
 {% macro cents_to_usd(column_name, precision=2) %}
     ({{ column_name }} / 100)::numeric(16, {{ precision }})
