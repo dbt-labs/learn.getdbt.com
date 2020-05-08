@@ -179,7 +179,7 @@ good.ok.
 ```sql
 -- macros/cents_to_dollars.sql
 
-{% macro cents_to_usd(column_name, precision=2) %}
+{% macro cents_to_dollars(column_name, precision=2) %}
     ({{ column_name }} / 100)::numeric(16, {{ precision }})
 {% endmacro %}
 
