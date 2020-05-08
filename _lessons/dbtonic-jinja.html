@@ -191,7 +191,7 @@ good.ok.
 -- models/staging/stg_stripe__payments.sql
 
 select
-  {{ epoch_to_timestamp('amount') }} as amount_usd
+  {{ cents_to_dollars('amount') }} as amount_usd,
   ...
 ```
 ---
