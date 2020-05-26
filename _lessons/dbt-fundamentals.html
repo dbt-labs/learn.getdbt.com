@@ -75,6 +75,13 @@ class: title, center, middle
 
 ---
 
+# The bigger picture
+
+1. Review of pre-work
+2. Preview of core concepts
+
+---
+
 # To use dbt you need:
 
 ???
@@ -197,12 +204,6 @@ Good knowledge check questions:
 * How did dbt know what schema to use? A: the target schema
 * What happens if you rerun dbt? A: no downtime (this looks different on each warehouse)
 ---
-.center[
-<img src="/ui/img{{page.id}}/dbt-run.png" style="width: 100%;">
-]
-
-
----
 
 # To use dbt you need:
 1. A data warehouse
@@ -217,11 +218,23 @@ Good knowledge check questions:
 # What happens when you `dbt run`?
 1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
 2. dbt parses your **dbt project**
-3. dbt wraps your **models** in the appropriate DML (e.g. `create table as`)
-4. dbt executes this SQL to build your models in your **target schema**
+3. dbt wraps your **models** in the appropriate DDL/DML (e.g. `create table as`)
+4. dbt executes this code to build your models in your **target schema**
 
 ???
 - Behind the scenes, tons more happening: checking if the schema exists etc.
+---
+
+.center[
+<img src="/ui/img{{page.id}}/dbt-run.png" style="width: 100%;">
+]
+
+---
+
+class: subtitle, center, middle
+# Good so far?
+## Let's take it a step further...
+
 ---
 
 ### You might be wondering:
@@ -232,7 +245,8 @@ Good knowledge check questions:
 
 --
 
-* Check out the `target/` directory and the `logs/` file
+* **dbt CLI:** Check out the `target/` directory and the `logs/` file
+* **dbt Cloud:** Select the "Details" view within a run
 
 --
 
