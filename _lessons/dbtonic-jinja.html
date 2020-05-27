@@ -30,23 +30,75 @@ Use it always! This is how dbt:
 
 ---
 
+# Macros
+* Macros are written in `.sql` files in the `macros` directory
+
+```sql
+-- macros/cents_to_dollars.sql
+
+{% macro cents_to_dollars(column_name, precision=2) %}
+    ({{ column_name }} / 100)::numeric(16, {{ precision }})
+{% endmacro %}
+
+```
+
+* Then you can call them in models. Take care with quoting!
+
+```sql
+-- models/staging/stg_stripe__payments.sql
+
+select
+  {{ cents_to_dollars('amount') }} as amount_usd,
+  ...
+```
+---
+# Should I use a macro for that?
+Macros introduce tradeoffs:
+* Pros of macros:
+    * Reduce repeated code
+    * Allow you to do things you might not otherwise be able to do in SQL
+* Cons of macros:
+    * Make it harder for someone else to read your code
+
+---
+# Which things are macros, really?
+
+A whole bunch:
+* `ref()`
+* `source()`
+* `config()`
+* schema tests
+* materializations
+* custom schema/database logic
+* ...
+
+More on that later!
+
+---
+
+class: subtitle, center, middle
+# Even more tips
+## _for the discerning Jinja writer_
+
+---
+
 ## project-level vars
+
+Encode it once, use it everywhere
 
 .dense-text[
 
 ```yml
 # dbt_project.yml
-models:
-  my_dbt_project:
-  vars:
-    the_distant_future: '2099-12-31'    # default value
+vars:
+  the_distant_future: '2099-12-31'    # default value
 ```
 
 ```sql
 select
   id,
   valid_from,
-  coalesce(valid_to, '{{ the_distant_future }}'::timestamp) as valid_to
+  coalesce(valid_to, '{{ var('the_distant_future') }}'::timestamp) as valid_to
 from {{ ref('stg_subscriptions') }}
 
 ```
@@ -73,7 +125,7 @@ You can override global vars with a CLI flag:
 select
   id,
   valid_from,
-  coalesce(valid_to, '{{ the_distant_future}}'::timestamp) as valid_to
+  coalesce(valid_to, '{{ var('the_distant_future') }}'::timestamp) as valid_to
 from {{ ref('stg_subscriptions') }}
 ```
 
@@ -170,38 +222,6 @@ yeah
 good.ok.
 ```
 
-
----
-
-# Macros
-* Macros are written in `.sql` files in the `macros` directory
-
-```sql
--- macros/cents_to_dollars.sql
-
-{% macro cents_to_dollars(column_name, precision=2) %}
-    ({{ column_name }} / 100)::numeric(16, {{ precision }})
-{% endmacro %}
-
-```
-
-* Then you can call them in models. Take care with quoting!
-
-```sql
--- models/staging/stg_stripe__payments.sql
-
-select
-  {{ cents_to_dollars('amount') }} as amount_usd,
-  ...
-```
----
-# Should I use a macro for that?
-Macros introduce tradeoffs:
-* Pros of macros:
-    * Reduce repeated code
-    * Allow you to do things you might not otherwise be able to do in SQL
-* Cons of macros:
-    * Make it harder for someone else to read your code
 
 ---
 
