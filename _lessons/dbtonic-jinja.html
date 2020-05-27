@@ -61,11 +61,12 @@ Macros introduce tradeoffs:
     * Make it harder for someone else to read your code
 
 ---
-# What's a macro?
+# Which things are macros, really?
 
 A whole bunch:
 * `ref()`
 * `source()`
+* `config()`
 * schema tests
 * materializations
 * custom schema/database logic
@@ -124,7 +125,7 @@ You can override global vars with a CLI flag:
 select
   id,
   valid_from,
-  coalesce(valid_to, '{{ the_distant_future}}'::timestamp) as valid_to
+  coalesce(valid_to, '{{ var('the_distant_future') }}'::timestamp) as valid_to
 from {{ ref('stg_subscriptions') }}
 ```
 
