@@ -20,7 +20,7 @@ class: title, center, middle
 2. An abstraction on top of the **database**
     - Does this model already exists in the database?
     - What if it exists as a table, but I want it to be a view?
-    - What if Redshift uses `alter table` for views, but Snowflake uses 
+    - What if Redshift uses `alter table` for views, but Snowflake uses
     `alter view`? (It's true!)
 
 ---
@@ -265,7 +265,7 @@ class: title, center, middle
     * You have small-ish data
     * Your data changes constantly: new columns, renamed columns, etc.
     * Your data is updated in unpredictable ways
-    * Your transformation performs comparisons or calculations that require 
+    * Your transformation performs comparisons or calculations that require
     _other_ rows (table + view)
 
 ---
@@ -288,10 +288,10 @@ sources:
   - name: snowplow
     database: raw
     loaded_at_field: collector_tstamp
-    
+
     freshness:
       error_after: {count: 1, period: hour}
-  
+
     tables:
       - name: event
 ```
@@ -321,7 +321,7 @@ page_views as (
         count(*) * 10 as approx_time_on_page,
         min(derived_tstamp) as page_view_start,
         max(collector_tstamp) as max_collector_tstamp
-        
+
     from events,
     lateral flatten (input => parse_json(contexts):data) web_page_context
     group by 1,2,3,4
@@ -363,7 +363,7 @@ class: middle
 
 # "The big easy"
 
-_Keep it simple:_ This model rolls up **events** into **page views**. A page view 
+_Keep it simple:_ This model rolls up **events** into **page views**. A page view
 contains one or more events with the same `page_view_id`.
 
 
@@ -386,7 +386,7 @@ _What do these mean?_ ([docs](https://docs.getdbt.com/docs/building-a-dbt-projec
 with events as (
 
     select * from {{source('snowplow','event')}}
-    
+
     {% if is_incremental() %}
     where collector_tstamp >= (select max(max_collector_tstamp) from {{ this }})
     {% endif %}
@@ -405,7 +405,7 @@ page_views as (
         count(*) * 10 as approx_time_on_page,
         min(derived_tstamp) as page_view_start,
         max(collector_tstamp) as max_collector_tstamp
-        
+
     from events,
     lateral flatten (input => parse_json(contexts):data) web_page_context
     group by 1,2,3,4
@@ -414,7 +414,7 @@ page_views as (
 
 select * from page_views
 ```
-]   
+]
 {% endraw %}
 
 ---
@@ -511,12 +511,12 @@ with
 indexed as (
 
     select *,
-    
+
         row_number() over (
             partition by session_id
             order by page_view_start
         ) as page_view_in_session_index
-    
+
     from page_views
 
 )
@@ -556,7 +556,7 @@ Why does this happen?
 
 .left-column-66[
 <img src="/ui/img{{page.id}}/prop-late-arriving.png" class="img-center">
-X: days between firing + collection    
+X: days between firing + collection
 Y: % of all events
 ]
 
@@ -586,17 +586,17 @@ Y: % of all events
 indexed as (
 
     select *,
-    
+
         row_number() over (
             partition by session_id
             order by page_view_start
         ) as page_view_in_session_index,
-        
+
         row_number() over (
             partition by anonymous_user_id
-            order by page_view_stat
+            order by page_view_start
         ) as page_view_for_user_index
-    
+
     from page_views
 
 )
@@ -622,7 +622,7 @@ select * from indexed
 
 - Whenever a user has a new session, pull the user's _most recent session only_,
 and perform relative calculations
-- This takes some hard thinking! E.g. [Segment package](https://github.com/fishtown-analytics/segment/blob/master/macros/cross-adapter-modeling/sessionization/segment_web_sessions.sql#L75)
+- This takes some hard thinking! E.g. [Segment package](https://github.com/fishtown-analytics/segment/blob/master/models/sessionization/segment_web_sessions.sql#L67)
 
 ---
 
