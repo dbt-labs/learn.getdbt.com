@@ -420,7 +420,7 @@ We just got some payment data into our warehouse:
 ```sql
 select * from raw.stripe.payment
 >>>
-| ID | orderID | paymentMethod | AMOUNT | CREATED    |
+| ID | ORDERID | PAYMENTMETHOD | AMOUNT | CREATED    |
 |----|---------|---------------|--------|------------|
 | 1  | 1       | credit_card   | 1000   | 2018-01-01 |
 | 2  | 2       | credit_card   | 2000   | 2018-01-02 |
@@ -446,13 +446,17 @@ We just got some payment data into our warehouse:
 ```sql
 select * from raw.stripe.payment
 ```
-
+.dense-text[
 1. Build an `orders` model with the following fields:
     * `order_id`
     * `customer_id`
     * `amount` (hint: this has to come from payments)
 2. Add a new field to the `customers` model:
     * `customers.lifetime_value`: the total amount a customer has spent at `jaffle_shop`
+]
+--
+
+By the way, the Excel spreadsheet I've been using to raise venture capital says my all-time revenue is $1 672.
 
 {% include options/next_presentation.html %}
 
