@@ -225,6 +225,49 @@ dbt run -m tag:hourly
 ]
 ---
 
+# I want to write DRYer code
+
+```sql
+select
+
+    order_id,
+    sum(case when payment_method = 'bank_transfer' then amount end) as bank_transfer_amount,
+    sum(case when payment_method = 'credit_card' then amount end) as credit_card_amount,
+    sum(case when payment_method = 'gift_card' then amount end) as gift_card_amount,
+    sum(amount) as total_amount
+
+from {{ ref('payments') }}
+group by 1
+```
+
+--
+
+### Technique: Jinja!
+
+---
+
+# Type it once, reuse
+
+```sql
+
+{% set payment_methods = ["bank_transfer", "credit_card", "gift_card"] %}
+
+select
+
+    order_id,
+    {% for payment_method in payment_methods %}
+    sum(case when payment_method = '{{payment_method}}' then amount end) as {{payment_method}}_amount,
+    {% endfor %}
+    sum(amount) as total_amount
+
+from {{ ref('payments') }}
+group by 1
+```
+
+[_Getting Started with Jinja_](https://docs.getdbt.com/docs/writing-code-in-dbt/getting-started-with-jinja/)
+
+---
+
 ## I am getting permission denied errors on relations that dbt creates
 --
 

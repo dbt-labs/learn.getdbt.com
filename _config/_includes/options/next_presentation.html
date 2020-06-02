@@ -2,7 +2,7 @@
 {% assign this_lesson_slug = page.id | remove: "/lessons/" %}
 {% assign next_slug = '' %}
 
-{% for day in site.data.curriculum %}
+{% for day in site.data.finternal %}
     {% assign is_last_day = forloop.last %}
     {% assign lessons = '' | split: ',' %}
     {% for session in day.sessions %}

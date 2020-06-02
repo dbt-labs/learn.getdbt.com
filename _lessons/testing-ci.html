@@ -208,11 +208,11 @@ Wait, how do I automate running dbt?
 ## a.k.a. Running dbt in production
 You need to run dbt on a schedule to keep your data up to date.
 
-Your automated runs should:
+Does your automated run:
 * Use the latest version of my project? → **continuous deployment**
 * Have monitoring and alerting if something goes wrong?
 * Have a way to debug failures?
-* Build & test your code every time you want to merge changes (or "deploy to production") →  **continuous integration**
+* Build & test your code every time you want to merge changes ("deploy to production")? →  **continuous integration**
 
 We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
 ---
