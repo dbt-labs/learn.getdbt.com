@@ -1,0 +1,25 @@
+- title: "Morning: Foundations"
+  sessions:
+    - name: Concepts
+      lessons:
+        - slug: who-is-analytics-engineer
+        - slug: dbt-fundamentals
+    - name: Features
+      lessons:
+        - slug: testing-ci
+        - slug: sources
+        - slug: docs
+        - slug: assignment  
+- title: "Afternoon: Applications"
+  sessions:
+    - name: Extensions
+      lessons:
+        - slug: packages
+        - slug: materializations-incremental
+    - name: Ecosystem
+      lessons:
+        - slug: data-warehouses
+        - slug: deployment
+    - name: Last but not least
+      lessons:
+        - slug: techniques-trade
