@@ -420,13 +420,13 @@ We just got some payment data into our warehouse:
 ```sql
 select * from raw.stripe.payment
 >>>
-| ID | ORDERID | PAYMENTMETHOD | AMOUNT | CREATED    |
-|----|---------|---------------|--------|------------|
-| 1  | 1       | credit_card   | 1000   | 2018-01-01 |
-| 2  | 2       | credit_card   | 2000   | 2018-01-02 |
-| 3  | 3       | coupon        | 100    | 2018-01-04 |
-| 4  | 4       | coupon        | 2500   | 2018-01-05 |
-| 5  | 5       | bank_transfer | 1700   | 2018-01-05 |
+| ID | ORDERID | PAYMENTMETHOD | STATUS  | AMOUNT | CREATED    |
+|----|---------|---------------|---------|--------|------------|
+| 1  | 1       | credit_card   | success | 1000   | 2018-01-01 |
+| 2  | 2       | credit_card   | success | 2000   | 2018-01-02 |
+| 3  | 3       | coupon        | success | 100    | 2018-01-04 |
+| 4  | 4       | coupon        | success | 2500   | 2018-01-05 |
+| 5  | 5       | bank_transfer | fail    | 1700   | 2018-01-05 |
 
 ```
 ???
