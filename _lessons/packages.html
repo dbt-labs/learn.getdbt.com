@@ -83,7 +83,7 @@ $ dbt deps
 version: 2
 
 models:
-  - name: fct_orders
+  - name: orders
     tests:
       - dbt_utils.expression_is_true:
           expression: "amount > 0"
