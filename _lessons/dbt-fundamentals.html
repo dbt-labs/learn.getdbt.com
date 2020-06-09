@@ -362,7 +362,7 @@ Behind the scenes, tests are just `select` statements!
 # What happens when you `dbt test`?
 1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
 2. dbt parses your **dbt project**
-3. dbt iterates through the schema files (`models/**.yml`) to construct `select` queries.
+3. dbt iterates through the resource files (`models/**.yml`) to construct `select` queries.
 4. dbt executes the SQL for each test: if the number `0` is returned your test passes
 
 

@@ -110,7 +110,7 @@ Connection:
 ```bash
 Encountered an error:
 Compilation Error
-  Error reading acme: schema.yml - Runtime Error
+  Error reading acme: resources.yml - Runtime Error
     Syntax error near line 27
     ------------------------------
     24 |             - date_month
@@ -141,7 +141,7 @@ dbt compile
 _Hopefully_, the error includes the path to the offending file :)
 
 ```bash
-Error reading acme: schema.yml - Runtime Error
+Error reading acme: resources.yml - Runtime Error
     Syntax error near line 27
 ```
 
@@ -249,7 +249,7 @@ Found 2 models, 4 tests, 0 snapshots, 0 analyses, 147 macros, 0 operations, 0 se
 
 Completed with 1 error and 0 warnings:
 
-Failure in test not_null_my_first_dbt_model_id (models/example/schema.yml)
+Failure in test not_null_my_first_dbt_model_id (models/example/resources.yml)
   Got 1 result, expected 0.
 
   compiled SQL at target/compiled/my_new_project/schema_test/not_null_my_first_dbt_model_id.sql
