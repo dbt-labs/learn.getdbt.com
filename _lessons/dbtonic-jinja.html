@@ -45,7 +45,7 @@ Use it always! This is how dbt:
 * Then you can call them in models. Take care with quoting!
 
 ```sql
--- models/staging/stg_stripe__payments.sql
+-- models/staging/stg_payments.sql
 
 select
   {{ cents_to_dollars('amount') }} as amount_usd,

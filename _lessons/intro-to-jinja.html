@@ -215,7 +215,7 @@ We use Jinja to generate SQL!
 .denser-text[
 I have a payments table like this:
 
-`select * from {{ ref('stg_stripe__payments') }}`
+`select * from {{ ref('stg_payments') }}`
 
 
 | payment_id | order_id | payment_method | amount | created_at |
@@ -266,7 +266,7 @@ class: subtitle
 
 ```sql
 with payments as (
-    select * from {{ ref('stg_stripe__payments') }}
+    select * from {{ ref('stg_payments') }}
 ),
 
 aggregated as (
@@ -289,7 +289,7 @@ select * from aggregated
 
 ```sql
 with payments as (
-    select * from {{ ref('stg_stripe__payments') }}
+    select * from {{ ref('stg_payments') }}
 ),
 
 aggregated as (
