@@ -16,7 +16,7 @@ Then, try using the resources available to you during dbt Learn, including:
 
 If you get _really_ stuck, we do have worked solutions. Use these as a last resort — writing code that doesn't work is part of the learning experience!
 * Each exercise maps to a separate pull request [here](https://github.com/fishtown-analytics/dbt-learn-demo/pulls?q=is%3Apr+is%3Amerged+). You can use to see how we completed this exercise. Remember that the code is only half of the exercise, you should also be comfortable running the related dbt commands.
-* If you get yourself into an absolute tangle, consider forking the above [demo repo](https://github.com/fishtown-analytics/dbt-learn-demo/) to get back on track.
+* If you get yourself into an absolute tangle, consider forking the above [demo repo](https://github.com/fishtown-analytics/dbt-learn-demo-v2/) to get back on track.
 
 ---
 
@@ -36,7 +36,7 @@ If you get _really_ stuck, we do have worked solutions. Use these as a last reso
 
 Before going further, make sure:
 1. You have completed the [pre-work](https://docs.getdbt.com/learn/setting-up/)
-2. You have added an `orders` or `fct_orders` model to your project (from [this morning's session](dbt-fundamentals#working-session))
+2. You have added an `orders` model to your project (from [this morning's session](dbt-fundamentals#working-session))
 3. Your project is in a repository owned by your personal GitHub account, and is set to public
 4. You can run `dbt run` and `dbt test` without any errors
 
@@ -64,25 +64,14 @@ For each exercise, we recommend you follow a git flow.
 
 ---
 
-### 1. Refactor your project
+### 1. Add more tests to your project
 
-_This exercise is optional — feel free to come back to it as a bonus exercise._
-
-Based on our discussion in [Designing a dbt project](dbt-project-design), refactor your project to be consistent with how we (Fishtown) structure our dbt projects. Consider
-* model naming
-* organization within directories
-
-#### Related resources:
-* [Discourse article on structuring projects](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)
-
-### 2. Add more tests to your project
-
-* Ensure that your `fct_orders` / `orders` model has at least one test on it (and it passes)
+* Ensure that your `orders` model has at least one test on it (and it passes)
 
 #### Related resources:
 * [docs.getdbt.com](https://docs.getdbt.com/docs/testing#section-schema-tests)
 
-### 3. Add sources to your project
+### 2. Add sources to your project
 * Add `sources` for our two data sources: `jaffle_shop` and `stripe`
 * Update your `raw.<schema>.<table>` references in your models with {% raw %}`{{ source() }}`{% endraw %} functions
 * Add a freshness block to at least one source (find a table that has a column that indicates when the row was loaded), and snapshot the freshness
@@ -91,7 +80,7 @@ Based on our discussion in [Designing a dbt project](dbt-project-design), refact
 #### Related resources:
 * [docs.getdbt.com](https://docs.getdbt.com/docs/using-sources)
 
-### 4. Add documentation to your project
+### 3. Add documentation to your project
 * Add a description for one (or all!) of the following:
     * a model
     * a source
@@ -106,6 +95,15 @@ Based on our discussion in [Designing a dbt project](dbt-project-design), refact
 
 # Additional exercises
 If you get through the above exercises, feel free to keep going with these 👇
+
+### Refactor your project
+Based on our discussion in [Designing a dbt project](dbt-project-design), refactor your project to be consistent with how we (Fishtown) structure our dbt projects. Consider
+* model naming
+* organization within directories
+
+#### Related resources:
+* [Discourse article on structuring projects](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)
+
 
 ### Set up your dbt project to run on a schedule and in CI
 * Create a deployment environment (related [tutorial](https://docs.getdbt.com/tutorial/deploy-your-project/))
