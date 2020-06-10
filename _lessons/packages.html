@@ -79,7 +79,7 @@ $ dbt deps
 3. Access macros from the package
 
 ```yml
-# models/marts/core/schema.yml
+# models/marts/core/resources.yml
 version: 2
 
 models:
@@ -172,7 +172,7 @@ So:
 
 dbt will use _your_ version! This means you can:
 * Change the way tests are implemented ([docs](https://docs.getdbt.com/docs/writing-code-in-dbt/extending-dbts-programming-environment/custom-schema-tests/))
-* Generate a custom overview for your documentation site ([docs](https://docs.getdbt.com/docs/building-a-dbt-project/testing-and-documentation/documentation-website/#setting-a-custom-overview))
+* Generate a custom overview for your documentation site ([docs](https://docs.getdbt.com/docs/building-a-dbt-project/documentation#setting-a-custom-overview))
 * ⚠️ Change how materializations work ([Example](https://www.loom.com/share/1507ac7baee043d784a65c770d387de1)).
 
 .caption[
