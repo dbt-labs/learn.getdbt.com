@@ -607,76 +607,37 @@ group by 1
 .caption[
 [Learn more](https://docs.getdbt.com/docs/analyses)
 ]
----
-# (SQL) Techniques of the trade
-
-???
-
 
 ---
-# I need a "single customer view"
---
 
-But my customers have different IDs in:
-* my app
-* Zendesk
-* Shopify
-* Segment
+# I need to do an ETL migration
 
-???
-How do you answer how many people did X and then went on to do Y?
+(and check I didn't break anything)
 
 --
-
-## Technique: user stitching
-
----
-# Anatomy of user stitching
-Create master "customers" table with one record per (best-guess) of a human being, with a unique customer identifier
-
-
-???
-* Pro tip: on Snowflake and BQ, you can list the mapped IDs in an array!
-* Start simple, make it more complex as you go
-
-
----
-# What we have:
-.denser-text[
-`snowplow.page_views`:
-
-| pageview_id | date         | user_id | anonymous_id |
-|-------------|--------------|---------|--------------|
-| 13jkbse2    | 01/10/2019   |         | 123456       |
-| 372jdka     | 01/29/2019   |         | 123456       |
-| 9nd2353     | 01/31/2019   |         | 123456       |
-| 84jkr939    | 02/03/2019   |         | 123456       |
-| jsd8j2kw    | 03/19/2019   | 1       | 123456       |
-
-`jaffle_shop.customers`:
-
-| customer_id  | email                       |
-|--------------|-----------------------------|
-| 1            | alice@fishtownanalytics.com |
-
-`stripe.customers`:
-
-| customer_id | email                         |
-|-------------|-------------------------------|
-| 73          | alice@fishtownanalytics.com   |
-]
+## Technique: [audit-helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/)
 
 ---
 
-# What we want:
-| customer_id | snowplow_anonymous_id | stripe_customer_id | email                       |
-|-------------|-----------------------|--------------------|-----------------------------|
-| 1           | 123456                | 73                 | alice@fishtownanalytics.com |
+# I need to generate a ton of sources
 
-???
-What happens when you have duplicate users? You'll need to dedupe them! Maybe you'll have mapping pairs:
-* "mapping pairs" help you say "If a user has _this_ ID in Zendesk, then they have _this_ ID in our customers table (can be many-to-one)
-* Which leads us to...
+--
+## Technique: [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/)
+
+---
+
+# I need to model subscription data
+
+--
+
+# I need to model customer attribution
+
+--
+## Technique: use a playbook!
+
+* [Monthly recurring revenue](https://github.com/fishtown-analytics/mrr-playbook)
+* [Marketing attribution](https://github.com/fishtown-analytics/attribution-playbook)
+
 
 ---
 # I have duplicate records
