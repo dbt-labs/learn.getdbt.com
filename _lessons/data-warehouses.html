@@ -8,6 +8,22 @@ class: title, center, middle
 
 ---
 
+class: focus
+
+# Data warehouses - Focus
+- What is a Data Warehouse?
+
+--
+- Transactional vs. Analytical databases
+
+--
+- The Modern Data Warehouse
+
+--
+- Features of Data Warehouses
+
+---
+
 # Why are we talking about data warehouses?
 
 - The advent of Redshift (et al) was **_the_** instigating event in making
@@ -202,6 +218,23 @@ Analytic(al) Database, a.k.a.:
 
 ---
 
+class: checkpoint
+
+# Checkpoint:
+
+What are major differences between transactional and analytical databases?
+
+--
+
+## Questions?
+
+???
+
+Test test test
+
+---
+
+
 # A modern approach
 
 1. Replicate data into a warehouse
@@ -236,7 +269,7 @@ name: first-a
 .left-column[
 ### A: They're columnar.
 
-This structure of data storage allows them to .highlight[**limit scanned data**] 
+This structure of data storage allows them to .highlight[**limit scanned data**]
 when executing an "analytical" query.
 ]
 
@@ -414,14 +447,14 @@ functionality
     - some data scientists
 - Harder to use, and harder to reason about
 - You _can_ run dbt on them!
-    - Some nice-to-have features are less well supported 
+    - Some nice-to-have features are less well supported
 
 ---
 
 # What is a modern data warehouse?
 
 It offers the best of both worlds:
-    
+
 - Intuitive **user experience** of a database: users, groups/roles,
 authentication, permissions, information schema, everything is SQL
 
@@ -523,7 +556,7 @@ What if you want it _now_?
 ---
 
 # Different modeling paradigms
-    
+
 - All models are materialized incrementally
     - Replace discrete partitions, rather than merging/matching records*
     - Full refresh: never, or manually trigger

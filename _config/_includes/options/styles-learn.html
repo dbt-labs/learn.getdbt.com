@@ -3,9 +3,13 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic);
 @import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700,400italic);
 
-body { font-family: 'Lato';  }
+body {
+  font-family: 'Lato';
+  color: #444;
+}
+
 h1, h2, h3 {
-    font-family: 'dbt-brand';
+    font-family: 'dbt-brand','Verdana';
     font-weight: normal;
     color: rgb(255, 132, 94);
 }
@@ -54,7 +58,7 @@ h1, h2, h3 {
   .remark-slide-content {
     font-size: 28px;
   }
-  
+
   .remark-slide-number:before {
      white-space: pre;
      content: '© Fishtown Analytics. Not for commercial use.      ';
@@ -70,6 +74,12 @@ h1, h2, h3 {
       display: block;
       margin-left: auto;
       margin-right: auto;
+  }
+
+  .text-center {
+      margin: auto;
+      width: 50%;
+      text-align: center;
   }
 
   .title {
@@ -96,6 +106,19 @@ h1, h2, h3 {
   .title a:visited, .subtitle a:visited { color: white; }
   .title a:hover, .subtitle a:hover { color: white; }
   .title a:active, .subtitle a:active { color: white; }
+
+  .focus ul {
+    font-size: 2.5rem;
+  }
+
+  .checkpoint h1 {
+    text-align: left;
+  }
+
+  .checkpoint p {
+    text-align: center;
+    font-size: 3rem;
+  }
 
   .caption {
     font-size: 60%;
