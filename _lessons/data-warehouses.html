@@ -8,22 +8,6 @@ class: title, center, middle
 
 ---
 
-class: focus
-
-# Data warehouses - Focus
-- What is a Data Warehouse?
-
---
-- Transactional vs. Analytical databases
-
---
-- The Modern Data Warehouse
-
---
-- Features of Data Warehouses
-
----
-
 # Why are we talking about data warehouses?
 
 - The advent of Redshift (et al) was **_the_** instigating event in making
@@ -45,6 +29,24 @@ Learning about your data warehouse is a surefire way to
 .left-column[
 <img src="/ui/img{{page.id}}/role-of-data-eng.png" style="width: 100%;" class="img-center">
 ]
+
+---
+
+class: focus
+
+# Data warehouses - Focus
+
+--
+- What is a Data Warehouse?
+
+--
+- Transactional vs. Analytical databases
+
+--
+- The Modern Data Warehouse
+
+--
+- Features of Data Warehouses
 
 ---
 
@@ -209,20 +211,36 @@ Analytic(al) Database, a.k.a.:
 
 ---
 
-# Which one is right? (Both!)
+.center[
+## Big Idea: Which one is right?
+]
 
-- Power your application with a transactional database
-- Analyze data with an analytical database
+--
 
-<img src="/ui/img{{page.id}}/stack.png" style="width: 90%;">
+.img-center[
+<img src="/ui/img{{page.id}}/stack.png" style="width: 100%;">
+]
+
+--
+
+.left-column[.center[
+Power your application with a transactional database
+]]  
+
+.right-column[.center[
+Analyze data with an analytical database
+]]  
 
 ---
 
-class: checkpoint
+class: subtitle
 
 # Checkpoint:
 
-What are major differences between transactional and analytical databases?
+- What are transactional databases optimized for?
+--
+
+- What are analytical databases optimized for?
 
 --
 
@@ -354,6 +372,27 @@ Rabbi Hillel's questions, paraphrased:
 - If you are only for yourself, who are you?
 
 ---
+
+class: subtitle
+
+# Checkpoint:
+
+- What empowers data warehouses to be fast for analytics?
+
+--
+
+- What are SQL statements that databases need to __sort__ data for?
+
+--
+
+- Why is it important to consider the physical aspects of our datawarehouse?
+
+--
+
+## Questions?
+
+---
+
 
 # Apples to apples
 
@@ -568,6 +607,18 @@ What if you want it _now_?
 ---
 
 class: subtitle
+
+# Checkpoint:
+
+- What is the advantage to separating compute and storage?
+
+--
+
+- Who are the *big three* players in data warehousing?
+
+---
+
+class: subtitle
 # Knowledge check
 
 You should understand:
@@ -578,5 +629,26 @@ You should be building intuition around:
 - Which dbt features depend on features of the underlying data warehouse
 - Which data warehouses are best-in-class and why
 - Why someone might opt for a Data Lake technology (e.g. Spark)
+
+## Questions??
+
+---
+
+class: subtitle
+
+# Zoom Out
+
+--
+
+- Polish your dbt project
+- Intro to Jinja
+- dbtonic Jinja
+- Packages and Projects
+- dbt Materializations & Incremental models
+- Data Warehouses
+--
+
+- .orange[Group Case Study]
+- Techniques of the Trade
 
 {% include options/next_presentation.html %}
