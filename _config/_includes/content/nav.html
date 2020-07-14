@@ -10,23 +10,26 @@
 								<strong class="navigation-brand-text">{{site.title}} - {{site.description}}</strong>
 							</a>
 						</div>
-						{% if page.title != 'Lessons' %}
+						{% if page.permalink == '/' %}
+							{% assign baseurl = '' %}
+						{% else %}
+							{% assign baseurl = site.url %}
+						{% endif %}
 						<div class="navigation-link">
-							<a class="navigation-anchor" href="#about">About</a>
+							<a class="navigation-anchor" href="{{baseurl}}#about">About</a>
 						</div>
 						<div class="navigation-link">
-							<a class="navigation-anchor" href="#agenda">Agenda</a>
+							<a class="navigation-anchor" href="{{baseurl}}#agenda">Agenda</a>
 						</div>
 						<div class="navigation-link">
-							<a class="navigation-anchor" href="#interest">Interest Form</a>
+							<a class="navigation-anchor" href="{{baseurl}}#interest">Interest Form</a>
 						</div>
 						<div class="navigation-link">
-							<a class="navigation-anchor" href="#faq">FAQ</a>
+							<a class="navigation-anchor" href="{{baseurl}}#faq">FAQ</a>
 						</div>
 						<div class="navigation-link"> 
-							<a class="navigation-anchor" href="./lessons">Lessons</a>
+							<a class="navigation-anchor text-brand" href="{{baseurl}}/lessons">Lessons</a>
 						</div>
-						{% endif %}
 					</div>
 				</div>
 			</div>
