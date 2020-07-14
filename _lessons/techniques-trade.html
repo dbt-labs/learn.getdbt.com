@@ -202,9 +202,9 @@ models:
   my_project:
     marts:
       product:
-        tags: ["hourly"]
+        +tags: ["hourly"]
       finance:
-        tags:
+        +tags:
           - "daily"
           - "important"
 ```
@@ -317,8 +317,10 @@ on-run-end:
   - "grant usage on {{ target.schema }} to role reporter"
 
 models:
-  - post-hook: "grant select on {{ this }} to role reporter"
+  post-hook: "grant select on {{ this }} to role reporter"
 ```
+<!-- TODO: update this to `+post-hook` once v0.17.1 is released
+https://github.com/fishtown-analytics/dbt/issues/2583 -->
 
 ```sql
 -- models/my_model
