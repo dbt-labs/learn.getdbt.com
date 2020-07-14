@@ -2,9 +2,10 @@
 
 ## learn.getdbt.com
 
-Marketing website for dbt learn
+The everything website for dbt Learn:
+* Marketinng
 
-Deployed with netlify
+This is a static site, compiled with Jekyll and deployed with Netlify.
 
 Run with:
 ```
