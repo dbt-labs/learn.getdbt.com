@@ -26,7 +26,7 @@ create table raw.jaffle_shop.customers
     last_name varchar
 );
 
-copy into raw.jaffle_shop.customers from 's3://dbt-tutorial-test/customers.csv'
+copy into raw.jaffle_shop.customers from 's3://dbt-tutorial-public/jaffle_shop_customers.csv'
     file_format = (
         type = 'CSV'
         field_delimiter = ','
@@ -43,7 +43,7 @@ create or replace table raw.do_not_look.orders
   status varchar
 );
 
-copy into raw.do_not_look.orders from 's3://dbt-tutorial-test/orders.csv'
+copy into raw.do_not_look.orders from 's3://dbt-tutorial-public/jaffle_shop_orders.csv'
     file_format = (
         type = 'CSV'
         field_delimiter = ','
@@ -69,7 +69,7 @@ create or replace table raw.do_not_look.payment (
   created date
 );
 
-copy into raw.do_not_look.payment from 's3://dbt-tutorial-test/stripe_payments.csv'
+copy into raw.do_not_look.payment from 's3://dbt-tutorial-public/stripe_payments.csv'
     file_format = (
         type = 'CSV'
         field_delimiter = ','
