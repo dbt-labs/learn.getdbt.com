@@ -3,15 +3,23 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic);
 @import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700,400italic);
 
-body { font-family: 'Lato';  }
+body {
+  font-family: 'Lato';
+  color: #444;
+}
+
 h1, h2, h3 {
-    font-family: 'dbt-brand';
+    font-family: 'dbt-brand','Verdana';
     font-weight: normal;
     color: rgb(255, 132, 94);
 }
 
 .white {
     color: white;
+}
+
+.orange {
+    color: rgb(255, 132, 94);
 }
 
 .remark-container {
@@ -72,6 +80,12 @@ h1, h2, h3 {
       margin-right: auto;
   }
 
+  .text-center {
+      margin: auto;
+      width: 50%;
+      text-align: center;
+  }
+
   .title {
     background: url('/ui/img/dbt-learn-light.png'), #123744;
     background-position: 5% 95%;
@@ -96,6 +110,19 @@ h1, h2, h3 {
   .title a:visited, .subtitle a:visited { color: white; }
   .title a:hover, .subtitle a:hover { color: white; }
   .title a:active, .subtitle a:active { color: white; }
+
+  .focus ul {
+    font-size: 2.5rem;
+  }
+
+  .checkpoint h1 {
+    text-align: left;
+  }
+
+  .checkpoint p {
+    text-align: center;
+    font-size: 3rem;
+  }
 
   .caption {
     font-size: 60%;

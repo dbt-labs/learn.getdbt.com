@@ -32,6 +32,17 @@ Learning about your data warehouse is a surefire way to
 
 ---
 
+class: focus
+
+# Data warehouses - Focus
+
+- What is a Data Warehouse?
+- Transactional vs. Analytical databases
+- The Modern Data Warehouse
+- Features of Data Warehouses
+
+---
+
 # What is a data warehouse?
 
 --
@@ -193,14 +204,48 @@ Analytic(al) Database, a.k.a.:
 
 ---
 
-# Which one is right? (Both!)
+.center[
+## Big Idea: Which one is right?
+]
 
-- Power your application with a transactional database
-- Analyze data with an analytical database
+--
 
-<img src="/ui/img{{page.id}}/stack.png" style="width: 90%;">
+.img-center[
+<img src="/ui/img{{page.id}}/stack.png" style="width: 100%;">
+]
+
+--
+
+.left-column[.center[
+Power your application with a transactional database
+]]  
+
+.right-column[.center[
+Analyze data with an analytical database
+]]  
 
 ---
+
+class: subtitle
+
+# Checkpoint:
+
+What type of database should you use if...
+- You are building an application for tracking web events?
+--
+
+- You want to combine data from Snowplow and Stripe to visualize attribution data in Looker?
+
+--
+
+## Questions?
+
+???
+
+Test test test
+
+---
+
 
 # A modern approach
 
@@ -236,7 +281,7 @@ name: first-a
 .left-column[
 ### A: They're columnar.
 
-This structure of data storage allows them to .highlight[**limit scanned data**] 
+This structure of data storage allows them to .highlight[**limit scanned data**]
 when executing an "analytical" query.
 ]
 
@@ -321,6 +366,23 @@ Rabbi Hillel's questions, paraphrased:
 - If you are only for yourself, who are you?
 
 ---
+
+class: subtitle
+
+# Checkpoint:
+
+- How can your data team benefit from scalable compute resources?
+
+--
+
+- How does knowledge of the 'physical' aspects of a data warehouse impact our work as analyts?
+
+--
+
+## Questions?
+
+---
+
 
 # Apples to apples
 
@@ -414,14 +476,14 @@ functionality
     - some data scientists
 - Harder to use, and harder to reason about
 - You _can_ run dbt on them!
-    - Some nice-to-have features are less well supported 
+    - Some nice-to-have features are less well supported
 
 ---
 
 # What is a modern data warehouse?
 
 It offers the best of both worlds:
-    
+
 - Intuitive **user experience** of a database: users, groups/roles,
 authentication, permissions, information schema, everything is SQL
 
@@ -523,7 +585,7 @@ What if you want it _now_?
 ---
 
 # Different modeling paradigms
-    
+
 - All models are materialized incrementally
     - Replace discrete partitions, rather than merging/matching records*
     - Full refresh: never, or manually trigger
@@ -531,6 +593,18 @@ What if you want it _now_?
     - E.g. test that `unique` failures are < 1% of all rows
 - Tables are "sharded" by a top-level identifier
     - region, account, client, etc.
+
+---
+
+class: subtitle
+
+# Checkpoint:
+
+- Who are the *big three* players in data warehousing?
+
+--
+
+- What data warehouse technologies are you using at your organization?
 
 ---
 
@@ -545,5 +619,26 @@ You should be building intuition around:
 - Which dbt features depend on features of the underlying data warehouse
 - Which data warehouses are best-in-class and why
 - Why someone might opt for a Data Lake technology (e.g. Spark)
+
+## Questions??
+
+---
+
+class: subtitle
+
+# Zoom Out
+
+--
+
+- Polish your dbt project
+- Intro to Jinja
+- dbtonic Jinja
+- Packages and Projects
+- dbt Materializations & Incremental models
+- Data Warehouses
+--
+
+- .orange[Group Case Study]
+- Techniques of the Trade
 
 {% include options/next_presentation.html %}
