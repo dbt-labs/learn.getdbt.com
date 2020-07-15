@@ -56,7 +56,7 @@ We want to turn our **mutable** data into **immutable data**
 
 ---
 
-# How do I make my data immutable?
+# ❓ How do I make my data immutable?
 
 | order_id | status  | updated_at | dbt_valid_from | dbt_valid_to |
 |----------|---------|------------|----------------|--------------|
@@ -65,7 +65,7 @@ We want to turn our **mutable** data into **immutable data**
 
 --
 
-## Technique: Snapshots
+## ✅ Technique: Snapshots
 
 ---
 
@@ -116,8 +116,7 @@ $ dbt snapshot
 ]
 
 ---
-# I have a long case statement
---
+# ❓ I have a long case statement
 
 ```sql
 -- models/orders.sql
@@ -135,7 +134,7 @@ from {{ ref('orders') }}
 
 --
 
-## Technique: seeds
+## ✅ Technique: seeds
 ???
 Seeds are CSV files that you can `ref` in your project
 
@@ -191,10 +190,10 @@ left join {{ ref('country_codes') }} as country_codes
 
 ---
 
-## I need to run some models hourly, and some models nightly.
+## ❓ I need to run some models hourly, and some models nightly.
 --
 
-### Technique: tags!
+### ✅ Technique: tags!
 ---
 .dense-text[
 In dbt_project.yml:
@@ -203,9 +202,9 @@ models:
   my_project:
     marts:
       product:
-        tags: ["hourly"]
+        +tags: ["hourly"]
       finance:
-        tags:
+        +tags:
           - "daily"
           - "important"
 ```
@@ -225,7 +224,7 @@ dbt run -m tag:hourly
 ]
 ---
 
-# I want to write DRYer code
+# ❓ I want to write DRYer code
 
 ```sql
 select
@@ -242,7 +241,7 @@ group by 1
 
 --
 
-### Technique: Jinja!
+### ✅ Technique: Jinja!
 
 ---
 
@@ -279,12 +278,12 @@ SQL compilation error: Object 'ANALYTICS.DBT_CLAIRE.MY_TABLE' does not exist or 
 ERROR:  permission denied for relation my_table
 
 ```
-???
+### ❓
 
 
 --
 
-### Technique: version-controlled grant statements
+### ✅ Technique: version-controlled grant statements
 
 ???
 We want to ensure that as soon as dbt creates a relation, my BI tool can `select` from it
@@ -318,8 +317,10 @@ on-run-end:
   - "grant usage on {{ target.schema }} to role reporter"
 
 models:
-  - post-hook: "grant select on {{ this }} to role reporter"
+  post-hook: "grant select on {{ this }} to role reporter"
 ```
+<!-- TODO: update this to `+post-hook` once v0.17.1 is released
+https://github.com/fishtown-analytics/dbt/issues/2583 -->
 
 ```sql
 -- models/my_model
@@ -379,12 +380,12 @@ Consider:
 
 
 ---
-# I need to create a table of all days
+# ❓ I need to create a table of all days
 ???
 Useful for "date spining"
 --
 
-## Technique: dbt-utils.date_spine
+## ✅ Technique: `dbt-utils.date_spine`
 ---
 # Anatomy of a date spine
 
@@ -415,10 +416,10 @@ Also note that you need the utils package installed, and to `dbt deps`
 ]
 
 ---
-# My runs take too long when I'm developing
+# ❓ My runs take too long when I'm developing
 --
 
-## Technique: Limit data in dev
+## ✅ Technique: Limit data in dev
 ???
 * Especially useful for event-style data
 ---
@@ -471,7 +472,7 @@ models:
           - unique:
               error_threshold: 10
 ```
-???
+### ❓
 
 
 We already know that:
@@ -480,7 +481,7 @@ We already know that:
 - your own macro will take precedence over dbt's macros
 
 --
-## Technique: custom schema test
+## ✅ Technique: custom schema test
 
 ---
 # Anatomy of a custom schema test
@@ -555,13 +556,13 @@ models:
 ]
 
 ---
-# I need to write an extremely bespoke test
+## ❓ I need to write an extremely bespoke test
 ???
 * Truly a one-off data test
 
 --
 
-## Technique: data tests
+## ✅ Technique: data tests
 ---
 # Anatomy of a data test
 `tests/refund_cannot_exceed_amount.sql`
@@ -584,10 +585,10 @@ Run with `dbt test` (or `dbt test --data`)
 
 ---
 
-# I have some SQL that I use in a dashboard that I want to version control
+## ❓ I have some SQL that I use in a dashboard that I want to version control
 
 --
-## Technique: analyses
+## ✅ Technique: analyses
 ---
 # Anatomy of an analysis
 
@@ -610,40 +611,37 @@ group by 1
 
 ---
 
-# I need to do an ETL migration
+## ❓ I need to do an ETL migration
 
 (and check I didn't break anything)
 
 --
-## Technique: [audit-helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/)
+## ✅ Technique: [audit-helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/)
 
 ---
 
-# I need to generate a ton of sources
+## ❓ I need to generate a ton of sources
 
 --
-## Technique: [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/)
+## ✅ Technique: [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/)
 
 ---
 
-# I need to model subscription data
+## ❓ I need to model subscription data
+## ❓ I need to model customer attribution
 
 --
-
-# I need to model customer attribution
-
---
-## Technique: use a playbook!
+## ✅ Technique: use a playbook!
 
 * [Monthly recurring revenue](https://github.com/fishtown-analytics/mrr-playbook)
 * [Marketing attribution](https://github.com/fishtown-analytics/attribution-playbook)
 
 
 ---
-# I have duplicate records
+# ❓ I have duplicate records
 --
 
-## Technique: deduplication
+## ✅ Technique: deduplication
 
 ---
 # Anatomy of deduplication
@@ -707,10 +705,10 @@ from amazon_orders
 
 
 ---
-# I have KPIs that my business reports
+# ❓ I have KPIs that my business reports
 --
 
-## Technique: metrics table
+## ✅ Technique: metrics table
 
 ---
 # Anatomy of a metrics table
@@ -737,4 +735,4 @@ class: subtitle, center, middle
 
 {% endraw %}
 
-{% include options/next_presentation.html %}
+{% include options/last_slide.html %}

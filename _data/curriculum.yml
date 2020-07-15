@@ -4,6 +4,7 @@
     - name: Morning
       lessons:
         - slug: who-is-analytics-engineer
+        - slug: distributed-norms
         - slug: dbt-fundamentals
     - name: Afternoon
       lessons:

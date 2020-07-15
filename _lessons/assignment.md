@@ -8,7 +8,7 @@ title: Group assignment
 To get the most value out of this assignment, we recommend that you try to work through each problem as follows:
 * First, attempt to complete the exercise by using [docs.getdbt.com](https://docs.getdbt.com/). Learning how to read docs is a skill that will serve you well as you continue to use dbt!
 * Check the related [lesson slides](https://learn.getdbt.com/lessons) for relevant code snippets.
-* If you hit errors, check out a quick [debugging](debugging) presentation for tips.
+* If you hit errors, check out the docs on [debugging](https://docs.getdbt.com/docs/guides/debugging-errors/) for tips.
 
 Then, try using the resources available to you during dbt Learn, including:
 * Ask someone in your breakout group (including your tutor)
