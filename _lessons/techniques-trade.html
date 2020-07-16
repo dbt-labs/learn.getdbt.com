@@ -222,53 +222,10 @@ In deployment:
 dbt run -m tag:hourly
 ```
 ]
----
-
-# ❓ I want to write DRYer code
-
-```sql
-select
-
-    order_id,
-    sum(case when payment_method = 'bank_transfer' then amount end) as bank_transfer_amount,
-    sum(case when payment_method = 'credit_card' then amount end) as credit_card_amount,
-    sum(case when payment_method = 'gift_card' then amount end) as gift_card_amount,
-    sum(amount) as total_amount
-
-from {{ ref('payments') }}
-group by 1
-```
-
---
-
-### ✅ Technique: Jinja!
 
 ---
 
-# Type it once, reuse
-
-```sql
-
-{% set payment_methods = ["bank_transfer", "credit_card", "gift_card"] %}
-
-select
-
-    order_id,
-    {% for payment_method in payment_methods %}
-    sum(case when payment_method = '{{payment_method}}' then amount end) as {{payment_method}}_amount,
-    {% endfor %}
-    sum(amount) as total_amount
-
-from {{ ref('payments') }}
-group by 1
-```
-
-[_Getting Started with Jinja_](https://docs.getdbt.com/docs/writing-code-in-dbt/getting-started-with-jinja/)
-
----
-
-## I am getting permission denied errors on relations that dbt creates
---
+## ❓ I am getting permission denied errors on relations that dbt creates
 
 ```txt
 -- snowflake
@@ -278,7 +235,6 @@ SQL compilation error: Object 'ANALYTICS.DBT_CLAIRE.MY_TABLE' does not exist or 
 ERROR:  permission denied for relation my_table
 
 ```
-### ❓
 
 
 --
@@ -458,8 +414,7 @@ Tradeoffs:
 * Also how do you then test that your dashboards work as expected?
 
 ---
-# I want to add a threshold to the uniqueness test
---
+# ❓ I want to add a threshold to the uniqueness test
 
 ```yml
 version: 2
@@ -472,19 +427,19 @@ models:
           - unique:
               error_threshold: 10
 ```
-### ❓
 
+--
+
+## ✅ Technique: custom schema test
+
+---
+# Anatomy of a custom schema test
 
 We already know that:
 - dbt has its own project
 - tests are just macros prefixed with `test_`
 - your own macro will take precedence over dbt's macros
 
---
-## ✅ Technique: custom schema test
-
----
-# Anatomy of a custom schema test
 1. View the [source code](https://github.com/fishtown-analytics/dbt/tree/dev/0.15.2/core/dbt/include/global_project) for an existing test
 2. Copy it into your project!
 3. Adjust as required
@@ -611,7 +566,7 @@ group by 1
 
 ---
 
-## ❓ I need to do an ETL migration
+# ❓ I need to do an ETL migration
 
 (and check I didn't break anything)
 
@@ -620,15 +575,15 @@ group by 1
 
 ---
 
-## ❓ I need to generate a ton of sources
+# ❓ I need to generate a ton of sources
 
 --
 ## ✅ Technique: [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/)
 
 ---
 
-## ❓ I need to model subscription data
-## ❓ I need to model customer attribution
+# ❓ I need to model subscription data
+# ❓ I need to model customer attribution
 
 --
 ## ✅ Technique: use a playbook!
