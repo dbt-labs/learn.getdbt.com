@@ -65,6 +65,7 @@ create or replace table raw.do_not_look.payment (
   id integer,
   orderID integer,
   paymentMethod varchar,
+  status varchar,
   amount integer,
   created date
 );
