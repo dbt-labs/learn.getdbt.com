@@ -1,6 +1,11 @@
 ---
 layout: presentation
 title: Packages and projects
+learningObjectives:
+  - Explain the power of packages in a dbt project
+  - Install and configure packages for your dbt project
+  - Leverage macros and models from a package
+  - Explain how dbt decides between identically named macros and models
 ---
 
 class: title, center, middle
@@ -23,6 +28,10 @@ Teacher notes:
 Before we hit databases, there's a nice story of "woah that's a package, which is just a dbt project? you know what else has a dbt project? (A: dbt)."
 Or, "yo why is there 138 macros in our project when we only added one".
 And from there we can talk a little bit about writing custom tests + using custom schemas + custom aliases + custom overviews. Once you get that concept down, it's so easy to understand how you can get dbt to do things you want it to do
+---
+
+{% include options/focus_slide.html %}
+
 ---
 ## Use case: Using macros from a package
 

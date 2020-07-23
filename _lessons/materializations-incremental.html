@@ -1,6 +1,10 @@
 ---
 layout: presentation
 title: dbt Materializations & Incremental Models
+learningObjectives:
+  - Name and describe the four standard materializations in dbt
+  - Explain some basic use cases for views, tables, and ephemeral materializations
+  
 ---
 
 class: title, center, middle
@@ -22,6 +26,10 @@ class: title, center, middle
     - What if it exists as a table, but I want it to be a view?
     - What if Redshift uses `alter table` for views, but Snowflake uses
     `alter view`? (It's true!)
+
+---
+
+{% include options/focus_slide.html %}
 
 ---
 
