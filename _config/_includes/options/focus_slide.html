@@ -1,51 +1,6 @@
-<!-- This adds a link to the first slide of the next presentation -->	
+<!-- Template for displaying the focus slides for each presentation -->
 
----
-
-
-{% for objective in page.lesson-objectives %}
-   {{ objective }}
+<h1>{{ page.title }} >> Focus</h1>
+{% for objective in page.learningObjectives %}
+   <li> {{ objective }} </li>
 {% endfor %}
-
-
-
-
-  <!-- {% assign this_lesson_slug = page.id | remove: "/lessons/" %}
-  {% assign next_index = 0 %}
-  {% assign next_slug = '' %}
-
-  {% for day in site.data.curriculum %}
-      {% assign is_today = false %}
-      {% assign lessons = '' | split: ',' %}
-      {% for session in day.sessions %}
-          {% assign lessons = lessons | concat: session.lessons %}
-          {% for lesson in lessons %}
-              
-              {% if this_lesson_slug == lesson.slug %}
-                  {% assign is_today = true %}
-                  {% assign next_index = forloop.index %}
-                  {% assign next_slug = lessons[next_index].slug %}
-              {% endif %}
-                  
-          {% endfor %}
-      {% endfor %}
-      
-      {% if is_today %}
-          {% for lsn in lessons %}
-              {% assign lesson_id = "/lessons/" | append: lsn.slug %}
-              {% assign match = site.lessons | where: 'id', lesson_id %}
-              {% assign lesson = match[0] %}
-
-  {% if forloop.index <= next_index %}
-  <li> {{lesson.title}}</li>
-  {% elsif lsn.slug == next_slug %}
-  --
-  <li class="orange"> {{lesson.title}}</li>
-  {% else %}
-  <li class="grey">{{lesson.title}}</li>
-  {% endif %}
-
-          {% endfor %}
-      {% endif %}
-      
-  {% endfor %} -->
