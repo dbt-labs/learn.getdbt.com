@@ -11,6 +11,7 @@ etc/learn_setup/credentials.json
 etc/learn_setup/token.pickle
 /etc/learn_mailmerge/html
 /etc/snowflake/html_compiled
-/ete/snowflake/__pycache__
+/etc/snowflake/__pycache__
 credentials.json
 token.pickle
+snowflake_creds.yml

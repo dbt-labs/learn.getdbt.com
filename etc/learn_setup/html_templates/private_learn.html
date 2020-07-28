@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <style>
+      #body {
+        font-family: Verdana, Geneva, sans-serif;
+        color: black;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div id='body'>
+
+      <p>Hi {{ first_name }}!</p>
+
+      <p>My name is {{ instructor_first }}, and I’m one of the instructors for dbt Learn. I’m excited to work with you and the {{ organization }} team on {{ session_days }}.</p>
+
+      <p>I have attached the two-day agenda and learning objectives for our lessons.  I will send a calendar invite shortly after sending this email to block this time out on your schedule.</p>
+
+      <p>In advance of the event, we need three things from you:</p>
+
+      <ol>
+        <li>Add a slide <a href="{{ intro_slides_link }}">here</a> as soon as you finish reading this email.  This will allow us to put names to faces and will be used for quick introductions.</li>
+        <li>Send me a direct message in dbt slack to be added to a private channel. (details below)</li>
+        <li>Complete the <a href="https://docs.getdbt.com/learn/setting-up/">“Getting Started” tutorial</a> by {{ prework_due_date }}, and reply to this email with the URL to your <b>GitHub hosted</b> repository. (details below)</li>
+      </ol>
+
+      <p>I’m looking forward to learning together!</p>
+
+      <pre><p style="font-family: Arial;"><strong>{{ instructor_full }}</strong>
+Instructional Designer
+Fishtown Analytics
+</p></pre>
+
+      <h2 style="border-bottom: 1px solid #CCC; display: block;">Details: dbt Slack</h2>
+
+      <p>There is a large and growing community of dbt users over in dbt slack.  As you start using dbt, this is an excellent place to ask questions and learn from others.  If you have not already joined Slack, you can sign up here: <a href="https://community.getdbt.com">community.getdbt.com</a>
+
+      <p>Once you have joined, send me a direct message at {{ instructor_slack }}.  I will add you to a private channel.  We'll be using this during the course to share links to course material, and it's a great place to ask questions if you get stuck while doing the pre-work. </p>
+        
+      <h2 style="border-bottom: 1px solid #CCC; display: block;">Details: Getting Started Tutorial</h2>
+
+      <p>The tutorial is the required pre-work for dbt Learn, both for new and experienced dbt users.  This allows everyone to get started with their own dbt project and so that we have a common starting ground between participants.  This requires access to Snowflake and dbt Cloud:</p>
+
+      <p><strong>Snowflake:</strong> Here are your login details. Please log in as soon as possible.</p>
+
+      <pre><code style="font-size:0.85em;
+    font-family:Courier New, monospace;
+    display: block;
+    background: #f5f5f5;
+    white-space: pre;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    padding: 0.7em 0.5em;
+    color:#000;">account URL: https://fka50167.snowflakecomputing.com/
+account ID: fka50167 
+username: {{ sf_username }} 
+password: ChangeMe123 (you'll be prompted to change this)</code></pre>
+
+      <p><strong>dbt Cloud:</strong> I’ve invited you to the {{ dbtCloudAccountName }} organization in dbt Cloud.  If you already have a user account, you will be able to toggle into this organization account.  If you do not have a dbt Cloud user account, check your email for an invitation.  Please open and accept the invite soon, as it expires after a few days.</p>
+        
+      <p>Use dbt Cloud account for the pre-work and send me a public link to the GitHub repo of your completed tutorial by <strong>{{ prework_due_date }}</strong>. This gives us a chance to work through any issues with setup before the course begins.</p>
+
+      <p>If you run into any snags in the tutorial or have any other questions, please feel free to ask in the Slack channel mentioned above.</p>
+
+    </div>
+  </body>
+</html>

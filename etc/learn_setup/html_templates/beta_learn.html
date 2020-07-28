@@ -1,0 +1,67 @@
+<html>
+
+  <head>
+    <style>
+      #body {
+        font-family: Verdana, Geneva, sans-serif;
+        color: black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id='body'>
+
+      <p>Hi {{ first_name }}!</p>
+
+      <p>My name is {{ instructor_first }}, and I work on our dbt Learn program over at Fishtown Analytics. I'm excited to welcome you to the BETA program for dbt Learn on demand!!</p>
+
+      <p>I've been working on this program for the past three months and am excited to share it with you.  Throughout the beta, I welcome your feedback - positive and constructive - as I continue to iterate on this program.</p>
+
+      <p>Here is a quick list of actions to jump write in:</p>
+
+      <ol>
+        <li>(2 minutes) Say hi in the #{{ slack_channel }} channel in dbt Slack (details below)</li>
+        <li>(2 minutes) Login to Snowflake and dbt Cloud (details below)</li>
+        <li>(5 minutes) Watch my introduction video so that you know your way around the dbt Learn on demand site.</li>
+      </ol>
+
+      <p>If you have any questions at all, please reach out on Slack.  I’m looking forward to e-meeting you and learning together</p>
+
+      <p>{{ instructor_first }}</p>
+
+      <h2 style="border-bottom: 1px solid #CCC;
+    display: block;">Details: dbt Slack</h2>
+
+      <p>I've created a private channel in dbt Slack for beta participants. {% if slack_status == 'added' %}I’ve already added you to the channel. {% else %}I wasn’t able to find you in Slack — if you are already a member, please DM me on Slack to ask me to add you to the channel. If you haven’t yet joined, you can sign up at <a href="https://community.getdbt.com">community.getdbt.com</a> — then find me ({{ instructor_slack }}) on Slack to ask to be added to the channel.{% endif %} We will be using this channel for communication, questions, and feedback.</p>
+
+      <h2 style="border-bottom: 1px solid #CCC;
+    display: block;">Details: Snowflake and dbt Cloud</h2>
+
+      <p>For the beta program, you will have access to our Learn Snowflake account and dbt Cloud account for 30 days.  You will use your own GitHub repository so that you have the code you write indefinitely.  See the details below for logging in.  There are course videos that you will see later for connecting to GitHub.</p>
+
+      <p><strong>Snowflake:</strong> Here are your login details. Please log in as soon as possible — you will be prompted to change your password.</p>
+
+      <pre><code style="font-size:0.85em;
+    font-family:Courier New, monospace;
+    display: block;
+    background: #f5f5f5;
+    white-space: pre;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    padding: 0.7em 0.5em;
+    color:#000;">account URL: https://fka50167.snowflakecomputing.com/
+account ID: fka50167 
+username: {{ sf_username }} 
+password: ChangeMe123 (you'll be prompted to change this)
+</code></pre>
+
+      <p><strong>dbt Cloud:</strong> You should have received an email from dbt Cloud with an invitation
+        to join. Please open and accept the invite soon, as it expires after a few days.</p>
+
+      <p>If you run into any snags in the tutorial or have any other questions, please feel free to ask in the Slack channel mentioned above.</p>
+
+    </div>
+  </body>
+
+</html>

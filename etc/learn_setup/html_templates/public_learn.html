@@ -1,0 +1,80 @@
+<html>
+
+  <head>
+    <style>
+      #body {
+        font-family: Verdana, Geneva, sans-serif;
+        color: black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id='body'>
+
+      <p>Hi {{ first_name }}!</p>
+
+      <p>My name is {{ instructor_first }}, and I’m one of the instructors for dbt Learn. I’m excited to meet you (virtually) in the next few weeks.</p>
+
+      <p>Here are the <a href="https://learn.getdbt.com/lessons">lessons</a> if you want to review them ahead of time — let us know if you have any questions about whether this course is the right fit for you.</p>
+
+      <p>In advance of the event, I need three things from you:</p>
+
+      <ol>
+        <li>(2 minutes) Add a slide <a href="{{ intro_slides_link }}">here</a> as soon as you finish reading this email</li>
+        <li>(2 minutes) Say hi in the #{{ slack_channel }} channel in dbt Slack (details below)</li>
+        <li>(60 minutes) Complete the <a href="https://docs.getdbt.com/learn/setting-up/">“Getting Started” tutorial</a> by {{ prework_due_date }} (details below), and reply to this email with the URL to your GitHub repo</li>
+      </ol>
+
+      <p>I’m looking forward to learning together!</p>
+
+      <p>{{ instructor_first }}</p>
+
+      <h2 style="border-bottom: 1px solid #CCC;
+    display: block;">Details: dbt Slack</h2>
+
+      <p>I've created a private channel in dbt Slack for course participants. {% if slack_status == 'added' %}I’ve already added you with the account associated with this email address.{% else %}I wasn’t able to find you in Slack — if you are already
+        a
+        member under a different email address, please DM me on Slack to ask me to add you to the channel. If you haven’t yet joined, you can sign up at <a href="https://community.getdbt.com">community.getdbt.com</a> — then find me
+        ({{ instructor_slack }}) on Slack to ask to be added to the channel.{% endif %} We'll be using this during the course to share links to course material, and it's a great place to ask questions if you get stuck while doing the pre-work.</p>
+
+      <h2 style="border-bottom: 1px solid #CCC;
+    display: block;">Details: Getting Started Tutorial</h2>
+
+      <p>The tutorial is the required pre-work for dbt Learn, both for new and experienced dbt users. We’ll be using it as a common foundation for working sessions throughout the course. It requires access to Snowflake and dbt Cloud:</p>
+
+      <p><strong>Snowflake:</strong> Here are your login details. Please log in as soon as possible — you will be prompted to change your password.</p>
+
+      <pre><code style="font-size:0.85em;
+    font-family:Courier New, monospace;
+    display: block;
+    background: #f5f5f5;
+    white-space: pre;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    padding: 0.7em 0.5em;
+    color:#000;">account URL: https://fka50167.snowflakecomputing.com/
+account ID: fka50167 
+username: {{ sf_username }} 
+password: ChangeMe123 (you'll be prompted to change this)
+</code></pre>
+
+      <p><strong>dbt Cloud:</strong> {% if dbt_cloud_status == 'added' %}I’ve added you to the dbt-learn organization in dbt Cloud. Please use this account for the pre-work.{% else %}You should have received an email from dbt Cloud with an invitation
+        to
+        join. Please open
+        and accept the invite soon, as it expires after a few days.{% endif %} Please send me a link to the GitHub repo of your completed tutorial by <strong>{{ prework_due_date }}</strong>. This gives us a chance to work through any issues with
+        setup
+        before the course begins. </p>
+
+      <p>I have recorded three videos for getting set up in dbt Cloud that can be helpful:</p>
+      <ol>
+        <li><a href="https://dbtlearn.wistia.com/medias/qcwfgttwss">Connect dbt Cloud to GitHub</a></li>
+        <li><a href="https://dbtlearn.wistia.com/medias/rl5h92pctb">Connect dbt Cloud to your Warehouse and Repository</a></li>
+        <li><a href="https://dbtlearn.wistia.com/medias/0828jynq3v">Cloud IDE Overview</a></li>
+      </ol>
+
+      <p>If you run into any snags in the tutorial or have any other questions, please feel free to ask in the Slack channel mentioned above.</p>
+    </div>
+  </body>
+
+</html>

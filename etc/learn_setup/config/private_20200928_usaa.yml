@@ -1,0 +1,21 @@
+# Google Sheets Information
+sheet:
+  spreadsheet_id: '14QEhg0jHrUITL-ZNcbGrqinOOatDUPLdsmsy1hXY1oE'
+  spreadsheet_range: '2020-09-28 (USAA)!A1:J34'
+
+# HTML Information
+html_template: 'private_learn.html'
+
+# Session Specific Information
+session:
+  organization: 'USAA'
+  dbtCloudAccountName: "'USAA dbt Learn'"
+  date: '2020-09-28'
+  slack_channel: 'learn-usaa-2020-09-28'
+  session_days: 'September 28 - 29'
+  prework_due_date: 'Thursday, September 24, 2020'
+  instructor_first: 'Kyle'
+  instructor_full: 'Kyle Coapman'
+  instructor_slack: '@coap'
+  intro_slides_link: 'https://docs.google.com/presentation/d/1T6Emt_JyjlYCTi-hmygmycD6UmOjuhe3Dh-MBSkezo0/edit?usp=sharing'
+  

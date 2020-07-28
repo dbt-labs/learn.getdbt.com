@@ -1,0 +1,17 @@
+# Google Sheets Information
+sheet:
+  spreadsheet_id: '14QEhg0jHrUITL-ZNcbGrqinOOatDUPLdsmsy1hXY1oE'
+  spreadsheet_range: '2020-09-16 (East Coast)!A1:K24'
+
+# HTML Information
+html_template: 'public_learn.html'
+
+# Session Specific Information
+session:
+  date: '2020-09-16'
+  slack_channel: 'learn-dist-2020-09-16'
+  prework_due_date: 'Monday, September 14, 2020'
+  instructor_first: 'Kyle'
+  instructor_slack: '@coap'
+  intro_slides_link: 'https://docs.google.com/presentation/d/1vwkIlJ4WX6J-ukD95_Z4vDnpXdwC0XJ-u8zNCidcJVw/edit?usp=sharing'
+  
