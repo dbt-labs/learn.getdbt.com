@@ -5,3 +5,6 @@ _site/
 .jekyll-metadata
 Gemfile.lock
 .jekyll-cache/*
+credentials.json
+token.pickle
+/etc/learn_mailmerge/html
