@@ -1,13 +1,14 @@
 ---
 layout: presentation
 title: Techniques of the trade
+learningObjectives:
+  - Get a brief overview of advanced dbt features and their use cases
+  - Features include Seeds, Snapshots, Hooks, Operations, & more
 ---
 
 class: title, center, middle
+
 # (dbt) Techniques of the trade
-
-
-{% raw %}
 
 ???
 We've already learned the tools of the trade (dbt), but now we are learning the techniques.
@@ -20,10 +21,15 @@ Notes for teacher:
 
 ---
 
-# My source data keeps changing
+{% include options/focus_slide.html %}
 
 ---
 
+# My source data keeps changing
+
+{% raw %}
+
+---
 
 ### On Monday:
 | order_id | status  | created_at | updated_at |

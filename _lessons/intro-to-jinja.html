@@ -1,6 +1,11 @@
 ---
 layout: presentation
 title: Intro to Jinja
+learningObjectives:
+  - Develop a programmer's intuition for how Jinja works
+  - Explain how dbt leverages Jinja for writing powerful SQL
+  - Leverage Jinja for writing DRY SQL
+  
 ---
 
 class: title, center, middle
@@ -12,7 +17,6 @@ class: title, center, middle
 `{% set date = '{% endraw %}{{site.time|slice: 0, 10}}' %}{% raw %}`
 
 ---
-
 
 # Jinja is a templating engine
 
@@ -33,9 +37,19 @@ Applications that use Jinja:
 * dbt!
 ]
 
-[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)
+[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)  
+
+{% endraw %} <!-- endraw to render focus slide -->
+
 ---
+
+{% include options/focus_slide.html %}
+
+---
+
 class: subtitle
+
+{% raw %} <!-- start raw again for the Jinja that follows -->
 
 # Let's look at some (non-SQL) examples!
 --

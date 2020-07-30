@@ -1,6 +1,11 @@
 ---
 layout: presentation
 title: dbtonic Jinja
+learningObjectives:
+  - Explain the role of macros in a dbt project
+  - Configure and implement variables in a dbt project
+  - Differentiate between Jinja and SQL Comments
+
 ---
 class: title, center, middle
 
@@ -28,7 +33,14 @@ Use it always! This is how dbt:
 * Mananages environments
 * Infers all model dependencies (DAG)
 
+{% endraw %}
 ---
+
+{% include options/focus_slide.html %}
+
+---
+
+{% raw %}
 
 # Macros
 * Macros are written in `.sql` files in the `macros` directory
