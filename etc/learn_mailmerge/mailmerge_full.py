@@ -65,7 +65,7 @@ def sheets_service(creds):
     
 def gmail_service(creds):
     service = build('gmail', 'v1', credentials=creds)
-    print("We build gmail service...")
+    print("We built gmail service...")
     return service
     
 def get_sheet_values(service, spreadsheet_id, spreadsheet_range):
