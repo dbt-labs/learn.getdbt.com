@@ -77,6 +77,24 @@ class: subtitle, middle, center
 {% set me = 3 %}
 {% set you = 'foo' %}
 ```
+---
+
+class: subtitle
+
+# Let's see jinja in action now
+
+* We will see some code, try to predict the output.
+* Raise your hand on Zoom to give your answer and explanation.
+* This thinking is new for some people - let's help each other get acquanted with jinja!
+
+???
+
+Note: This lesson presents the opporunity to make the learners the expert:
+1. Call on students to given and answers and **explanation** this will give students more air time.
+2. Try to avoid repeating what students say.  If something was unclear, asking them to repeat or another student to bring clarity.
+
+
+If this goes well, we can think about other ways to make other decks more interactive.
 
 ---
 # Dictionaries
@@ -110,14 +128,25 @@ me
 
 ```jinja
 {{ self[0] }}
-{{ self | length }}
 ```
 --
 
 ```
 me
+```
+
+--
+
+```jinja
+{{ self | length }}
+```
+--
+
+```
 3
 ```
+
+
 
 ---
 
@@ -180,7 +209,9 @@ On a day like this, I especially like a refreshing mango sorbet.
 {% set flavors = ['chocolate', 'vanilla', 'strawberry'] %}
 
 {% for flavor in flavors %}
+
 	Today I want {{ flavor }} ice cream!
+  
 {% endfor %}
 ```
 
@@ -199,19 +230,35 @@ Today I want strawberry ice cream!
 
 ```jinja
 {% macro hoyquiero(flavor, dessert = 'ice cream') %}
-	Today I want {{ flavor }} {{ dessert }}!
-{% endmacro %}
 
+	Today I want {{ flavor }} {{ dessert }}!
+  
+{% endmacro %}
+```
+--
+```jinja
 {{ hoyquiero(flavor = 'chocolate') }}
-{{ hoyquiero('mango', 'sorbet') }}
 ```
 --
 ```
 Today I want chocolate ice cream!
+```
+--
+```jinja
+{{ hoyquiero('mango', 'sorbet') }}
+```
+--
+```
 Today I want mango sorbet!
 ```
+---
+
+class:title, center, middle
+
+# How does this fit in with SQL?
 
 ---
+
 
 # How does this fit in with SQL?
 
