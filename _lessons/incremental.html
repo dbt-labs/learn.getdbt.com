@@ -1,0 +1,434 @@
+---
+layout: presentation
+title: Incremental Models
+learningObjectives:
+  - TBD
+  - TBD
+---
+
+class: title, center, middle
+
+# Incremental models
+
+`where updated_date >= '{{site.time|slice: 0, 10}}'`
+
+---
+
+# Why?
+
+* It costs time (and money) to transform data
+* Historical data doesn't (shouldn't) change
+* If you can get away _without_ re-transforming historical data, you save time and money
+
+### Good candidates
+- Immutable event streams: tall + skinny table, append-only, no updates
+- If there _are_ any updates, a reliable `updated_at` field
+
+---
+
+# Why not?
+
+* It's tricky, and there are trade-offs!
+* Which is costlier: database time ($$), or human analyst time ($$$$)?
+* It's probably not worth it if:
+    * You have small-ish data
+    * Your data changes constantly: new columns, renamed columns, etc.
+    * Your data is updated in unpredictable ways
+    * Your transformation performs comparisons or calculations that require
+    _other_ rows (table + view)
+
+---
+
+# And if it works?
+
+<img src="/ui/img{{page.id}}/fr-run-timing.png" class="img-center">
+
+---
+
+# Example: Snowplow events
+
+* Page views and pings on **learn.getdbt.com**! One was fired just now, as you're reading this. And... now :)
+* Create a source like so:
+
+```yml
+version: 2
+
+sources:
+  - name: snowplow
+    database: raw
+    loaded_at_field: collector_tstamp
+
+    freshness:
+      error_after: {count: 1, period: hour}
+
+    tables:
+      - name: event
+```
+
+---
+
+### We've got a model: events &rarr; page views
+
+.denser-text[
+{% raw %}
+```sql
+with events as (
+
+    select * from {{source('snowplow','event')}}
+
+),
+
+page_views as (
+
+    select
+
+        domain_sessionid as session_id,
+        domain_userid as anonymous_user_id,
+        web_page_context.value:data.id::varchar as page_view_id,
+        page_url,
+
+        count(*) * 10 as approx_time_on_page,
+        min(derived_tstamp) as page_view_start,
+        max(collector_tstamp) as max_collector_tstamp
+
+    from events,
+    lateral flatten (input => parse_json(contexts):data) web_page_context
+    group by 1,2,3,4
+
+)
+
+select * from page_views
+```
+{% endraw %}
+]
+
+---
+
+# Tactics
+
+- Why do we roll up events into page views and sessions?
+- How do we want to materialize this model?
+
+--
+    - Start with `view`
+    - When it takes too long to query, switch to `table`
+    - When it takes too long to build, switch to `incremental`
+
+--
+
+- How can we make this incremental?
+
+---
+
+class: middle
+
+<img src="/ui/img{{page.id}}/incr-discourse-stats.png" class="img-center">
+&nbsp;
+<img src="/ui/img{{page.id}}/incr-discourse-intro.png" class="img-center">
+
+.center[[Read it!](https://discourse.getdbt.com/t/on-the-limits-of-incrementality/303)]
+
+---
+
+# "The big easy"
+
+_Keep it simple:_ This model rolls up **events** into **page views**. A page view
+contains one or more events with the same `page_view_id`.
+
+
+The full model SQL is on the next slide. It's very similar to the model code we had previously, with a few additions. Pay close attention to:
+* `unique_key`
+* `is_incremental()`
+
+_What do these mean?_ ([docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models/))
+
+---
+
+{% raw %}
+.denser-text[
+```sql
+{{config(
+    materialized = 'incremental',
+    unique_key = 'page_view_id'
+)}}
+
+with events as (
+
+    select * from {{source('snowplow','event')}}
+
+    {% if is_incremental() %}
+    where collector_tstamp >= (select max(max_collector_tstamp) from {{ this }})
+    {% endif %}
+
+),
+
+page_views as (
+
+    select
+
+        domain_sessionid as session_id,
+        domain_userid as anonymous_user_id,
+        web_page_context.value:data.id::varchar as page_view_id,
+        page_url,
+
+        count(*) * 10 as approx_time_on_page,
+        min(derived_tstamp) as page_view_start,
+        max(collector_tstamp) as max_collector_tstamp
+
+    from events,
+    lateral flatten (input => parse_json(contexts):data) web_page_context
+    group by 1,2,3,4
+
+)
+
+select * from page_views
+```
+]
+{% endraw %}
+
+---
+
+# Special Jinja variables
+
+### {% raw %}`{{ this }}`{% endraw %}
+
+Represents the currently existing database object mapped to this model.
+
+### `is_incremental()`
+
+Checks four conditions:
+.dense-text[
+1. Does this model already exist as an object in the database?
+2. Is that database object a table?
+3. Is this model configured with `materialized = 'incremental'`?
+4. Was the `--full-refresh` flag passed to this `dbt run`?
+]
+
+Yes Yes Yes No == an incremental run
+
+???
+If all of the conditions are met, `is_incremental()` returns `true`.
+
+---
+
+# Try it out!
+
+* What SQL does dbt use when first building the `fct_page_views` model?
+* What SQL does dbt use for every run thereafter?
+* How long does each run take?
+* Convince yourself that it's working: {% raw %}
+```sql
+select * from {{source('snowplow','event')}}
+where collector_tstamp >= (
+        select max(max_collector_tstamp) from {{ ref('fct_page_views') }}
+)
+```
+{% endraw %}
+
+---
+
+# Conceptual framework
+
+<img src="/ui/img{{page.id}}/how-deeper.png" class="img-center">
+
+How is this idempotent?
+
+- At any point, you could `run --full-refresh` and get the "true" table.
+- The goal of incremental models is to _approximate_ the "true" table in a fraction
+of the runtime
+
+---
+
+# Under the hood
+
+What's the DDL/DML that dbt is running?
+
+1. Create a temp table of new records
+2. Reconcile the existing table with the temp table, using one of:
+    - `merge`
+    - `delete` + `insert` ("upsert")
+    - `insert overwrite` ("replace") _entire partitions_
+
+Depends on:
+- database support
+- user input: `incremental_strategy` ([docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models/#what-is-an-incremental_strategy))
+
+---
+
+class: subtitle, center, middle
+# How things fall apart
+
+---
+
+## Take our logic a step further
+
+.denser-text[
+{% raw %}
+With the rest of the model as before, we're going to add a new CTE. Replace
+
+```sql
+)
+
+select * from page_views
+```
+
+with
+
+```sql
+),
+
+indexed as (
+
+    select *,
+
+        row_number() over (
+            partition by session_id
+            order by page_view_start
+        ) as page_view_in_session_index
+
+    from page_views
+
+)
+
+select * from indexed
+```
+and give it a run!
+]
+{% endraw %}
+
+---
+
+# What if...
+
+<img src="/ui/img{{page.id}}/how-late-arriving.png" class="img-center">
+
+What if a session is split across our automated runs?
+
+We end up transforming half the page views in one incremental run, and half in another.
+
+---
+
+# What to do?
+
+In the simple approach, we would calculate two sets of page views:
+* Computed from first half of events in the session. `page_view_in_session_index` is 1, 2, 3...
+* Computed from second half of events in the session. `page_view_in_session_index` is 1, 2, 3...
+
+Why does this happen?
+
+- Running dbt in the middle of a session
+- Late-arriving events
+
+---
+
+# Late-arriving events
+
+.left-column-66[
+<img src="/ui/img{{page.id}}/prop-late-arriving.png" class="img-center">
+X: days between firing + collection
+Y: % of all events
+]
+
+.right-column-33[
+- Dataset: 2.5 months of Snowplow data, 285mm events
+- 99.82% of events arrive within 1 hr of firing
+- 99.88% within 24 hr
+- .highlight[99.93% within 72 hr]
+]
+
+---
+
+# "Close enough & performant"
+
+<img src="/ui/img{{page.id}}/how-close-enough.png" class="img-center">
+
+- _Always_ recalculate the 3 previous days
+- Empirically, this will work for 99.93% of all events on the first try
+- Full refresh on a weekly basis
+
+---
+
+# Take it one step further
+
+.dense-text[
+```sql
+indexed as (
+
+    select *,
+
+        row_number() over (
+            partition by session_id
+            order by page_view_start
+        ) as page_view_in_session_index,
+
+        row_number() over (
+            partition by anonymous_user_id
+            order by page_view_start
+        ) as page_view_for_user_index
+
+    from page_views
+
+)
+
+select * from indexed
+```
+]
+
+---
+
+# "Always correct & slow"
+
+<img src="/ui/img{{page.id}}/how-always-correct.png" class="img-center">
+
+- If a user has a new event, recalculate _all_ page views for that user
+- This works with window functions! But it's **_slowwwww_**...
+
+---
+
+# Too clever by half
+
+<img src="/ui/img{{page.id}}/how-too-clever.png" class="img-center">
+
+- Whenever a user has a new session, pull the user's _most recent session only_,
+and perform relative calculations
+- This takes some hard thinking! E.g. [Segment package](https://github.com/fishtown-analytics/segment/blob/master/models/sessionization/segment_web_sessions.sql#L67)
+
+---
+
+# What about _truly_ massive datasets?
+
+Bigger datasets (and Big Data technologies) are different cost-optimization problems.
+- Always rebuild past 3 days. Fully ignore late arrivals.
+- Always replace data at the _partition level_.
+- No unique keys.
+- Targeted lookback? No way: too much extra data to scan.
+
+We're going to talk about this next :)
+
+---
+
+# It's the modeling, silly
+
+Keep the inputs and transformations of your incremental models as
+singular, simple, and immutable as possible.
+- Slowly changing dimensions, like a `product_name` that the company
+regularly rebrands? Join from a `dim` table.
+- Window functions for quality-of-life counters? Fix it in post—i.e., a separate model.
+This is how our Snowplow package calculates each user's `session_index`.
+
+Rethink! Incrementality introduces a level of complexity (for you and for
+the database) that is **necessarily a trade-off**.
+
+---
+
+class: subtitle
+# Knowledge check
+
+You should be able to:
+- Configure `incremental` models
+- Identify whether data sources are good or bad candidates
+- Understand the trade-offs of transforming data incrementally
+
+### Questions?
+
+{% include options/last_slide.html %}

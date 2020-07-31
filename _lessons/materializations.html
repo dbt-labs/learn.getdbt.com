@@ -1,0 +1,316 @@
+---
+layout: presentation
+title: dbt Materializations
+learningObjectives:
+  - Name and describe the four standard materializations in dbt
+  - Explain the differences between views, tables, and ephemeral materializations
+  
+---
+
+class: title, center, middle
+# dbt Materializations
+
+---
+
+# What is a materialization?
+
+--
+
+1. A special kind of **Jinja macro** that wraps your model SQL
+    - Includes all the boilerplate DDL/DML: `create`, `alter`, `drop`, ...
+
+--
+
+2. An abstraction on top of the **database**
+    - Does this model already exists in the database?
+    - What if it exists as a table, but I want it to be a view?
+    - What if Redshift uses `alter table` for views, but Snowflake uses
+    `alter view`? (It's true!)
+
+---
+
+{% include options/focus_slide.html %}
+
+---
+
+# Standard materializations
+
+.left-column-66[
+
+- Table
+- View
+- Ephemeral
+- Incremental*
+- Snapshot*
+
+### You can write your own!
+
+- Just like you can write your own macros, schema tests, etc.
+- E.g. ["insert by period"](https://github.com/fishtown-analytics/dbt-utils#materializations)
+
+]
+
+.right-column-33[
+<img src="/ui/img{{page.id}}/material-houses.png" class="img-center">
+]
+
+???
+- Materializations are some of the trickiest macros we write
+
+---
+
+# Imagine: some people
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+---
+
+# Imagine: a model
+
+`models/creative_people.sql`
+
+```sql
+select
+
+    id as person_id,
+    name,
+    favorite_color
+
+from raw_people
+where is_creative = true
+```
+
+---
+
+# Table
+
+In the database: `analytics.creative_people`
+
+| person_id | name    | favorite_color |
+|----|---------|----------------|
+| 2  | Barbara | blue           |
+
+--
+
+If we run:
+```sql
+select * from analytics.creative_people
+```
+We will see:
+
+| person_id | name    | favorite_color |
+|----|---------|----------------|
+| 2  | Barbara | blue           |
+
+---
+
+# View
+
+In the database: `analytics.creative_people`
+
+```sql
+select id as person_id, name, favorite_color
+from raw_people
+where is_creative = true
+```
+
+--
+
+If we run:
+```sql
+select * from analytics.creative_people
+```
+We will see:
+
+| person_id | name    | favorite_color |
+|----|---------|----------------|
+| 2  | Barbara | blue           |
+
+---
+
+# Ephemeral
+
+- Does not exist in the database
+- Reusable code snippet
+- Interpolated as CTE in a model that `ref`s this model
+
+--
+
+If we run:
+```sql
+select * from analytics.creative_people
+```
+We will see:
+```sql
+Database Error
+```
+
+---
+
+# What if...
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+
+--
+| 3  | Casper  | red            | true        |
+
+--
+
+### What would you do?
+
+* **Table:** Rebuild whole thing from scratch! Brute force always works.
+* **View:** Recalculate every time I'm queried. Always up to date, often slow.
+* **Ephemeral:** That's not really my problem, yanno? I just sorta go with the flow.
+
+--
+* **Incremental:** I've got an idea!
+
+---
+
+.left-column[
+# The Big Idea
+
+* Let's keep the old table, and we'll just _add_ the _new_ records
+* Less wasteful and probably faster
+* We just need to know:
+    * What we mean by "new"
+    * What we mean by "add"
+* As long as we have good answers, we're in good shape
+]
+
+.right-column[
+<img src="/ui/img{{page.id}}/patrick-meme.png" style="width: 65%;" class="img-center">
+]
+
+---
+
+layout: true
+# Who is new?
+
+And how do you know?
+
+---
+
+| id | name    | favorite_color | is_creative |
+|----|---------|----------------|-------------|
+| 1  | Alice   | green          | false       |
+| 2  | Barbara | blue           | true        |
+| .highlight[3]  | Casper  | red            | true        |
+
+--
+
+- The auto-increment ID from our source data system is greater than the previous
+greatest auto-increment ID
+- We can put unquestioning trust in our source data systems,
+and have never been burned before
+--
+... loljk
+
+---
+
+| id | name    | favorite_color | is_creative | created_date |
+|----|---------|----------------|-------------|--------------|
+| 1  | Alice   | green          | false       | 2020-03-01   |
+| 2  | Barbara | blue           | true        | 2020-03-02   |
+| 3  | Casper  | red            | true        | .highlight[2020-03-03]   |
+
+- A date when the record was initially created
+- _Much_ more reliable than an auto-increment ID
+- Records can only be created once and never updated later
+--
+... right?
+
+---
+
+| id | name    | favorite_color     | is_creative | created_date | updated_date |
+|----|---------|--------------------|-------------|--------------|--------------|
+| 1  | Alice   | green              | false       | 2020-03-01   | 2020-03-01   |
+| 2  | Barbara | .highlight[yellow] | true        | 2020-03-02   | .highlight[2020-03-04]   |
+| 3  | Casper  | red                | true        | 2020-03-03   | 2020-03-03   |
+
+--
+| 4  | Zelda   | indigo             | true        | .highlight[2020-03-02]   | .highlight[2020-03-02]   |
+
+--
+
+- Did you know _that_ could happen?
+- Or that _that_ could happen?
+
+---
+layout: true
+
+# Checkpoint
+
+<img src="/ui/img{{page.id}}/sample_dag.png" style="width: 65%;" class="img-center">
+
+---
+.left-column[
+If...
+- `stg_customers` is a **view**
+- `customers` is a **table**
+]
+
+--
+
+.right-column[
+Then...
+- What views are built in the database?
+- What tables are built in the database?
+- How does dbt build the table?
+]
+
+---
+
+.left-column[
+If...
+- `stg_customers` is an **ephemeral model**
+- `customers` is a **table**
+]
+
+--
+
+.right-column[
+Then...
+- What views are built in the database?
+- What tables are built in the database?
+- How does dbt build the table?
+]
+
+---
+layout: false
+class: subtitle
+# Knowledge check
+
+You should be able to:
+- Name the four materializatons
+- Explain how dbt processes the tables, views, and ephemeral models differently
+
+## Questions?
+
+{% include options/last_slide.html %}
+
+---
+
+class: subtitle
+
+# After lunch
+
+.left-column[
+### Track 1: Talking
+- Incremental models (demo)
+- Modern data warehouses
+- Open floor: data tooling and ecosystem
+]
+
+.right-column[
+### Track 2: Doing
+- More Jinja, packages, custom schema tests
+- Case study: modeling from scratch
+- Project therapy
+]
