@@ -364,45 +364,6 @@ class: subtitle
 
 - Questions??
 
-
----
-class: subtitle, middle, center
-# Testing dbt models
-
-???
-* Add some tests to your models
-* Demonstrate running one test at a time
----
-# What are tests?
---
-
-**Tests** are assertions you make about your **models**.
-
-When your assertion is true, your tests pass.
-
-You configure tests in YML, in the `models` directory.
-
-Behind the scenes, tests are just `select` statements!
-
----
-# What happens when you `dbt test`?
-1. dbt connects to your **data warehouse** (via a **profile**/**connection**)
-2. dbt parses your **dbt project**
-3. dbt iterates through the resource files (`models/**.yml`) to construct `select` queries.
-4. dbt executes the SQL for each test: if the number `0` is returned your test passes
-
-
----
-# Other helpful commands
-CLI:
-* `dbt --help` (and `dbt run --help`)
-* `dbt --version`
-* `dbt debug`
-* `dbt compile`
-
-???
-* Demo each command — for CLI users, it's worth realizing that these are pretty standard CLI commands!
-
 ---
 # Knowledge check
 
