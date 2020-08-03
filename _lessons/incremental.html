@@ -2,8 +2,9 @@
 layout: presentation
 title: Incremental Models
 learningObjectives:
-  - TBD
-  - TBD
+  - Explain use cases for incremental models
+  - Build intuition for implementing incremental models
+  
 ---
 
 class: title, center, middle
@@ -36,6 +37,10 @@ class: title, center, middle
     * Your data is updated in unpredictable ways
     * Your transformation performs comparisons or calculations that require
     _other_ rows (table + view)
+
+---
+
+{% include options/focus_slide.html %}
 
 ---
 
@@ -422,6 +427,18 @@ the database) that is **necessarily a trade-off**.
 ---
 
 class: subtitle
+
+## Checkpoint
+
+- **Share out:** What are some cases at your organization where you would implement incremental models?
+
+--
+
+## Questions?
+
+---
+
+class: subtitle
 # Knowledge check
 
 You should be able to:
@@ -429,6 +446,6 @@ You should be able to:
 - Identify whether data sources are good or bad candidates
 - Understand the trade-offs of transforming data incrementally
 
-### Questions?
+## Questions??
 
 {% include options/last_slide.html %}
