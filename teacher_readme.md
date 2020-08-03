@@ -1,16 +1,6 @@
-
-
 # Teacher Readme
-_Here is a quick reference guide for different teacher moves that are included in the lesson decks_
+_Here is a quick reference guide for different teacher moves that are included in the lesson decks.  Videos of presentations can be found at the bottom as well._
 
-## Table of Contents
-1. [Focus Slides](#focus)
-2. [Checkpoint Slides](#checkpoint)
-3. [Zoom Out Slides](#zoom)
-4. [Video Archive](#video)
-
-
-<a name="focus"/a>
 ## Focus Slides
 ### Purpose
 - Provide focus to the teacher so they know what to make *pop* during the lesson.
@@ -23,7 +13,6 @@ _Here is a quick reference guide for different teacher moves that are included i
 - This is also an opportunity as the teacher to build some excitement around these learning objectives.
 - Bottom Line - Read the room: What will give the group more energy in this moment?  Reading the slides yourself with engagement -OR- calling on a learner to change up who is speaking.
 
-<a name="checkpoint"/a>
 ## Checkpoint Slides
 
 ### Purpose
@@ -40,7 +29,6 @@ _Here is a quick reference guide for different teacher moves that are included i
   - **Type Answers:** "Type your answers into the chat to everyone.  *Read question #1*  Call on people to explain answers.  *Read question #2* ...."
   - **Cold Call:** "We will be using cold call for these questions.  This is not meant to be a 'gotcha' but instead a chance to get everyone involved.  Be ready to answer 😀.
 
-<a name="zoom"/a>
 ## Zoom Out Slides
 
 ### Purpose
@@ -54,7 +42,6 @@ _Here is a quick reference guide for different teacher moves that are included i
 - Before transition: "Wow!  We have covered a ton today.  Just this afternoon, we learned how to configure tests to make sure our code is reliable, set up sources to version control references to raw tables, and we just learned how to document our analytics work for various stakeholders."
 - After transition: "To close out the day, we are going to jump into a group assignment and get hands. on. keyboards.  But first, we are going to take a break - it is 3:30...we will come back at 3:40 - see you in a bit.
 
-<a name="video"/a>
 ## Video Archive
 Here are the links to some videos of each lesson for quick reference.  These can be helpful for seeing a lesson that you have not taught before.
 * [What is an analytics engineer?](https://youtu.be/HUD6BCRDTFk)
