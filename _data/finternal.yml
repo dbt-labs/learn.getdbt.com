@@ -6,10 +6,10 @@
         - slug: dbt-fundamentals
     - name: Features
       lessons:
-        - slug: testing-ci
+        - slug: testing
         - slug: sources
         - slug: docs
-        - slug: assignment  
+        - slug: assignment
 - title: "Afternoon: Applications"
   sessions:
     - name: Extensions
