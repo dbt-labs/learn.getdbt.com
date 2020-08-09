@@ -43,31 +43,20 @@ With dbt!
 
 ---
 
-# Begging two questions
+# "Model it!" actually means:
 
-**What is the final data artifact that I’m trying to share with a stakeholder?**
+**1. There is a set of final data artifacts I want to share with stakeholders.**
 - Also called "data model design," "data warehouse design," or "warehousing"
 - It's a careful balance between several trade-offs: technological limitations, stakeholder needs, correctness vs. complexity, flexibility vs. rigidity
 - Hard to have generic answers! Could fill a book (or several). It's a fascinating topic that we'll cover _very_ briefly
 
 --
 
-**How can I execute the _creation_ of that final artifact?**
+**2. I need a reliable, scalable, intuitive process for generating those final artifacts.**
 - With dbt!
 - The _real_ interest of this presentation
 
 .caption[[Unrelated](https://en.wikipedia.org/wiki/Begging_the_question)]
----
-
-# You may have heard of:
-
-- Dimensional modeling _(Kimball 1996)_
-- Agile / BEAM (Business Event Analysis & Modelling) _(Corr 2011)_
-- Data Vault
-- Data normalization
-- Snowflake / star schema
-- Data "marts"
-
 ---
 
 # Our take
@@ -85,13 +74,14 @@ implementation strategies are still applicable.
 
 ---
 
-# Back in the nineties (aughts)
+# Then: analytics on non-analytic databases
 
 .left-column-33[
-- Database technology privileges **highly normalized star schemas.**
+**Highly normalized star schemas** are the rule of the day. Why?
+- They work well within the limitations of 90s-era database technology.
+- There are technically correct guidelines for the organization and naming of datasets.
 - Data Engineers expect to build them.
 - Data Analysts expect to query them.
-- These two groups don't have much else in common.
 ]
 
 .right-column-66[
@@ -100,142 +90,7 @@ implementation strategies are still applicable.
 
 ---
 
-# What's changed?
-
-.left-column[
-## Then
-- Data Engineers own ETL (“Extract-Transform-Load”)
-- Storage and aggregations are expensive
-- Joins are cheap
-- Datasets are federated between dozens/hundreds of objects
-]
-
-.right-column[
-## Now
-- Off-the-shelf tools (e.g. Stitch, Fivetran) can manage >90% of extract + load
-- Storage and aggregations are cheap
-- Joins are expensive
-- Massive datasets are updated in batches and queried in partitions
-]
-
----
-
-# I've got email!
-
-```
-Dear Analyst,
-
-I would like to know how many widgets we sold in 1997 (last year).
-
-Just widgets in our TV category, that is.
-
-Oh, and if you could slice that number by the brand name of the widget, and 
-dice it by the country where we sold them, that'd be rad.
-
-Thanks!
-
-Tristan
-SVP Marketing Analytics
-```
-
----
-
-# I'm thinking of a model...
-
-.left-column[
-Kimball says:
-1. What is the business process?
-2. What is the grain (primary key)?
-3. What are the "nouns" (dimensions)?
-4. What are the "verbs" (facts)?
-]
-
-.right-column[
-Corr says: 7Ws
-- **w**ho
-- **w**hat
-- **w**hen
-- **w**here
-- ho**w** many
-- **w**hy
-- ho**w**
-]
-
-???
-- The core concepts for human intuition are the same!
-- The specific implementation strategies are different.
-
----
-
-### Before: snowflake schema (ca. 2000s)
-
-<img src="/ui/img{{page.id}}/fact-sales-erd.png" class="img-center">
-
----
-
-### Before: snowflake schema (ca. 2000s)
-
-```sql
-SELECT
-	B.Brand,
-	G.Country,
-	SUM(F.Units_Sold)
-FROM Fact_Sales F
-INNER JOIN Dim_Date D             ON F.Date_Id = D.Id
-INNER JOIN Dim_Store S            ON F.Store_Id = S.Id
-INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id
-INNER JOIN Dim_Product P          ON F.Product_Id = P.Id
-INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id
-INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id
-WHERE
-	D.Year = 1997 AND
-	C.Product_Category = 'tv'
-GROUP BY
-	B.Brand,
-	G.Country
-```
-
----
-
-### After: denormalized model (2020)
-
-.denser-text[
-
-| sale_date | units_sold | store_id | store_number | state_province | country | ean_code      | product_name | brand_name   | product_category_name |
-|-----------|------------|----------|--------------|----------------|---------|---------------|--------------|--------------|-----------------------|
-|1997-01-01 | 7          | 1234     | 12           | PA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
-|1997-01-02 | 8          | 1234     | 12           | MA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
-|1997-01-03 | 9          | 1234     | 12           | NSW            | AU      | 901234-123457 | Widget       | Widgetastic  | tv                    |
-
-]
-
----
-
-### After: denormalized model (2020)
-
-<img src="/ui/img{{page.id}}/fact-sales-dag.png" class="img-center">
-
----
-
-### After: denormalized model (2020)
-
-```sql
-select
-
-	brand,
-	country,
-	sum(units_sold) as total
-
-from analytics.fact_sales
-where date_trunc('year', sale_date) = '1997-01-01'
-  and product_category = 'tv'
-
-group by 1,2
-```
-
----
-
-# _ad hoc_ or _agile_ analytics
+# Now: _ad hoc_ or _agile_ analytics
 
 .denser-text[
 
