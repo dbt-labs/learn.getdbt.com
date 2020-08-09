@@ -6,4 +6,5 @@ run:
 
 build:
 	git submodule update
+	bundle update
 	jekyll build --baseurl ''
