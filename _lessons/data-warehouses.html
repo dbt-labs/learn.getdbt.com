@@ -49,9 +49,14 @@ Learning about your data warehouse is a surefire way to
 
 ---
 
-# "Data" is just information, stored in files
+# "Data" is just
 
-## Does it matter how it's stored?
+- information
+- stored in files
+- with more structure or less
+- does it really matter how it's stored?
+
+---
 
 ### CSV
 
@@ -69,8 +74,6 @@ id,name,favorite_color,is_creative
 ```
 
 ---
-
-## It matters a great deal
 
 ### Parquet
 
@@ -97,11 +100,16 @@ id,name,favorite_color,is_creative
 - Data storage is abstracted
     - Machine-readable optimized file formats
     - On spinning disks, inside boxes, somewhere in Virginia/Oregon/Ireland
+    - (Of course it matters how)
 ]
 
 .right-column[
 <img src="/ui/img{{page.id}}/butterfly.png" class="img-center">
 ]
+
+???
+We're talking almost exclusively about structured data for the rest of this
+presentation, but of course, Mongo et al are databases, too
 
 ---
 
@@ -169,17 +177,17 @@ For instance:
 
 ---
 
-# What about _for analytics_, though?
+# What about _for analytics_?
 
 .left-column[
-## Then (transactional databases)
+### Then (transactional)
 - Storage and aggregations are expensive
 - Joins are cheap
 - Datasets are best when federated between dozens/hundreds of objects
 ]
 
 .right-column[
-## Now (analytic databases)
+### Now (analytic)
 - Storage and aggregations are cheap
 - Joins are expensive
 - Massive datasets are updated in batches and queried in partitions
@@ -187,7 +195,7 @@ For instance:
 
 ---
 
-# I've got email!
+# It's 1998. You've got mail.
 
 ```
 Dear Analyst,
@@ -275,11 +283,12 @@ group by 1,2
 
 ---
 
-.center[
-## So: Transactional. Analytic. Which one is right?
-]
+class: subtitle, center, middle
+# Transactional. Analytic.
+### Which one is right?
 
---
+---
+# Both!
 
 .img-center[
 <img src="/ui/img{{page.id}}/stack.png" style="width: 100%;">
@@ -354,13 +363,13 @@ What type of database should you use if...
 
 ---
 
-class: title, center, middle
+class: subtitle, center, middle
 # Modern Data Warehouses
 
 ---
 
 name: big-q
-# Q: What's _fast_ in a datawarehouse?
+# Q: What's _fast_ in a data warehouse?
 
 ---
 
@@ -474,6 +483,7 @@ class: subtitle
 
 class: subtitle, center, middle
 # Your data warehouse & you
+### Optimization & maintenance
 
 ---
 
