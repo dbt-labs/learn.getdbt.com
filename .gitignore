@@ -3,5 +3,4 @@ www.getdbt.com
 _site/
 .DS_Store
 .jekyll-metadata
-Gemfile.lock
 .jekyll-cache/*
