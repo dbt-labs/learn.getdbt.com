@@ -55,11 +55,12 @@ With dbt!
 - With dbt!
 - The _real_ interest of this presentation
 
-.caption[[Unrelated](https://en.wikipedia.org/wiki/Begging_the_question)]
 ---
 
 class: title, center, middle
-# 1. Your final artifacts matter, but you don't need to get them right on the first try
+# 1. Final data artifacts
+
+### They matter, but you don't need to get them right on the first try
 
 ---
 
@@ -80,15 +81,15 @@ implementation strategies are still applicable.
 
 # Then: analytics on non-analytic databases
 
-.left-column-33[
-**Highly normalized star schemas** are the rule of the day. Why?
-- They work well within the limitations of 90s-era database technology.
-- There are technically correct guidelines for the organization and naming of datasets.
+.left-column[
+**Highly normalized star schemas**. Why?
+- Work well within limitations of 90s-era database technology.
+- Clear guidelines for the organization and naming of datasets.
 - Data Engineers expect to build them.
 - Data Analysts expect to query them.
 ]
 
-.right-column-66[
+.right-column[
 <img src="/ui/img{{page.id}}/fact-dims.png" class="img-center">
 ]
 
@@ -125,18 +126,10 @@ Your goal should be to power reports that can be self-service.
 
 # Do you have to listen to us?
 
-No!
+**_No!_**
 
 If you want to build a snowflake schema or Data Vault 2.0 using dbt, 
 you totally can. It's all just SQL.
-
-Remember our two questions:
-
-1. What is the final data artifact that I’m trying to share with a stakeholder?
-2. How can I execute the _creation_ of that final artifact?
-
-If you have a good answer to question 2, it's okay if your answer to question 1 
-isn't _100% perfect_ or needs to change over time.
 
 ---
 
@@ -158,18 +151,20 @@ class: subtitle
 
 class: subtitle, center, middle
 
-# 2. The process _is_ the product (and that's more important)
+# 2. The process _is_ the product
+
+### (and that's more important)
 
 ---
 
-# There are three interfaces to your data product
+# Three interfaces
 
 1. The Graph
 2. The Code
 3. The Warehouse
 
 These are how people at your organization will conceptualize, interact with,
-and benefit from Your Data, more than any one table or dashboard.
+and benefit from data—your product—more than any one table or dashboard.
 
 ---
 
@@ -443,35 +438,42 @@ when it comes time to make dinner, your guests might become confused :)
 
 ---
 
-# Example, revisited
+class: subtitle
 
-{% raw %}
-```sql
-select
+# Checkpoint:
 
-	brand,                         -- stacked bar position (x-axis)
-	country,                       -- stacked bar color
-	sum(units_sold) as total       -- stacked bar height (y-axis)
+- What are the three interfaces into your dbt project?
+--
 
-from {{environment}}.fact_sales    -- switch between dev / prod
+- What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
+--
 
--- dynamic reporting parameters / dimension groups
-where year = {{param_year}}
-  and product_category = '{{param_product_category}}'
+- What naming conventions is your team already using?
 
-group by 1,2
-```
-{% endraw %}
+--
+
+## Questions?
 
 ---
 
-# Who can write that SQL?
+class: subtitle
 
-<img src="/ui/img{{page.id}}/bi-logos-2.png" style="width: 40%;" class="img-center">
+# Knowledge check
+
+When creating a dbt project:
+- Stage your raw source data before transforming it
+- Every model should have a primary key
+- Think about how your models fit into the bigger picture:
+	- Graph
+	- Codebase
+	- Data Warehouse
+
+{% include options/last_slide.html %}
+
 ---
 
 class: subtitle, middle, center
-# Words to the wise
+# Appendix: Words to the wise
 ### from one data modeler to another
 
 ???
@@ -554,36 +556,3 @@ I think about join "steps" as degrees of Kevin Bacon
 
 # YMMV!
 Take it in good health, and with many grains of salt.
----
-
-class: subtitle
-
-# Checkpoint:
-
-- What are the three interfaces into your dbt project?
---
-
-- What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
---
-
-- What naming conventions is your team already using?
-
---
-
-## Questions?
-
----
-
-class: subtitle
-
-# Knowledge check
-
-When creating a dbt project:
-- Stage your raw source data before transforming it
-- Every model should have a primary key
-- Think about how your models fit into the bigger picture:
-	- Graph
-	- Codebase
-	- Data Warehouse
-
-{% include options/last_slide.html %}
