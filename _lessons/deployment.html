@@ -4,7 +4,7 @@ title: Deployment
 estimated_teaching_time: 15
 learningObjectives:
   - Understand why you need to deploy your dbt project
-  - List some considerations when running your project
+  - List some considerations when deploying your project
   - List some options for deploying your dbt project
   - Deploy your dbt project with dbt Cloud
 ---
@@ -46,21 +46,17 @@ Also known as:
 {% include options/focus_slide.html %}
 
 ---
-
-# A question for your engineering team:
-## .grey[_How does your engineering team's code get deployed?_]
-
----
+class: subtitle
 
 # A thought experiment:
-## .grey[_Your solution is to set up a daily cron job on an EC2 server_]
+## .grey[💡: _"Let's set up a cron job to run dbt on an EC2 server"_]
 
 ---
 # Considerations
 
 Does your production run:
 * Use the latest version of your dbt project? → **continuous deployment**
-* Use the latest dbt version?
+* Use the correct dbt version for your project?
 * Have monitoring and alerting if something goes wrong?
 * Have a way to debug failures?
 * Have a secure access model?
@@ -74,6 +70,13 @@ Does your production run:
 _(Obviously we're biased)_
 
 The scheduler in dbt Cloud is purpose built for running dbt jobs on a schedule.
+
+✅ Always pulls the latest version of your project
+✅ Easy to build on Pull Request (and tear down the schema afterwards)
+✅ Easy to generate and share documentation with users
+✅ Secure access model
+✅ Email and Slack notifications if something goes wrong, with rich logs
+
 
 ---
 <img src="/ui/img{{page.id}}/dbt-cloud.png" style="width: 100%;">
@@ -120,13 +123,53 @@ You'll need:
 
 ---
 
+# The commands you should run as part of your dbt job
+
+.left-column[
+
+#### At a minimum:
+```txt
+$ dbt run
+$ dbt test
+```
+
+]
+
+--
+
+.right-column[
+#### Our preferred setup:
+```txt
+$ dbt source snapshot-freshness
+$ dbt test -m source:*
+$ dbt seed
+$ dbt run
+$ dbt test --exclude source:*
+```
+
+]
+---
+
+# Additional strategies
+
+Recommended:
+- Separate CI job — clearer notifications
+- Weekly full refresh job — more on this tomorrow!
+
+Seen in the wild:
+- Separate jobs for different parts of your project
+- Blue/green deploys ([article](https://discourse.getdbt.com/t/performing-a-blue-green-deploy-of-your-dbt-project-on-snowflake/1349))
+- Cloning from prod on CI runs (Snowflake only)
+
+---
+
 class: subtitle
 
 # Knowledge check
 
-You should:
-- Understand why you need to deploy your dbt project
-- List some considerations when running your project
+You should be able to:
+- Explain why you need to deploy your dbt project
+- List some considerations when deploying your project
 - List some options for deploying your dbt project
 - Deploy your dbt project with dbt Cloud
 

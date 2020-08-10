@@ -13,6 +13,7 @@
         - slug: sources
         - slug: docs
         - slug: assignment
+        - slug: deployment
 
 - day: 2
   title: "Day Two: Applications"
