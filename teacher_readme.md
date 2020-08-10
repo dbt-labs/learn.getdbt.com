@@ -45,7 +45,7 @@ _Here is a quick reference guide for different teacher moves that are included i
 ## Video Archive
 Here are the links to some videos of each lesson for quick reference.  These can be helpful for seeing a lesson that you have not taught before.
 * [What is an analytics engineer?](https://youtu.be/HUD6BCRDTFk)
-* [Analytics Engineering Viewpoint]()
+* [Analytics Engineering Viewpoint](https://youtu.be/XR1MmpVpZCE)
 * [dbt Fundamentals](https://youtu.be/8PHS-uzmQRE)
 * [dbt Project Design](https://youtu.be/tdYuH_CeOSg)
 * [Testing & CI](https://youtu.be/OU6YGFgXdh4)

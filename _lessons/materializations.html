@@ -18,11 +18,9 @@ class: title, center, middle
 
 1. A special kind of **Jinja macro** that wraps your model SQL
     - Includes all the boilerplate DDL/DML: `create`, `alter`, `drop`, ...
-
 --
-
 2. An abstraction on top of the **database**
-    - Does this model already exists in the database?
+    - Does this model already exist in the database?
     - What if it exists as a table, but I want it to be a view?
     - What if Redshift uses `alter table` for views, but Snowflake uses
     `alter view`? (It's true!)

@@ -119,8 +119,6 @@ Run specific tests: `dbt test -m one_specific_model`
 3. dbt iterates through the resource files (`models/**.yml`) to construct `select` queries.
 4. dbt executes the SQL for each test: if the number `0` is returned your test passes*
 
-\* Data tests return `0` rows if they pass.
-
 ---
 
 # dbt's built-in tests:
