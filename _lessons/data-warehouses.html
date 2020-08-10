@@ -364,7 +364,7 @@ What type of database should you use if...
 ---
 
 class: subtitle, center, middle
-# Modern Data Warehouses
+# Data Warehouses
 
 ---
 
@@ -389,7 +389,7 @@ template: first-a
 name: second-a
 
 .right-column[
-### A: Massive + massively parallel
+### A: Parallel processing
 
 Data warehouses can benefit from .highlight[**horizontal and vertical scaling**].
 - _horizontal = more computers_
@@ -399,7 +399,7 @@ Data warehouses can benefit from .highlight[**horizontal and vertical scaling**]
 ---
 
 class: subtitle, center, middle
-# So... why are queries slow?
+# So... why is my query slow?
 
 ---
 
@@ -482,13 +482,14 @@ class: subtitle
 ---
 
 class: subtitle, center, middle
-# Your data warehouse & you
-### Optimization & maintenance
+# Comparisons
 
 ---
 
 
 # Apples to apples
+
+What's required to **optimize** and **maintain** database performance?
 
 .denser-text[
 .left-column-66[
@@ -496,9 +497,10 @@ class: subtitle, center, middle
 ### Redshift
 - Sort keys: compound or interleaved?
 - Dist style: single column, even, or all?
-- Maintenance: vacuum, analyze
+- Maintenance: vacuum, analyze (maybe?)
 - Column compression: ZSTD, LZO, ...
 - Scaling: classic resize? RA3?
+- Read `explain` plans
 ]
 
 .right-column[
@@ -506,6 +508,7 @@ class: subtitle, center, middle
 - Partitioning
 - Clustering
 - Nesting/arraying repeated records
+- Read query plan
 ]
 ]
 
@@ -513,6 +516,7 @@ class: subtitle, center, middle
 ### Snowflake
 - Clustering (~sorting)
     - Only for large tables
+- Visually inspect query profile
 ]
 ]
 
@@ -584,9 +588,9 @@ functionality
 
 ---
 
-# What is a modern data warehouse?
+# The Modern Data Warehouse
 
-It offers the best of both worlds:
+Offers the best of both worlds:
 
 - Intuitive **user experience** of a database: users, groups/roles,
 authentication, permissions, information schema, everything is SQL
