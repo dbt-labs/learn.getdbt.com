@@ -22,7 +22,7 @@ _Here is a quick reference guide for different teacher moves that are included i
 - These create a specific point during the lessons for the entire group to engage in conversation around important concepts/practices
 
 ### Execution
-- It is important that presenters provide clarity around *how* to answers these questions.
+- It is important that presenters provide clarity around *how* to answer these questions.
 - It is powerful if presenters can norm on this for all checkpoints
 - Here are some options:
   - **Hand Raise:** "Using your zoom 'Hand Raise' feature, raise your hand to answer these questions.  We will then call on three people to build off each other in response."
