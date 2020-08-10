@@ -42,9 +42,129 @@ With dbt!
 
 ---
 
+# "Model it!" actually means:
+
+**1. There is a set of final data artifacts I want to share with stakeholders.**
+- "data model design," "data warehouse design," "warehousing"
+- It's a careful balance between several trade-offs: technological limitations, stakeholder needs, correctness vs. complexity, flexibility vs. rigidity
+- Hard to have generic answers! Could fill a book (or several). It's a fascinating topic that we'll cover _very_ briefly
+
+--
+
+**2. I need a reliable, scalable, intuitive process for generating those final artifacts.**
+- With dbt!
+- The _real_ interest of this presentation
+
+---
+
+class: title, center, middle
+# 1. Final data artifacts
+
+### They matter, but you don't need to get them right on the first try
+
+---
+
+# Our take
+
+Any set of best practices in model design have always needed to balance between
+two competing interests:
+
+- **Intuition:** speed of comprehension for human analysts
+
+- **Performance:** speed of operation for (non-human) database
+
+As modern data practitioners, we are inheritors of a decades-long history. It
+is our task to determine for the present day which concepts are still necessary, and which
+implementation strategies are still applicable.
+
+---
+
+# Then: analytics on non-analytic databases
+
+.left-column[
+**Highly normalized star schemas**. Why?
+- Work well within limitations of 90s-era database technology.
+- Clear guidelines for the organization and naming of datasets.
+- Data Engineers expect to build them.
+- Data Analysts expect to query them.
+]
+
+.right-column[
+<img src="/ui/img{{page.id}}/fact-dims.png" class="img-center">
+]
+
+---
+
+# Now: _ad hoc_ or _agile_ analytics
+
+.denser-text[
+
+.left-column[
+### Given
+
+- The technology we use is _powerful_. This isn't Kimball's database.
+- Designing and naming things for human intuition is _hard_. You won't get
+it right the first time, every time.
+- You're building a data product; you're not a data service provider. 
+Your goal should be to power reports that can be self-service.
+]
+
+.right-column[
+### Therefore
+
+- Build the data models you need, when you need them.
+- Think about the same things as always:
+	1. Business meaning
+	2. Nomenclature
+	3. Primary key
+- Write all data transformation in SQL.
+- Build with layers of abstraction so that you can make changes later.
+]
+]
+
+---
+
+# Do you have to listen to us?
+
+**_No!_**
+
+If you want to build a snowflake schema or Data Vault 2.0 using dbt, 
+you totally can. It's all just SQL.
+
+---
+
+class: subtitle
+
+# Checkpoint:
+
+- My manager is committed to a snowflake schema for your organizing our data, can I still use dbt?
+
+--
+
+- Why is that the case?
+
+--
+
+## Questions??
+
+---
+
 class: subtitle, center, middle
 
-# Interfaces to your data product
+# 2. The process _is_ the product
+
+### (and that's more important)
+
+---
+
+# Three interfaces
+
+1. The Graph
+2. The Code
+3. The Warehouse
+
+These are how people at your organization will conceptualize, interact with,
+and benefit from data—your product—more than any one table or dashboard.
 
 ---
 
@@ -310,43 +430,94 @@ class: subtitle, center, middle
 ]
 
 ???
-dbt models are like kitchen tools. The only single-purpose kitchen applicance
+dbt models are like kitchen tools. The only single-purpose kitchen appliance
 you should ever have is a rice cooker.
 
-BI assets are like recipies. It doesn't hurt as much to have similar ones, but
+BI assets are like recipes. It doesn't hurt as much to have similar ones, but
 when it comes time to make dinner, your guests might become confused :)
 
 ---
 
-# Example, revisited
+# How > Who
+
+_Which_ tool you're using matters less than _how_ you're using it.
+
+Your BI layer should be:
+
+.left-column[
+### Thin
+- Rename _only_ for cosmetics
+- No joins best, 1:1 joins okay (at most 2)<sup>1</sup>
+]
+
+.right-column[
+### Flexible
+- User-input parameters/filters
+- Always prefer one explore or dashboard that can answer a dozen questions
+]
+
+.caption[<sup>1</sup>Some tools handle 1:n joins well (Looker symmetric aggregates)]
+
+---
+
+# Can your BI tool write this SQL?
 
 {% raw %}
 ```sql
 select
 
-	brand,                         -- stacked bar position (x-axis)
-	country,                       -- stacked bar color
-	sum(units_sold) as total       -- stacked bar height (y-axis)
+    product_category,   -- dimension
+    sum(revenue)        -- measure
 
-from {{environment}}.fact_sales    -- switch between dev / prod
-
--- dynamic reporting parameters / dimension groups
-where year = {{param_year}}
-  and product_category = '{{param_product_category}}'
-
-group by 1,2
+from {{ environment }}.fct_orders   -- dev or prod
+where order_date >= '{{ param_order_date }}'
+group by 1
 ```
 {% endraw %}
 
 ---
 
-# Who can write that SQL?
-
+class: center
+# Yes!
 <img src="/ui/img{{page.id}}/bi-logos-2.png" style="width: 40%;" class="img-center">
+
+---
+
+class: subtitle
+
+# Checkpoint:
+
+- What are the three interfaces into your dbt project?
+--
+
+- What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
+--
+
+- What naming conventions is your team already using?
+
+--
+
+## Questions?
+
+---
+
+class: subtitle
+
+# Knowledge check
+
+When creating a dbt project:
+- First decide on the final artifact, and then sketch out the process for modeling it.
+- Use the three interfaces to organize your models.
+- Stage your raw source data before transforming it.
+- Every model should have a primary key.
+- Decide as an organization how to keep your BI layer thin and flexible.
+
+{% include options/last_slide.html %}
+
 ---
 
 class: subtitle, middle, center
-# Words to the wise
+# Appendix: Words to the wise
 ### from one data modeler to another
 
 ???
@@ -429,36 +600,3 @@ I think about join "steps" as degrees of Kevin Bacon
 
 # YMMV!
 Take it in good health, and with many grains of salt.
----
-
-class: subtitle
-
-# Checkpoint:
-
-- What are the three interfaces into your dbt project?
---
-
-- What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
---
-
-- What naming conventions is your team already using?
-
---
-
-## Questions?
-
----
-
-class: subtitle
-
-# Knowledge check
-
-When creating a dbt project:
-- Stage your raw source data before transforming it
-- Every model should have a primary key
-- Think about how your models fit into the bigger picture:
-	- Graph
-	- Codebase
-	- Data Warehouse
-
-{% include options/last_slide.html %}

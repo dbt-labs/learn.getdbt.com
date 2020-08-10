@@ -49,20 +49,14 @@ Learning about your data warehouse is a surefire way to
 
 ---
 
-# Structured Data
+# "Data" is just
 
-_ordines et columnae sumus._     - Horace, Ode 4.7
-
-&nbsp;
-
-| id | name    | favorite_color | is_creative |
-|----|---------|----------------|-------------|
-| 1  | Alice   | green          | false       |
-| 2  | Barbara | blue           | true        |
+- information
+- stored in files
+- with more structure or less
+- does it really matter how it's stored?
 
 ---
-
-# Storing Data
 
 ### CSV
 
@@ -80,8 +74,6 @@ id,name,favorite_color,is_creative
 ```
 
 ---
-
-# Storing Data
 
 ### Parquet
 
@@ -108,11 +100,16 @@ id,name,favorite_color,is_creative
 - Data storage is abstracted
     - Machine-readable optimized file formats
     - On spinning disks, inside boxes, somewhere in Virginia/Oregon/Ireland
+    - (Of course it matters how)
 ]
 
 .right-column[
 <img src="/ui/img{{page.id}}/butterfly.png" class="img-center">
 ]
+
+???
+We're talking almost exclusively about structured data for the rest of this
+presentation, but of course, Mongo et al are databases, too
 
 ---
 
@@ -180,7 +177,148 @@ For instance:
 
 ---
 
-# What's in a name?
+# What about _for analytics_?
+
+.left-column[
+### Then (transactional)
+- Storage and aggregations are expensive
+- Joins are cheap
+- Datasets are best when federated between dozens/hundreds of objects
+]
+
+.right-column[
+### Now (analytic)
+- Storage and aggregations are cheap
+- Joins are expensive
+- Massive datasets are updated in batches and queried in partitions
+]
+
+---
+
+# It's 1998. You've got mail.
+
+```
+Dear Analyst,
+
+I would like to know how many widgets we sold in 1997 (last year).
+
+Just widgets in our TV category, that is.
+
+Oh, and if you could slice that number by the brand name of the widget, and 
+dice it by the country where we sold them, that'd be rad.
+
+Thanks!
+
+Tristan
+SVP Marketing Analytics
+```
+
+---
+
+### Before: snowflake schema (ca. 2000s)
+
+<img src="/ui/img{{page.id}}/fact-sales-erd.png" class="img-center">
+
+---
+
+### Before: snowflake schema (ca. 2000s)
+
+```sql
+SELECT
+	B.Brand,
+	G.Country,
+	SUM(F.Units_Sold)
+FROM Fact_Sales F
+INNER JOIN Dim_Date D             ON F.Date_Id = D.Id
+INNER JOIN Dim_Store S            ON F.Store_Id = S.Id
+INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id
+INNER JOIN Dim_Product P          ON F.Product_Id = P.Id
+INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id
+INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id
+WHERE
+	D.Year = 1997 AND
+	C.Product_Category = 'tv'
+GROUP BY
+	B.Brand,
+	G.Country
+```
+
+---
+
+### After: denormalized model (2020)
+
+.denser-text[
+
+| sale_date | units_sold | store_id | store_number | state_province | country | ean_code      | product_name | brand_name   | product_category_name |
+|-----------|------------|----------|--------------|----------------|---------|---------------|--------------|--------------|-----------------------|
+|1997-01-01 | 7          | 1234     | 12           | PA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+|1997-01-02 | 8          | 1234     | 12           | MA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+|1997-01-03 | 9          | 1234     | 12           | NSW            | AU      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+
+]
+
+---
+
+### After: denormalized model (2020)
+
+<img src="/ui/img{{page.id}}/fact-sales-dag.png" class="img-center">
+
+---
+
+### After: denormalized model (2020)
+
+```sql
+select
+
+	brand,
+	country,
+	sum(units_sold) as total
+
+from analytics.fact_sales
+where date_trunc('year', sale_date) = '1997-01-01'
+  and product_category = 'tv'
+
+group by 1,2
+```
+
+---
+
+class: subtitle, center, middle
+# Transactional. Analytic.
+### Which one is right?
+
+---
+# Both!
+
+.img-center[
+<img src="/ui/img{{page.id}}/stack.png" style="width: 100%;">
+]
+
+--
+
+.left-column[.center[
+Power your application with a transactional database
+]]  
+
+.right-column[.center[
+Analyze data with an analytical database
+]]  
+
+---
+
+# A modern approach
+
+1. Replicate data into a warehouse
+    - Transactional databases
+    - SaaS products
+    - Event tracking
+2. Query the data in the warehouse
+3. Be a cultural change agent for data in your organization
+4. Profit
+
+---
+
+# P.S. What's in a name?
 
 .left-column[
 Transactional Database, a.k.a.:
@@ -200,27 +338,10 @@ Analytic(al) Database, a.k.a.:
 - e.g. Redshift
 ]
 
----
-
-.center[
-## Big Idea: Which one is right?
-]
-
---
-
-.img-center[
-<img src="/ui/img{{page.id}}/stack.png" style="width: 100%;">
-]
-
---
-
-.left-column[.center[
-Power your application with a transactional database
-]]  
-
-.right-column[.center[
-Analyze data with an analytical database
-]]  
+???
+- RDMS or RDBMS = Relational Database Management System
+- OLTP = Online Transactional Processing
+- OLAP = Online Analytical Processing
 
 ---
 
@@ -238,34 +359,17 @@ What type of database should you use if...
 
 ## Questions?
 
----
-
-
-# A modern approach
-
-1. Replicate data into a warehouse
-    - Transactional databases
-    - SaaS products
-    - Event tracking
-2. Query the data in the warehouse
-3. Be a cultural change agent for data in your organization
-4. Profit
-
 ???
-- RDMS or RDBMS = Relational Database Management System
-- OLTP = Online Transactional Processing
-- OLAP = Online Analytical Processing
 
 ---
 
-class: title, center, middle
-# Modern Data Warehouses
-### "You better shop around" - The Miracles
+class: subtitle, center, middle
+# Data Warehouses
 
 ---
 
 name: big-q
-# Q: Why are data warehouses fast?
+# Q: What's _fast_ in a data warehouse?
 
 ---
 
@@ -273,10 +377,10 @@ template: big-q
 name: first-a
 
 .left-column[
-### A: They're columnar.
+### A: "Analytical" queries
 
 This structure of data storage allows them to .highlight[**limit scanned data**]
-when executing an "analytical" query.
+when aggregating across a subset of columns.
 ]
 
 ---
@@ -285,7 +389,7 @@ template: first-a
 name: second-a
 
 .right-column[
-### A: They're scalable.
+### A: Parallel processing
 
 Data warehouses can benefit from .highlight[**horizontal and vertical scaling**].
 - _horizontal = more computers_
@@ -295,7 +399,7 @@ Data warehouses can benefit from .highlight[**horizontal and vertical scaling**]
 ---
 
 class: subtitle, center, middle
-# So... why are queries slow?
+# So... why is my query slow?
 
 ---
 
@@ -377,8 +481,15 @@ class: subtitle
 
 ---
 
+class: subtitle, center, middle
+# Comparisons
+
+---
+
 
 # Apples to apples
+
+What's required to **optimize** and **maintain** database performance?
 
 .denser-text[
 .left-column-66[
@@ -386,9 +497,10 @@ class: subtitle
 ### Redshift
 - Sort keys: compound or interleaved?
 - Dist style: single column, even, or all?
-- Maintenance: vacuum, analyze
+- Maintenance: vacuum, analyze (maybe?)
 - Column compression: ZSTD, LZO, ...
 - Scaling: classic resize? RA3?
+- Read `explain` plans
 ]
 
 .right-column[
@@ -396,6 +508,7 @@ class: subtitle
 - Partitioning
 - Clustering
 - Nesting/arraying repeated records
+- Read query plan
 ]
 ]
 
@@ -403,6 +516,7 @@ class: subtitle
 ### Snowflake
 - Clustering (~sorting)
     - Only for large tables
+- Visually inspect query profile
 ]
 ]
 
@@ -474,9 +588,9 @@ functionality
 
 ---
 
-# What is a modern data warehouse?
+# The Modern Data Warehouse
 
-It offers the best of both worlds:
+Offers the best of both worlds:
 
 - Intuitive **user experience** of a database: users, groups/roles,
 authentication, permissions, information schema, everything is SQL
@@ -491,7 +605,7 @@ It's what partners best with dbt!
 # Who is best in class?
 
 - Snowflake + BigQuery: data lakes posing as data warehouses
-- Redshift is playing catch-up with Spectrum + RA3 nodes
+- Redshift is catching up with Spectrum, Aqua, RA3 nodes
 
 ### What sets them apart?
 - Support for semi-structured data
@@ -499,6 +613,42 @@ It's what partners best with dbt!
 - Separation of compute + storage
 
 These are features that, five years ago, were only found in Spark.
+
+---
+
+class: subtitle
+
+# Checkpoint:
+
+- Who are the *big three* players in data warehousing?
+
+--
+
+- What data warehouse technologies are you using at your organization?
+
+---
+
+class: subtitle
+# Knowledge check
+
+You should understand:
+- The foundational differences between transactional and analytical databases
+
+You should be building intuition around:
+- Why certain queries/models build more slowly
+- Which dbt features depend on features of the underlying data warehouse
+- Which data warehouses are best-in-class and why
+- Why someone might opt for a Data Lake technology (e.g. Spark)
+
+## Questions??
+
+{% include options/last_slide.html %}
+
+---
+
+class: subtitle, center, middle
+# Appendix
+## The Big Three in 2020: how they stack up
 
 ---
 
@@ -587,33 +737,3 @@ What if you want it _now_?
     - E.g. test that `unique` failures are < 1% of all rows
 - Tables are "sharded" by a top-level identifier
     - region, account, client, etc.
-
----
-
-class: subtitle
-
-# Checkpoint:
-
-- Who are the *big three* players in data warehousing?
-
---
-
-- What data warehouse technologies are you using at your organization?
-
----
-
-class: subtitle
-# Knowledge check
-
-You should understand:
-- The foundational differences between transactional and analytical databases
-
-You should be building intuition around:
-- Why certain queries/models build more slowly
-- Which dbt features depend on features of the underlying data warehouse
-- Which data warehouses are best-in-class and why
-- Why someone might opt for a Data Lake technology (e.g. Spark)
-
-## Questions??
-
-{% include options/last_slide.html %}
