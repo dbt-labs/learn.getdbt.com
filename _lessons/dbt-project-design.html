@@ -430,11 +430,56 @@ class: subtitle, center, middle
 ]
 
 ???
-dbt models are like kitchen tools. The only single-purpose kitchen applicance
+dbt models are like kitchen tools. The only single-purpose kitchen appliance
 you should ever have is a rice cooker.
 
-BI assets are like recipies. It doesn't hurt as much to have similar ones, but
+BI assets are like recipes. It doesn't hurt as much to have similar ones, but
 when it comes time to make dinner, your guests might become confused :)
+
+---
+
+# How > Who
+
+_Which_ tool you're using matters less than _how_ you're using it.
+
+Your BI layer should be:
+
+.left-column[
+### Thin
+- Rename _only_ for cosmetics
+- No joins best, 1:1 joins okay (at most 2)<sup>1</sup>
+]
+
+.right-column[
+### Flexible
+- User-input parameters/filters
+- Always prefer one explore or dashboard that can answer a dozen questions
+]
+
+.caption[<sup>1</sup>Some tools handle 1:n joins well (Looker symmetric aggregates)]
+
+---
+
+# Can your BI tool write this SQL?
+
+{% raw %}
+```sql
+select
+
+    product_category,   -- dimension
+    sum(revenue)        -- measure
+
+from {{ environment }}.fct_orders   -- dev or prod
+where order_date >= '{{ param_order_date }}'
+group by 1
+```
+{% endraw %}
+
+---
+
+class: center
+# Yes!
+<img src="/ui/img{{page.id}}/bi-logos-2.png" style="width: 40%;" class="img-center">
 
 ---
 
