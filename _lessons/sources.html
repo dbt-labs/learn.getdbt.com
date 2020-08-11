@@ -9,7 +9,7 @@ learningObjectives:
   - Build dependencies between sources and models
   - Configure tests for sources
   - Configure freshness snapshots
-  - Build inuition for why defining sources can be helpful in the future
+  - Build intuition for why defining sources can be helpful in the future
 ---
 
 class: title, center, middle
@@ -90,6 +90,7 @@ sources:
 
 Use the {% raw %}`{{ source() }}`{% endraw %} function to select from a source in a model:
 
+.left-column[
 {% raw %}
 ```sql
 with source as (
@@ -103,6 +104,23 @@ renamed as (
 ...
 ```
 {% endraw %}
+]
+
+--
+
+.right-column[
+```sql
+with source as (
+
+    select * from raw.jaffle_shop.customers
+
+),
+
+renamed as (
+
+...
+```
+]
 
 ---
 
@@ -260,6 +278,59 @@ More complex deployments:
 leaves old objects in place (if a test fails)
 
 ---
+
+class: subtitle
+
+## Checkpoint
+Given the following YML file, what will the following select statements compile to?
+
+.left-column[
+`sources.yml`
+```yml
+version: 2
+
+sources:
+  - name: snowplow
+    database: raw
+    tables:
+      - name: events
+  - name: stripe
+    database: raw
+    tables:
+      - name: payments
+```
+]
+
+{% raw %}
+.right-column[
+`SQL`
+```sql
+select *
+from {{ source('stripe','payments') }}
+```
+
+
+```sql
+select *
+from {{ source('snowplow', 'events') }}
+```
+]
+{% endraw %}
+
+---
+
+class: subtitle
+
+## Checkpoint
+
+- How does using sources, instead of directly referencing tables, impact our work as analytics engineers?
+ 
+--
+
+## Questions??
+
+---
+
 
 class: subtitle
 

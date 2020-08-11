@@ -21,21 +21,21 @@ class: title, center, middle
 
 # Refresher:
 
-## The [dbt Viewpoint](https://docs.getdbt.com/docs/about/viewpoint/)
+### The [dbt Viewpoint](https://docs.getdbt.com/docs/about/viewpoint/)
 _**Analytics code should have quality assurance**_
 * _Run automated tests on source data and on transformed data to ensure that SQL works as intended_
 * _Ensure source data is up to date_
 
 ---
-# Refresher:
-## dbt Fundamentals
-_**Tests** are assertions you make about your **models**._
+# What are tests?
 
-_When you execute the `test` **command** dbt iterates through the resource files (`models/**.yml`) to construct `select` queries._
+**Tests** are assertions you make about your **models**.
 
-_These queries return `0` when your assertion is true, otherwise the test fails._
-???
-We've already touched on these concepts a couple of times.
+When your assertion is true, your tests pass.
+
+You configure tests in YML, in the `models` directory.
+
+Behind the scenes, test are just `select` statements!
 
 ---
 # Examples:
@@ -68,6 +68,7 @@ where customer_id is null
 ???
 Teacher notes: talk about how these relate
 ---
+
 # Examples:
 .left-column[
 ```yml
@@ -84,6 +85,7 @@ models:
 ```
 ]
 --
+
 .right-column[
 ```sql
 
@@ -101,11 +103,116 @@ select count(*) from (
 
 ---
 
+# How do we run tests?
+
+Run all tests: `dbt test`
+
+Run specific tests: `dbt test -m one_specific_model`
+
+
+---
+
+# What happens when you run `dbt test`?
+
+1. dbt connection to your **data warehouse** (via a **profile/connection**)
+2. dbt parses your **dbt project**
+3. dbt iterates through the resource files (`models/**.yml`) to construct `select` queries.
+4. dbt executes the SQL for each test: if the number `0` is returned your test passes*
+
+---
+
 # dbt's built-in tests:
-* `unique`
+.left-column[
+* **`unique`**
 * `not_null`
 * `accepted_values`
 * `relationships`
+]
+
+--
+
+.right-column[
+Every value in this column is unique.
+
+
+]
+
+---
+# dbt's built-in tests:
+.left-column[
+* `unique`
+* **`not_null`**
+* `accepted_values`
+* `relationships`
+]
+
+.right-column[
+Every value in this column is not null.
+
+
+]
+
+
+---
+# dbt's built-in tests:
+.left-column[
+* `unique`
+* `not_null`
+* **`accepted_values`**
+* `relationships`
+]
+
+.right-column[
+Every value in this column is a value from a given list.
+
+```yml
+version: 2
+
+models:
+  - name: orders
+    columns:
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['placed', 'shipped', 'completed', 'returned']
+```
+]
+
+---
+# dbt's built-in tests:
+.left-column[
+* `unique`
+* `not_null`
+* `accepted_values`
+* **`relationships`**
+]
+
+.right-column[
+Each value in this column exists in the column of another table.
+
+```yml
+version: 2
+
+models:
+  - name: orders
+    columns:
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('customers')
+              field: id
+
+```
+
+]
+
+
+---
+
+# Q: How do I run a test in dbt?
+
+
+
 
 ---
 # Q: Why might a test fail?
@@ -229,6 +336,60 @@ We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
 
 
 ---
+
+class: subtitle
+
+## Checkpoint 
+
+.left-column[
+```yml
+version: 2
+
+models:
+  - name: payments
+    columns: 
+      - name: payment_id
+        tests:
+          - not_null
+          - unique
+```
+]
+
+.right-column[
+- What are the tests being run in this project?
+- What are they running on?
+- If they fail, what does that tell us?
+]
+
+
+---
+
+class: subtitle
+
+## Checkpoint 
+
+.left-column[
+```yml
+version: 2
+
+models:
+  - name: payments
+    columns: 
+      - name: payment_method
+        tests:
+          - accepted_values:
+              values: ['credit_card', 'paypal', 'ach_transfer']
+```
+]
+
+.right-column[
+- What are the tests being run in this project?
+- What are they running on?
+- If they fail, what does that tell us?
+]
+
+---
+
 class: subtitle
 
 # Knowledge check
