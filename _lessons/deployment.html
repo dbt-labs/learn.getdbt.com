@@ -2,157 +2,164 @@
 layout: presentation
 title: Deployment
 estimated_teaching_time: 15
+learningObjectives:
+  - Understand why you need to deploy your dbt project
+  - List some considerations when deploying your project
+  - List some options for deploying your dbt project
+  - Deploy your dbt project with dbt Cloud
 ---
 
 class: title, center, middle
-# Deployment
+# Deploying your dbt project
 
 ---
 
-# Ecosystem wins
+# We've built our first models... now what?
 
-Modern, modular data stack includes:
-- dbt for analytics engineering
-- Data warehouse
-- EL (Stitch/Fivetran/...)
-- BI (Looker/Mode/...)
-- What else?
+--
 
----
+- How will our team members access them? They are currently in a schema named `dbt_alice`
 
-# Non-development dbt
+--
 
-In two senses:
-- Who is a read-only user?
-- What does CI/CD mean to _you_?
+- What happens if our underlying data gets updated? (It should!)
 
-???
-We often tell analysts to ask their neighborhood DevOps person!
+--
+
+- What happens if we add new models, or change existing ones?
 
 ---
 
-# Earlier: Automating dbt runs
-You need to run dbt on a schedule to keep your data up to date.
+# Solution:
 
-Does your automated run:
-* Use the latest version of my project? → **continuous deployment**
+--
+
+- Run dbt on a schedule
+- Use a "trusted" schema for this run
+
+Also known as:
+- Running dbt in production
+- Deploying your dbt project
+
+---
+
+{% include options/focus_slide.html %}
+
+---
+class: subtitle
+
+# A thought experiment:
+## .grey[💡: _"Let's set up a cron job to run dbt on an EC2 server"_]
+
+---
+# Considerations
+
+Does your production run:
+* Use the latest version of your dbt project? → **continuous deployment**
+* Use the correct dbt version for your project?
 * Have monitoring and alerting if something goes wrong?
 * Have a way to debug failures?
-* Build & test your code every time you want to merge changes ("deploy to production")? →  **continuous integration**
+* Have a secure access model?
+* Build & test your code every time you want to merge changes? →  **continuous integration**
+* Have a secure way to host your project documentation?
 
-We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
+---
+
+# Our recommendation: dbt Cloud
+
+_(Obviously we're biased)_
+
+The scheduler in dbt Cloud is purpose built for running dbt jobs on a schedule.
+
+✅ Always pulls the latest version of your project
+✅ Easy to build on Pull Request (and tear down the schema afterwards)
+✅ Easy to generate and share documentation with users
+✅ Secure access model
+✅ Email and Slack notifications if something goes wrong, with rich logs
+
+
+---
+<img src="/ui/img{{page.id}}/dbt-cloud.png" style="width: 100%;">
+
 
 ---
 
 # Alternatives to dbt Cloud
 
-- Standalone, general-purpose orchestration tools
-    - Airflow, Jenkins, Luigi, ...
-- Tightly coupled with other pieces of data stack
-    - GitLab CI/CD, Fivetran-hosted dbt
-- Analytics in a box
-    - e.g. Postgres + cron + Heroku + ELK
+<img src="/ui/img{{page.id}}/serverless-deployment.jpg" style="width: 60%;" class="img-center">
 
 ---
 
-# Why?
+# The pieces you'll need
+- An orchestration tool:
+    - Airflow ([related video](https://www.youtube.com/watch?v=Z6dPIXGj29M)), Jenkins, Luigi, ...
+- Artifact storage:
+    - S3, GCS
+- CI/CD Server:
+    - CircleCI, GitLab, Jenkins
+- ...
+
+(Left as an exercise to the reader)
+
+---
+
+# Why another option might be right for your team:
 - Preexisting architecture
 - Integration with custom data ingestion
-- HIPAA compliance on a budget
-- **Advanced configuration + control**
-    - dbt Cloud can have more compelling answers here!
+- Data security compliance
+- Advanced configuration + control, e.g. only running changed models on CI runs
 
 ---
 
-class: subtitle, center, middle
-# Future art
+# Demonstration: Scheduling a run in dbt Cloud
+
+You'll need:
+- A deployment environment
+- A job, which includes:
+    - Commands
+    - A schedule
+
+[Docs](https://docs.getdbt.com/docs/dbt-cloud/cloud-quickstart#create-a-new-job)
 
 ---
 
-# Many environments
+# The commands you should run as part of your dbt job
 
 .left-column[
-- Prod, dev, staging, QA, oh my...
-- Each env needs:
-    - one Snowflake database / BigQuery project
-    - one set of credentials
-    - one dbt Cloud project
-- Code may need to differ dynamically across envs
+
+#### At a minimum:
+```txt
+$ dbt run
+$ dbt test
+```
+
 ]
 
 --
 
-.right-column-33[
-Possible today with...
-- _dbt?_ **Yes!** Many targets
-- _dbt Cloud?_ **Yes**
-- _downside?_ Configuration is through UI, not code
-]
+.right-column[
+#### Our preferred setup:
+```txt
+$ dbt source snapshot-freshness
+$ dbt test -m source:*
+$ dbt seed
+$ dbt run
+$ dbt test --exclude source:*
+```
 
+]
 ---
 
-# Blue-green deploys
+# Additional strategies
 
-.left-column[
-- Run tests on source data
-- Run all models into a QA schema
-- Run tests on QA models
-- If all tests pass, promote QA schema to production
+Recommended:
+- Separate CI job — clearer notifications
+- Weekly full refresh job — more on this tomorrow!
 
-How?
-- Redshift/Postgres: `alter schema ... rename`
-- Snowflake: [zero-copy clones](https://docs.snowflake.com/en/sql-reference/sql/create-clone.html)
-- [BigQuery](https://youtu.be/jGwUonA3mDg?t=94), more creatively
-]
-
---
-
-.right-column-33[
-Possible today with...
-- _dbt?_ Yes, many macros/operations
-- _dbt Cloud?_ Yes
-- _downside?_ Complex workflows can't be configured as code, visualized
-]
-
----
-
-# How smart is your CI?
-
-.left-column[
-- "Build on PR" jobs
-    - Select _only_ models whose _code_ has changed in that PR
-    - _Much_ faster, more efficient
-- Q's: child models? YML changes?
-]
-
---
-
-.right-column-33[
-Possible today with...
-- _dbt?_ [Can be hacked](https://www.youtube.com/watch?v=m-QlIVss0UA), better answers forthcoming
-- _dbt Cloud?_ No
-]
-
----
-
-# Artifact persistence
-
-.left-column[
-For example...
-- Push the docs `index.html` into S3/GCS for iframe embedding in Confluence
-- Integrate with Datadog, PagerDuty
-- Longitudinal analysis of `run_results.json`
-    - Test failures by week
-    - Job runtime as overall data volume increases
-]
-
---
-
-.right-column-33[
-Possible today with...
-- _dbt?_ Yes, with ever-more-stable APIs
-- _dbt Cloud?_ Not really
-]
+Seen in the wild:
+- Separate jobs for different parts of your project
+- Blue/green deploys ([article](https://discourse.getdbt.com/t/performing-a-blue-green-deploy-of-your-dbt-project-on-snowflake/1349))
+- Cloning from prod on CI runs (Snowflake only)
 
 ---
 
@@ -160,7 +167,10 @@ class: subtitle
 
 # Knowledge check
 
-You should:
-- Understand some reasons why companies opt to use dbt _without_ dbt Cloud
+You should be able to:
+- Explain why you need to deploy your dbt project
+- List some considerations when deploying your project
+- List some options for deploying your dbt project
+- Deploy your dbt project with dbt Cloud
 
 {% include options/last_slide.html %}
