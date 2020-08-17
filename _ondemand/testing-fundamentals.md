@@ -23,12 +23,12 @@ _Why is testing relevent for your organization?_
 
 # What exactly is Testing?
 _How can we borrow software engineering principles and apply them to analytics?_
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zI4FNf47MB4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+<iframe src="https://fast.wistia.net/embed/iframe/paz9tohikt" title="What is Testing? Video" allow="autoplay; fullscreen" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen msallowfullscreen width="560" height="315"></iframe>
+<script src="https://fast.wistia.net/assets/external/E-v1.js" async></script>
 
 # Testing in dbt
 _How do we implement testing in dbt?_
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qlB7r9iDeHY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://player.vimeo.com/video/446933852" width="560" height="315" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
 # Review
 
