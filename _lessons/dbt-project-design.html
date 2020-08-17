@@ -5,7 +5,6 @@ estimated_teaching_time: 60
 teaching_method: slides
 working_session: false
 learningObjectives:
-  - Differentiate between data organization and data transformation
   - Name the three main interfaces for a dbt project
   - Build intuition for naming conventions for database objects
   - Build intuition for how to use dbt and BI tools together
@@ -43,30 +42,25 @@ With dbt!
 
 ---
 
-# Begging two questions
+# "Model it!" actually means:
 
-**What is the final data artifact that I’m trying to share with a stakeholder?**
-- Also called "data model design," "data warehouse design," or "warehousing"
+**1. There is a set of final data artifacts I want to share with stakeholders.**
+- "data model design," "data warehouse design," "warehousing"
 - It's a careful balance between several trade-offs: technological limitations, stakeholder needs, correctness vs. complexity, flexibility vs. rigidity
 - Hard to have generic answers! Could fill a book (or several). It's a fascinating topic that we'll cover _very_ briefly
 
 --
 
-**How can I execute the _creation_ of that final artifact?**
+**2. I need a reliable, scalable, intuitive process for generating those final artifacts.**
 - With dbt!
 - The _real_ interest of this presentation
 
-.caption[[Unrelated](https://en.wikipedia.org/wiki/Begging_the_question)]
 ---
 
-# You may have heard of:
+class: title, center, middle
+# 1. Final data artifacts
 
-- Dimensional modeling _(Kimball 1996)_
-- Agile / BEAM (Business Event Analysis & Modelling) _(Corr 2011)_
-- Data Vault
-- Data normalization
-- Snowflake / star schema
-- Data "marts"
+### They matter, but you don't need to get them right on the first try
 
 ---
 
@@ -85,157 +79,23 @@ implementation strategies are still applicable.
 
 ---
 
-# Back in the nineties (aughts)
+# Then: analytics on non-analytic databases
 
-.left-column-33[
-- Database technology privileges **highly normalized star schemas.**
+.left-column[
+**Highly normalized star schemas**. Why?
+- Work well within limitations of 90s-era database technology.
+- Clear guidelines for the organization and naming of datasets.
 - Data Engineers expect to build them.
 - Data Analysts expect to query them.
-- These two groups don't have much else in common.
 ]
 
-.right-column-66[
+.right-column[
 <img src="/ui/img{{page.id}}/fact-dims.png" class="img-center">
 ]
 
 ---
 
-# What's changed?
-
-.left-column[
-## Then
-- Data Engineers own ETL (“Extract-Transform-Load”)
-- Storage and aggregations are expensive
-- Joins are cheap
-- Datasets are federated between dozens/hundreds of objects
-]
-
-.right-column[
-## Now
-- Off-the-shelf tools (e.g. Stitch, Fivetran) can manage >90% of extract + load
-- Storage and aggregations are cheap
-- Joins are expensive
-- Massive datasets are updated in batches and queried in partitions
-]
-
----
-
-# I've got email!
-
-```
-Dear Analyst,
-
-I would like to know how many widgets we sold in 1997 (last year).
-
-Just widgets in our TV category, that is.
-
-Oh, and if you could slice that number by the brand name of the widget, and 
-dice it by the country where we sold them, that'd be rad.
-
-Thanks!
-
-Tristan
-SVP Marketing Analytics
-```
-
----
-
-# I'm thinking of a model...
-
-.left-column[
-Kimball says:
-1. What is the business process?
-2. What is the grain (primary key)?
-3. What are the "nouns" (dimensions)?
-4. What are the "verbs" (facts)?
-]
-
-.right-column[
-Corr says: 7Ws
-- **w**ho
-- **w**hat
-- **w**hen
-- **w**here
-- ho**w** many
-- **w**hy
-- ho**w**
-]
-
-???
-- The core concepts for human intuition are the same!
-- The specific implementation strategies are different.
-
----
-
-### Before: snowflake schema (ca. 2000s)
-
-<img src="/ui/img{{page.id}}/fact-sales-erd.png" class="img-center">
-
----
-
-### Before: snowflake schema (ca. 2000s)
-
-```sql
-SELECT
-	B.Brand,
-	G.Country,
-	SUM(F.Units_Sold)
-FROM Fact_Sales F
-INNER JOIN Dim_Date D             ON F.Date_Id = D.Id
-INNER JOIN Dim_Store S            ON F.Store_Id = S.Id
-INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id
-INNER JOIN Dim_Product P          ON F.Product_Id = P.Id
-INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id
-INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id
-WHERE
-	D.Year = 1997 AND
-	C.Product_Category = 'tv'
-GROUP BY
-	B.Brand,
-	G.Country
-```
-
----
-
-### After: denormalized model (2020)
-
-.denser-text[
-
-| sale_date | units_sold | store_id | store_number | state_province | country | ean_code      | product_name | brand_name   | product_category_name |
-|-----------|------------|----------|--------------|----------------|---------|---------------|--------------|--------------|-----------------------|
-|1997-01-01 | 7          | 1234     | 12           | PA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
-|1997-01-02 | 8          | 1234     | 12           | MA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
-|1997-01-03 | 9          | 1234     | 12           | NSW            | AU      | 901234-123457 | Widget       | Widgetastic  | tv                    |
-
-]
-
----
-
-### After: denormalized model (2020)
-
-<img src="/ui/img{{page.id}}/fact-sales-dag.png" class="img-center">
-
----
-
-### After: denormalized model (2020)
-
-```sql
-select
-
-	brand,
-	country,
-	sum(units_sold) as total
-
-from analytics.fact_sales
-where date_trunc('year', sale_date) = '1997-01-01'
-  and product_category = 'tv'
-
-group by 1,2
-```
-
----
-
-# _ad hoc_ or _agile_ analytics
+# Now: _ad hoc_ or _agile_ analytics
 
 .denser-text[
 
@@ -266,18 +126,10 @@ Your goal should be to power reports that can be self-service.
 
 # Do you have to listen to us?
 
-No!
+**_No!_**
 
 If you want to build a snowflake schema or Data Vault 2.0 using dbt, 
 you totally can. It's all just SQL.
-
-Remember our two questions:
-
-1. What is the final data artifact that I’m trying to share with a stakeholder?
-2. How can I execute the _creation_ of that final artifact?
-
-If you have a good answer to question 2, it's okay if your answer to question 1 
-isn't _100% perfect_ or needs to change over time.
 
 ---
 
@@ -299,7 +151,20 @@ class: subtitle
 
 class: subtitle, center, middle
 
-# Interfaces to your data product
+# 2. The process _is_ the product
+
+### (and that's more important)
+
+---
+
+# Three interfaces
+
+1. The Graph
+2. The Code
+3. The Warehouse
+
+These are how people at your organization will conceptualize, interact with,
+and benefit from data—your product—more than any one table or dashboard.
 
 ---
 
@@ -476,6 +341,22 @@ be grouped together in all three interfaces.
 
 ---
 
+class: subtitle
+
+# Checkpoint:
+
+- What are some helpful actions to do in the staging layer?  Why?
+--
+
+- For those who have worked with dim/fct tables, how do you think about the differences?
+- Note: The difference can be a bit blurry if you are learning them for the first time.
+
+--
+
+## Questions?
+
+---
+
 class: subtitle, center, middle
 # dbt + BI
 
@@ -549,43 +430,94 @@ class: subtitle, center, middle
 ]
 
 ???
-dbt models are like kitchen tools. The only single-purpose kitchen applicance
+dbt models are like kitchen tools. The only single-purpose kitchen appliance
 you should ever have is a rice cooker.
 
-BI assets are like recipies. It doesn't hurt as much to have similar ones, but
+BI assets are like recipes. It doesn't hurt as much to have similar ones, but
 when it comes time to make dinner, your guests might become confused :)
 
 ---
 
-# Example, revisited
+# How > Who
+
+_Which_ tool you're using matters less than _how_ you're using it.
+
+Your BI layer should be:
+
+.left-column[
+### Thin
+- Rename _only_ for cosmetics
+- No joins best, 1:1 joins okay (at most 2)<sup>1</sup>
+]
+
+.right-column[
+### Flexible
+- User-input parameters/filters
+- Always prefer one explore or dashboard that can answer a dozen questions
+]
+
+.caption[<sup>1</sup>Some tools handle 1:n joins well (Looker symmetric aggregates)]
+
+---
+
+# Can your BI tool write this SQL?
 
 {% raw %}
 ```sql
 select
 
-	brand,                         -- stacked bar position (x-axis)
-	country,                       -- stacked bar color
-	sum(units_sold) as total       -- stacked bar height (y-axis)
+    product_category,   -- dimension
+    sum(revenue)        -- measure
 
-from {{environment}}.fact_sales    -- switch between dev / prod
-
--- dynamic reporting parameters / dimension groups
-where year = {{param_year}}
-  and product_category = '{{param_product_category}}'
-
-group by 1,2
+from {{ environment }}.fct_orders   -- dev or prod
+where order_date >= '{{ param_order_date }}'
+group by 1
 ```
 {% endraw %}
 
 ---
 
-# Who can write that SQL?
+class: center
+# Yes!
+<img src="/ui/img{{page.id}}/bi-logos-2.png" style="width: 40%;" class="img-center">
 
-<img src="/ui/img{{page.id}}/bi-logos.png" style="width: 40%;" class="img-center">
+---
+
+class: subtitle
+
+# Checkpoint:
+
+- What are the three interfaces into your dbt project?
+--
+
+- What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
+--
+
+- What naming conventions is your team already using?
+
+--
+
+## Questions?
+
+---
+
+class: subtitle
+
+# Knowledge check
+
+When creating a dbt project:
+- First decide on the final artifact, and then sketch out the process for modeling it.
+- Use the three interfaces to organize your models.
+- Stage your raw source data before transforming it.
+- Every model should have a primary key.
+- Decide as an organization how to keep your BI layer thin and flexible.
+
+{% include options/last_slide.html %}
+
 ---
 
 class: subtitle, middle, center
-# Words to the wise
+# Appendix: Words to the wise
 ### from one data modeler to another
 
 ???
@@ -668,21 +600,3 @@ I think about join "steps" as degrees of Kevin Bacon
 
 # YMMV!
 Take it in good health, and with many grains of salt.
----
-class: subtitle
-
-# Knowledge check
-
-- There are many data modeling/warehousing schools of belief
-- Database technology has changed dramatically over the past decade
-- The _how_ of modeling is just as important as the _what_
-
-When creating a dbt project:
-- Stage your raw source data before transforming it
-- Every model should have a primary key
-- Think about how your models fit into the bigger picture:
-	- Graph
-	- Codebase
-	- Database
-
-{% include options/last_slide.html %}

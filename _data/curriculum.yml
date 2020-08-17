@@ -23,9 +23,10 @@
         - slug: intro-to-jinja
         - slug: dbtonic-jinja
         - slug: packages
+        - slug: materializations
     - name: Afternoon
       lessons:
-        - slug: materializations-incremental
+        - slug: incremental
         - slug: data-warehouses
         - slug: group-case-study
         - slug: techniques-trade

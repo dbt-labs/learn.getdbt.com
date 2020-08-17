@@ -2,10 +2,10 @@
 layout: presentation
 title: Intro to Jinja
 learningObjectives:
-  - Develop a programmer's intuition for how Jinja works
-  - Explain how dbt leverages Jinja for writing powerful SQL
-  - Leverage Jinja for writing DRY SQL
-  
+- Develop a programmer's intuition for how Jinja works
+- Explain how dbt leverages Jinja for writing powerful SQL
+- Leverage Jinja for writing DRY SQL
+
 ---
 
 class: title, center, middle
@@ -37,9 +37,10 @@ Applications that use Jinja:
 * dbt!
 ]
 
-[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)  
+[_Read the Jinja docs_](https://jinja.palletsprojects.com/en/2.11.x/)
 
-{% endraw %} <!-- endraw to render focus slide -->
+{% endraw %}
+<!-- endraw to render focus slide -->
 
 ---
 
@@ -49,7 +50,8 @@ Applications that use Jinja:
 
 class: subtitle
 
-{% raw %} <!-- start raw again for the Jinja that follows -->
+{% raw %}
+<!-- start raw again for the Jinja that follows -->
 
 # Let's look at some (non-SQL) examples!
 --
@@ -64,67 +66,96 @@ class: subtitle
 class: subtitle, middle, center
 
 <h1 style="font-size: 300%;" class="remark-inline-code">
-{% ... %}<br>
-{{ ... }}
-</p>
+  {% ... %}<br>
+  {{ ... }}
+  </p>
 
----
+  ---
 
-# Setting local variables
+  # Setting local variables
 
 
-```jinja
-{% set me = 3 %}
-{% set you = 'foo' %}
-```
+  ```jinja
+  {% set me = 3 %}
+  {% set you = 'foo' %}
+  ```
+  ---
 
----
-# Dictionaries
+  class: subtitle
 
-```jinja
-{% set person = {
+  # Let's see jinja in action now
+
+  * We will see some code, try to predict the output.
+  * Raise your hand on Zoom to give your answer and explanation.
+  * This thinking is new for some people - let's help each other get acquanted with jinja!
+
+  ???
+
+  Note: This lesson presents the opportunity to make the learners the expert:
+  1. Call on students to answer and **explain** this will give students more air time.
+  2. Try to avoid repeating what students say. If something was unclear, asking them to repeat or another student to bring clarity.
+
+
+  If this goes well, we can think about other ways to make other decks more interactive.
+
+  ---
+  # Dictionaries
+
+  ```jinja
+  {% set person = {
     'name': 'me',
     'number': 3
 } %}
-```
-```jinja
-{{ person.name }}
-{{ person['name'] }}
-```
---
+  ```
+  ```jinja
+  {{ person.name }}
+  {{ person['name'] }}
+  ```
+  --
 
-```
-me
-me
-```
+  ```
+  me
+  me
+  ```
 
 
----
-# Arrays
+  ---
+  # Arrays
 
-```jinja
-{% set self = ['me', 'myself'] %}
+  ```jinja
+  {% set self = ['me', 'myself'] %}
 
-{% do self.append('i') %}
-```
+  {% do self.append('i') %}
+  ```
 
-```jinja
-{{ self[0] }}
-{{ self | length }}
-```
---
+  ```jinja
+  {{ self[0] }}
+  ```
+  --
 
-```
-me
-3
-```
+  ```
+  me
+  ```
 
----
+  --
 
-# And so on
+  ```jinja
+  {{ self | length }}
+  ```
+  --
 
-```jinja
-{% set us = [
+  ```
+  3
+  ```
+
+
+
+  ---
+
+  # And so on
+
+  ```jinja
+  {% set us = [
   {
       'name': 'me',
       'number': 3
@@ -135,199 +166,217 @@ me
   }
 ] %}
 
-{{ us[1]['details'] }}
-```
---
-```
-foo
-```
+  {{ us[1]['details'] }}
+  ```
+  --
+  ```
+  foo
+  ```
 
----
+  ---
 
-# Conditions
+  # Conditions
 
 
-```jinja
-{% set temperature = 80 %}
+  ```jinja
+  {% set temperature = 80 %}
 
-On a day like this, I especially like
+  On a day like this, I especially like
 
-{% if temperature > 70 %}
+  {% if temperature > 70 %}
 
-    a refreshing mango sorbet.
+  a refreshing mango sorbet.
 
-{% else %}
+  {% else %}
 
-    a decadent chocolate ice cream.
+  a decadent chocolate ice cream.
 
-{% endif %}
-```
+  {% endif %}
+  ```
 
 
---
+  --
 
-```
-On a day like this, I especially like a refreshing mango sorbet.
-```
+  ```
+  On a day like this, I especially like a refreshing mango sorbet.
+  ```
 
 
----
+  ---
 
-# Loops
+  # Loops
 
 
-```jinja
-{% set flavors = ['chocolate', 'vanilla', 'strawberry'] %}
+  ```jinja
+  {% set flavors = ['chocolate', 'vanilla', 'strawberry'] %}
 
-{% for flavor in flavors %}
-	Today I want {{ flavor }} ice cream!
-{% endfor %}
-```
+  {% for flavor in flavors %}
 
+  Today I want {{ flavor }} ice cream!
 
---
+  {% endfor %}
+  ```
 
-```
-Today I want chocolate ice cream!
-Today I want vanilla ice cream!
-Today I want strawberry ice cream!
-```
 
----
+  --
 
-# Macros
+  ```
+  Today I want chocolate ice cream!
+  Today I want vanilla ice cream!
+  Today I want strawberry ice cream!
+  ```
 
-```jinja
-{% macro hoyquiero(flavor, dessert = 'ice cream') %}
-	Today I want {{ flavor }} {{ dessert }}!
-{% endmacro %}
+  ---
 
-{{ hoyquiero(flavor = 'chocolate') }}
-{{ hoyquiero('mango', 'sorbet') }}
-```
---
-```
-Today I want chocolate ice cream!
-Today I want mango sorbet!
-```
+  # Macros
 
----
+  ```jinja
+  {% macro hoyquiero(flavor, dessert = 'ice cream') %}
 
-# How does this fit in with SQL?
+  Today I want {{ flavor }} {{ dessert }}!
 
-We use Jinja to generate SQL!
+  {% endmacro %}
+  ```
+  --
+  ```jinja
+  {{ hoyquiero(flavor = 'chocolate') }}
+  ```
+  --
+  ```
+  Today I want chocolate ice cream!
+  ```
+  --
+  ```jinja
+  {{ hoyquiero('mango', 'sorbet') }}
+  ```
+  --
+  ```
+  Today I want mango sorbet!
+  ```
+  ---
 
-* SQL still transforms the data - it's a highly performant and _very_ declarative language
-* Jinja helps us write better SQL
+  class:title, center, middle
 
---
+  # How does this fit in with SQL?
 
-### Let's see it in action!
----
+  ---
 
-## Jinja challenge
-.denser-text[
-I have a payments table like this:
 
-`select * from {{ ref('stg_payments') }}`
+  # How does this fit in with SQL?
 
+  We use Jinja to generate SQL!
 
-| payment_id | order_id | payment_method | amount | created_at |
-|------------|----------|----------------|--------|------------|
-| 1          | 1        | credit_card    | 10     | 2018-01-01 |
-| ...        | ...      | ...            | ...    | ...        |
-| 29         | 25       | credit_card    | 22     | 2018-01-28 |
-| 28         | 25       | bank_transfer  | 20     | 2018-01-28 |
-| 30         | 25       | coupon         | 16     | 2018-01-28 |
+  * SQL still transforms the data - it's a highly performant and _very_ declarative language
+  * Jinja helps us write better SQL
 
-]
+  --
 
---
-.denser-text[
+  ### Let's see it in action!
+  ---
 
-I want a table like this:
+  ## Jinja challenge
+  .denser-text[
+  I have a payments table like this:
 
-| order_id | bank_transfer_amount | coupon_amount | credit_card_amount | gift_card_amount |
-|----------|----------------------|---------------|--------------------|------------------|
-| 1        | 0                    | 0             | 10                 | 0                |
-| ...      | ...                  | ...           | ...                | ...              |
-| 25       | 20                   | 16            | 22                 | 0                |
+  `select * from {{ ref('stg_payments') }}`
 
-]
---
-.denser-text[
-How do I do this in SQL?
-]
----
-class: subtitle
 
-# Working session
+  | payment_id | order_id | payment_method | amount | created_at |
+  |------------|----------|----------------|--------|------------|
+  | 1 | 1 | credit_card | 10 | 2018-01-01 |
+  | ... | ... | ... | ... | ... |
+  | 29 | 25 | credit_card | 22 | 2018-01-28 |
+  | 28 | 25 | bank_transfer | 20 | 2018-01-28 |
+  | 30 | 25 | coupon | 16 | 2018-01-28 |
 
-**Challenge:** Use SQL + Jinja to "pivot" the payments data.
+  ]
 
-.denser-text[
+  --
+  .denser-text[
 
-1. **As a class**: write this in pure SQL
-2. **As a class**: use _some_ Jinja + SQL
-3. **In your breakout groups**:
-    * Refactor!
-    * Each breakout group will have a Teacher's Assistant
-    * Let us know in Slack when you have finished refactoring
-4. **As a class**: one person from each breakout group will present their solution
+  I want a table like this:
 
-]
-???
+  | order_id | bank_transfer_amount | coupon_amount | credit_card_amount | gift_card_amount |
+  |----------|----------------------|---------------|--------------------|------------------|
+  | 1 | 0 | 0 | 10 | 0 |
+  | ... | ... | ... | ... | ... |
+  | 25 | 20 | 16 | 22 | 0 |
 
-```sql
-with payments as (
-    select * from {{ ref('stg_payments') }}
-),
+  ]
+  --
+  .denser-text[
+  How do I do this in SQL?
+  ]
+  ---
+  class: subtitle
 
-aggregated as (
+  # Working session
 
-    select
-      order_id,
-      sum(case when payment_method = 'bank_transfer' then amount else 0 end) as bank_transfer_amount,
-      sum(case when payment_method = 'coupon' then amount else 0 end) as coupon_amount,
-      sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount,
-      sum(case when payment_method = 'gift_card' then amount else 0 end) as gift_card_amount
+  **Challenge:** Use SQL + Jinja to "pivot" the payments data.
 
-    from payments
+  .denser-text[
 
-    group by 1
+  1. **As a class**: write this in pure SQL
+  2. **As a class**: use _some_ Jinja + SQL
+  3. **In your breakout groups**:
+  * Refactor!
+  * Each breakout group will have a Teacher's Assistant
+  * Let us know in Slack when you have finished refactoring
+  4. **As a class**: one person from each breakout group will present their solution
 
-)
+  ]
+  ???
 
-select * from aggregated
-```
+  ```sql
+  with payments as (
+  select * from {{ ref('stg_payments') }}
+  ),
 
-```sql
-with payments as (
-    select * from {{ ref('stg_payments') }}
-),
+  aggregated as (
 
-aggregated as (
+  select
+  order_id,
+  sum(case when payment_method = 'bank_transfer' then amount else 0 end) as bank_transfer_amount,
+  sum(case when payment_method = 'coupon' then amount else 0 end) as coupon_amount,
+  sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount,
+  sum(case when payment_method = 'gift_card' then amount else 0 end) as gift_card_amount
 
-    select
-      order_id
-      {% for payment_method in ['bank_transfer', 'coupon', 'credit_card', 'gift_card'] %}
-      , sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount
-      {% endfor %}
+  from payments
 
-    from payments
+  group by 1
 
-    group by 1
+  )
 
-)
+  select * from aggregated
+  ```
 
-select * from aggregated
-```
+  ```sql
+  with payments as (
+  select * from {{ ref('stg_payments') }}
+  ),
 
+  aggregated as (
 
-{% endraw %}
+  select
+  order_id
+  {% for payment_method in ['bank_transfer', 'coupon', 'credit_card', 'gift_card'] %}
+  , sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount
+  {% endfor %}
 
----
-class: subtitle, middle, center
-# Let's jinja!
+  from payments
 
-{% include options/last_slide.html %}
+  group by 1
+
+  )
+
+  select * from aggregated
+  ```
+
+
+  {% endraw %}
+
+  ---
+  class: subtitle, middle, center
+  # Let's jinja!
+
+  {% include options/last_slide.html %}

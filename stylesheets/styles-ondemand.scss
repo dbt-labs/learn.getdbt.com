@@ -1,0 +1,53 @@
+---
+---
+
+
+// Default mixins and settings -----------------
+@import "_sass/mixins";
+@import "_sass/settings";
+// ---------------------------------------------
+
+// Include theme-specific fonts
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic);
+@import url(https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap);
+
+// Override theme settings (see ../template/settings.scss)
+$mainFont: 'Lato', sans-serif;
+$mainColor: #00475c;
+$headingFont: 'Lato', sans-serif;
+$headingColor: #ff694b;
+$headingTextShadow: none;
+$headingTextTransform: none;
+$backgroundColor: #fff;
+$linkColor: #00008B;
+$linkColorHover: lighten( $linkColor, 20% );
+$selectionBackgroundColor: rgba(0, 0, 0, 0.99);
+$codeFont: "Source Code Pro";
+section.has-dark-background {
+	&, h1, h2, h3, h4, h5, h6 {
+		color: #fff;
+	}
+}
+
+.twocolumn {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   grid-gap: 10px;
+}
+
+.twocolumn-33left {
+   display: grid;
+   grid-template-columns: 0.5fr 1fr;
+   grid-gap: 10px;
+}
+
+.threecolumn {
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-gap: 10px;
+}
+
+
+// Theme template ------------------------------
+@import "_sass/theme";
+// ---------------------------------------------
