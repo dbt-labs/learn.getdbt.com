@@ -3,7 +3,7 @@
 ## learn.getdbt.com
 
 The everything website for dbt Learn:
-* Marketinng
+* Marketing
 
 This is a static site, compiled with Jekyll and deployed with Netlify.
 
