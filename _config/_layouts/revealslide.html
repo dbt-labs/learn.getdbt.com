@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Testing Fundamentals</title>
+    <link rel="stylesheet" href="{{ site.baseurl }}reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}stylesheets/styles-ondemand.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}reveal.js/plugin/highlight/monokai.css">
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        {{ content }}
+      </div>
+    </div>
+
+    <script src="{{ site.baseurl }}reveal.js/dist/reveal.js"></script>
+    <script src="{{ site.baseurl }}reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="{{ site.baseurl }}reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="{{ site.baseurl }}reveal.js/plugin/notes/notes.js"></script>
+
+    <script>
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        autoAnimateEasing: 'ease-out',
+        transition: 'fade',
+
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+      });
+    </script>
+
+  </body>
+
+</html>
