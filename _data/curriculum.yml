@@ -9,10 +9,11 @@
     - name: Afternoon
       lessons:
         - slug: dbt-project-design
-        - slug: testing-ci
+        - slug: testing
         - slug: sources
         - slug: docs
         - slug: assignment
+        - slug: deployment
 
 - day: 2
   title: "Day Two: Applications"
