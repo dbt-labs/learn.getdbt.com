@@ -68,315 +68,316 @@ class: subtitle, middle, center
 <h1 style="font-size: 300%;" class="remark-inline-code">
   {% ... %}<br>
   {{ ... }}
-  </p>
+</h1>
 
-  ---
+---
 
-  # Setting local variables
-
-
-  ```jinja
-  {% set me = 3 %}
-  {% set you = 'foo' %}
-  ```
-  ---
-
-  class: subtitle
-
-  # Let's see jinja in action now
-
-  * We will see some code, try to predict the output.
-  * Raise your hand on Zoom to give your answer and explanation.
-  * This thinking is new for some people - let's help each other get acquanted with jinja!
-
-  ???
-
-  Note: This lesson presents the opportunity to make the learners the expert:
-  1. Call on students to answer and **explain** this will give students more air time.
-  2. Try to avoid repeating what students say. If something was unclear, asking them to repeat or another student to bring clarity.
+# Setting local variables
 
 
-  If this goes well, we can think about other ways to make other decks more interactive.
+```jinja
+{% set me = 3 %}
+{% set you = 'foo' %}
+```
+---
 
-  ---
-  # Dictionaries
+class: subtitle
 
-  ```jinja
-  {% set person = {
+# Let's see jinja in action now
+
+* We will see some code, try to predict the output.
+* Raise your hand on Zoom to give your answer and explanation.
+* This thinking is new for some people - let's help each other get acquanted with jinja!
+
+???
+
+Note: This lesson presents the opportunity to make the learners the expert:
+1. Call on students to answer and **explain** this will give students more air time.
+2. Try to avoid repeating what students say. If something was unclear, asking them to repeat or another student to bring clarity.
+
+
+If this goes well, we can think about other ways to make other decks more interactive.
+
+---
+# Dictionaries
+
+```jinja
+{% set person = {
+  'name': 'me',
+  'number': 3
+} %}
+```
+```jinja
+{{ person.name }}
+{{ person['name'] }}
+```
+--
+
+```
+me
+me
+```
+
+
+---
+# Arrays
+
+```jinja
+{% set self = ['me', 'myself'] %}
+
+{% do self.append('i') %}
+```
+
+```jinja
+{{ self[0] }}
+```
+--
+
+```
+me
+```
+
+--
+
+```jinja
+{{ self | length }}
+```
+--
+
+```
+3
+```
+
+
+
+---
+
+# And so on
+
+```jinja
+{% set us = [
+{
     'name': 'me',
     'number': 3
-} %}
-  ```
-  ```jinja
-  {{ person.name }}
-  {{ person['name'] }}
-  ```
-  --
-
-  ```
-  me
-  me
-  ```
-
-
-  ---
-  # Arrays
-
-  ```jinja
-  {% set self = ['me', 'myself'] %}
-
-  {% do self.append('i') %}
-  ```
-
-  ```jinja
-  {{ self[0] }}
-  ```
-  --
-
-  ```
-  me
-  ```
-
-  --
-
-  ```jinja
-  {{ self | length }}
-  ```
-  --
-
-  ```
-  3
-  ```
-
-
-
-  ---
-
-  # And so on
-
-  ```jinja
-  {% set us = [
-  {
-      'name': 'me',
-      'number': 3
-  },
-  {
-      'name': 'you',
-      'details': 'foo'
-  }
+},
+{
+    'name': 'you',
+    'details': 'foo'
+}
 ] %}
 
-  {{ us[1]['details'] }}
-  ```
-  --
-  ```
-  foo
-  ```
+{{ us[1]['details'] }}
+```
+--
+```
+foo
+```
 
-  ---
+---
 
-  # Conditions
+# Conditions
 
 
-  ```jinja
-  {% set temperature = 80 %}
+```jinja
+{% set temperature = 80 %}
 
-  On a day like this, I especially like
+On a day like this, I especially like
 
-  {% if temperature > 70 %}
+{% if temperature > 70 %}
 
-  a refreshing mango sorbet.
+a refreshing mango sorbet.
 
-  {% else %}
+{% else %}
 
-  a decadent chocolate ice cream.
+a decadent chocolate ice cream.
 
-  {% endif %}
-  ```
+{% endif %}
+```
 
 
-  --
+--
 
-  ```
-  On a day like this, I especially like a refreshing mango sorbet.
-  ```
+```
+On a day like this, I especially like a refreshing mango sorbet.
+```
 
 
-  ---
+---
 
-  # Loops
+# Loops
 
 
-  ```jinja
-  {% set flavors = ['chocolate', 'vanilla', 'strawberry'] %}
+```jinja
+{% set flavors = ['chocolate', 'vanilla', 'strawberry'] %}
 
-  {% for flavor in flavors %}
+{% for flavor in flavors %}
 
-  Today I want {{ flavor }} ice cream!
+Today I want {{ flavor }} ice cream!
 
-  {% endfor %}
-  ```
+{% endfor %}
+```
 
 
-  --
+--
 
-  ```
-  Today I want chocolate ice cream!
-  Today I want vanilla ice cream!
-  Today I want strawberry ice cream!
-  ```
+```
+Today I want chocolate ice cream!
+Today I want vanilla ice cream!
+Today I want strawberry ice cream!
+```
 
-  ---
+---
 
-  # Macros
+# Macros
 
-  ```jinja
-  {% macro hoyquiero(flavor, dessert = 'ice cream') %}
+```jinja
+{% macro hoyquiero(flavor, dessert = 'ice cream') %}
 
-  Today I want {{ flavor }} {{ dessert }}!
+Today I want {{ flavor }} {{ dessert }}!
 
-  {% endmacro %}
-  ```
-  --
-  ```jinja
-  {{ hoyquiero(flavor = 'chocolate') }}
-  ```
-  --
-  ```
-  Today I want chocolate ice cream!
-  ```
-  --
-  ```jinja
-  {{ hoyquiero('mango', 'sorbet') }}
-  ```
-  --
-  ```
-  Today I want mango sorbet!
-  ```
-  ---
+{% endmacro %}
+```
+--
+```jinja
+{{ hoyquiero(flavor = 'chocolate') }}
+```
+--
+```
+Today I want chocolate ice cream!
+```
+--
+```jinja
+{{ hoyquiero('mango', 'sorbet') }}
+```
+--
+```
+Today I want mango sorbet!
+```
+---
 
-  class:title, center, middle
+class:title, center, middle
 
-  # How does this fit in with SQL?
+# How does this fit in with SQL?
 
-  ---
+---
 
 
-  # How does this fit in with SQL?
+# How does this fit in with SQL?
 
-  We use Jinja to generate SQL!
+We use Jinja to generate SQL!
 
-  * SQL still transforms the data - it's a highly performant and _very_ declarative language
-  * Jinja helps us write better SQL
+* SQL still transforms the data - it's a highly performant and _very_ declarative language
+* Jinja helps us write better SQL
 
-  --
+--
 
-  ### Let's see it in action!
-  ---
+### Let's see it in action!
+---
 
-  ## Jinja challenge
-  .denser-text[
-  I have a payments table like this:
+## Jinja challenge
+.denser-text[
+I have a payments table like this:
 
-  `select * from {{ ref('stg_payments') }}`
+`select * from {{ ref('stg_payments') }}`
 
 
-  | payment_id | order_id | payment_method | amount | created_at |
-  |------------|----------|----------------|--------|------------|
-  | 1 | 1 | credit_card | 10 | 2018-01-01 |
-  | ... | ... | ... | ... | ... |
-  | 29 | 25 | credit_card | 22 | 2018-01-28 |
-  | 28 | 25 | bank_transfer | 20 | 2018-01-28 |
-  | 30 | 25 | coupon | 16 | 2018-01-28 |
+| payment_id | order_id | payment_method | amount | created_at |
+|------------|----------|----------------|--------|------------|
+| 1 | 1 | credit_card | 10 | 2018-01-01 |
+| ... | ... | ... | ... | ... |
+| 29 | 25 | credit_card | 22 | 2018-01-28 |
+| 28 | 25 | bank_transfer | 20 | 2018-01-28 |
+| 30 | 25 | coupon | 16 | 2018-01-28 |
 
-  ]
+]
 
-  --
-  .denser-text[
+--
+.denser-text[
 
-  I want a table like this:
+I want a table like this:
 
-  | order_id | bank_transfer_amount | coupon_amount | credit_card_amount | gift_card_amount |
-  |----------|----------------------|---------------|--------------------|------------------|
-  | 1 | 0 | 0 | 10 | 0 |
-  | ... | ... | ... | ... | ... |
-  | 25 | 20 | 16 | 22 | 0 |
+| order_id | bank_transfer_amount | coupon_amount | credit_card_amount | gift_card_amount |
+|----------|----------------------|---------------|--------------------|------------------|
+| 1 | 0 | 0 | 10 | 0 |
+| ... | ... | ... | ... | ... |
+| 25 | 20 | 16 | 22 | 0 |
 
-  ]
-  --
-  .denser-text[
-  How do I do this in SQL?
-  ]
-  ---
-  class: subtitle
+]
+--
+.denser-text[
+How do I do this in SQL?
+]
+---
+class: subtitle
 
-  # Working session
+# Working session
 
-  **Challenge:** Use SQL + Jinja to "pivot" the payments data.
+**Challenge:** Use SQL + Jinja to "pivot" the payments data.
 
-  .denser-text[
+.denser-text[
 
-  1. **As a class**: write this in pure SQL
-  2. **As a class**: use _some_ Jinja + SQL
-  3. **In your breakout groups**:
-  * Refactor!
-  * Each breakout group will have a Teacher's Assistant
-  * Let us know in Slack when you have finished refactoring
-  4. **As a class**: one person from each breakout group will present their solution
+1. **As a class**: write this in pure SQL
+2. **As a class**: use _some_ Jinja + SQL
+3. **In your breakout groups**:
+* Refactor!
+* Each breakout group will have a Teacher's Assistant
+* Let us know in Slack when you have finished refactoring
 
-  ]
-  ???
+**As a class**: one person from each breakout group will present their solution
 
-  ```sql
-  with payments as (
-  select * from {{ ref('stg_payments') }}
-  ),
+]
+???
 
-  aggregated as (
+```sql
+with payments as (
+select * from {{ ref('stg_payments') }}
+),
 
-  select
-  order_id,
-  sum(case when payment_method = 'bank_transfer' then amount else 0 end) as bank_transfer_amount,
-  sum(case when payment_method = 'coupon' then amount else 0 end) as coupon_amount,
-  sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount,
-  sum(case when payment_method = 'gift_card' then amount else 0 end) as gift_card_amount
+aggregated as (
 
-  from payments
+select
+order_id,
+sum(case when payment_method = 'bank_transfer' then amount else 0 end) as bank_transfer_amount,
+sum(case when payment_method = 'coupon' then amount else 0 end) as coupon_amount,
+sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount,
+sum(case when payment_method = 'gift_card' then amount else 0 end) as gift_card_amount
 
-  group by 1
+from payments
 
-  )
+group by 1
 
-  select * from aggregated
-  ```
+)
 
-  ```sql
-  with payments as (
-  select * from {{ ref('stg_payments') }}
-  ),
+select * from aggregated
+```
 
-  aggregated as (
+```sql
+with payments as (
+select * from {{ ref('stg_payments') }}
+),
 
-  select
-  order_id
-  {% for payment_method in ['bank_transfer', 'coupon', 'credit_card', 'gift_card'] %}
-  , sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount
-  {% endfor %}
+aggregated as (
 
-  from payments
+select
+order_id
+{% for payment_method in ['bank_transfer', 'coupon', 'credit_card', 'gift_card'] %}
+, sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount
+{% endfor %}
 
-  group by 1
+from payments
 
-  )
+group by 1
 
-  select * from aggregated
-  ```
+)
 
+select * from aggregated
+```
 
-  {% endraw %}
 
-  ---
-  class: subtitle, middle, center
-  # Let's jinja!
+{% endraw %}
 
-  {% include options/last_slide.html %}
+---
+class: subtitle, middle, center
+# Let's jinja!
+
+{% include options/last_slide.html %}

@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: Testing & CI
+title: Testing
 estimated_teaching_time: 30
 teaching_method: live demo + slides. Questions encouraged.
 working_session: true
@@ -9,7 +9,7 @@ learningObjectives:
   - Add tests to your models
   - Run tests on your models
   - Build intuition for why tests fail and what to test
-  
+
 ---
 class: title, center, middle
 # Testing & CI
@@ -316,30 +316,11 @@ Examples:
 * Automated: When you run dbt on a schedule
 * Automated: When you want to merge your code
 
---
-
-Wait, how do I automate running dbt?
----
-# Automating dbt runs
-## a.k.a. Running dbt in production
-You need to run dbt on a schedule to keep your data up to date.
-
-Does your automated run:
-* Use the latest version of my project? → **continuous deployment**
-* Have monitoring and alerting if something goes wrong?
-* Have a way to debug failures?
-* Build & test your code every time you want to merge changes ("deploy to production")? →  **continuous integration**
-
-We use the scheduler in [dbt Cloud](cloud.getdbt.com) to run dbt in production.
----
-<img src="/ui/img{{page.id}}/dbt-cloud.png" style="width: 100%;">
-
-
 ---
 
 class: subtitle
 
-## Checkpoint 
+## Checkpoint
 
 .left-column[
 ```yml
@@ -347,7 +328,7 @@ version: 2
 
 models:
   - name: payments
-    columns: 
+    columns:
       - name: payment_id
         tests:
           - not_null
@@ -366,7 +347,7 @@ models:
 
 class: subtitle
 
-## Checkpoint 
+## Checkpoint
 
 .left-column[
 ```yml
@@ -374,7 +355,7 @@ version: 2
 
 models:
   - name: payments
-    columns: 
+    columns:
       - name: payment_method
         tests:
           - accepted_values:

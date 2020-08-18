@@ -7,6 +7,7 @@ The everything site for dbt Learn including:
 
 ## Getting Started
 
+
 **Run with:**
 ```
 $ bundle exec jekyll serve --incremental --baseurl '' -w --port 5017
