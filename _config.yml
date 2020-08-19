@@ -42,6 +42,9 @@ collections:
   lessons:
     output: true
     permalink: /:collection/:path
+  ondemand:
+    output: true
+    permalink: /:collection/:path
 
 defaults:
 -
