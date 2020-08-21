@@ -8,6 +8,26 @@
     {% include options/meta.html %}
     {% include options/scripts.html %}
     {% include options/styles.html %}
+
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border: 1px solid #000000;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr {
+        background-color: #ffffff;
+      }
+    </style>
+
   </head>
 
   <body class="{{page.class}}">
@@ -45,12 +65,6 @@
         </div>
       </div>
     </div>
-    {% if page.render_chart %}
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
-    <script src="/ui/js/helpers/chart.js"></script>
-    {% endif %}
-    {% include content/footer.html %}
   </body>
 
 </html>

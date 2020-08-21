@@ -1,0 +1,45 @@
+name: "Testing"
+slug: testing
+
+learningObjectives:
+  - Explain the role of testing in software engineering
+  - Explain the role of testing in analytics engineering
+  - Explain the two types of tests in dbt.
+  - Name the four fundamental tests in dbt
+  - Configure tests in your dbt project
+  - Execute all or a subset of tests in your dbt project
+  - Interpret the results of a test in dbt.
+  
+presentationName: Testing
+presentationSlug: testing
+  
+pages: 
+  - name: "Why is testing important?"
+    slug: testing-why
+    assetName: Why is Testing Important?
+    assetLink: https://www.youtube.com/embed/9JUz16BrQrY
+    assetType: video
+  
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
+    
+  - name: "What is testing?"
+    slug: testing-what
+    assetName: What is Testing?
+    assetLink: https://fast.wistia.net/embed/iframe/paz9tohikt
+    assetType: video
+    
+  - name: "How to use tests in dbt"
+    slug: testing-how
+    assetName: How to use testing in dbt
+    assetLink: https://player.vimeo.com/video/446933852
+    assetType: video
+  
+  - name: "Review"
+    slug: testing-review
+    assetName: false
+    assetLink:
+    assetType: 

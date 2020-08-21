@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US" class="{{site.namespace}}">
+
   <head>
-	{% include options/gtm_head.html %}
-	{% include options/settings.html %}
-	{% include options/meta.html %}
-	{% include options/scripts.html %}
-	{% include options/styles.html %}
+    {% include options/gtm_head.html %}
+    {% include options/settings.html %}
+    {% include options/meta.html %}
+    {% include options/scripts.html %}
+    {% include options/styles.html %}
   </head>
+
   <body class="{{page.class}}">
-	{% include options/gtm_body.html %}
-	{% include svg/svg.html %}
-	<div class="page">
-	  {% if page.nav_included %}
-	  {{ content }}
-	  {% else %}
-	  {% include content/nav.html %}
-	  {{ content }}
-	  {% endif %}
-	  {% include content/footer.html %}
-	</div>
+    {% include options/gtm_body.html %}
+    {% include svg/svg.html %}
+    <div class="page">
+      {% if page.nav_included %}
+      {{ content }}
+      {% else %}
+      {% include content/nav.html %}
+      {{ content }}
+      {% endif %}
+      {% include content/footer.html %}
+    </div>
     {% if page.render_chart %}
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
-        <script src="/ui/js/helpers/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+    <script src="/ui/js/helpers/chart.js"></script>
     {% endif %}
   </body>
+
 </html>
