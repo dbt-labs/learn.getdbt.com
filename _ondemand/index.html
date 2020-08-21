@@ -1,25 +1,18 @@
 ---
-layout: overview
-title: On Demand
+layout: password
+title: On Demand - Password Page
 ---
 
-<!-- This page will automatically update for markdown pages that have been creted.  The mapping of modules to page names 
-is located in _data/ondemand.yml -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-{% for pathway in site.data.ondemand %}
-<div>
-	<h1> {{pathway.title}} </h1>
-	<ul class='list-icons text-med text-heading text-left'>
-		{% for module in pathway.modules %}
-		{% assign module_id = "/ondemand/" | append: module.slug %}
-		{% assign match = site.ondemand | where: 'id', module_id %}
-		{% assign mod = match[0] %}
-		{% if mod != null %}
-		<li><span class='arrow-right text-blue text-medium list-icon'></span><a href="{{mod.id}}">{{module.name}}</a></li>
-		{% else %}
-		<li><span class='arrow-right text-blue text-medium list-icon'></span>{{ module.name | append: " (Coming soon)" }}</li>
-		{% endif %}
-		{% endfor %}
-	</ul>
-</div>
-{% endfor %}
+  <head>
+    <title>On Demand - Password Page</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  </head>
+
+
+
+</html>
