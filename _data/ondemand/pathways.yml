@@ -9,8 +9,8 @@
       slug: sql-primer
 
 - pathway: 1
-  title: "dbt fundamentals"
-  slug: dbt-fundamentals
+  title: "dbt essentials"
+  slug: dbt-essentials
   live: true
   modules:
     - name: Who is an analytics engineer?
@@ -19,24 +19,24 @@
       slug: installing-dbt
     - name: dbt Project fundamentals
       slug: dbt-fundamentals
-    - name: Modeling fundamentals
-      slug: modeling
+    - name: Models
+      slug: models
     - name: dbt Project design
       slug: project-design
-    - name: Testing Fundamentals
-      slug: testing-fundamentals
-    - name: Sources Fundamentals
-      slug: sources-fundamentals
-    - name: Documentation Fundamentals
-      slug: docs-fundamentals
+    - name: Tests
+      slug: tests
+    - name: Sources
+      slug: sources
+    - name: Documentation
+      slug: docs
     - name: Jinja Primer
       slug: jinja-primer
     - name: Macro Fundamentals
-      slug: macro-fundamentals
-    - name: Materialization fundamentals
+      slug: macros
+    - name: Materialization Fundamentals
       slug: materializations
     - name: Analyses and Seeds Fundamentals
-      slug: analysis-seeds-fundamentals
+      slug: analyses-seeds
       
 - pathway: 2
   title: "dbt advanced"

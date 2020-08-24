@@ -1,0 +1,14 @@
+{% assign mod_slug = page.moduleSlug | downcase %}
+
+{% assign module = site.data.ondemand.modules | where: "slug", mod_slug %}
+
+<h1>Learning Objectives</h1>
+
+<ul>
+{% for mod in module %}
+  {% assign los = mod.learningObjectives %}
+  {% for lo in los %}
+    <li> {{ lo }} </li>
+  {% endfor %}
+{% endfor %}
+</ul>
