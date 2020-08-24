@@ -1,0 +1,16 @@
+name: Materializations
+slug: materializations
+live: false
+
+learningObjectives:
+  - N/A
+
+presentationName: Materializations
+presentationSlug: materializations
+  
+pages: 
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 

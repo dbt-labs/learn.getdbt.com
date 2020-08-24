@@ -1,5 +1,6 @@
-name: "Testing"
-slug: testing
+name: Tests
+slug: tests
+live: true
 
 learningObjectives:
   - Explain the role of testing in software engineering
@@ -39,7 +40,7 @@ pages:
     assetType: video
   
   - name: "Review"
-    slug: testing-review
+    slug: review
     assetName: false
     assetLink:
     assetType: 

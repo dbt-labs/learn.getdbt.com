@@ -1,0 +1,18 @@
+name: Jinja Primer
+slug: jinja-primer
+live: false
+
+learningObjectives:
+  - Explain how Jinja works as a templating language
+  - Explain the three delimiters of Jinja; expressions, statements, and comments
+  - Check the compiled SQL using `compile SQL` and the targets folder
+
+presentationName: Intro to Jinja
+presentationSlug: intro-to-jinja
+  
+pages: 
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 

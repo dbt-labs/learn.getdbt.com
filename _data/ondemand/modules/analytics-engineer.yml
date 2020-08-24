@@ -1,0 +1,16 @@
+name: Who is an Analytics Engineer?
+slug: analytics-engineer
+live: false
+
+learningObjectives:
+  - N/A
+
+presentationName: Who is an Analytics Engineer?
+presentationSlug: who-is-analytics-engineer
+  
+pages: 
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 

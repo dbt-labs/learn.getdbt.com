@@ -1,0 +1,16 @@
+name: dbt Project Design
+slug: project-design
+live: false
+
+learningObjectives:
+  - N/A
+
+presentationName: dbt Project Design
+presentationSlug: dbt-project-design
+  
+pages: 
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 

@@ -1,0 +1,22 @@
+name: Docs
+slug: docs
+live: false
+
+learningObjectives:
+  - Explain the role of documentation in software engineering
+  - Explain the role of documentation in analytics engineering
+  - Identify the features of dbt docs
+  - Document a model using a .yml file
+  - Document a source using a .yml file
+  - Generate and view documentation in development
+  - Generate and view documentation in production
+
+presentationName: Documentation
+presentationSlug: docs
+  
+pages: 
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 

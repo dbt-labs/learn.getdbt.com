@@ -1,0 +1,16 @@
+name: Installing dbt
+slug: installing-dbt
+live: false
+
+learningObjectives:
+  - N/A
+
+presentationName: N/A
+presentationSlug: testing
+  
+pages: 
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
