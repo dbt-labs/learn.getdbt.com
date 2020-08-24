@@ -30,9 +30,13 @@ title: dbt Learn backend
       </ul>
 
     </td>
-
-    <td><a href="{% link _lessons/{{ module[1].presentationSlug }}.html %}">{{ module[1].presentationName }}</a></td>
-
+    <td>
+    {% if module[1].presentationName != false %}
+      <a href="{% link _lessons/{{ module[1].presentationSlug }}.html %}">{{ module[1].presentationName }}</a>
+    {% else %}
+      <p>N/A</p>
+    {% endif %}
+    </td>
     <td>
       <ul>
         {% for page in module[1].pages %}

@@ -1,6 +1,6 @@
 ---
 layout: lesson
-module: Testing
+module: Tests
 
 ---
 

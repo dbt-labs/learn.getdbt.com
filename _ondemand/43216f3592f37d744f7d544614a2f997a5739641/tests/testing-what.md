@@ -1,5 +1,6 @@
 ---
-layout: overview
+layout: lesson
+module: Tests
 title: What is testing?
 
 ---
