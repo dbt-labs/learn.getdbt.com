@@ -6,10 +6,6 @@ title: On Demand
 <!-- This page will automatically update for markdown pages that have been creted.  The mapping of modules to page names 
 is located in _data/ondemand.yml -->
 
-<p>
-  <a href="./backend">Backend</a>
-</p>
-
 <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px;">
 
   <div>
@@ -23,15 +19,13 @@ is located in _data/ondemand.yml -->
       <li><a href="pathways/{{ pathway.slug }}">{{ pathway.title }}</a></li>
 
       {% else %}
-      <li>{{ pathway.title | append: "- Coming Soon!" }}</li>
+      <li>{{ pathway.title | append: "  🏗" }}</li>
       {% endif %}
 
       {% endfor %}
 
     </ul>
   </div>
-
-
 
   <div>
     <h1>Modules</h1>
@@ -45,7 +39,7 @@ is located in _data/ondemand.yml -->
       {% if mod.live == true %}
         <li> <a href="{{ moduleslug }}/{{ mod.pages[0].slug }}"> {{ mod.name }} </a> </li>
       {% else %}
-        <li> {{ mod.name | append: "- Coming Soon!" }} </li>
+        <li> {{ mod.name | append: "  🏗"  }} </li>
       {% endif %}
 
       {% endfor %}

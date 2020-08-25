@@ -1,6 +1,7 @@
 ---
 layout: lesson
 module: Tests
+moduleSlug: tests
 ---
 
 <h1>Review</h1>

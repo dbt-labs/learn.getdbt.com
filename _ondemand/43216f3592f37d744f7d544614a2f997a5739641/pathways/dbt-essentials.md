@@ -13,7 +13,15 @@ title: dbt essentials
     {% assign modslug = module.slug %}
     {% assign mod = site.data.ondemand.modules | where: "slug", modslug %}
     {% for md in mod %}
-      <li> <a href="/ondemand/{{ site.onDemandHash }}/{{ module.slug }}/{{ md.pages[0].slug }}">{{ module.name }}</a></li>
+    {% if md.live == true %}
+              <li> <a href="/ondemand/{{ site.onDemandHash }}/{{ module.slug }}/{{ md.pages[0].slug }}">{{ module.name }}</a></li>
+    
+    {% else %}
+            <li>{{ module.name | append: "  🏗"  }}</li>
+    {% endif %}
+    
+    
+
     {% endfor %}
   {% endfor %}
 {% endfor %}
