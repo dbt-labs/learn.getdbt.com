@@ -3,13 +3,10 @@ slug: tests
 live: true
 
 learningObjectives:
-  - Explain the role of testing in software engineering
+  - Explain why testing is crucial for analytics
   - Explain the role of testing in analytics engineering
-  - Explain the two types of tests in dbt.
-  - Name the four fundamental tests in dbt
-  - Configure tests in your dbt project
-  - Execute all or a subset of tests in your dbt project
-  - Interpret the results of a test in dbt.
+  - Configure and run schema tests in dbt
+  - Write, configure, and run data tests in dbt
   
 presentationName: Testing
 presentationSlug: testing
@@ -18,7 +15,7 @@ pages:
   - name: "Why is testing important?"
     slug: testing-why
     assetName: Why is Testing Important?
-    assetLink: https://www.youtube.com/embed/9JUz16BrQrY
+    assetLink: https://fast.wistia.net/embed/iframe/ux1zymgy9b
     assetType: video
   
   - name: "Learning Objectives"
@@ -33,12 +30,18 @@ pages:
     assetLink: https://fast.wistia.net/embed/iframe/paz9tohikt
     assetType: video
     
-  - name: "How to use tests in dbt"
-    slug: testing-how
-    assetName: How to use testing in dbt
-    assetLink: https://player.vimeo.com/video/446933852
+  - name: "Schema Tests"
+    slug: schema-tests
+    assetName: Schema Tests in dbt
+    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
     assetType: video
-  
+    
+  - name: "Data Tests"
+    slug: data-tests
+    assetName: Data Tests in dbt
+    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
+    assetType: video
+    
   - name: "Review"
     slug: review
     assetName: false

@@ -3,18 +3,34 @@ slug: sources
 live: false
 
 learningObjectives:
-  - Explain the purpose behind the source feature of dbt
-  - Declare a source in your database
-  - Write a model that selects from a source rather than another or direct referecne to table name
-  - Configure tests to run on sources
-  - Write documentation for a source in a .yml file
+  - Explain the purpose of sources in dbt
+  - Configure and select from sources in your data warehouse
+  - Configure tests and write documentation for sources
 
 presentationName: Sources
 presentationSlug: sources
   
 pages: 
-  - name: "Learning Objectives"
+  - name: What are sources?
+    slug: sources-what
+    assetName: What are sources?
+    assetLink: 
+    assetType: video
+  
+  - name: Learning Objectives
     slug: learning-objectives
     assetName: false
     assetLink:
-    assetType: 
+    assetType:
+      
+  - name: Configure and select from sources
+    slug: sources-define
+    assetName:
+    assetLink:
+    assetType:
+    
+  - name: Testing and Documenting Sources
+    slug: sources-tests-docs
+    assetName:
+    assetLink:
+    assetType:

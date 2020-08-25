@@ -3,20 +3,54 @@ slug: docs
 live: false
 
 learningObjectives:
-  - Explain the role of documentation in software engineering
-  - Explain the role of documentation in analytics engineering
-  - Identify the features of dbt docs
-  - Document a model using a .yml file
-  - Document a source using a .yml file
+  - Explain how documentation is crucial for analytics.
+  - Explain what documentation is for analytics engineering.
+  - Write documentation for models in .yml files
+  - Write documentation in markdown on using doc blocks.
   - Generate and view documentation in development
-  - Generate and view documentation in production
 
 presentationName: Documentation
 presentationSlug: docs
   
 pages: 
+  - name: Why is documentation important?
+    slug: docs-why
+    assetName:
+    assetLink:
+    assetType: video
+  
   - name: "Learning Objectives"
     slug: learning-objectives
     assetName: false
+    assetLink: 
+    assetType: 
+      
+  - name: What does documentation look like in analytics engieering?
+    slug: docs-what
+    assetName:
+    assetLink:
+    assetType: video
+      
+  - name: Writing documentation
+    slug: writing-docs
+    assetName:
+    assetLink:
+    assetType: video
+        
+  - name: Generate and View Documentation
+    slug: generate-docs
+    assetName:
+    assetLink:
+    assetType: video
+    
+  - name: Doc Blocks
+    slug: doc-blocks
+    assetName:
+    assetLink:
+    assetType: video
+    
+  - name: Review
+    slug: review
+    assetName:
     assetLink:
     assetType: 
