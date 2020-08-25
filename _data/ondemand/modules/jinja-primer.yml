@@ -11,8 +11,33 @@ presentationName: Intro to Jinja
 presentationSlug: intro-to-jinja
   
 pages: 
+  
+  - name: What is Jinja
+    slug: jinja-what
+    assetName: false
+    assetLink: 
+    assetType:
+  
   - name: "Learning Objectives"
     slug: learning-objectives
     assetName: false
-    assetLink:
-    assetType: 
+    assetLink: 
+    assetType:
+      
+  - name: Jinja Basics
+    slug: jinja-basics
+    assetName: false
+    assetLink: 
+    assetType:
+      
+  - name: Jinja Practice
+    slug: jinja-practice
+    assetName: false
+    assetLink: 
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink: 
+    assetType:

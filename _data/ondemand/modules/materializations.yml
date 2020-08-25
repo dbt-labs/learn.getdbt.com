@@ -9,8 +9,44 @@ presentationName: Materializations
 presentationSlug: materializations
   
 pages: 
+  - name: What are materializations?
+    slug: materializations-what
+    assetName: false
+    assetLink: 
+    assetType:
+    
   - name: "Learning Objectives"
     slug: learning-objectives
     assetName: false
     assetLink:
     assetType: 
+      
+  - name: Configuring materializations
+    slug: configure-materialization
+    assetName: false 
+    assetLink:
+    assetType:
+      
+  - name: Tables and Views
+    slug: tables-views
+    assetName: false
+    assetLink:
+    assetType:
+
+  - name: Ephermal Models
+    slug: ephermeral
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Incremental Models
+    slug: incremental
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink:
+    assetType:

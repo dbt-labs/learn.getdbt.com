@@ -17,8 +17,34 @@ presentationName: false
 presentationSlug: 
   
 pages: 
+  
+  - name: What are analyses and seeds?
+    slug: analyses-seeds-what
+    assetName: false
+    assetLink:
+    assetType:
+  
   - name: "Learning Objectives"
     slug: learning-objectives
     assetName: false
     assetLink:
     assetType: 
+      
+  - name: Analyses Demo
+    slug: analyses-demo
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Seeds Demo
+    slug: seeds-demo
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink:
+    assetType: 
+      

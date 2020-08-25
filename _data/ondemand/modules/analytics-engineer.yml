@@ -9,8 +9,14 @@ presentationName: Who is an Analytics Engineer?
 presentationSlug: who-is-analytics-engineer
   
 pages: 
-  - name: "Learning Objectives"
-    slug: learning-objectives
+  - name: Traditional Data Teams
+    slug: traditional-teams
     assetName: false
     assetLink:
     assetType: 
+      
+  - name: dbt and Analytics Engineering
+    slug: dbt-analytics-eng
+    assetName: false
+    assetLink:
+    assetType:

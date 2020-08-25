@@ -15,10 +15,6 @@
   modules:
     - name: Who is an analytics engineer?
       slug: analytics-engineer
-    - name: Installing dbt
-      slug: installing-dbt
-    - name: dbt Project fundamentals
-      slug: dbt-fundamentals
     - name: Models
       slug: models
     - name: dbt Project design

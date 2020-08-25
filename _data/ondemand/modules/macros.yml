@@ -13,8 +13,44 @@ presentationName: dbtonic Jinja
 presentationSlug: dbtonic-jinja
   
 pages: 
+  - name: Why macros?
+    slug: macros-why
+    assetName: false
+    assetLink: 
+    assetType:
+  
   - name: "Learning Objectives"
     slug: learning-objectives
     assetName: false
     assetLink:
-    assetType: 
+    assetType:
+      
+  - name: DRY Code
+    slug: dry-code
+    assetName: false
+    assetLink: 
+    assetType:
+
+  - name: Example: ref macro
+    slug: ref-macro
+    assetName: false
+    assetLink: 
+    assetType:
+
+  - name: Example: Currency Conversion
+    slug: currency-macro
+    assetName: false
+    assetLink: 
+    assetType:
+      
+  - name: Example: Pivot Macro
+    slug: pivot-macro
+    assetName: false
+    assetLink: 
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink: 
+    assetType:
