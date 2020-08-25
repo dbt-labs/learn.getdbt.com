@@ -1,8 +1,9 @@
-{% assign mod_slug = page.module %}
-{% assign module = site.data.ondemand.modules | where: "name", mod_slug %}
+{% assign mod_slug = page.moduleSlug %}
+{% assign module = site.data.ondemand.modules | where: "slug", mod_slug %}
 {% assign leadURL = "/ondemand/" | append: site.onDemandHash %}
 {% assign current_slug = page.url | remove: leadURL %}
-{% assign current_slug = current_slug | remove: "/tests/" %}
+{% assign current_slug = current_slug | remove: mod_slug %}
+{% assign current_slug = current_slug | remove: "//" %}
 
 {% for mod in module %}
 

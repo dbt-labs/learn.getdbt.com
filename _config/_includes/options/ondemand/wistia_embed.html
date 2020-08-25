@@ -1,0 +1,21 @@
+{% assign mod_slug = page.moduleSlug %}
+{% assign module = site.data.ondemand.modules | where: "slug", mod_slug %}
+{% assign leadURL = "/ondemand/" | append: site.onDemandHash %}
+{% assign current_slug = page.url | remove: leadURL %}
+{% assign current_slug = current_slug | remove_first: mod_slug %}
+{% assign current_slug = current_slug | remove: "//" %}
+
+{% for mod in module %}
+  {% for pg in mod.pages %}
+
+    {% assign n_pg = forloop.length %}
+
+    {% if pg.slug == current_slug %}
+      {% assign videoURL = pg.assetLink %}
+    {% endif %}
+
+  {% endfor %}
+{% endfor %}
+
+<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><iframe src="{{ videoURL }}?videoFoam=true" title="Why Testing? Video" allow="autoplay; fullscreen" allowtransparency="true" frameborder="0" scrolling="no" class="wistia_embed" name="wistia_embed" allowfullscreen msallowfullscreen width="100%" height="100%"></iframe></div></div>
+<script src="https://fast.wistia.net/assets/external/E-v1.js" async></script>
