@@ -5,7 +5,7 @@ live: false
 learningObjectives:
   - N/A
 
-presentationName: N/A
+presentationName: false
 presentationSlug: testing
   
 pages: 

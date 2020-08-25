@@ -15,7 +15,7 @@ presentationSlug: docs
 pages: 
   - name: Why is documentation important?
     slug: docs-why
-    assetName:
+    assetName: false
     assetLink:
     assetType: video
   
@@ -27,30 +27,42 @@ pages:
       
   - name: What does documentation look like in analytics engieering?
     slug: docs-what
-    assetName:
+    assetName: false
     assetLink:
     assetType: video
       
   - name: Writing documentation
     slug: writing-docs
-    assetName:
+    assetName: false
     assetLink:
     assetType: video
         
-  - name: Generate and View Documentation
+  - name: Generate and View Documentation (CLI)
     slug: generate-docs
-    assetName:
+    assetName: false
     assetLink:
     assetType: video
     
+  - name: Generate and View Documentation (Cloud - dev)
+    slug: generate-docs
+    assetName: false
+    assetLink:
+    assetType: video
+
+  - name: Generate and View Documentation (Cloud - scheduled runs)
+    slug: generate-docs
+    assetName: false
+    assetLink:
+    assetType: video
+
   - name: Doc Blocks
     slug: doc-blocks
-    assetName:
+    assetName: false
     assetLink:
     assetType: video
     
   - name: Review
     slug: review
-    assetName:
+    assetName: false
     assetLink:
     assetType: 

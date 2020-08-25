@@ -12,7 +12,7 @@ learningObjectives:
   - Explain how to build dependencies using the `ref` macro
   - Compile SQL vs. Run SQL vs. dbt run
 
-presentationName: N/A
+presentationName: false
 presentationSlug: testing
   
 pages: 

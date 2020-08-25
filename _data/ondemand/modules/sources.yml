@@ -13,7 +13,7 @@ presentationSlug: sources
 pages: 
   - name: What are sources?
     slug: sources-what
-    assetName: What are sources?
+    assetName: false
     assetLink: 
     assetType: video
   
@@ -25,12 +25,25 @@ pages:
       
   - name: Configure and select from sources
     slug: sources-define
-    assetName:
+    assetName: false
     assetLink:
     assetType:
     
   - name: Testing and Documenting Sources
     slug: sources-tests-docs
-    assetName:
+    assetName: false
     assetLink:
     assetType:
+      
+  - name: Source Freshness
+    slug: source-freshness
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName:
+    assetLink:
+    assetType: 
+      
