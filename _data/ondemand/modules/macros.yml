@@ -31,19 +31,19 @@ pages:
     assetLink: 
     assetType:
 
-  - name: Example: ref macro
+  - name: "Example: ref macro"
     slug: ref-macro
     assetName: false
     assetLink: 
     assetType:
 
-  - name: Example: Currency Conversion
+  - name: "Example: Currency Conversion"
     slug: currency-macro
     assetName: false
     assetLink: 
     assetType:
       
-  - name: Example: Pivot Macro
+  - name: "Example: Pivot Macro"
     slug: pivot-macro
     assetName: false
     assetLink: 

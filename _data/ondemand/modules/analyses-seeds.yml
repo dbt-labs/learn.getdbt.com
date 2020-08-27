@@ -18,8 +18,14 @@ presentationSlug:
   
 pages: 
   
-  - name: What are analyses and seeds?
-    slug: analyses-seeds-what
+  - name: What are analyses?
+    slug: analyses-what
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: What are seeds?
+    slug: seeds-what
     assetName: false
     assetLink:
     assetType:

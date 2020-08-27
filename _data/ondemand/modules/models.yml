@@ -13,8 +13,8 @@ presentationName: false
 presentationSlug: testing
   
 pages: 
-  - name: What are models?
-    slug: models-what
+  - name: Why modularity?
+    slug: modularity
     assetName: false
     assetLink:
     assetType:
@@ -24,7 +24,13 @@ pages:
     assetName: false
     assetLink:
     assetType: 
-            
+          
+  - name: What are models?
+    slug: models-what
+    assetName: false
+    assetLink:
+    assetType:
+  
   - name: Building model dependencies
     slug: model-dependencies
     assetName: false

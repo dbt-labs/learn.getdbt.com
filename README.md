@@ -27,5 +27,5 @@ $ bundle exec jekyll serve --incremental --baseurl '' -w --port 5017
 ## Reveal.js
 * Exploring using this for dbt Learn on demand
 * Presentations are located in `_ondemand`
-* Use `presentation` as your layout in the front matter of your presentation html file.
+* Use `reveal` as your layout in the front matter of your presentation html file.
 * Adjust the styling using .scss in `stylesheets/styles-ondemand.scss` or create your own.
