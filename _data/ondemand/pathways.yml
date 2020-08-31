@@ -1,5 +1,5 @@
 - pathway: 0
-  title: "dbt prerequisites"
+  title: "dbt Prerequisites"
   slug: dbt-prerequisites
   live: false
   modules:
@@ -9,7 +9,7 @@
       slug: sql-primer
 
 - pathway: 1
-  title: "dbt essentials"
+  title: "dbt Essentials"
   slug: dbt-essentials
   live: true
   modules:
@@ -35,7 +35,7 @@
       slug: analyses-seeds
       
 - pathway: 2
-  title: "dbt advanced"
+  title: "dbt Advanced"
   slug: dbt-advanced
   live: false
   modules:
