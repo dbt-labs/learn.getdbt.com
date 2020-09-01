@@ -1,0 +1,56 @@
+name: Macros
+slug: macros
+live: false
+
+learningObjectives:
+  - Explain the role of macros in a dbt project
+  - Negotiate the balance between readability and DRY-ness
+  - Explain how dbt uses macros in the existing sources and ref functions
+  - Write a macro for creating a pivot function
+  - Implement macros in a model file
+
+presentationName: dbtonic Jinja
+presentationSlug: dbtonic-jinja
+  
+pages: 
+  - name: Why macros?
+    slug: macros-why
+    assetName: false
+    assetLink: 
+    assetType:
+  
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: DRY Code
+    slug: dry-code
+    assetName: false
+    assetLink: 
+    assetType:
+
+  - name: "Example: ref macro"
+    slug: ref-macro
+    assetName: false
+    assetLink: 
+    assetType:
+
+  - name: "Example: Currency Conversion"
+    slug: currency-macro
+    assetName: false
+    assetLink: 
+    assetType:
+      
+  - name: "Example: Pivot Macro"
+    slug: pivot-macro
+    assetName: false
+    assetLink: 
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink: 
+    assetType:

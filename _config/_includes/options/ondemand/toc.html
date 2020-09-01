@@ -1,0 +1,40 @@
+{% assign mod_slug = page.moduleSlug %}
+{% assign module = site.data.ondemand.modules | where: "slug", mod_slug %}
+{% assign leadURL = "/ondemand/" | append: site.onDemandHash %}
+{% assign current_slug = page.url | remove: leadURL %}
+{% assign current_slug = current_slug | remove_first: mod_slug %}
+{% assign current_slug = current_slug | remove: "//" %}
+
+<div style="padding: 0px 5%; border-right: 2px solid #e9ecef; margin: 0 5%">
+
+
+<h5> Lessons </h5>
+<uL>
+  
+  {% for mod in module %}
+
+    {% for page in mod.pages %}
+
+      {% assign n_pages = forloop.length %}
+
+      {% if page.slug == current_slug %}
+        <li><strong style="color: #ff694b;">{{ page.name }}</strong></li>
+      {% else %}
+        <li><a href="{{page.slug}}">{{page.name}}</a></li>
+      {% endif %}
+
+    {% endfor %}
+
+  {% assign prev_name = mod.pages[prev_pos].name %}
+  {% assign prev_slug = mod.pages[prev_pos].slug %}
+    
+  {% assign next_name = mod.pages[next_pos].name %}
+  {% assign next_slug = mod.pages[next_pos].slug %}
+
+  {% endfor %}
+
+</uL>
+
+<p><a href="{% link _ondemand/{{ site.onDemandHash }}/index.html %}">Module Selection </a></p>
+
+</div>

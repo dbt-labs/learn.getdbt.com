@@ -1,0 +1,28 @@
+<!-- This adds a link to the first slide of the next presentation -->
+{% assign this_lesson_slug = page.id | remove: "/lessons/" %}
+{% assign next_slug = '' %}
+
+{% for day in site.data.curriculum %}
+{% assign is_last_day = forloop.last %}
+{% assign lessons = '' | split: ',' %}
+{% for session in day.sessions %}
+{% assign lessons = lessons | concat: session.lessons %}
+{% for lesson in lessons %}
+{% assign is_last_lesson = forloop.last %}
+
+{% if this_lesson_slug == lesson.slug %}
+{% if is_last_day and is_last_lesson %}
+{% assign next_slug = 'outro' %}
+{% else %}
+{% assign next_index = forloop.index %}
+{% assign next_slug = lessons[next_index].slug %}
+{% endif %}
+
+<a href="/lessons/{{next_slug}}">
+  <img style="width: 5%; position: absolute; bottom: 10%; right: 5%;" src="/ui/img/graph/avatar.png"></img>
+</a>
+
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endfor %}

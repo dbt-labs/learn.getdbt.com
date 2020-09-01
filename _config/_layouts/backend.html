@@ -8,6 +8,31 @@
     {% include options/meta.html %}
     {% include options/scripts.html %}
     {% include options/styles.html %}
+
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border: 1px solid #000000;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr {
+        background-color: #ffffff;
+      }
+      
+      .text-contain {
+        max-width: 1200px;
+      }
+      
+    </style>
+
   </head>
 
   <body class="{{page.class}}">
@@ -15,6 +40,8 @@
     {% include svg/svg.html %}
     <div class="page">
       {% include content/nav.html %}
+      
+      
       <div class="bg-navy-darker">
         <div class="section-md text-white text-navy-lightest">
           <div class="container">
@@ -29,28 +56,27 @@
         </div>
         <div class="mask mask-ne text-white"></div>
       </div>
+            
       <div class="bg-white">
+        
         <div class="mask mask-ne text-white"></div>
+        
         <div class="mask mask-sw text-white"></div>
+        
         <div class="section">
-          <div class="text-contain">
+          
+          <div class="text-contain" style="max-width=95%;">
+            {{ content }}
             <div class="row">
               <div class="col-lg-12 col-bottomless">
               </div>
             </div>
             <div class="row">
-              {{ content }}
             </div>
           </div>
         </div>
       </div>
     </div>
-    {% if page.render_chart %}
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
-    <script src="/ui/js/helpers/chart.js"></script>
-    {% endif %}
-    {% include content/footer.html %}
   </body>
 
 </html>

@@ -1,0 +1,46 @@
+- pathway: 0
+  title: "dbt Prerequisites"
+  slug: dbt-prerequisites
+  live: false
+  modules:
+    - name: Git Primer
+      slug: git-primer
+    - name: SQL Primer
+      slug: sql-primer
+
+- pathway: 1
+  title: "dbt Essentials"
+  slug: dbt-essentials
+  live: true
+  modules:
+    - name: Who is an analytics engineer?
+      slug: analytics-engineer
+    - name: Models
+      slug: models
+    - name: dbt Project design
+      slug: project-design
+    - name: Tests
+      slug: tests
+    - name: Sources
+      slug: sources
+    - name: Documentation
+      slug: docs
+    - name: Jinja Primer
+      slug: jinja-primer
+    - name: Macro Fundamentals
+      slug: macros
+    - name: Materialization Fundamentals
+      slug: materializations
+    - name: Analyses and Seeds Fundamentals
+      slug: analyses-seeds
+      
+- pathway: 2
+  title: "dbt Advanced"
+  slug: dbt-advanced
+  live: false
+  modules:
+    - name: Incremental models
+      slug: incremental
+    - name: Custom Schema Tests
+      slug: custom-schema-tests
+      

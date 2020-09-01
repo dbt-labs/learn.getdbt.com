@@ -1,0 +1,56 @@
+name: Analyses and Seeds
+slug: analyses-seeds
+live: false
+
+learningObjectives:
+  - Explain the purposes of analyses in contrast to models
+  - Explain the appropriate use cases for a seed in a dbt project
+  - Compile analyses and find the compiled SQL in the targets folder
+  - Add a data file to the seed folder
+  - Materialize the seed as a table in the database using dbt seed
+  - Reference a seed in a model
+  - Configure the seeds for a project in a dbt_project.yml file
+  - Write documentation for seeds
+  - Configure tests for seeds
+
+presentationName: false
+presentationSlug: 
+  
+pages: 
+  
+  - name: What are analyses?
+    slug: analyses-what
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: What are seeds?
+    slug: seeds-what
+    assetName: false
+    assetLink:
+    assetType:
+  
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
+      
+  - name: Analyses Demo
+    slug: analyses-demo
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Seeds Demo
+    slug: seeds-demo
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink:
+    assetType: 
+      

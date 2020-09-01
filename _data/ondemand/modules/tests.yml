@@ -1,0 +1,49 @@
+name: Tests
+slug: tests
+live: true
+
+learningObjectives:
+  - Explain why testing is crucial for analytics
+  - Explain the role of testing in analytics engineering
+  - Configure and run schema tests in dbt
+  - Write, configure, and run data tests in dbt
+  
+presentationName: Testing
+presentationSlug: testing
+  
+pages: 
+  - name: "Why is testing important?"
+    slug: testing-why
+    assetName: Why is Testing Important?
+    assetLink: https://fast.wistia.net/embed/iframe/ux1zymgy9b
+    assetType: video
+  
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
+    
+  - name: "What is testing?"
+    slug: testing-what
+    assetName: What is Testing?
+    assetLink: https://fast.wistia.net/embed/iframe/paz9tohikt
+    assetType: video
+    
+  - name: "Schema Tests"
+    slug: schema-tests
+    assetName: Schema Tests in dbt
+    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
+    assetType: video
+    
+  - name: "Data Tests"
+    slug: data-tests
+    assetName: Data Tests in dbt
+    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
+    assetType: video
+    
+  - name: "Review"
+    slug: review
+    assetName: false
+    assetLink:
+    assetType: 

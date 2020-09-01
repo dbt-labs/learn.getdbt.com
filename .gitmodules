@@ -2,3 +2,6 @@
 	path = www.getdbt.com
 	url = https://github.com/fishtown-analytics/www.getdbt.com
 	branch = cloud
+[submodule "reveal.js"]
+	path = reveal.js
+	url = https://github.com/hakimel/reveal.js.git

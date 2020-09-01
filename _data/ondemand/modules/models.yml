@@ -1,0 +1,58 @@
+name: Models
+slug: models
+live: false
+
+learningObjectives:
+  - Create a simple model using a select statement
+  - Explain how to build dependencies using the `ref` macro
+  - Compile SQL vs. Run SQL vs. dbt run
+  - Explain how dbt wraps select statements in the explicit DDL/DML
+
+
+presentationName: false
+presentationSlug: testing
+  
+pages: 
+  - name: Why modularity?
+    slug: modularity
+    assetName: false
+    assetLink:
+    assetType:
+  
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
+          
+  - name: What are models?
+    slug: models-what
+    assetName: false
+    assetLink:
+    assetType:
+  
+  - name: Building model dependencies
+    slug: model-dependencies
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Compiling and Running models
+    slug: compile-run-models
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: dbt under the hood
+    slug: dbt-under-the-hood
+    assetName: false
+    assetLink: 
+    assetType: 
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink:
+    assetType:
+      
+      

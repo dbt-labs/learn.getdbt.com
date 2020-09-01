@@ -1,0 +1,49 @@
+name: Sources
+slug: sources
+live: false
+
+learningObjectives:
+  - Explain the purpose of sources in dbt
+  - Configure and select from sources in your data warehouse
+  - Configure tests and write documentation for sources
+
+presentationName: Sources
+presentationSlug: sources
+  
+pages: 
+  - name: What are sources?
+    slug: sources-what
+    assetName: false
+    assetLink: 
+    assetType: video
+  
+  - name: Learning Objectives
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Configure and select from sources
+    slug: sources-define
+    assetName: false
+    assetLink:
+    assetType:
+    
+  - name: Testing and Documenting Sources
+    slug: sources-tests-docs
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Source Freshness
+    slug: source-freshness
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Review
+    slug: review
+    assetName:
+    assetLink:
+    assetType: 
+      
