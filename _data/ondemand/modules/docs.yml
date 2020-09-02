@@ -1,4 +1,4 @@
-name: Docs
+name: Documentation
 slug: docs
 live: false
 
@@ -15,8 +15,8 @@ presentationSlug: docs
 pages: 
   - name: Why is documentation important?
     slug: docs-why
-    assetName: false
-    assetLink:
+    assetName: Why is documentation important?
+    assetLink: https://www.youtube.com/embed/UUj4I6auCvA
     assetType: video
   
   - name: "Learning Objectives"
@@ -27,8 +27,8 @@ pages:
       
   - name: What does documentation look like in analytics engieering?
     slug: docs-what
-    assetName: false
-    assetLink:
+    assetName: What is documentation in analytics engineering?
+    assetLink: https://www.youtube.com/embed/PlKJxvF_Xss
     assetType: video
       
   - name: Writing documentation

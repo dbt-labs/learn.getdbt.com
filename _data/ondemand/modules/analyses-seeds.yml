@@ -21,14 +21,14 @@ pages:
   - name: What are analyses?
     slug: analyses-what
     assetName: false
-    assetLink:
-    assetType:
+    assetLink: https://www.youtube.com/embed/ADjRdFz1K8U
+    assetType: video
       
   - name: What are seeds?
     slug: seeds-what
     assetName: false
-    assetLink:
-    assetType:
+    assetLink: https://www.youtube.com/embed/KtM3K0x8WU0
+    assetType: video
   
   - name: "Learning Objectives"
     slug: learning-objectives

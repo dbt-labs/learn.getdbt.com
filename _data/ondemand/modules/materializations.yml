@@ -3,7 +3,11 @@ slug: materializations
 live: false
 
 learningObjectives:
-  - N/A
+  - Explain what materilizations in dbt are
+  - Explain the differences and tradeoffs between tables, views, and ephemeral models
+  - Configure materializations in configuration files and in models
+  - Explain how incremental models are built
+  - Configure and built an incremental model
 
 presentationName: Materializations
 presentationSlug: materializations
@@ -11,9 +15,9 @@ presentationSlug: materializations
 pages: 
   - name: What are materializations?
     slug: materializations-what
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: What are materializations in dbt?
+    assetLink: https://www.youtube.com/embed/_LCfuGNcohI
+    assetType: video
     
   - name: "Learning Objectives"
     slug: learning-objectives
