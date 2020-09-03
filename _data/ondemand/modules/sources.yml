@@ -13,8 +13,8 @@ presentationSlug: sources
 pages: 
   - name: What are sources?
     slug: sources-what
-    assetName: false
-    assetLink: 
+    assetName: "What are sources in dbt?"
+    assetLink: https://www.youtube.com/embed/PVaI3PknIA8
     assetType: video
   
   - name: Learning Objectives
