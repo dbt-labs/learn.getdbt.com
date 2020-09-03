@@ -27,7 +27,7 @@ pages:
   - name: "What is testing?"
     slug: testing-what
     assetName: What is Testing?
-    assetLink: https://fast.wistia.net/embed/iframe/paz9tohikt
+    assetLink: https://www.youtube.com/embed/S2S07NE-6hk
     assetType: video
     
   - name: "Schema Tests"
