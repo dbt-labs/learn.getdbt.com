@@ -12,13 +12,20 @@
   <style>
     .grid-container {
       display: grid;
-      grid-template-columns: 3fr 7fr;
+      grid-template-columns: 2fr 8fr;
     }
     
     .grid-item {
-      padding: 0px 2.5%;
-      margin: 0 2.5%;
+      padding: 0px 10px;
+      margin: 0 10px;
     }
+
+    .toc {
+      max-width: 350px;
+      min-width: 300px;
+      font-size: 0.9em;
+    }
+
 
   </style>
     
@@ -44,14 +51,14 @@
         </div>
         <div class="mask mask-ne text-white"></div>
       </div>
-
+     
       <div class="bg-white">
         <div class="mask mask-ne text-white"></div>
         <div class="mask mask-sw text-white"></div>
         <div class="section">
           <div class="grid-container">
             
-            <div class="grid-item">
+            <div class="grid-item toc">
               {% include options/ondemand/toc.html %}
             </div>
             
