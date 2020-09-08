@@ -3,30 +3,27 @@ slug: project-design
 live: false
 
 learningObjectives:
-  - N/A
+  - Differentiate between the final data artifact and the method for building it
+  - Explain the three interfaces to you dbt project
+  - Explain common practices for naming and structuring models
+  - Explain the interaction and role of dbt vs. BI tools
 
 presentationName: dbt Project Design
 presentationSlug: dbt-project-design
   
 pages: 
-  - name: What do you need to use dbt?
-    slug: dbt-reqs
-    assetName: false
-    assetLink: 
-    assetType:
-  
-  - name: "Learning Objectives"
-    slug: learning-objectives
-    assetName: false
-    assetLink:
-    assetType: 
-      
   - name: Final Artifacts
     slug: final-artifacts
     assetName: false 
     assetLink: 
     assetType: 
-      
+
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
+            
   - name: Three Interfaces
     slug: three-interfaces
     assetName: false

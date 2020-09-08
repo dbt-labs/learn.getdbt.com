@@ -3,14 +3,33 @@ slug: dbt-fundamentals
 live: false
 
 learningObjectives:
-  - N/A
+  - Explain the requirements for using dbt
+  - Explain the connection between models, ref functions, and the DAG
+  - Explain materializations and configurations
+  - Explain testa and documentation
 
 presentationName: dbt Fundamentals
 presentationSlug: dbt-fundamentals
   
 pages: 
+  - name: What do you need to use dbt?
+    slug: dbt-requirements
+    assetName: false  
+
   - name: "Learning Objectives"
     slug: learning-objectives
     assetName: false
     assetLink:
     assetType: 
+
+  - name: Models, References, and DAGs
+    slug: models-refs-dags
+
+  - name: Materializations and Configurations
+    slug: mats-configs
+
+  - name: Tests and Documentation
+    slug: tests-docs
+
+  - name: Review
+    slug: review

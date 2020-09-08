@@ -1,0 +1,29 @@
+name: Packages
+slug: packages
+live: false
+
+learningObjectives:
+  - Explain the role of packages in a dbt project
+  - Install a package from hub.getdbt.com
+  - Utilize models and macros from a package
+
+presentationName:
+presentationSlug: 
+  
+pages: 
+  - name: What are packages?
+    slug: packages-what
+
+  - name: "Learning Objectives"
+    slug: learning-objectives
+
+  - name: Installing Packages
+    slug: packages-install
+
+  - name: Using a Package
+    slug: package-usage
+
+  - name: Review
+    slug: review
+
+      

@@ -8,7 +8,6 @@ learningObjectives:
   - Compile SQL vs. Run SQL vs. dbt run
   - Explain how dbt wraps select statements in the explicit DDL/DML
 
-
 presentationName: false
 presentationSlug: testing
   

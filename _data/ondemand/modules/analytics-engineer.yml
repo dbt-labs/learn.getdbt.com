@@ -3,7 +3,8 @@ slug: analytics-engineer
 live: false
 
 learningObjectives:
-  - N/A
+  - Explain the structure of traditional data teams
+  - Explain how dbt and modern database technology empower teams to work differently
 
 presentationName: Who is an Analytics Engineer?
 presentationSlug: who-is-analytics-engineer

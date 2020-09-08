@@ -43,12 +43,18 @@ pages:
     assetLink:
     assetType:
       
-  - name: Incremental Models
+  - name: Incremental Models Intro
     slug: incremental
     assetName: false
     assetLink:
     assetType:
-      
+
+  - name: Incremental Models Configuration
+    slug: incremental-config
+    assetName: false
+    assetLink:
+    assetType:
+
   - name: Review
     slug: review
     assetName: false

@@ -6,8 +6,8 @@ learningObjectives:
   - Explain the role of macros in a dbt project
   - Negotiate the balance between readability and DRY-ness
   - Explain how dbt uses macros in the existing sources and ref functions
-  - Write a macro for creating a pivot function
   - Implement macros in a model file
+  - Write a macro for creating a pivot function
 
 presentationName: dbtonic Jinja
 presentationSlug: dbtonic-jinja

@@ -12,7 +12,7 @@ presentationSlug: intro-to-jinja
   
 pages: 
   
-  - name: What is Jinja
+  - name: What is Jinja?
     slug: jinja-what
     assetName: false
     assetLink: 
