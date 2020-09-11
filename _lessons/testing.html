@@ -12,7 +12,7 @@ learningObjectives:
 
 ---
 class: title, center, middle
-# Testing & CI
+# Testing
 ---
 
 {% include options/focus_slide.html %}
@@ -129,8 +129,6 @@ Run specific tests: `dbt test -m one_specific_model`
 * `relationships`
 ]
 
---
-
 .right-column[
 Every value in this column is unique.
 
@@ -206,14 +204,6 @@ models:
 
 ]
 
-
----
-
-# Q: How do I run a test in dbt?
-
-
-
-
 ---
 # Q: Why might a test fail?
 --
@@ -280,9 +270,8 @@ Examples:
 --
 
 2. An assumption about your source data is wrong.
-
---
     * non-unique IDs
+    * 1:many instead of 1:1
     * Missing data
     * NULLs you weren't expecting
 
@@ -359,7 +348,10 @@ models:
       - name: payment_method
         tests:
           - accepted_values:
-              values: ['credit_card', 'paypal', 'ach_transfer']
+              values:
+                - credit_card
+                - paypal
+                - ach_transfer
 ```
 ]
 
