@@ -7,7 +7,7 @@ learningObjectives:
   - Install a package from hub.getdbt.com
   - Utilize models and macros from a package
 
-presentationName:
+presentationName: false
 presentationSlug: 
   
 pages: 
