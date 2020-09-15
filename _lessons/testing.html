@@ -214,48 +214,19 @@ models:
 
 ```sql
 select
-    customers.customer_id,
-    customer_orders.number_of_orders
-from customers
-
-left join customer_orders using (customer_id)
-
+    orders.order_id,
+    payments.payment_id
+from orders
+left join payments
+    on orders.order_id = payments.payment_id
 ```
-
 ```yml
-version: 2
-
 models:
-  - name: customers
+  - name: fct_orders
     columns:
-      - name: number_of_orders
+      - name: order_id
         tests:
-          - not_null
-```
----
-# Q: Why might a test fail?
-
-1. The SQL in your model doesn’t do what you intended.
-
-```sql
-select
-    customers.customer_id,
-    coalesce(customer_orders.number_of_orders, 0) as number_of_orders
-from customers
-
-left join customer_orders using (customer_id)
-
-```
-
-```yml
-version: 2
-
-models:
-  - name: customers
-    columns:
-      - name: number_of_orders
-        tests:
-          - not_null
+          - unique
 ```
 
 ???
@@ -267,8 +238,30 @@ Examples:
 # Q: Why might a test fail?
 
 1. The SQL in your model doesn’t do what you intended.
+2. An assumption about your source data is wrong.
 --
 
+
+```sql
+select
+    orders.order_id,
+    payments.payment_id
+from orders
+left join payments
+    on orders.order_id = payments.order_id
+```
+```yml
+models:
+  - name: fct_orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+```
+---
+# Q: Why might a test fail?
+
+1. The SQL in your model doesn’t do what you intended.
 2. An assumption about your source data is wrong.
     * non-unique IDs
     * 1:many instead of 1:1
