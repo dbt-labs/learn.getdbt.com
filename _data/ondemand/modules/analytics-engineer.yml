@@ -1,10 +1,12 @@
 name: Who is an Analytics Engineer?
 slug: analytics-engineer
-live: false
+live: true
 
 learningObjectives:
   - Explain the structure of traditional data teams
-  - Explain how dbt and modern database technology empower teams to work differently
+  - Explain how technology advances enabled the transition from ETL to ELT
+  - Explain the role of Analytics Engineer and the modern data team
+  - Explain how dbt empowers analytics engineers
 
 presentationName: Who is an Analytics Engineer?
 presentationSlug: who-is-analytics-engineer
@@ -12,12 +14,24 @@ presentationSlug: who-is-analytics-engineer
 pages: 
   - name: Traditional Data Teams
     slug: traditional-teams
-    assetName: false
-    assetLink:
-    assetType: 
+    assetName: 01 Traditional Data Teams
+    assetLink: https://www.youtube.com/embed/n4NdifpQuOc
+    assetType: video
       
-  - name: dbt and Analytics Engineering
-    slug: dbt-analytics-eng
-    assetName: false
-    assetLink:
-    assetType:
+  - name: ETL and ELT
+    slug: etl-elt
+    assetName: 02 ELT and ELT
+    assetLink: https://www.youtube.com/embed/gcujp6z7tM8
+    assetType: video
+
+  - name: Analytics Engineer
+    slug: analytics-engineer
+    assetName: 03 Analytics Engineer
+    assetLink: https://www.youtube.com/embed/gJIxTEYM-Ts
+    assetType: video
+
+  - name: data build tool
+    slug: data-build-tool
+    assetName: 04 data build tool
+    assetLink: https://www.youtube.com/embed/ZFbnScCbc14
+    assetType: video
