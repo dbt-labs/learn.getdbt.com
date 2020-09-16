@@ -87,7 +87,33 @@ create or replace view raw.stripe.payment as (
 
 
 -- PART THREE: SETUP SNOWFLAKE SHARES
--- [ to-do ]
+-- ❗️This part needs to be run from the Fishtown Snowflake account
+use role accountadmin
+create share if not exists learn;
+grant usage on database analytics to share learn;
+grant reference_usage on database raw to share learn;
+alter share learn add accounts = fka50167;
+
+/* Then, add secure views to the share as models in our dbt project (check out the
+`anonymized_ticket_tailor__orders` model as an example)
+*/
+
+-- ❗️This part needs to be run from the Learn Snowflake account
+use role accountadmin;
+create database if not exists share_fishtown_analytics  from share kw27752.learn;
+grant imported privileges on database share_fishtown_analytics to role transformer;
+
+use role loader;
+create schema if not exists raw.ticket_tailor;
+-- for each table:
+create view raw.ticket_tailor.orders as (
+    select * from share_fishtown_analytics.shared_ticket_tailor.orders
+);
+-- etc.
+-- NB: the transformer role should inherit privileges automatically, but it's worth checking
+use role transformer;
+-- for each table, confirm that the transformer can read it
+select * from raw.ticket_tailor.orders;
 
 -- PART FOUR: ADD USERS
 -- For each attendee we run the following:
