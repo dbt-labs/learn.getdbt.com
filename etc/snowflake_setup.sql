@@ -91,15 +91,11 @@ create or replace view raw.stripe.payment as (
 use role accountadmin
 create share if not exists learn;
 grant usage on database analytics to share learn;
--- grant reference_usage on database raw to share learn; --CC note: limited success so far
+grant reference_usage on database raw to share learn;
 alter share learn add accounts = fka50167;
 
-/* Then, add views to the share as models in our dbt project (check out the
+/* Then, add secure views to the share as models in our dbt project (check out the
 `anonymized_ticket_tailor__orders` model as an example)
-
-The view must _only_ select from tables within the same database. Theoretically
-we should be able to grant reference usage to work around this, however I
-haven't had any luck doing that.
 */
 
 -- ❗️This part needs to be run from the Learn Snowflake account
