@@ -1,6 +1,6 @@
 name: Analyses and Seeds
 slug: analyses-seeds
-live: false
+live: true
 
 learningObjectives:
   - Explain the purposes of analyses in contrast to models
@@ -21,13 +21,13 @@ pages:
   - name: What are analyses?
     slug: analyses-what
     assetName: true
-    assetLink: https://www.youtube.com/embed/ADjRdFz1K8U
+    assetLink: https://fast.wistia.net/embed/iframe/alnss0hi5f?videoFoam=true
     assetType: video
       
   - name: What are seeds?
     slug: seeds-what
     assetName: true
-    assetLink: https://www.youtube.com/embed/KtM3K0x8WU0
+    assetLink: https://fast.wistia.net/embed/iframe/oev8f45rgf?videoFoam=true
     assetType: video
   
   - name: "Learning Objectives"

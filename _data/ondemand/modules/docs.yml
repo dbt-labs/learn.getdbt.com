@@ -1,6 +1,6 @@
 name: Documentation
 slug: docs
-live: false
+live: true
 
 learningObjectives:
   - Explain how documentation is crucial for analytics.
@@ -16,7 +16,7 @@ pages:
   - name: Why is documentation important?
     slug: docs-why
     assetName: Why is documentation important?
-    assetLink: https://www.youtube.com/embed/UUj4I6auCvA
+    assetLink: https://fast.wistia.net/embed/iframe/u1bbe5xq2s?videoFoam=true
     assetType: video
   
   - name: "Learning Objectives"
@@ -28,7 +28,7 @@ pages:
   - name: What does documentation look like in analytics engieering?
     slug: docs-what
     assetName: What is documentation in analytics engineering?
-    assetLink: https://www.youtube.com/embed/PlKJxvF_Xss
+    assetLink: https://fast.wistia.net/embed/iframe/n268hfvo7f?videoFoam=true
     assetType: video
       
   - name: Writing documentation

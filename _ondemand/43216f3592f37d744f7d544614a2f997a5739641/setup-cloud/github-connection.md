@@ -9,4 +9,4 @@ title: Connect to GitHub
 # Connect to GitHub
 _Connect your dbt cloud account to Github_
 
-{% include options/ondemand/youtube_embed.html %}
+{% include options/ondemand/wistia_embed.html %}

@@ -15,23 +15,23 @@ pages:
   - name: Traditional Data Teams
     slug: traditional-teams
     assetName: 01 Traditional Data Teams
-    assetLink: https://www.youtube.com/embed/n4NdifpQuOc
+    assetLink: https://fast.wistia.net/embed/iframe/lortpnyki0?videoFoam=true
     assetType: video
       
   - name: ETL and ELT
     slug: etl-elt
     assetName: 02 ELT and ELT
-    assetLink: https://www.youtube.com/embed/gcujp6z7tM8
+    assetLink: https://fast.wistia.net/embed/iframe/om280ljmsw?videoFoam=true
     assetType: video
 
   - name: Analytics Engineer
     slug: analytics-engineer
     assetName: 03 Analytics Engineer
-    assetLink: https://www.youtube.com/embed/gJIxTEYM-Ts
+    assetLink: https://fast.wistia.net/embed/iframe/txk46cqcdp?videoFoam=true
     assetType: video
 
   - name: data build tool
     slug: data-build-tool
     assetName: 04 data build tool
-    assetLink: https://www.youtube.com/embed/ZFbnScCbc14
+    assetLink: https://fast.wistia.net/embed/iframe/tfb04ugq3z?videoFoam=true
     assetType: video

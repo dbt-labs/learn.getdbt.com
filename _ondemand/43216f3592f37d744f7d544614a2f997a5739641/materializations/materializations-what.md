@@ -7,4 +7,4 @@ moduleSlug: materializations
 # Materializations Intro
 _What are materializations in dbt?_
 
-{% include options/ondemand/youtube_embed.html %}
+{% include options/ondemand/wistia_embed.html %}

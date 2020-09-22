@@ -1,6 +1,6 @@
 name: Models
 slug: models
-live: false
+live: true
 
 learningObjectives:
   - Create a simple model using a select statement
@@ -12,11 +12,11 @@ presentationName: false
 presentationSlug: testing
   
 pages: 
-  - name: Why modularity?
-    slug: modularity
-    assetName: false
-    assetLink:
-    assetType:
+  - name: What are models?
+    slug: models-what
+    assetName: What are models?
+    assetLink: https://fast.wistia.net/embed/iframe/r0qpfq2cwu?videoFoam=true
+    assetType: video
   
   - name: "Learning Objectives"
     slug: learning-objectives
@@ -24,34 +24,45 @@ pages:
     assetLink:
     assetType: 
           
-  - name: What are models?
-    slug: models-what
+  - name: Building your first model
+    slug: building-your-first-model
     assetName: false
     assetLink:
     assetType:
   
-  - name: Building model dependencies
-    slug: model-dependencies
+  - name: What is modularity?
+    slug: modularity-what
+    assetName:  What is modularity?
+    assetLink: https://fast.wistia.net/embed/iframe/6wwzv38wzn?videoFoam=true
+    assetType: video
+      
+  - name: Modularlity and the ref function
+    slug: modularize-red
     assetName: false
     assetLink:
     assetType:
       
-  - name: Compiling and Running models
-    slug: compile-run-models
-    assetName: false
-    assetLink:
-    assetType:
-      
-  - name: dbt under the hood
+  - name: Quick History of Data Modeling
     slug: dbt-under-the-hood
-    assetName: false
-    assetLink: 
-    assetType: 
+    assetName: Quick History of Data Modeling
+    assetLink: https://fast.wistia.net/embed/iframe/ibd2p94nwt?videoFoam=true
+    assetType: video
       
+  - name: Model Naming Conventions
+    slug: naming-conventions
+    assetName: false
+    assetLink:
+    assetType:
+      
+  - name: Reorganize your Project
+    slug: reorganize-project
+    assetName: false
+    assetLink:
+    assetType:
+
   - name: Review
     slug: review
     assetName: false
     assetLink:
     assetType:
-      
       

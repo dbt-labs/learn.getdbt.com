@@ -14,19 +14,19 @@ pages:
   - name: Set Up GitHub Repository and Connect to Cloud
     slug: github-connection
     assetName: Connnect GitHub to dbt Cloud
-    assetLink: https://www.youtube.com/embed/n2sOXUBYACo
+    assetLink: https://fast.wistia.net/embed/iframe/qcwfgttwss?videoFoam=true
     assetType: video
       
   - name: Connect to your warehouse and repository
     slug: warehouse-repo
     assetName: Connect dbt Cloud to your warehouse and repository
-    assetLink: https://www.youtube.com/embed/qOjbyybK-KI
+    assetLink: https://fast.wistia.net/embed/iframe/rl5h92pctb?videoFoam=true
     assetType: video
   
   - name: Cloud IDE Overview
     slug: cloud-ide
     assetName: Cloud IDE Overview
-    assetLink: https://www.youtube.com/embed/1DdB6CUgCJc
+    assetLink: https://fast.wistia.net/embed/iframe/0828jynq3v?videoFoam=true
     assetType: video
 
     

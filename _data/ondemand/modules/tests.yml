@@ -15,7 +15,7 @@ pages:
   - name: "Why is testing important?"
     slug: testing-why
     assetName: Why is Testing Important?
-    assetLink: https://www.youtube.com/embed/ti_ygYyqVng
+    assetLink: https://fast.wistia.net/embed/iframe/rqzf68cs6i?videoFoam=true
     assetType: video
   
   - name: "Learning Objectives"
@@ -27,7 +27,7 @@ pages:
   - name: "What is testing?"
     slug: testing-what
     assetName: What is Testing?
-    assetLink: https://www.youtube.com/embed/S2S07NE-6hk
+    assetLink: https://fast.wistia.net/embed/iframe/4jujz0a0c9?videoFoam=true
     assetType: video
     
   - name: "Schema Tests"

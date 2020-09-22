@@ -1,6 +1,6 @@
 name: Sources
 slug: sources
-live: false
+live: true
 
 learningObjectives:
   - Explain the purpose of sources in dbt
@@ -14,7 +14,7 @@ pages:
   - name: What are sources?
     slug: sources-what
     assetName: "What are sources in dbt?"
-    assetLink: https://www.youtube.com/embed/PVaI3PknIA8
+    assetLink: https://fast.wistia.net/embed/iframe/unge2cc1fb?videoFoam=true
     assetType: video
   
   - name: Learning Objectives

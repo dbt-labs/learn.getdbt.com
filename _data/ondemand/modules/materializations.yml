@@ -1,6 +1,6 @@
 name: Materializations
 slug: materializations
-live: false
+live: true
 
 learningObjectives:
   - Explain what materilizations in dbt are
@@ -16,7 +16,7 @@ pages:
   - name: What are materializations?
     slug: materializations-what
     assetName: What are materializations in dbt?
-    assetLink: https://www.youtube.com/embed/_LCfuGNcohI
+    assetLink: https://fast.wistia.net/embed/iframe/aslf4dkalx?videoFoam=true
     assetType: video
     
   - name: "Learning Objectives"

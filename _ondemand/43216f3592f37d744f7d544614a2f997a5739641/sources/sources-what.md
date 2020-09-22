@@ -4,4 +4,4 @@ module: Sources
 moduleSlug: sources
 ---
 
-{% include options/ondemand/youtube_embed.html %}
+{% include options/ondemand/wistia_embed.html %}
