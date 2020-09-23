@@ -36,31 +36,19 @@ pages:
     assetName: false
     assetLink:
     assetType: video
-        
-  - name: Generate and View Documentation (CLI)
-    slug: generate-docs
+    
+  - name: Doc Blocks
+    slug: doc-blocks
     assetName: false
     assetLink:
     assetType: video
-    
+
   - name: Generate and View Documentation (Cloud - dev)
     slug: generate-docs
     assetName: false
     assetLink:
     assetType: video
 
-  - name: Generate and View Documentation (Cloud - scheduled runs)
-    slug: generate-docs
-    assetName: false
-    assetLink:
-    assetType: video
-
-  - name: Doc Blocks
-    slug: doc-blocks
-    assetName: false
-    assetLink:
-    assetType: video
-    
   - name: Review
     slug: review
     assetName: false

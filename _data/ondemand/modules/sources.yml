@@ -6,6 +6,7 @@ learningObjectives:
   - Explain the purpose of sources in dbt
   - Configure and select from sources in your data warehouse
   - Configure tests and write documentation for sources
+  - Snapshot the freshness of sources with dbt source snapshot-freshness
 
 presentationName: Sources
 presentationSlug: sources

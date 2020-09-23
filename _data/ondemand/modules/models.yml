@@ -3,10 +3,13 @@ slug: models
 live: true
 
 learningObjectives:
-  - Create a simple model using a select statement
-  - Explain how to build dependencies using the `ref` macro
-  - Compile SQL vs. Run SQL vs. dbt run
-  - Explain how dbt wraps select statements in the explicit DDL/DML
+  - Explain what models are in a dbt project
+  - Build your first dbt model
+  - Explain the concept of modularity applied to analytics
+  - Modularize your project with the ref function
+  - Review a brief history of modeling paradigms
+  - Identify common naming conventions for tables
+  - Reorganize your project with subfolders
 
 presentationName: false
 presentationSlug: testing

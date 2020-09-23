@@ -4,10 +4,8 @@ live: true
 
 learningObjectives:
   - Explain what materilizations in dbt are
-  - Explain the differences and tradeoffs between tables, views, and ephemeral models
   - Configure materializations in configuration files and in models
-  - Explain how incremental models are built
-  - Configure and built an incremental model
+  - Explain the differences and tradeoffs between tables, views, and ephemeral models
 
 presentationName: Materializations
 presentationSlug: materializations
@@ -25,32 +23,8 @@ pages:
     assetLink:
     assetType: 
       
-  - name: Configuring materializations
-    slug: configure-materialization
-    assetName: false 
-    assetLink:
-    assetType:
-      
-  - name: Tables and Views
+  - name: Tables, Views, and Ephemeral Models
     slug: tables-views
-    assetName: false
-    assetLink:
-    assetType:
-
-  - name: Ephermal Models
-    slug: ephermeral
-    assetName: false
-    assetLink:
-    assetType:
-      
-  - name: Incremental Models Intro
-    slug: incremental
-    assetName: false
-    assetLink:
-    assetType:
-
-  - name: Incremental Models Configuration
-    slug: incremental-config
     assetName: false
     assetLink:
     assetType:

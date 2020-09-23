@@ -24,12 +24,6 @@ pages:
     assetName: false
     assetLink:
     assetType:
-      
-  - name: DRY Code
-    slug: dry-code
-    assetName: false
-    assetLink: 
-    assetType:
 
   - name: "Example: ref macro"
     slug: ref-macro
@@ -49,6 +43,12 @@ pages:
     assetLink: 
     assetType:
       
+  - name: DRY Code vs. Readability
+    slug: dry-code
+    assetName: false
+    assetLink: 
+    assetType:
+
   - name: Review
     slug: review
     assetName: false

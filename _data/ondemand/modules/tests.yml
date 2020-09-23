@@ -38,9 +38,9 @@ pages:
     
   - name: "Data Tests"
     slug: data-tests
-    assetName: Data Tests in dbt
-    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
-    assetType: video
+    assetName: false
+    assetLink: 
+    assetType: 
     
   - name: "Review"
     slug: review

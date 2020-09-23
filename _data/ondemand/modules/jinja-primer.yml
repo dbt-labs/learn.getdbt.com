@@ -4,8 +4,8 @@ live: false
 
 learningObjectives:
   - Explain how Jinja works as a templating language
-  - Explain the three delimiters of Jinja; expressions, statements, and comments
-  - Check the compiled SQL using `compile SQL` and the targets folder
+  - Anticipate the output of a block of Jinja code
+  - Refactor a pivot query using Jinja
 
 presentationName: Intro to Jinja
 presentationSlug: intro-to-jinja
