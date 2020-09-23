@@ -3,7 +3,7 @@ slug: materializations
 live: true
 
 learningObjectives:
-  - Explain what materilizations in dbt are
+  - Explain the five main types of materializations in dbt
   - Configure materializations in configuration files and in models
   - Explain the differences and tradeoffs between tables, views, and ephemeral models
 

@@ -11,6 +11,12 @@ presentationName: false
 presentationSlug: 
   
 pages: 
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
+
   - name: Set Up GitHub Repository and Connect to Cloud
     slug: github-connection
     assetName: Connnect GitHub to dbt Cloud
