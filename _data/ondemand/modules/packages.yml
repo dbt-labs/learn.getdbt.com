@@ -1,6 +1,6 @@
 name: Packages
 slug: packages
-live: false
+live: true
 
 learningObjectives:
   - Explain the role of packages in a dbt project
@@ -13,17 +13,32 @@ presentationSlug:
 pages: 
   - name: What are packages?
     slug: packages-what
+    assetName: What are Packages?
+    assetLink: https://fast.wistia.net/embed/iframe/qf1umo81f0
+    assetType: video
 
   - name: "Learning Objectives"
     slug: learning-objectives
+    assetName: 
+    assetLink:
+    assetType: 
+    
+  - name: Package Models
+    slug: package-models
+    assetName: false
+    assetLink:
+    assetType: 
 
-  - name: Installing Packages
-    slug: packages-install
-
-  - name: Using a Package
-    slug: package-usage
+  - name: Package Macros
+    slug: package-macros
+    assetName: false
+    assetLink:
+    assetType: 
 
   - name: Review
     slug: review
+    assetName: 
+    assetLink:
+    assetType: 
 
       

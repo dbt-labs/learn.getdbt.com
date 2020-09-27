@@ -33,7 +33,7 @@ pages:
   - name: "Schema Tests"
     slug: schema-tests
     assetName: Schema Tests in dbt
-    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
+    assetLink: https://fast.wistia.net/embed/iframe/5wfrf3a6j1
     assetType: video
     
   - name: "Data Tests"

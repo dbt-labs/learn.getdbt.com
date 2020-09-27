@@ -29,9 +29,9 @@ pages:
           
   - name: Building your first model
     slug: building-your-first-model
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: Building your First Model
+    assetLink: https://fast.wistia.net/embed/iframe/z5kb97at66
+    assetType: video
   
   - name: What is modularity?
     slug: modularity-what
@@ -40,18 +40,18 @@ pages:
     assetType: video
       
   - name: Modularlity and the ref function
-    slug: modularize-red
-    assetName: false
-    assetLink:
-    assetType:
+    slug: modularity-ref
+    assetName: Modularity and the ref Function
+    assetLink: https://fast.wistia.net/embed/iframe/cm3pp3klmp
+    assetType: video
       
   - name: Quick History of Data Modeling
-    slug: dbt-under-the-hood
+    slug: model-history
     assetName: Quick History of Data Modeling
     assetLink: https://fast.wistia.net/embed/iframe/ibd2p94nwt?videoFoam=true
     assetType: video
       
-  - name: Model Naming Conventions
+  - name: Naming Conventions
     slug: naming-conventions
     assetName: false
     assetLink:
@@ -59,9 +59,9 @@ pages:
       
   - name: Reorganize your Project
     slug: reorganize-project
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: Reorganize your dbt Project
+    assetLink: https://fast.wistia.net/embed/iframe/rgeydtool4
+    assetType: video
 
   - name: Review
     slug: review

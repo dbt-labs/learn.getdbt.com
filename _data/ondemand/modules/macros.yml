@@ -1,6 +1,6 @@
 name: Macros
 slug: macros
-live: false
+live: true
 
 learningObjectives:
   - Explain the role of macros in a dbt project
@@ -13,11 +13,11 @@ presentationName: dbtonic Jinja
 presentationSlug: dbtonic-jinja
   
 pages: 
-  - name: Why macros?
-    slug: macros-why
-    assetName: false
-    assetLink: 
-    assetType:
+  - name: What are Macros?
+    slug: macros-what
+    assetName: What are Macros?
+    assetLink: https://fast.wistia.net/embed/iframe/i19dqrtn9h
+    assetType: video
   
   - name: "Learning Objectives"
     slug: learning-objectives
@@ -45,9 +45,9 @@ pages:
       
   - name: DRY Code vs. Readability
     slug: dry-code
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: DRY Code
+    assetLink: https://fast.wistia.net/embed/iframe/f8a9m9rmpa
+    assetType: video
 
   - name: Review
     slug: review
