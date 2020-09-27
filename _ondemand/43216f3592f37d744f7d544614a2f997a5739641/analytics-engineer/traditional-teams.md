@@ -6,7 +6,4 @@ title: Traditional Data Teams
 
 ---
 
-# Traditional Data Teams
-_How have traditional data teams been structured?_
-
 {% include options/ondemand/wistia_embed.html %}

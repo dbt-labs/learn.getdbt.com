@@ -1,0 +1,39 @@
+<nav class="navigation">
+    <div class="text-white section-md" style="background-color: #00475c;">
+	<div class="navigation-content">
+		<div class="navigation-links">
+			<div class="navigation-link">
+				<a class="navigation-anchor navigation-brand" href="{{baseurl}}/ondemand/{{ site.onDemandHash }}" title="{{site.description}}">
+                    <img style="padding-left: 10px;" src="/ui/img/dbt-learn-light.png" />
+					<strong class="navigation-brand-text">{{site.title}} - {{site.description}}</strong>
+				</a>
+			</div>
+						{% if page.permalink == '/' %}
+							{% assign baseurl = '' %}
+						{% else %}
+							{% assign baseurl = site.url %}
+                        {% endif %}
+
+			<div class="navigation-link">
+				<a class="navigation-anchor" href="{{baseurl}}/ondemand/{{ site.onDemandHash }}/pathway">Pathway</a>
+            </div>
+
+			<div class="navigation-link">
+				<a class="navigation-anchor" href="{{baseurl}}/ondemand/{{ site.onDemandHash }}/modules">Modules</a>
+            </div>
+
+            {% if page.layout == 'lesson' %}
+
+
+            <div class="navigation-link"> &nbsp; | &nbsp; </div>
+
+
+            <div class="navigation-link text-orange">
+                <p><strong>Module: {{ page.module }} </strong></p>
+            </div>
+
+            {% endif %}
+		</div>
+    </div>
+    </div>
+</nav>

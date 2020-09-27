@@ -34,27 +34,9 @@
   <body class="{{page.class}}">
     {% include options/gtm_body.html %}
     {% include svg/svg.html %}
-
-    <div class="page">
-      {% include content/nav.html %}
-      <div class="bg-navy-darker">
-        <div class="section-md text-white text-navy-lightest">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="text-contain">
-                  <h1 class="h0">{{ page.module }}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mask mask-ne text-white"></div>
-      </div>
+    {% include content/ondemand-nav.html %}
      
       <div class="bg-white">
-        <div class="mask mask-ne text-white"></div>
-        <div class="mask mask-sw text-white"></div>
         <div class="section">
           <div class="grid-container">
             
