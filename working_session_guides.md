@@ -229,7 +229,78 @@ models:
 ```
 
 # Working Group #3
-(tbd)
+
+**Jinja Working Exercise Steps**
+1. Write the pivot in pure SQL.
+2. Write the pivot with some Jinja + SQL (don't address changing payment methods or how to deal with the final column)
+3. Address the trailing comma and set in Jinja
+4. Use dbt utils to get column values
+5. Write a macro OR use dbt utils pivot function
+
+**Facilitation Guide** - The instructor for the Jinja session will get the class started on the first two steps.  Then in breakout rooms, instructors will nominate one students to be the driver for refactoring this query.
+
+**Step 1: Pure SQL**
+```sql
+with payments as (
+    select * from {{ ref('stg_payments') }}
+),
+
+pivoted as (
+    select
+        order_id,
+
+        sum(case when payment_method = 'coupon' then amount else 0 end) as coupon_amount,
+        sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount,
+        sum(case when payment_method = 'bank_transfer' then amount else 0 end) as bank_transfer_amount,
+        sum(case when payment_method = 'gift_card' then amount else 0 end) as gift_card_amount,
+
+        sum(amount) as total
+
+    from payments
+
+    group by 1
+
+)
+```
+
+**Step 2: Some Jinja and SQL**
+```sql
+-- can we use {% set %} for our payment method
+-- what happens if there's a new payment method
+-- can we make a macro?
+with payments as (
+    select * from {{ ref('stg_payments') }}
+),
+
+pivoted as (
+    select
+        order_id,
+
+        {% for payment_method in ['credit_card', 'coupon', 'bank_transfer', 'gift_card']}
+
+        sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount,
+        -- how to handle trailing comma? (if we remove the last column)
+
+    from payments
+
+    group by 1
+
+)
+```
+**Step 3: Address the trailing comma and set in Jinja**
+- Use the jinja docs to handle the trailing column with if loop.last
+- Use set at the top of the model
+
+**Step 4: Get column values with macro**
+- Import dbt_utils
+- change the set to be the `get_column_values` macro
+
+**Step 5: Write a macro of your own / find the pivot macro**
+- Either write our own pivot macro
+OR
+- Use the pivot macro from dbt Utils
+
 
 # Working Group #4
-(tbd)
+- Leave this as an open ended experience for the participants and guide them as needed.
+
