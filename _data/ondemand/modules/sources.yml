@@ -26,21 +26,21 @@ pages:
       
   - name: Configure and select from sources
     slug: sources-define
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: Configure and select from sources
+    assetLink: https://fast.wistia.net/embed/iframe/du0tpw5v2d?videoFoam=true
+    assetType: video
     
   - name: Testing and Documenting Sources
     slug: sources-tests-docs
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: Testing and Documenting Sources
+    assetLink: https://fast.wistia.net/embed/iframe/y4m23ql67q?videoFoam=true
+    assetType: video
       
   - name: Source Freshness
     slug: source-freshness
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: Snapshot Freshness
+    assetLink: https://fast.wistia.net/embed/iframe/d233d6d60x?videoFoam=true
+    assetType: video
       
   - name: Review
     slug: review
