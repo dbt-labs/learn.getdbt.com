@@ -8,3 +8,6 @@ Gemfile.lock
 credentials.json
 token.pickle
 /etc/learn_mailmerge/html
+/etc/snowflake/__pycache__
+/etc/snowflake/html_compiled
+
