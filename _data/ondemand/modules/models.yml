@@ -53,9 +53,9 @@ pages:
       
   - name: Naming Conventions
     slug: naming-conventions
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: Naming Conventions
+    assetLink: https://fast.wistia.net/embed/iframe/s6jx302nbn
+    assetType: video
       
   - name: Reorganize your Project
     slug: reorganize-project

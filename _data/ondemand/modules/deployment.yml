@@ -15,7 +15,7 @@ pages:
   - name: What is deployment
     slug: deployment-what
     assetName: false
-    assetLink: 
+    assetLink: https://fast.wistia.net/embed/iframe/nzd5qja8bh
     assetType: video
       
   - name: "Learning Objectives"
