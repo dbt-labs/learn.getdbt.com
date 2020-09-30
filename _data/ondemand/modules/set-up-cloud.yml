@@ -38,4 +38,6 @@ pages:
   - name: Review
     slug: review
     assetName: false
-    
+  
+  - name: Feedback
+    slug: feedback

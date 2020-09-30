@@ -50,3 +50,5 @@ pages:
     assetLink:
     assetType: 
       
+  - name: Feedback
+    slug: feedback

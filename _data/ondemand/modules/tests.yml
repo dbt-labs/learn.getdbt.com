@@ -46,4 +46,7 @@ pages:
     slug: review
     assetName: false
     assetLink:
-    assetType: 
+    assetType:
+    
+  - name: Feedback
+    slug: feedback 
