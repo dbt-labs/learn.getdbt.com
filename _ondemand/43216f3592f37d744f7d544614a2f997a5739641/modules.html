@@ -47,8 +47,8 @@ title: Modules
 
       </a>
       {% else %}
-      <div class="grid-item">
-         {{ mod.name | append: "  🏗"  }}
+      <div class="grid-item" style="color: gray">
+         {{ mod.name | prepend: "🏗    "  }}
       </div>
       {% endif %}
 

@@ -48,8 +48,8 @@ title: Pathway
                       {{ module.name }}
                     </a>
             {% else %}
-            <div>
-            {{ module.name | append: "  🏗"  }}
+            <div class="grid-item" style="color: gray">
+            {{ module.name | prepend: " 🏗"  }}
             </div>        
             {% endif %}
 
