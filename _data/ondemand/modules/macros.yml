@@ -1,6 +1,6 @@
 name: Macros
 slug: macros
-live: true
+live: false
 
 learningObjectives:
   - Explain the role of macros in a dbt project

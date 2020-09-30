@@ -1,6 +1,6 @@
 name: Jinja Primer
 slug: jinja-primer
-live: true
+live: false
 
 learningObjectives:
   - Explain how Jinja works as a templating language

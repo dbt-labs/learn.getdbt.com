@@ -1,6 +1,6 @@
 name: Analyses and Seeds
 slug: analyses-seeds
-live: true
+live: false
 
 learningObjectives:
   - Explain the purposes of analyses in contrast to models

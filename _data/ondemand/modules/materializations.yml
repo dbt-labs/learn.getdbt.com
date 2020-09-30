@@ -1,6 +1,6 @@
 name: Materializations
 slug: materializations
-live: true
+live: false
 
 learningObjectives:
   - Explain the five main types of materializations in dbt

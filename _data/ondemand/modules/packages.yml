@@ -1,6 +1,6 @@
 name: Packages
 slug: packages
-live: true
+live: false
 
 learningObjectives:
   - Explain the role of packages in a dbt project
