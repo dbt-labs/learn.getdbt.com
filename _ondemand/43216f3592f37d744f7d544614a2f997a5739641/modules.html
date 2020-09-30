@@ -35,8 +35,8 @@ title: Modules
     <h1>Modules</h1>
     <h6 style="color: #ff694b">Choose a topic to learn right now</h6>
     <div class="grid-container">
-
-      {% for module in site.data.ondemand.modules %}
+      {% assign mods = site.data.ondemand.modules | sort %}
+      {% for module in mods %}
       {% assign mod = module[1] %}
       {% assign moduleslug = mod.slug %}
 
@@ -45,9 +45,6 @@ title: Modules
         
           {{ mod.name }} 
 
-       
-
-        
       </a>
       {% else %}
       <div class="grid-item">
