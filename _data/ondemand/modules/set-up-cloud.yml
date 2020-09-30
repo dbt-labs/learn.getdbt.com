@@ -35,4 +35,7 @@ pages:
     assetLink: https://fast.wistia.net/embed/iframe/0828jynq3v?videoFoam=true
     assetType: video
 
+  - name: Review
+    slug: review
+    assetName: false
     
