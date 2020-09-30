@@ -8,7 +8,7 @@ title: On Demand
 .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 150px;
+    grid-template-rows: 100px;
     grid-gap: 10px;
     align-items: stretch;
   }
@@ -20,7 +20,7 @@ title: On Demand
     border-radius: 3px;
     background-color: #f0f2f4;
     color: #00475c;
-    display: inline-flexbox;
+    display: flex;
     align-items: center;
     justify-content: left;
   }
@@ -44,14 +44,18 @@ is located in _data/ondemand.yml -->
 
 <div class="grid-container ">
   <a href="{{baseurl}}/ondemand/{{ site.onDemandHash }}/pathway" class="grid-item">
+    <div>
     <strong>Pathway</strong>
     <p>Follow a curated sequence of lessons</p>
-</a>
+  </div>
+  </a>
 
   <a href="{{baseurl}}/ondemand/{{ site.onDemandHash }}/modules" class="grid-item">
+    <div>
     <strong>Modules</strong>
     <p>Choose a topic to learn right now</p>
-</a>
+    </div>
+  </a>
 
 
 </div>
