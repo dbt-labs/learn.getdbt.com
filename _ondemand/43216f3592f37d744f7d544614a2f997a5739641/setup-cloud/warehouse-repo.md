@@ -6,5 +6,4 @@ title: Connect to Warehouse and Repository
 
 ---
 
-
 {% include options/ondemand/wistia_embed.html %}

@@ -4,7 +4,7 @@ module: Tests
 moduleSlug: tests
 ---
 
-<h1>Review</h1>
+# Review
 
 * **Testing** is used in software engineering to make sure that the code does what we expect it to.
 * In Analytics Engineering, testing allows us to make sure that the transformations we write SQL for produce a model that meets our assertions.

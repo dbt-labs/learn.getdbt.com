@@ -1,8 +1,7 @@
 ---
 layout: lesson
-module: Jinja Primer
-moduleSlug: jinja-primer
+module: Sources
+moduleSlug: sources
 ---
-
 
 {% include options/ondemand/wistia_embed.html %}

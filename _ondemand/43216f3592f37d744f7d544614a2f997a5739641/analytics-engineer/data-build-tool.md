@@ -6,7 +6,4 @@ title: data build tool
 
 ---
 
-# data build tool
-_How does dbt empower analytics engineering?_
-
 {% include options/ondemand/wistia_embed.html %}

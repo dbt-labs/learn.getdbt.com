@@ -6,7 +6,4 @@ title: ETL and ELT
 
 ---
 
-# ETL and ELT
-_How has technology changed how we can work with data?_
-
 {% include options/ondemand/wistia_embed.html %}

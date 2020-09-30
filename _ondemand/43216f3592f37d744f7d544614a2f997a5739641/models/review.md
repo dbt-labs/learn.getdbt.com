@@ -5,7 +5,6 @@ moduleSlug: models
 render_with_liquid: false
 ---
 
-
 # Review
 
 ### Models
