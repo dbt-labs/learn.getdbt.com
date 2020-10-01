@@ -2,6 +2,7 @@
 layout: lesson
 module: Docs
 moduleSlug: docs
+title: Practice
 ---
 
 # Practice 

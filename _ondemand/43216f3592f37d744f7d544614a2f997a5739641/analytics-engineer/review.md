@@ -2,6 +2,7 @@
 layout: lesson
 module: Who is an Analytics Engineer?
 moduleSlug: analytics-engineer
+title: Review
 ---
 
 # Review

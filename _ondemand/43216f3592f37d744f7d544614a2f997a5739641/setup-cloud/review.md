@@ -2,7 +2,7 @@
 layout: lesson
 module: Set up dbt Cloud
 moduleSlug: setup-cloud
-title: Connect to GitHub
+title: Review
 
 ---
 

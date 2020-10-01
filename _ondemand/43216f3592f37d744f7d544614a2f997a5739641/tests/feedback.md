@@ -2,7 +2,7 @@
 layout: lesson
 module: Tests
 moduleSlug: tests
-title: Testing in dbt
+title: Feedback
 
 ---
 

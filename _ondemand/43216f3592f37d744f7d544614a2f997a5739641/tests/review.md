@@ -2,6 +2,7 @@
 layout: lesson
 module: Tests
 moduleSlug: tests
+title: Review
 ---
 
 # Review

@@ -2,8 +2,7 @@
 layout: lesson
 module: Tests
 moduleSlug: tests
-title: Testing in dbt
-
+title: Schema Tests
 ---
 
 {% include options/ondemand/wistia_embed.html %}

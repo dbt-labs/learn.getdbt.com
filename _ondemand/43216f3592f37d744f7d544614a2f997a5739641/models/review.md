@@ -2,6 +2,7 @@
 layout: lesson
 module: Models
 moduleSlug: models
+title: Review
 render_with_liquid: false
 ---
 

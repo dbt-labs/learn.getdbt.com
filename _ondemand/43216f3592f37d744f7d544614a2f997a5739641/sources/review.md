@@ -2,6 +2,7 @@
 layout: lesson
 module: Sources
 moduleSlug: sources
+title: Review
 ---
 
 # Review

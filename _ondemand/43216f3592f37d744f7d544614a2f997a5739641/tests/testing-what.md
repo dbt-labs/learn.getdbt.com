@@ -2,7 +2,7 @@
 layout: lesson
 module: Tests
 moduleSlug: tests
-title: What is testing?
+title: What is Testing?
 
 ---
 
