@@ -25,13 +25,13 @@ pages:
     assetType:
       
   - name: Configure and select from sources
-    slug: sources-define
+    slug: sources-config
     assetName: Configure and select from sources
     assetLink: https://fast.wistia.net/embed/iframe/du0tpw5v2d?videoFoam=true
     assetType: video
     
   - name: Testing and Documenting Sources
-    slug: sources-tests-docs
+    slug: sources-test-doc
     assetName: Testing and Documenting Sources
     assetLink: https://fast.wistia.net/embed/iframe/y4m23ql67q?videoFoam=true
     assetType: video
