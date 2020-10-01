@@ -42,6 +42,9 @@ _Here is a quick reference guide for different teacher moves that are included i
 - Before transition: "Wow!  We have covered a ton today.  Just this afternoon, we learned how to configure tests to make sure our code is reliable, set up sources to version control references to raw tables, and we just learned how to document our analytics work for various stakeholders."
 - After transition: "To close out the day, we are going to jump into a group assignment and get hands. on. keyboards.  But first, we are going to take a break - it is 3:30...we will come back at 3:40 - see you in a bit.
 
+## Jinja Lesson Break Out Room Support
+- Checkout [this video](https://www.loom.com/share/d6b97d5966834f538b23b5012fdc0b5e) from Claire on how to run the break out rooms for the Jinja session.  Note the comments on the video are outdated.
+
 ## Video Archive
 Here are the links to some videos of each lesson for quick reference.  These can be helpful for seeing a lesson that you have not taught before.
 * [What is an analytics engineer?](https://youtu.be/HUD6BCRDTFk)

@@ -86,7 +86,7 @@ For each exercise, we recommend you follow a git flow.
     * a source
     * a column
 * Use a docs block for one of your descriptions
-* [dbt CLI users only] Generate the documentation website locally
+* Generate and view the documentation website
 
 #### Related resources
 * [docs.getdbt.com](https://docs.getdbt.com/docs/documentation)

@@ -1,10 +1,10 @@
 ---
 layout: presentation
-title: Group case study
+title: Case study
 ---
 
 class: title, center, middle
-# Group case study
+# Case study
 
 ---
 
@@ -17,8 +17,8 @@ Events Manager
 ## Available data:
 ```sql
 select * from raw.ticket_tailor.orders;
-select * from raw.learn_stripe.charges;
-select * from raw.learn_stripe.refunds;
+select * from raw.ticket_tailor.events;
+select * from raw.ticket_tailor.issued_tickets;
 ```
 
 ---
@@ -55,10 +55,8 @@ Take what you've learned in this course and start working on this issue!
 
 ```sql
 select * from raw.ticket_tailor.orders;
-select * from raw.learn_stripe.charges;
-select * from raw.learn_stripe.refunds;
+select * from raw.ticket_tailor.events;
+select * from raw.ticket_tailor.issued_tickets;
 ```
 
 Time is limited — if you can't get something done in time, jot it down as a "to do" somewhere.
-
-{% include options/last_slide.html %}

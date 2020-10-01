@@ -60,3 +60,5 @@ defaults:
     type: "content"
   values:
     layout: "page"
+    
+exclude: ["/etc"]
