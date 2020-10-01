@@ -43,11 +43,11 @@ pages:
     assetLink: https://fast.wistia.net/embed/iframe/68pp0k40ty?videoFoam=true
     assetType: video
 
+  - name: Practice
+    slug: practice
+
   - name: Review
     slug: review
-    assetName: false
-    assetLink:
-    assetType: 
 
   - name: Feedback
     slug: feedback

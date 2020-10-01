@@ -63,11 +63,11 @@ pages:
     assetLink: https://fast.wistia.net/embed/iframe/rgeydtool4
     assetType: video
 
+  - name: Practice
+    slug: practice
+
   - name: Review
     slug: review
-    assetName: false
-    assetLink:
-    assetType:
-  
+
   - name: Feedback
     slug: feedback
