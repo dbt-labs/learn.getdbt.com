@@ -15,24 +15,29 @@
   modules:
     - name: Who is an analytics engineer?
       slug: analytics-engineer
+    - name: Set up dbt Cloud
+      slug: setup-cloud
     - name: Models
       slug: models
-    - name: dbt Project design
-      slug: project-design
     - name: Tests
       slug: tests
-    - name: Sources
-      slug: sources
     - name: Documentation
       slug: docs
+    - name: Sources
+      slug: sources
+    - name: Deployment
+      slug: deployment
     - name: Jinja Primer
       slug: jinja-primer
-    - name: Macro Fundamentals
+    - name: Macros
       slug: macros
-    - name: Materialization Fundamentals
+    - name: Packages
+      slug: Packages
+    - name: Materializations
       slug: materializations
-    - name: Analyses and Seeds Fundamentals
+    - name: Analyses and Seeds
       slug: analyses-seeds
+
       
 - pathway: 2
   title: "dbt Advanced"

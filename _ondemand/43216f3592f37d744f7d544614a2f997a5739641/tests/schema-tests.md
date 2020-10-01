@@ -2,11 +2,7 @@
 layout: lesson
 module: Tests
 moduleSlug: tests
-title: Testing in dbt
-
+title: Schema Tests
 ---
-
-# Testing in dbt
-_How do we implement testing in dbt?_
 
 {% include options/ondemand/wistia_embed.html %}

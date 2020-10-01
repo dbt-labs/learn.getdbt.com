@@ -12,13 +12,20 @@
   <style>
     .grid-container {
       display: grid;
-      grid-template-columns: 3fr 7fr;
+      grid-template-columns: 2fr 8fr;
     }
     
     .grid-item {
-      padding: 0px 2.5%;
-      margin: 0 2.5%;
+      padding: 0px 10px;
+      margin: 0 10px;
     }
+
+    .toc {
+      max-width: 350px;
+      min-width: 300px;
+      font-size: 0.9em;
+    }
+
 
   </style>
     
@@ -27,45 +34,25 @@
   <body class="{{page.class}}">
     {% include options/gtm_body.html %}
     {% include svg/svg.html %}
-
-    <div class="page">
-      {% include content/nav.html %}
-      <div class="bg-navy-darker">
-        <div class="section-md text-white text-navy-lightest">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="text-contain">
-                  <h1 class="h0">{{ page.module }}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mask mask-ne text-white"></div>
-      </div>
-
+    {% include content/ondemand-nav.html %}
+     
       <div class="bg-white">
-        <div class="mask mask-ne text-white"></div>
-        <div class="mask mask-sw text-white"></div>
         <div class="section">
           <div class="grid-container">
             
-            <div class="grid-item">
+            <div class="grid-item toc">
               {% include options/ondemand/toc.html %}
             </div>
             
             <div class="grid-item">
               {{ content }}
-              <hr style="margin:20px 5%">
+             <hr style="margin:20px 5%">
               {% include options/ondemand/prev_next_nav.html %}
             </div>
-          
+
           </div>
         </div>
       </div>
-
-    </div>
 
     {% include content/footer.html %}
 

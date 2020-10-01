@@ -4,14 +4,10 @@ live: false
 
 learningObjectives:
   - Explain the purposes of analyses in contrast to models
-  - Explain the appropriate use cases for a seed in a dbt project
-  - Compile analyses and find the compiled SQL in the targets folder
-  - Add a data file to the seed folder
-  - Materialize the seed as a table in the database using dbt seed
-  - Reference a seed in a model
-  - Configure the seeds for a project in a dbt_project.yml file
-  - Write documentation for seeds
-  - Configure tests for seeds
+  - Explain the role of seeds in a dbt project
+  - Write and compile analyses and find the compiled SQL in the targets folder
+  - Add a seed to a project and materialize in the data warehouse
+  - Select from, test, and documents seeds
 
 presentationName: false
 presentationSlug: 
@@ -20,15 +16,15 @@ pages:
   
   - name: What are analyses?
     slug: analyses-what
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: true
+    assetLink: https://fast.wistia.net/embed/iframe/alnss0hi5f?videoFoam=true
+    assetType: video
       
   - name: What are seeds?
     slug: seeds-what
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: true
+    assetLink: https://fast.wistia.net/embed/iframe/oev8f45rgf?videoFoam=true
+    assetType: video
   
   - name: "Learning Objectives"
     slug: learning-objectives
@@ -54,3 +50,5 @@ pages:
     assetLink:
     assetType: 
       
+  - name: Feedback
+    slug: feedback

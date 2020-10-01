@@ -4,19 +4,19 @@ live: false
 
 learningObjectives:
   - Explain how Jinja works as a templating language
-  - Explain the three delimiters of Jinja; expressions, statements, and comments
-  - Check the compiled SQL using `compile SQL` and the targets folder
+  - Anticipate the output of a block of Jinja code
+  - Refactor a pivot query using Jinja
 
 presentationName: Intro to Jinja
 presentationSlug: intro-to-jinja
   
 pages: 
   
-  - name: What is Jinja
+  - name: What is Jinja?
     slug: jinja-what
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: What is Jinja?
+    assetLink: https://fast.wistia.net/embed/iframe/zdp7k09nsv
+    assetType: video
   
   - name: "Learning Objectives"
     slug: learning-objectives
@@ -41,3 +41,6 @@ pages:
     assetName: false
     assetLink: 
     assetType:
+
+  - name: Feedback
+    slug: feedback

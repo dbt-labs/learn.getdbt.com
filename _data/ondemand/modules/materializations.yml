@@ -3,7 +3,9 @@ slug: materializations
 live: false
 
 learningObjectives:
-  - N/A
+  - Explain the five main types of materializations in dbt
+  - Configure materializations in configuration files and in models
+  - Explain the differences and tradeoffs between tables, views, and ephemeral models
 
 presentationName: Materializations
 presentationSlug: materializations
@@ -11,9 +13,9 @@ presentationSlug: materializations
 pages: 
   - name: What are materializations?
     slug: materializations-what
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: What are materializations in dbt?
+    assetLink: https://fast.wistia.net/embed/iframe/aslf4dkalx?videoFoam=true
+    assetType: video
     
   - name: "Learning Objectives"
     slug: learning-objectives
@@ -21,32 +23,17 @@ pages:
     assetLink:
     assetType: 
       
-  - name: Configuring materializations
-    slug: configure-materialization
-    assetName: false 
-    assetLink:
-    assetType:
-      
-  - name: Tables and Views
+  - name: Tables, Views, and Ephemeral Models
     slug: tables-views
     assetName: false
     assetLink:
     assetType:
 
-  - name: Ephermal Models
-    slug: ephermeral
-    assetName: false
-    assetLink:
-    assetType:
-      
-  - name: Incremental Models
-    slug: incremental
-    assetName: false
-    assetLink:
-    assetType:
-      
   - name: Review
     slug: review
     assetName: false
     assetLink:
     assetType:
+  
+  - name: Feedback
+    slug: feedback
