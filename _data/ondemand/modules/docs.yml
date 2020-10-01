@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 name: Documentation
 slug: docs
 live: true
-=======
-name: Docs
-slug: docs
-live: false
->>>>>>> master
 
 learningObjectives:
   - Explain how documentation is crucial for analytics.

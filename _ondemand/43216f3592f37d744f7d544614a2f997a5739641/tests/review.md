@@ -2,7 +2,6 @@
 layout: lesson
 module: Tests
 moduleSlug: tests
-<<<<<<< HEAD
 title: Review
 ---
 
@@ -14,15 +13,6 @@ title: Review
 * In dbt, tests are written as select statements.  These select statements are run against your materialized models to ensure they meet your assertions.
 
 **Tests in dbt**
-=======
----
-
-<h1>Review</h1>
-
-* **Testing** is used in software engineering to make sure that the code does what we expect it to.
-* In Analytics Engineering, testing allows us to make sure that the transformations we write SQL for produce a model that meets our assertions.
-* In dbt, tests are written as select statements.  These select statements are run against your materialized models to ensure they meet your assertions.
->>>>>>> master
 * In dbt, there are two types of tests - schema tests and data tests:
   * **Schema tests** are applied in YAML and return the number of records that do not meet your assertions.  These are run on specific columns in a model.
   * **Data tests** are specific queries that you run against your models.  A data test passes if the number of records returned is 0.  These are run on the entire model.

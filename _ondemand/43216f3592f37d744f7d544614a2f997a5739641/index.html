@@ -1,5 +1,4 @@
 ---
-<<<<<<< HEAD
 layout: ondemand-overview
 title: On Demand
 ---
@@ -61,53 +60,3 @@ is located in _data/ondemand.yml -->
 
 </div>
 
-=======
-layout: overview
-title: On Demand
----
-
-<!-- This page will automatically update for markdown pages that have been creted.  The mapping of modules to page names 
-is located in _data/ondemand.yml -->
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px;">
-
-  <div>
-    <h1>Pathways</h1>
-    <h6 style="color: #ff694b">Follow a curated sequence of modules</h6>
-    <ul>
-
-      {% for pathway in site.data.ondemand.pathways %}
-
-      {% if pathway.live == true %}
-      <li><a href="pathways/{{ pathway.slug }}">{{ pathway.title }}</a></li>
-
-      {% else %}
-      <li>{{ pathway.title | append: "  🏗" }}</li>
-      {% endif %}
-
-      {% endfor %}
-
-    </ul>
-  </div>
-
-  <div>
-    <h1>Modules</h1>
-    <h6 style="color: #ff694b">Choose a topic to learn right now</h6>
-    <ul>
-
-      {% for module in site.data.ondemand.modules %}
-      {% assign mod = module[1] %}
-      {% assign moduleslug = mod.slug %}
-
-      {% if mod.live == true %}
-        <li> <a href="{{ moduleslug }}/{{ mod.pages[0].slug }}"> {{ mod.name }} </a> </li>
-      {% else %}
-        <li> {{ mod.name | append: "  🏗"  }} </li>
-      {% endif %}
-
-      {% endfor %}
-
-    </ul>
-  </div>
-</div>
->>>>>>> master
