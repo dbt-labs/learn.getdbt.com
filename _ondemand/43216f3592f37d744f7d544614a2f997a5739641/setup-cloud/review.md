@@ -7,7 +7,9 @@ title: Connect to GitHub
 ---
 
 # Review
-### GitHub Repository and Connection
+
+#### GitHub Repository and Connection
+
 After you have created a dbt Cloud account, it can be helpful to create an empty repository and grant dbt Cloud access to this repository.
 
 **Create an empty repository over in GitHub**
@@ -20,7 +22,7 @@ After you have created a dbt Cloud account, it can be helpful to create an empty
 * Configure the GitHub configuration.
 * Grant specific access to the repository you just created.
 
-### Connecting to your Warehouse and Repository
+#### Connecting to your Warehouse and Repository
 When setting up your project, you will need to make a connection to your **warehouse** and **repository**.
 
 **Create a new project**
@@ -42,7 +44,7 @@ When setting up your project, you will need to make a connection to your **wareh
 * You should see the green button 'Initialize Project' - click this.
 * This will run `dbt init` which will set up the file system for your dbt project.
 
-### Cloud IDE
+#### Cloud IDE
 A quick tour of the Cloud IDE.  The IDE can be found by choosing the hamburger menu in the top left and choosing 'Develop'.
 
 <img src="/ui/img/ondemand/cloud_ide.png" style="width: 80%;">

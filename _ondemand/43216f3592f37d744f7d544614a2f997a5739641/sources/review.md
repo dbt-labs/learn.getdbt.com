@@ -6,7 +6,7 @@ moduleSlug: sources
 
 # Review
 
-### Sources
+**Sources**
 * As established in the Modeling modules, sources represent the raw data that has been loading into the Data Warehouse.
 * We *can* always reference tables in our models with the explicit table name (`raw.jaffle_shop.customers`).
 * Setting up Sources in dbt enables a few other important tools:
@@ -16,7 +16,7 @@ moduleSlug: sources
     * Tests can be run directly on sources before staging.
     * Snapshot-Freshness for checking the freshness of raw tables.
 
-### Configuring Sources
+**Configuring Sources**
 * Sources are configured in dbt in YML files in the models directory.
 * The following code block configures the table `raw.jaffle_shop.customers` and `raw.jaffle_shop.orders`:
 
@@ -33,12 +33,12 @@ sources:
 
 * The full documentation for configuring sources can be found in the [source properties](https://docs.getdbt.com/reference/source-properties) page in the docs.
 
-### Source Macro
+**Source Macro**
 * The `ref` macro is used to build dependencies from one model to another.
 * The `source` macros similarly is used to build a dependency between one model to a source.
 * Given the source configuration above, the {% raw %} `{{ source('jaffle_shop','customers') }}` {% endraw %} in a model file would compile to `raw.jaffle_shop.customers`
 
-### Documenting and Testing Sources
+**Documenting and Testing Sources**
 * Documentation and Tests are configured for models in YML files - the same is true for sources.
 * In the same YML file where the sources was configured, descriptions and tests can be added.  Descriptions can be added on the source, table, and column level.
 
@@ -62,7 +62,7 @@ sources:
 
 <img src="/ui/img/ondemand/DAG_sources.png" style="width: 80%; margin: auto">
 
-### Snapshotting Source Freshness
+**Snapshotting Source Freshness**
 * Freshness thresholds can be set in the YML file where sources are configured.  For each table, the keys `loaded_at_field` and `freshness` must be configured.
 
 ```yml
