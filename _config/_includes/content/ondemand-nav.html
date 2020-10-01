@@ -8,11 +8,7 @@
 					<strong class="navigation-brand-text">{{site.title}} - {{site.description}}</strong>
 				</a>
 			</div>
-						{% if page.permalink == '/' %}
-							{% assign baseurl = '' %}
-						{% else %}
-							{% assign baseurl = site.url %}
-                        {% endif %}
+						
 
 			<div class="navigation-link">
 				<a class="navigation-anchor" href="{{baseurl}}/ondemand/{{ site.onDemandHash }}/pathway">Pathway</a>
@@ -37,3 +33,9 @@
     </div>
     </div>
 </nav>
+
+{% if page.permalink == '/' %}
+							{% assign baseurl = '' %}
+						{% else %}
+							{% assign baseurl = site.url %}
+                        {% endif %}
