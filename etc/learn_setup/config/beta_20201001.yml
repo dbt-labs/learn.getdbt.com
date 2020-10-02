@@ -1,0 +1,17 @@
+# Google Sheets Information
+sheet:
+  spreadsheet_id: '14QEhg0jHrUITL-ZNcbGrqinOOatDUPLdsmsy1hXY1oE'
+  spreadsheet_range: 'dbt Learn BETA!A1:K26'
+
+# HTML Information
+html_template: 'beta_learn.html'
+
+# Session Specific Information
+session:
+  date: '2020-10-14'
+  slack_channel: 'learn-ondemand-beta'
+  prework_due_date: 'Monday, October 12, 2020'
+  instructor_first: 'Kyle'
+  instructor_slack: '@coap'
+  intro_slides_link: 'https://docs.google.com/presentation/d/1gjL9ImUQOszWPUHMePn-A93_FrtIuSo8ICmEk0B8k-E/edit?usp=sharing'
+  

@@ -13,7 +13,7 @@ with open('./config/snowflake_creds.yml') as file:
 
 snowflake_creds = sf_creds['snowflake']
 
-with open('./config/public_20201014.yml') as file:
+with open('./config/beta_20201001.yml') as file:
     config = yaml.full_load(file)
 
 html_template = config['html_template'] 
