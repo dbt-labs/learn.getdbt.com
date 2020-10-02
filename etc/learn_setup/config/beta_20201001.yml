@@ -1,7 +1,7 @@
 # Google Sheets Information
 sheet:
   spreadsheet_id: '14QEhg0jHrUITL-ZNcbGrqinOOatDUPLdsmsy1hXY1oE'
-  spreadsheet_range: 'dbt Learn BETA!A1:K26'
+  spreadsheet_range: 'dbt Learn BETA!A1:K30'
 
 # HTML Information
 html_template: 'beta_learn.html'
