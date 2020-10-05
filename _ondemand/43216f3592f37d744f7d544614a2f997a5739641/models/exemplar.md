@@ -5,6 +5,8 @@ moduleSlug: models
 title: Practice
 ---
 
+## Exemplar
+
 #### Self-check stg_payments, orders, customers
 *Use this page to check your own work on these three models.*
 
