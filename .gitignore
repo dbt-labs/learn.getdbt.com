@@ -14,3 +14,4 @@ etc/learn_setup/token.pickle
 /ete/snowflake/__pycache__
 credentials.json
 token.pickle
+snowflake_creds.yml

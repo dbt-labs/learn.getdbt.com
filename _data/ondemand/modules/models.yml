@@ -66,6 +66,9 @@ pages:
   - name: Practice
     slug: practice
 
+  - name: Exemplar
+    slug: exemplar
+
   - name: Review
     slug: review
 
