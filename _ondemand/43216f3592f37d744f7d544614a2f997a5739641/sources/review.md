@@ -66,7 +66,7 @@ sources:
 **Snapshotting Source Freshness**
 * Freshness thresholds can be set in the YML file where sources are configured.  For each table, the keys `loaded_at_field` and `freshness` must be configured.
 
-```yml
+```
 version: 2
 
 sources:
