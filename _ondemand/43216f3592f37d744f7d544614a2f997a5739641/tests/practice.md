@@ -40,7 +40,7 @@ models:
 ```
 
 **Data Tests:**
-- Add the test `assert_positive_value_for_total_amount` to be run on your `stg_payments` model.
+- Add the test `tests/assert_positive_value_for_total_amount` to be run on your `stg_payments` model.
 - Run your tests
 
 {% raw %}

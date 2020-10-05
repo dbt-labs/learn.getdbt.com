@@ -8,6 +8,8 @@ title: Data Tests
 
 {% include options/ondemand/wistia_embed.html %}
 
+*Note: The file structure in this video does not map to previous videos OR your current project.  Check out the Practice page for clarification for how to add this to you project.*
+
 #### Reference: Code Snippets
 
 **tests/assert_positive_total_for_payments.sql**
@@ -25,3 +27,7 @@ group by 1
 having not(total_amount >= 0)
 ```
 {% endraw %}
+
+**dbt Commands**
+- Execute `dbt test` to run all **schema** and **data** tests in your project.
+- Execute `dbt test --date` to run only **data tests** in your project.
