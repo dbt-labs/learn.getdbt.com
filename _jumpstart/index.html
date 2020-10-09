@@ -1,19 +1,25 @@
 ---
 layout: page
-title: Jumpstart - Welcome
+title: Jumpstart
 nav_included: true
 week1_form: https://forms.gle/vxsWkvSpxcjnKXmy5
-week2_form: https://forms.gle/vxsWkvSpxcjnKXmy5
-week3_form: https://forms.gle/vxsWkvSpxcjnKXmy5
-week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
+week2_form: https://forms.gle/1XSETXUuBPfbS5cj7
+week3_form: https://forms.gle/hiqZGG74qvgPgnqTA
+week4_form: https://forms.gle/nam1Z2VZ6nDbPu8z9
 
 ---
 
 <style>
     a {
-        color:#ff694B;
+
         font-weight: bold;
     }
+
+    a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color:#6e7c86;
+}
 </style>
 
 <nav class="navigation">
@@ -90,10 +96,10 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
     <div class="section">
         <div class="text-contain">
 
-            <div class="row">
+            <div class="row" id="overview">
                 <div class="col-lg-12 col-bottomless">
                     <div class="text-contain text-center">
-                        <h3 id="overview">Overview</h3>
+                        <h3>Overview</h3>
                     </div>
                     
                 </div>
@@ -117,10 +123,10 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
 <div class="bg-silver-light">
 	<div class="section">
 		<div class="container">
-			<div class="row">
+			<div class="row" id="expectations">
 				<div class="col-lg-12">
 					<div class="text-contain">
-						<center><h3 class="h2" id="expectations">What to Expect</h3></center>
+						<center><h3 class="h2">What to Expect</h3></center>
 						<p>
                             <h4>Before the Kickoff Meeting</h4>
                             <ul>    
@@ -156,10 +162,10 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
     <div class="section">
         <div class="text-contain">
 
-            <div class="row">
+            <div class="row" id="week1">
                 <div class="col-lg-12 col-bottomless">
                     <div class="text-contain text-center">
-                        <h3 id="week1">Week 1</h3>
+                        <h3>Week 1</h3>
                     </div>
                     
                 </div>
@@ -167,10 +173,11 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
             <div class="row">
                 <div class="col-md-12 text-large">
                     <ul>
+                        <li><a href="pr_template.html" target="_blank">PR Template:</a> Add this pull request template to your dbt Project.</li>
                         <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank">Instructional Videos:</a>
                             Who is an Analytics Engineer and Models.</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Models and submit a PR to your instructor with this template</li>
                         <li><a href="{{ page.week1_form }}" target="_blank">Week 1 Check for Understanding Form.</a></li>
-                        <li>Practice Exercises for Models.</li>
                     </ul>
                 </div>
             </div>
@@ -183,10 +190,10 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
     <div class="section">
         <div class="text-contain">
 
-            <div class="row">
+            <div class="row" id="week2">
                 <div class="col-lg-12 col-bottomless">
                     <div class="text-contain text-center">
-                        <h3 id="week2">Week 2</h3>
+                        <h3>Week 2</h3>
                     </div>
                     
                 </div>
@@ -196,8 +203,8 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
                     <ul>
                         <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank">Instructional Videos:</a>
                             Tests, Docs, Sources, and Deployment.</li>
-                        <li><a href="{{ page.week2_form }}" target="_blank">Week 2 Check for Understanding Form.</a></li>
-                        <li>Practice Exercises for Tests, Docs, and Deployment.</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Tests, Docs, and Sources and submit a PR to your instructor with this template</li>
+                        <li><a class="disabled" href="{{ page.week2_form }}" target="_blank">Week 2 Check for Understanding Form.</a></li>
                     </ul>
                 </div>
             </div>
@@ -210,10 +217,10 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
     <div class="section">
         <div class="text-contain">
 
-            <div class="row">
+            <div class="row" id="week3">
                 <div class="col-lg-12 col-bottomless">
                     <div class="text-contain text-center">
-                        <h3 id="week3">Week 3</h3>
+                        <h3>Week 3</h3>
                     </div>
                     
                 </div>
@@ -222,8 +229,8 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
                 <div class="col-md-12 text-large">
                     <ul>
                         <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank">Instructional Videos:</a> Jinja Primer, Macros, and Packages.</li>
-                        <li><a href="{{ page.week3_form }}" target="_blank">Week 3 Check for Understanding Form.</a></li>
-                        <li>Practice Exercises for Jinja, Macros, and Packages.</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Materializations and Analyses + Seeds and submit a PR to your instructor with this template</li>
+                        <li><a class="disabled" href="{{ page.week3_form }}" target="_blank">Week 3 Check for Understanding Form.</a></li>
                     </ul>
                 </div>
             </div>
@@ -236,10 +243,10 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
     <div class="section">
         <div class="text-contain">
 
-            <div class="row">
+            <div class="row" id="week4">
                 <div class="col-lg-12 col-bottomless">
                     <div class="text-contain text-center">
-                        <h3 id="week4">Week 4</h3>
+                        <h3 >Week 4</h3>
                     </div>
                     
                 </div>
@@ -249,8 +256,8 @@ week4_form: https://forms.gle/vxsWkvSpxcjnKXmy5
                     <ul>
                         <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank">Instructional Videos:</a>
                             Materializations and Analyses + Seeds</li>
-                        <li><a href="{{ page.week4_form }}" target="_blank">Week 4 Check for Understanding Form.</a></li>
-                        <li>Practice Exercises for Materializations and Analyses + Seeds.</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Materializations and Analyses + Seeds and submit a PR to your instructor with this template</li>
+                        <li><a class="disabled" href="{{ page.week4_form }}" target="_blank">Week 4 Check for Understanding Form.</a></li>
                         <li>Close out the course with final questions, feedback, and certificates.</li>
                     </ul>
                 </div>
