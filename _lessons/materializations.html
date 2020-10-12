@@ -38,7 +38,7 @@ class: title, center, middle
 - Table
 - View
 - Ephemeral
-- Incremental*
+- Incremental
 - Snapshot*
 
 ### You can write your own!
@@ -49,7 +49,7 @@ class: title, center, middle
 ]
 
 .right-column-33[
-<img src="/ui/img{{page.id}}/material-houses.png" class="img-center">
+<img src="/ui/img{{page.id}}/material-bending.png" class="img-center">
 ]
 
 ???
@@ -250,17 +250,15 @@ layout: true
 ---
 .left-column[
 If...
-- `stg_customers` is a **view**
-- `customers` is a **table**
+- Both models are materialized as views
 ]
 
 --
 
 .right-column[
 Then...
-- What views are built in the database?
-- What tables are built in the database?
-- How does dbt build the table?
+- What will appear in the database?
+- Which will be faster to query, `stg_customers` or `customers`?
 ]
 
 ---
@@ -275,9 +273,8 @@ If...
 
 .right-column[
 Then...
-- What views are built in the database?
-- What tables are built in the database?
-- How does dbt build the table?
+- What will appear in the database?
+- Which will be faster to query?
 ]
 
 ---
