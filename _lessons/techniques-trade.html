@@ -2,13 +2,14 @@
 layout: presentation
 title: Techniques of the trade
 learningObjectives:
-  - Get a brief overview of advanced dbt features and their use cases
+  - Get a brief overview of Top 10 advanced dbt features and their use cases
   - Features include Seeds, Snapshots, Hooks, Operations, & more
 ---
 
 class: title, center, middle
 
-# (dbt) Techniques of the trade
+# Techniques of the trade
+### The Final Countdown
 
 ???
 We've already learned the tools of the trade (dbt), but now we are learning the techniques.
@@ -25,7 +26,12 @@ Notes for teacher:
 
 ---
 
-# My source data keeps changing
+class: subtitle, center, middle
+# Part I. More than models
+
+---
+
+# 10. My source data keeps changing
 
 {% raw %}
 
@@ -76,7 +82,6 @@ We want to turn our **mutable** data into **immutable data**
 ---
 
 
-
 # Anatomy of a snapshot
 A `.sql` file in the `snapshots` directory:
 .dense-text[
@@ -122,7 +127,7 @@ $ dbt snapshot
 ]
 
 ---
-# ❓ I have a long case statement
+# ❓ 9. I have a long case statement
 
 ```sql
 -- models/orders.sql
@@ -140,7 +145,7 @@ from {{ ref('orders') }}
 
 --
 
-## ✅ Technique: seeds
+## ✅  Technique: seeds
 ???
 Seeds are CSV files that you can `ref` in your project
 
@@ -195,8 +200,112 @@ left join {{ ref('country_codes') }} as country_codes
 * List of employee accounts
 
 ---
+# ❓ 8: I have a query that I want to version control
 
-## ❓ I need to run some models hourly, and some models nightly.
+But I don't need (or want) to create a model!
+
+--
+## ✅  Technique: analyses
+---
+# Anatomy of an analysis
+
+`analysis/mrr_dashboard.sql`
+
+```sql
+select
+    date_month,
+
+    sum(is_active::integer) as customers,
+    sum(mrr) as mrr
+
+from {{ ref('fct_mrr') }}
+
+group by 1
+```
+.caption[
+[Learn more](https://docs.getdbt.com/docs/analyses)
+]
+
+---
+# ❓ 7: Actually, I want to test that query!
+
+(But I still don't want it to be a model.)
+
+--
+
+## ✅  Technique: data tests
+---
+# Anatomy of a data test
+`tests/refund_cannot_exceed_amount.sql`
+```sql
+-- refunds have a negative amount, so the total amount should always be > 0
+select
+    order_id,
+    sum(amount) as total_amount
+
+from {{ ref('fct_payments' )}}
+
+group by 1
+
+having total_amount < 0
+```
+Run with `dbt test` (or `dbt test --data`)
+.caption[
+  N.B. Data tests return **rows**, whereas schema tests return a **number**, `count(*)`. [Learn more](https://docs.getdbt.com/docs/testing)
+]
+
+---
+# ❓ 6: I want to version control some KPIs
+--
+
+## ✅  Technique: metrics table
+
+---
+# Anatomy of a metrics table
+1. Standard structure: name, type, department, date, aggregation
+2. One model for each metric
+3. Union them together
+4. Date spine (final grain: one record per day per metric)
+4. Single model for comparison window functions
+
+| date_day   | metric_channel | metric_name | metric_type | value | past_7 | past_14 | past_21 | ly_value | ... | target |
+|------------|----------------|-------------|-------------|-------|--------|---------|---------|----------|-----|--------|
+| 02/06/2019 | marketing      | leads       | count       | 20    | 200    | 300     | 150     | 15       | ... | 15     |
+| 02/06/2019 | marketing      | mql         | count       | 7     | 40     | 60      | 50      | 3        | ... | 10     |
+| 02/06/2019 | marketing      | sqls        | count       | 2     | 10     | 5       | 20      | 2        | ... | 3      |
+| 02/06/2019 | accounting     | revenue     | amount      | 150   | 3000   | 2000    | 1500    | 20       | ... | 100    |
+
+???
+They can get tricky to handle in the BI layer:
+* You lose the ability to drill into the data when you do this!
+* Further aggregation can mess things up, especially for non-additive metrics (e.g. conversion rates)
+
+---
+
+# Pulling it all together
+
+* Metrics models are on far right of DAG, select from dim + fact **models**
+* Bring in goals, targets, forecasts, definitions as **seeds**
+* Take a **snapshot** of metrics table to identify historical anomalies
+* Compare to expected or historical values with a **data test**
+
+To ask questions like:
+- Is YTD revenue within 2 standard deviations of target?
+- Is MRR up 10% compared to this day last month?
+- Is last year revenue within 1% of where we calculated it to be yesterday?
+
+---
+
+class: subtitle, center, middle
+# Part II. Quality of life
+
+---
+
+## ❓ Problem 5: I need to run _some_ of my models _sometimes_.
+
+- Some models hourly, other models daily
+- Just test my most critical models
+
 --
 
 ### ✅ Technique: tags!
@@ -230,8 +339,130 @@ dbt run -m tag:hourly
 ]
 
 ---
+# ❓ Problem 4: My runs take too long when I'm developing
+--
 
-## ❓ I am getting permission denied errors on relations that dbt creates
+## ✅ Technique: Limit data in dev
+???
+* Especially useful for event-style data
+---
+# `{{ target }}`
+* A dbt-specific Jinja variable containing information about your current target
+    * `{{ target.name }}`
+    * `{{ target.schema }}`
+    * `{{ target.type }}`
+    * `{{ target.user }}`
+    * etc
+
+[Learn more](https://docs.getdbt.com/docs/target)
+
+???
+* These docs are dbt docs, not Jinja docs
+
+---
+# Anatomy of limiting data in dev
+
+```sql
+with pages as (
+
+    select * from {{ source('snowplow', 'pages') }}
+
+    {% if target.name == 'dev' %}
+    where event_date >= dateadd('day', -3, current_date)
+    {% endif %}
+
+),
+...
+```
+
+--
+
+- You can use `target` for _lots_ of environment-aware logic.
+- _Alternatives:_ [`var`](https://docs.getdbt.com/reference/dbt-jinja-functions/var/) or [`env_var`](https://docs.getdbt.com/reference/dbt-jinja-functions/env_var/). More flexible but also more finicky! 🤷 
+
+???
+Tradeoffs:
+* This doesn't work so well for relational data — you can lose relational integrity
+* Also how do you then test that your dashboards work as expected?
+
+---
+# Problem 3: I want to use custom schemas in prod but not in dev.
+
+.left-column[
+In production, control...
+
+```
+analytics.dim_customer
+intermediate.customer__daily_channels
+marketing.fct_customer_attribution
+```
+]
+
+.right-column[
+In development, convenience!
+```
+dev_kyle.dim_customer
+dev_kyle.customer__daily_channels
+dev_kyle.fct_customer_attribution
+```
+
+]
+
+--
+## ✅ Technique: env-based schema logic
+---
+
+# Anatomy of env-based schemas
+
+In `dbt_project.yml`:
+```yml
+models:
+  marketing:
+    +schema: marketing
+    intermediate:
+      +schema: intermediate
+```
+
+In `macros/generate_schema_name.sql`:
+```sql
+{% macro generate_schema_name(custom_schema_name, node) -%}
+    {{ generate_schema_name_for_env(custom_schema_name, node) }}
+{%- endmacro %}
+```
+
+Based on [this code](https://github.com/fishtown-analytics/dbt/blob/dev/kiyoshi-kuromiya/core/dbt/include/global_project/macros/etc/get_custom_schema.sql),
+but you can write whatever logic you want.
+
+---
+
+# Not just schemas
+
+dbt looks for three macros when figuring out what goes where:
+- database (project) naming --> `generate_database_name`
+- schema (dataset) naming --> `generate_schema_name`
+- aliasing --> `generate_alias_name`
+
+---
+
+## ❌ Alternative: bespoke Jinja statements
+
+In dbt_project.yml:
+```yml
+models:
+  marketing:
+    +schema: "{{ 'marketing' if target.name == 'prod' else target.schema }}"
+    intermediate:
+      +schema: "{{ 'intermediate' if target.name == 'prod' else target.schema }}"
+```
+
+This is one environment-aware area where we don't recommend using
+`target`, `var`, or `env_var`. Things get very tricky very quickly.
+
+---
+
+## ❓ Problem 3: I can't query my stuff!!
+
+I am getting permission denied errors on relations that dbt creates:
 
 ```txt
 -- snowflake
@@ -242,6 +473,7 @@ ERROR:  permission denied for relation my_table
 
 ```
 
+With so many environments, it's very confusing!
 
 --
 
@@ -260,7 +492,7 @@ grant select on dbt_claire.customers to role reporter;
 Essentially we want to run a statement _like_ this
 
 ---
-# Tool 1: Hooks
+# Tool A: Hooks
 * Snippets of SQL that you can run:
     * `on-run-start`: at the beginning of a `dbt run` or `dbt seed`
     * `on-run-end`: at the end of a run
@@ -279,10 +511,8 @@ on-run-end:
   - "grant usage on {{ target.schema }} to role reporter"
 
 models:
-  post-hook: "grant select on {{ this }} to role reporter"
+  +post-hook: "grant select on {{ this }} to role reporter"
 ```
-<!-- TODO: update this to `+post-hook` once v0.17.1 is released
-https://github.com/fishtown-analytics/dbt/issues/2583 -->
 
 ```sql
 -- models/my_model
@@ -295,7 +525,7 @@ select ...
 ]
 
 ---
-# Tool 2: Operations
+# Tool B: Operations
 A _macro_ that you can run using the `run-operation` command
 
 ```sql
@@ -340,354 +570,69 @@ Consider:
 * Performing warehouse maintenance on Redshift ([package](https://hub.getdbt.com/fishtown-analytics/redshift/latest/))
 * Staging external tables ([package](https://hub.getdbt.com/fishtown-analytics/dbt_external_tables/latest/))
 
+---
+
+class: subtitle, center, middle
+# Part III. Giant shoulders
 
 ---
-# ❓ I need to create a table of all days
-???
-Useful for "date spining"
---
-
-## ✅ Technique: `dbt-utils.date_spine`
----
-# Anatomy of a date spine
-
-`models/utils/util_days.sql`
-```sql
--- models/utils/util_days.sql
-{{ dbt_utils.date_spine(
-    datepart="day",
-    start_date="to_date('2016/01/01', 'mm/dd/yyyy')",
-    end_date="dateadd(week, 1, current_date)"
-) }}
-
-```
-???
-Also note that you need the utils package installed, and to `dbt deps`
-
---
-| date_day   |
-|------------|
-| 2016-01-01 |
-| 2016-01-02 |
-| ...        |
+# 1. I can't have been the first person who...
 
 --
 
-.caption[
-  [Discourse post](https://discourse.getdbt.com/t/finding-active-days-for-a-subscription-user-account-date-spining/265)
-]
-
----
-# ❓ My runs take too long when I'm developing
---
-
-## ✅ Technique: Limit data in dev
-???
-* Especially useful for event-style data
----
-# `{{ target }}`
-* A dbt-specific Jinja variable containing information about your current target
-    * `{{ target.name }}`
-    * `{{ target.schema }}`
-    * `{{ target.type }}`
-    * `{{ target.user }}`
-    * etc
-
-[Learn more](https://docs.getdbt.com/docs/target)
-
-???
-* These docs are dbt docs, not Jinja docs
-
----
-# Anatomy of limiting data in dev
-
-```sql
-with pages as (
-
-    select * from {{ source('snowplow', 'pages') }}
-
-    {% if target.name == 'dev' %}
-    where event_date >= dateadd('day', -3, current_date)
-    {% endif %}
-
-),
-...
-```
-
-???
-Tradeoffs:
-* This doesn't work so well for relational data — you can lose relational integrity
-* Also how do you then test that your dashboards work as expected?
-
----
-# ❓ I want to add a threshold to the uniqueness test
-
-```yml
-version: 2
-
-models:
-  - name: dim_customers
-    columns:
-      - name: customer_id
-        tests:
-          - unique:
-              error_threshold: 10
-```
+- ❓ Needs to create a table of all days
+- ❓ Wants to add a threshold to the uniqueness test
+- ❓ Needs to do an ETL migration (and check we didn't break anything)
+- ❓ Needs to generate a ton of sources
 
 --
 
-## ✅ Technique: custom schema test
+## ✅ Technique: use (or adapt) a package!
+
+- [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/), [audit-helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/), [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/)
+- [package hub](https://hub.getdbt.com/)
 
 ---
-# Anatomy of a custom schema test
 
-We already know that:
-- dbt has its own project
-- tests are just macros prefixed with `test_`
-- your own macro will take precedence over dbt's macros
+# I can't have been the first person who...
 
-1. View the [source code](https://github.com/fishtown-analytics/dbt/tree/dev/0.15.2/core/dbt/include/global_project) for an existing test
-2. Copy it into your project!
-3. Adjust as required
-
-???
-- This is a thing you won't do very often, so it's okay to not know this off by heart!
-
----
-## Example
-.denser-text[
-```sql
--- macros/test_unique.sql
-{% macro test_unique(model) %}
-
-{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
-{% set error_threshold = kwargs.get('error_threshold', 0) %}
-
-with validation_errors as (
-    select
-        {{ column_name }}
-    from {{ model }}
-    where {{ column_name }} is not null
-    group by {{ column_name }}
-    having count(*) > 1
-),
-
-aggregated as (
-    select
-        count(*) as n_errors
-    from validation_errors
-    group by 1
-),
-
-select
-    case
-      when n_errors <= {{ error_threshold }} then 0
-      else n_errors
-    end as result
-from aggregated
-
-{% endmacro %}
-```
-]
----
-# Example
-
-```yml
-version: 2
-
-models:
-  - name: dim_customers
-    columns:
-      - name: customer_id
-        tests:
-          - unique:
-              error_threshold: 10
-```
-???
-* We've refactored the SQL to make it a bit more readable
-* We have a default threshold of 0 so we don't need to add it to every test
-
----
-# Other use cases for custom schema tests
-* Build new schema tests, e.g. [mutually exclusive ranges](https://github.com/fishtown-analytics/dbt-utils#mutually_exclusive_ranges-source)
-* [Only test in a certain environment](https://discourse.getdbt.com/t/conditionally-running-dbt-tests-only-running-dbt-tests-in-production/322)
-
-.caption[
-  [Learn more](https://docs.getdbt.com/docs/custom-schema-tests) / [More examples](https://github.com/fishtown-analytics/dbt-utils#schema-tests)
-]
-
----
-## ❓ I need to write an extremely bespoke test
-???
-* Truly a one-off data test
+- ❓ Needs to model subscription data
+- ❓ Needs to model customer attribution
 
 --
 
-## ✅ Technique: data tests
----
-# Anatomy of a data test
-`tests/refund_cannot_exceed_amount.sql`
-```sql
--- refunds have a negative amount, so the total amount should always be > 0
-select
-    order_id,
-    sum(amount) as total_amount
+## ✅ Technique: read a playbook!
 
-from {{ ref('fct_payments' )}}
-
-group by 1
-
-having total_amount < 0
-```
-Run with `dbt test` (or `dbt test --data`)
-.caption[
-  N.B. Data tests return **rows**, whereas schema tests return a **number**, `count(*)`. [Learn more](https://docs.getdbt.com/docs/testing)
-]
+- [Monthly recurring revenue](https://github.com/fishtown-analytics/mrr-playbook)
+- [Marketing attribution](https://github.com/fishtown-analytics/attribution-playbook)
 
 ---
 
-## ❓ I have some SQL that I use in a dashboard that I want to version control
+# I can't have been the first person who...
+
+- ❓ Wants to use blue-green deployments via zero-copy cloning on Snowflake
+- ❓ Wants to create near-real-time models by mixing incremental + view
+- ❓ Needs to test nested BigQuery fields
+- ❓ Needs to determine whether to have one or several dbt projects across the organization
 
 --
-## ✅ Technique: analyses
----
-# Anatomy of an analysis
 
-`analysis/mrr_dashboard.sql`
-
-```sql
-select
-    date_month,
-
-    sum(is_active::integer) as customers,
-    sum(mrr) as mrr
-
-from {{ ref('fct_mrr') }}
-
-group by 1
-```
-.caption[
-[Learn more](https://docs.getdbt.com/docs/analyses)
-]
+## ✅ Technique: search in [discourse](https://discourse.getdbt.com/top/all?order=views)!
 
 ---
 
-# ❓ I need to do an ETL migration
+# Techniques
 
-(and check I didn't break anything)
-
---
-## ✅ Technique: [audit-helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/)
-
----
-
-# ❓ I need to generate a ton of sources
-
---
-## ✅ Technique: [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/)
-
----
-
-# ❓ I need to model subscription data
-# ❓ I need to model customer attribution
-
---
-## ✅ Technique: use a playbook!
-
-* [Monthly recurring revenue](https://github.com/fishtown-analytics/mrr-playbook)
-* [Marketing attribution](https://github.com/fishtown-analytics/attribution-playbook)
-
-
----
-# ❓ I have duplicate records
---
-
-## ✅ Technique: deduplication
-
----
-# Anatomy of deduplication
-* Use `distinct` + window functions for narrow tables
-
-```sql
-select distinct
-    customer_id,
-
-    -- use the most recent email address
-    last_value(email ignore nulls) over (
-        partition by customer_id
-        order by created_at
-        rows between unbounded preceding and unbounded following
-    ) as email,
-
-    min(created_at) over (
-        partition by customer_id
-    ) as first_seen_at
-
-from amazon_orders
-```
----
-# Anatomy of deduplication
-* Use `row_number` + `where` for wide tables
-
-.left-column[
-  ```sql
-  with users as (
-    select
-      *,
-      row_number() over (
-          partition by user_id
-          order by created_at desc
-      ) = 1 as is_most_recent_record
-    from users
-  )
-
-  select * from users
-  where is_most_recent_record
-  ```
-]
---
-.right-column[
-  ```sql
-  -- snowflake only!
-  select
-    *,
-    row_number() over (
-        partition by user_id
-        order by created_at desc
-    ) = 1 as is_most_recent_record
-  from users
-  qualify is_most_recent_record
-
-
-
-  ```
-
-]
-
-
----
-# ❓ I have KPIs that my business reports
---
-
-## ✅ Technique: metrics table
-
----
-# Anatomy of a metrics table
-* One record per day per metrics
-* `ref`s one model for each metric and unions them together
-* Can also compare to previous year values and targets here
-
-| date_day   | metric_channel | metric_name | metric_type | value | past_7 | past_14 | past_21 | ly_value | ... | target |
-|------------|----------------|-------------|-------------|-------|--------|---------|---------|----------|-----|--------|
-| 02/06/2019 | marketing      | leads       | count       | 20    | 200    | 300     | 150     | 15       | ... | 15     |
-| 02/06/2019 | marketing      | mql         | count       | 7     | 40     | 60      | 50      | 3        | ... | 10     |
-| 02/06/2019 | marketing      | sqls        | count       | 2     | 10     | 5       | 20      | 2        | ... | 3      |
-| 02/06/2019 | accounting     | revenue     | amount      | 150   | 3000   | 2000    | 1500    | 20       | ... | 100    |
-
-???
-They can get tricky to handle in the BI layer:
-* You lose the ability to drill into the data when you do this!
-* Further aggregation can mess things up, especially for non-additive metrics (e.g. conversion rates)
+- Snapshots
+- Seeds
+- Analyses
+- Data tests
+- Metrics
+- Tags
+- Env-based logic (`target`)
+- Env-based relation naming
+- Hooks & operations
+- Packages, playbooks, discourse, oh my!
 
 ---
 
