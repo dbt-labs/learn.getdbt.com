@@ -323,7 +323,6 @@ Excerpts from logs:
 create or replace temporary table analytics.dbt_alice.page_views as (
     with events as (
         select * from raw.snowplow.events
-        where collector_tstamp >= (select max(max_collector_tstamp) from analytics.dbt_alice.page_views)
     ),
     ...
 )
