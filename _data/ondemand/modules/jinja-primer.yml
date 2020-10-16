@@ -1,6 +1,6 @@
 name: Jinja Primer
 slug: jinja-primer
-live: false
+live: true
 
 learningObjectives:
   - Explain how Jinja works as a templating language
@@ -26,15 +26,15 @@ pages:
       
   - name: Jinja Basics
     slug: jinja-basics
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: Jinja Basics
+    assetLink: https://fast.wistia.net/embed/iframe/ns7dmyv4wh
+    assetType: video
       
   - name: Jinja Practice
     slug: jinja-practice
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: Jinja Practice
+    assetLink: https://fast.wistia.net/embed/iframe/y65oaqlrjb
+    assetType: video
       
   - name: Review
     slug: review
