@@ -4,10 +4,10 @@ live: true
 
 learningObjectives:
   - Explain the role of macros in a dbt project
-  - Negotiate the balance between readability and DRY-ness
-  - Explain how dbt uses macros in the existing sources and ref functions
   - Implement macros in a model file
-  - Write a macro for creating a pivot function
+  - Write a macro for converting from cents to dollars
+  - Write a macro for limiting data in development
+  - Negotiate the balance between readability and DRY-ness
 
 presentationName: dbtonic Jinja
 presentationSlug: dbtonic-jinja
@@ -32,7 +32,7 @@ pages:
     assetType: video
       
   - name: "Example: Limit Data in Dev"
-    slug: pivot-macro
+    slug: dev-data-macro
     assetName: Example - Limit Data in Dev
     assetLink: https://fast.wistia.net/embed/iframe/535x1pej9e
     assetType: video
