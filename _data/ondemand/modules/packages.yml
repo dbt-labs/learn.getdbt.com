@@ -1,6 +1,6 @@
 name: Packages
 slug: packages
-live: false
+live: true
 
 learningObjectives:
   - Explain the role of packages in a dbt project
@@ -23,21 +23,27 @@ pages:
     assetLink:
     assetType: 
     
-  - name: Package Models
-    slug: package-models
+  - name: Installing Packages
+    slug: install-packages
     assetName: false
-    assetLink:
+    assetLink: https://fast.wistia.net/embed/iframe/y2q1f7v52o
     assetType: 
 
-  - name: Package Macros
+  - name: Packages with Macros
     slug: package-macros
-    assetName: false
-    assetLink:
-    assetType: 
+    assetName: Packages with Macros
+    assetLink: https://fast.wistia.net/embed/iframe/fi9ce6uthh
+    assetType: video
+
+  - name: Packages with Models
+    slug: package-models
+    assetName: Packages with Models
+    assetLink: https://fast.wistia.net/embed/iframe/fi9ce6uthh
+    assetType: video
 
   - name: Review
     slug: review
-    assetName: 
+    assetName: false
     assetLink:
     assetType: 
 
