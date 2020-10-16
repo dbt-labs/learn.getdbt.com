@@ -1,6 +1,6 @@
 name: Macros
 slug: macros
-live: false
+live: true
 
 learningObjectives:
   - Explain the role of macros in a dbt project
@@ -25,23 +25,17 @@ pages:
     assetLink:
     assetType:
 
-  - name: "Example: ref macro"
-    slug: ref-macro
-    assetName: false
-    assetLink: 
-    assetType:
-
   - name: "Example: Currency Conversion"
     slug: currency-macro
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: Example - Currency Conversion
+    assetLink: https://fast.wistia.net/embed/iframe/f7czg56ysu
+    assetType: video
       
-  - name: "Example: Pivot Macro"
+  - name: "Example: Limit Data in Dev"
     slug: pivot-macro
-    assetName: false
-    assetLink: 
-    assetType:
+    assetName: Example - Limit Data in Dev
+    assetLink: https://fast.wistia.net/embed/iframe/535x1pej9e
+    assetType: video
       
   - name: DRY Code vs. Readability
     slug: dry-code
