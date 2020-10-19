@@ -50,7 +50,7 @@ A quick tour of the Cloud IDE.  The IDE can be found by choosing the hamburger m
 <img src="/ui/img/ondemand/cloud_ide.png" style="width: 80%;">
 
 **File Tree**
-* This is the main view into your dbt project
+* This is the main view into your dbt project.
 * This is where a dbt project is built in the form or .sql, .yml, and other file types.
 
 **Text Editor**
@@ -64,8 +64,8 @@ A quick tour of the Cloud IDE.  The IDE can be found by choosing the hamburger m
 * `Run SQL` will compile and run your query against the data warehouse as a simple query.  The results will be displayed in the Info Windows in Results.
 
 **Command Line**
-* This is where dbt specific commands (e.g. `dbt run`, `dbt test`) are executed.
-* This will pop up to show the results as they are processed.  Logs can also be viewed here
+* This is where you can run specific dbt commands are executed (e.g. `dbt run`, `dbt test`).
+* This will pop up to show the results as they are processed.  Logs can also be viewed here.
 
 **Info Window**
 * This window will show results when choosing Compile SQL and Run SQL.
@@ -73,7 +73,7 @@ A quick tour of the Cloud IDE.  The IDE can be found by choosing the hamburger m
 
 **Git Controls**
 * All git commands in the IDE are completed here.
-* This will change dynanmically based on the git status of your project.
+* This will change dynamically based on the git status of your project.
 
 **View Docs**
 * This button will display the documentation for your dbt project.
