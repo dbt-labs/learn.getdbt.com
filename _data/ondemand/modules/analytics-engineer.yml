@@ -12,18 +12,18 @@ presentationName: Who is an Analytics Engineer?
 presentationSlug: who-is-analytics-engineer
   
 pages: 
-  - name: Traditional Data Teams
-    slug: traditional-teams
-    assetName: 01 Traditional Data Teams
-    assetLink: https://fast.wistia.net/embed/iframe/lortpnyki0?videoFoam=true
-    assetType: video
-  
   - name: "Learning Objectives"
     slug: learning-objectives
     assetName: false
     assetLink:
     assetType: 
-      
+
+  - name: Traditional Data Teams
+    slug: traditional-teams
+    assetName: 01 Traditional Data Teams
+    assetLink: https://fast.wistia.net/embed/iframe/lortpnyki0?videoFoam=true
+    assetType: video
+ 
   - name: ETL and ELT
     slug: etl-elt
     assetName: 02 ELT and ELT
