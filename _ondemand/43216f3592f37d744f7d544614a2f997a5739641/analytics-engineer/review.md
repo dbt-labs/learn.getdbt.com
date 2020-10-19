@@ -25,3 +25,6 @@ title: Review
 **dbt**
 * data build tool (dbt) empowers data teams to leverage software engineering principles for transformating data.
 * The focus of this course is to build your dbt skills and analaytics engineering mindsets to give you more leverage in your work.
+
+<img src="/ui/img/ondemand/modern-data-team.png" style="width: 100%;">
+
