@@ -17,7 +17,7 @@ After you have created a dbt Cloud account, it can be helpful to create an empty
 * This will allow dbt Cloud to initialize your dbt project.
 
 **Grant access for dbt Cloud to connect to GitHub**
-* Choose your account in the top right of dbt Cloud.
+* Choose your profile in the top right of dbt Cloud.
 * Navigate to integration.
 * Configure the GitHub configuration.
 * Grant specific access to the repository you just created.
