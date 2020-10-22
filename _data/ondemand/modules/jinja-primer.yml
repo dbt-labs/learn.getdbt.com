@@ -35,7 +35,10 @@ pages:
     assetName: Jinja Practice
     assetLink: https://fast.wistia.net/embed/iframe/y65oaqlrjb
     assetType: video
-      
+
+  - name: Practice
+    slug: practice
+
   - name: Review
     slug: review
     assetName: false

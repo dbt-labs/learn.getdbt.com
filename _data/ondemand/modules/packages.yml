@@ -41,6 +41,9 @@ pages:
     assetLink: https://fast.wistia.net/embed/iframe/fi9ce6uthh
     assetType: video
 
+  - name: Practice
+    slug: practice
+
   - name: Review
     slug: review
     assetName: false
