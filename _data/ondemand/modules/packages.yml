@@ -25,7 +25,7 @@ pages:
     
   - name: Installing Packages
     slug: install-packages
-    assetName: false
+    assetName: Installing Packages
     assetLink: https://fast.wistia.net/embed/iframe/y2q1f7v52o
     assetType: 
 
