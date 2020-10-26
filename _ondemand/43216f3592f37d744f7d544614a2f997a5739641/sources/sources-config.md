@@ -11,7 +11,7 @@ title: Configure Sources
 
 **models/staging/jaffle_shop/src_jaffle_shop**
 
-```yml
+```
 version: 2
 
 sources:

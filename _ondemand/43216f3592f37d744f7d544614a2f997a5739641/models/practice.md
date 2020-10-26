@@ -17,7 +17,7 @@ Using the resources in this module, complete the following in your dbt project:
 - Create a `staging/jaffle_shop` directory in your models folder.
 - Create a `stg_customers` model for `raw.jaffle_shop.customers`
 
-```sql
+```
 select
     id as customer_id,
     first_name,
@@ -28,7 +28,7 @@ from raw.jaffle_shop.customers
 
 - Create a `stg_orders` model for `raw.jaffle_shop.orders`
 
-```sql
+```
 select
     id as order_id,
     user_id as customer_id,
@@ -92,7 +92,7 @@ select * from final
 **Configure your materializations:**
 - In your `dbt_project.yml` file, configure the staging directory to be materialized as views.
 
-```yml
+```
 models:
   jaffle_shop:
     staging:
@@ -101,7 +101,7 @@ models:
 
 - In your `dbt_project.yml` file, configure the marts directory to be materialized as tables.
 
-```yml
+```
 models:
   jaffle_shop:
   ...

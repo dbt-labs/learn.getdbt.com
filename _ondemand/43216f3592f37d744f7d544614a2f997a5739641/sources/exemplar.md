@@ -12,7 +12,7 @@ title: Exemplar
 
 **`models/staging/stripe/src_stripe.yml`**
 
-```yml
+```
 version: 2
 
 sources:
