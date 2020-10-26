@@ -13,7 +13,7 @@ Using the resources in this module, complete the following in your dbt project:
 
 **`models/staging/jaffle_shop/src_jaffle_shop`**
 
-```yml
+```
 version: 2
 
 sources:
@@ -64,7 +64,7 @@ from {{ source('jaffle_shop','orders') }}
 
 **models/staging/jaffle_shop/src_jaffle_shop**
 
-```yml
+```
 version: 2
 
 sources:

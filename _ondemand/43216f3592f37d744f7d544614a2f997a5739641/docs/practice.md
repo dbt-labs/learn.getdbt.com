@@ -15,7 +15,7 @@ Using the resources in this module, complete the following in your dbt project:
 
 **`models/staging/jaffle_shop/stg_jaffle_shop.yml`**
 {% raw %}
-```yml
+```
 version: 2
 
 models:
@@ -38,18 +38,18 @@ models:
             - unique
             - not_null
         - name: status
-          description: '{{ doc('order_status') }}'
+          description: '{{ doc("order_status") }}'
           tests:
             - accepted_values:
-              values:
-                - completed
-                - shipped
-                - returned
-                - placed
+                values:
+                  - completed
+                  - shipped
+                  - returned
+                  - placed
 ```
 {% endraw %}
 
-**Create an Reference a Doc Block:**
+**Create a Reference a Doc Block:**
 - Create a doc block for your `stg_orders` model to document the `status` column.
 - Reference this doc block in the description of `status` in `stg_orders`  (see this in the code snippet above)
 

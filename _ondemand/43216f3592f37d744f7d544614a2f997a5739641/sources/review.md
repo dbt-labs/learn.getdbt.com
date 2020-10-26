@@ -21,7 +21,7 @@ title: Review
 * Sources are configured in dbt in YML files in the models directory.
 * The following code block configures the table `raw.jaffle_shop.customers` and `raw.jaffle_shop.orders`:
 
-```yml
+```
 version: 2
 
 sources:
@@ -43,7 +43,7 @@ sources:
 * Documentation and Tests are configured for models in YML files - the same is true for sources.
 * In the same YML file where the sources was configured, descriptions and tests can be added.  Descriptions can be added on the source, table, and column level.
 
-```yml
+```
 version: 2
 
 sources:
