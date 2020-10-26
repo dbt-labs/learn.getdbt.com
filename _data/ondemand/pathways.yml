@@ -32,7 +32,7 @@
     - name: Macros
       slug: macros
     - name: Packages
-      slug: Packages
+      slug: packages
     - name: Materializations
       slug: materializations
     - name: Analyses and Seeds
