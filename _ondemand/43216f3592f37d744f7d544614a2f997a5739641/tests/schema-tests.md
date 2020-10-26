@@ -30,10 +30,10 @@ models:
         - name: status
           tests:
             - accepted_values:
-              values:
-                - completed
-                - shipped
-                - returned
-                - placed
+                values:
+                  - completed
+                  - shipped
+                  - returned
+                  - placed
 ```
 
