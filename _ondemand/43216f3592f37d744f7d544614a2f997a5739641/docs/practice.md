@@ -15,7 +15,7 @@ Using the resources in this module, complete the following in your dbt project:
 
 **`models/staging/jaffle_shop/stg_jaffle_shop.yml`**
 {% raw %}
-```yml
+```
 version: 2
 
 models:
