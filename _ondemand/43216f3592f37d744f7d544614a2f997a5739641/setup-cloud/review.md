@@ -61,10 +61,10 @@ A quick tour of the Cloud IDE.  The IDE can be found by choosing the hamburger m
 **Compile SQL / Run SQL**
 * These two buttons apply to statements and SQL files.
 * `Compile SQL` will compile any Jinja to render Pure SQL.  This will be displayed in the Info Window in Compiled SQL.
-* `Run SQL` will compile and run your query against the data warehouse as a simple query.  The results will be displayed in the Info Windows in Results.
+* `Run SQL` will compile and run your query against the data warehouse as a simple query.  The results will be displayed in the Info Window in Results.
 
 **Command Line**
-* This is where you can run specific dbt commands are executed (e.g. `dbt run`, `dbt test`).
+* This is where you can execute specific dbt commands (e.g. `dbt run`, `dbt test`).
 * This will pop up to show the results as they are processed.  Logs can also be viewed here.
 
 **Info Window**
