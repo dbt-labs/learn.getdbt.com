@@ -1,8 +1,14 @@
--- PART ONE: SETUP ROLES, DATABASES AND PRIVILIGES
--- [ to-do ]
+# Loading data into a managed Snowflake account
 
--- PART TWO: SETUP SIMPLE DATA SOURCES
-/*
+These are the instructions for loading data into a Snowflake account that we
+manage, for example, the dedicated `learn` Snowflake account.
+
+### 1. Setup roles, databases, and privileges
+
+[ To Do ]
+
+
+### 2. Load CSV data from S3 into tables
 We do a simple copy from S3 into tables here. We want to show off how source
 freshness works in this course, so for some of the tables, we then create a
 view on top of the table with a calculated freshness column, so that it's always
@@ -12,8 +18,8 @@ For these views, we hid the actual table in a very sneaky schema named "do_not_l
 so that the Learn students would just see the one "orders" table in the schema
 instead of two. Curious students look in the "do_not_look" schema, but we are ok
 with them looking under the hood!
-*/
 
+```sql
 use role loader;
 create schema raw.do_not_look;
 create schema raw.jaffle_shop;
@@ -34,7 +40,7 @@ copy into raw.jaffle_shop.customers from 's3://dbt-tutorial-public/jaffle_shop_c
     )
 ;
 
--- create this in the "do not look" schema so we can add a _batched_at clumn
+-- create this in the "do not look" schema so we can add a _batched_at column
 create or replace table raw.do_not_look.orders
 (
   id integer,
@@ -63,8 +69,8 @@ create schema raw.stripe;
 
 create or replace table raw.do_not_look.payment (
   id integer,
-  orderID integer,
-  paymentMethod varchar,
+  orderid integer,
+  paymentmethod varchar,
   status varchar,
   amount integer,
   created date
@@ -85,8 +91,13 @@ create or replace view raw.stripe.payment as (
     from raw.do_not_look.payment
 );
 
+```
 
--- PART THREE: SETUP SNOWFLAKE SHARES
+## 3. Setup Snowflake Shares
+We share data from our main Fishtown account to the Learn account.
+
+**From the Fishtown account**, we ran:
+```sql
 -- ❗️This part needs to be run from the Fishtown Snowflake account
 use role accountadmin
 create share if not exists learn;
@@ -97,7 +108,10 @@ alter share learn add accounts = fka50167;
 /* Then, add secure views to the share as models in our dbt project (check out the
 `anonymized_ticket_tailor__orders` model as an example)
 */
+```
 
+Then, **from the learn account**, we ran:
+```sql
 -- ❗️This part needs to be run from the Learn Snowflake account
 use role accountadmin;
 create database if not exists share_fishtown_analytics  from share kw27752.learn;
@@ -114,17 +128,8 @@ create view raw.ticket_tailor.orders as (
 use role transformer;
 -- for each table, confirm that the transformer can read it
 select * from raw.ticket_tailor.orders;
+```
 
--- PART FOUR: ADD USERS
--- For each attendee we run the following:
-/*
-create user learner_hperson
-    password = 'ChangeMe123'
-    must_change_password = true
-    default_role = transformer
-    default_warehouse = transforming
-    comment = 'dbt Learn 2020-04-09'
-    days_to_expiry = 30 -- ~ two weeks after course, given we create this ~2 weeks before course;
+# 4. Create users
 
-grant role transformer to user learner_hperson;
-*/
+Use the `setup-learn.py` script to do this
