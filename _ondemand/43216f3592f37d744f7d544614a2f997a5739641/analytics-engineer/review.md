@@ -17,14 +17,14 @@ title: Review
 * The new ELT process is made possible by the introduction of new cloud based data warehouse technologies.
 
 **Analytics Engineering**
-* Analytics engineers focus on the transformation of raw data into transformed data that is ready for analysis.  This new role to a data team changes the nature of data engineers and data analysts.
-* Data Engineers can now focus on larger data architecture and the EL in ELT.
+* Analytics engineers focus on the transformation of raw data into transformed data that is ready for analysis.  This new role in the data team changes the nature of data engineers and data analysts.
+* Data Engineers can focus on larger data architecture and the EL in ELT.
 * Data Analysts can focus on insight and dashboard work using the transformed data.
-* Note: At a small company, a data team of one may own all three of these roles and responsibilities.  As your team grows, you the lines between these roles will remain blurry.
+* Note: At a small company, a data team of one may own all three of these roles and responsibilities.  As your team grows, the lines between these roles will remain blurry.
 
 **dbt**
 * data build tool (dbt) empowers data teams to leverage software engineering principles for transformating data.
-* The focus of this course is to build your dbt skills and analaytics engineering mindsets to give you more leverage in your work.
+* The focus of this course is to build your analytics enginerring mindsets and dbt skills to give you more leverage in your work.
 
 <img src="/ui/img/ondemand/modern-data-team.png" style="width: 100%;">
 
