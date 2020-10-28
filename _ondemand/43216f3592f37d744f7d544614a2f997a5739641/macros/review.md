@@ -53,7 +53,7 @@ select
   status,
 
   -- amount stored in cents, convert to dollars
-  {{ cents_to_dollars(‘payment_amount’, 4) }} as amount
+  {{ cents_to_dollars(‘payment_amount’) }} as amount
   created as created_at
 
 from {{ source(‘stripe’, ‘payment’) }}
