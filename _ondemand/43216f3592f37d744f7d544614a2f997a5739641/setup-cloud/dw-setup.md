@@ -6,7 +6,9 @@ title: Data Warehouse Set Up
 
 ---
 
-# Loading Data in your own Warehouse for Training
+# Loading Training Data in your own Warehouse
+
+**If you are participating in a training hosted by Fishtown Analytics, you can skip this lesson.  Choose 'Set up GitHub Repository and Connect to Cloud' in the left hand navigation.**
 
 Currently dbt Cloud supports Postgres, Redshift, BigQuery, and Snowflake.
 
