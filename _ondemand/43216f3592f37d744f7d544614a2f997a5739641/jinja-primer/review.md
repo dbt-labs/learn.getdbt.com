@@ -105,7 +105,7 @@ We can control for whitespace by adding a single dash on either side of the Jinj
 
 We saw that we could refactor the following pivot model in pure SQL using Jinja to make it more dynamic to pivot on a list of payment mentors.
 
-Original SQL: 
+**Original SQL:**
 ```
 with payments as (
    select * from {{ ref('stg_payments') }}

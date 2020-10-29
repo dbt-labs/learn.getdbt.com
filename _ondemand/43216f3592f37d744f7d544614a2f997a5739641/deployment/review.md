@@ -9,11 +9,11 @@ title: Review
 
 **Development vs. Deployment**
 * Development in dbt is the process of building, refactoring, and organizing different files in your dbt project.  This is done in a development environment using a development schema (`dbt_jsmith`) and typically on a *non-default* branch (i.e. master, main).
-* Deployment in dbt (or running dbt in production) is the process of running dbt on a schedule in a deployment environment.  The deployment environment will typically run from the *default* branch and use a decleared deployment schema (`dbt_prod`).
+* Deployment in dbt (or running dbt in production) is the process of running dbt on a schedule in a deployment environment.  The deployment environment will typically run from the *default* branch and use a dedicated deployment schema (`dbt_prod`).
 * These use of multiple environments makes is possible to continue to building your dbt project without breaking the production models that power the rest of your organization.
 
 **Creating your Deployment Environment**
-* A deployment environmnet can be configured in dbt Cloud on the Environments page.
+* A deployment environment can be configured in dbt Cloud on the Environments page.
 * **General Settings** You can configure which dbt version you want to use and specify a branch other than the default branch.
 * **Data Warehouse Connection** You can set data warehouse specific configurations here.  For example, you may choose to use a dedicated warehouse for your production runs in Snowflake.
 * **Deployment Credentials** Here is where you enter the credential dbt will use to access your Data Warehouse:

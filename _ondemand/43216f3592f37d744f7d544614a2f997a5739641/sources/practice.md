@@ -76,11 +76,11 @@ sources:
           description: Raw customers data.
           columns:
             - name: id
-              description: Primary key for customers.
+              description: Primary key for customers
               tests:
                 - unique
                 - not_null
-              
+
         - name: orders
           description: Raw orders data.
           columns:

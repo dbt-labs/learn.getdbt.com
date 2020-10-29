@@ -49,7 +49,10 @@ pages:
     assetName: false
     assetLink:
     assetType: 
-      
+
+  - name: Exemplar
+    slug: exemplar
+    
   - name: Review
     slug: review
     assetName: false

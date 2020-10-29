@@ -20,3 +20,5 @@ employee_id, email, customer_id
 2342, frank@jaffleshop.com, 8
 1234, jennifer@jaffleshop.com, 9
 ```
+
+Build this seed into your data warehouse by running `dbt seed`.

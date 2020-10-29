@@ -13,7 +13,7 @@ moduleSlug: analyses-seeds
 
 **Seeds**
 * Seeds are .csv files that live in the data folder.
-* HWne executing `dbt run`, seeds will be built in your Data Warehouse as tables.
+* When executing `dbt run`, seeds will be built in your Data Warehouse as tables.
 Seeds can be references using the `ref` macro - just like models!
 * ✅ Seeds **should** be used for data that doesn't change frequently.
 * ⛔️ Seeds **should not** be the process for uploading data that changes frequently

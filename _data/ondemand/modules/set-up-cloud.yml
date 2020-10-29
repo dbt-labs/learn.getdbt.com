@@ -17,6 +17,12 @@ pages:
     assetLink:
     assetType: 
 
+  - name: Setting up your Data Warehouse for Training
+    slug: dw-setup
+    assetName: Data Warehouse Set Up
+    assetLink: 
+    assetType: 
+
   - name: Set Up GitHub Repository and Connect to Cloud
     slug: github-connection
     assetName: Connnect GitHub to dbt Cloud

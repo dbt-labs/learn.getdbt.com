@@ -10,7 +10,7 @@ Using the resources in this module, complete the following exercises in your dbt
 
 **Schema Tests:**
 - Add tests to your jaffle_shop staging tables:
-    - Create a file called `stg_jaffle_shop.yml` for congfiguring your tests
+    - Create a file called `stg_jaffle_shop.yml` for configuring your tests
     - Add `unique` and `not_null` tests to the keys for each of your staging tables
     - Add an `accepted_values` test to your `stg_orders` model for status.
     - Run your tests
@@ -37,6 +37,7 @@ models:
                   - shipped
                   - returned
                   - placed
+                  - return_pending
 ```
 
 **Data Tests:**

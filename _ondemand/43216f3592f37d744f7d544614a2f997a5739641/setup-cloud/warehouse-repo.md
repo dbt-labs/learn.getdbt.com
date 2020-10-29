@@ -8,7 +8,7 @@ title: Connect to Warehouse and Repository
 
 {% include options/ondemand/wistia_embed.html %}
 
-### Resources:
+#### Resources:
 
 **Connecting to your Warehouse:**
 - [Connecting to Postgres/Redshift Docs](https://docs.getdbt.com/docs/dbt-cloud/cloud-configuring-dbt-cloud/connecting-your-database#connecting-to-redshift-and-postgres){:target="_blank"}
