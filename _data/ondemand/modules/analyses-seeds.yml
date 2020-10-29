@@ -43,6 +43,12 @@ pages:
     assetName: false
     assetLink:
     assetType:
+
+  - name: Practice
+    slug: practice
+    assetName: false
+    assetLink:
+    assetType: 
       
   - name: Review
     slug: review
