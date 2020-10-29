@@ -15,7 +15,7 @@ Using the resources in this module, complete the following exercises in your dbt
     - Add an `accepted_values` test to your `stg_orders` model for status.
     - Run your tests
 
-```yml
+```
 version: 2
 
 models:

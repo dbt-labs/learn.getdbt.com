@@ -1,11 +1,13 @@
 name: Materializations
 slug: materializations
-live: false
+live: true
 
 learningObjectives:
-  - Explain the five main types of materializations in dbt
-  - Configure materializations in configuration files and in models
-  - Explain the differences and tradeoffs between tables, views, and ephemeral models
+  - Explain the five main types of materializations in dbt.
+  - Configure materializations in configuration files and in models.
+  - Explain the differences and tradeoffs between tables, views, and ephemeral models.
+  - Build intuition for incremental models.
+  - Build intuition for snapshots.
 
 presentationName: Materializations
 presentationSlug: materializations
@@ -24,7 +26,31 @@ pages:
     assetType: 
       
   - name: Tables, Views, and Ephemeral Models
-    slug: tables-views
+    slug: tables-views-eph
+    assetName: Tables, Views and Ephemeral Models
+    assetLink: https://fast.wistia.net/embed/iframe/mcqigz8xag?videoFoam=true
+    assetType:
+
+  - name: Incremental Models
+    slug: incremental
+    assetName: false
+    assetLink: https://fast.wistia.net/embed/iframe/pfbixlrgy1?videoFoam=true
+    assetType: video
+
+  - name: What are Snapshots?
+    slug: snapshots-what
+    assetName: What are Snapshots?
+    assetLink: https://fast.wistia.net/embed/iframe/r2m55220a3?videoFoam=true
+    assetType: 
+      
+  - name: How do Snapshots work?
+    slug: snapshots-how
+    assetName: false
+    assetLink: https://fast.wistia.net/embed/iframe/suyr5z9dg8?videoFoam=true
+    assetType: 
+
+  - name: Practice
+    slug: practice
     assetName: false
     assetLink:
     assetType:

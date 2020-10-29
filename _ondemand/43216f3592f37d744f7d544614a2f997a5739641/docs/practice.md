@@ -51,7 +51,7 @@ models:
 ```
 {% endraw %}
 
-**Create an Reference a Doc Block:**
+**Create a Reference a Doc Block:**
 - Create a doc block for your `stg_orders` model to document the `status` column.
 - Reference this doc block in the description of `status` in `stg_orders`  (see this in the code snippet above)
 

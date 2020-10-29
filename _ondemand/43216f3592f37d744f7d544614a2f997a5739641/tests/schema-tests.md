@@ -13,7 +13,7 @@ title: Schema Tests
 
 *Note how this is a .yml file rather than a .sql file*
 
-```yml
+```
 version: 2
 
 models:
@@ -30,10 +30,10 @@ models:
         - name: status
           tests:
             - accepted_values:
-              values:
-                - completed
-                - shipped
-                - returned
-                - placed
+                values:
+                  - completed
+                  - shipped
+                  - returned
+                  - placed
 ```
 

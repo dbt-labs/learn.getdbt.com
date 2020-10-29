@@ -12,7 +12,7 @@ title: Building your First Model
 #### Reference: Code Snippets
 
 **dim_customers.sql**
-```sql
+```
 with customers as (
 
     select

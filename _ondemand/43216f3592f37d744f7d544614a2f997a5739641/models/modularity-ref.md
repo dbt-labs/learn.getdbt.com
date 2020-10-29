@@ -12,7 +12,7 @@ title: Modularity and the ref Function
 #### Reference: Code Snippets
 
 **stg_customers**
-```sql
+```
 with customers as (
     
     select 
@@ -28,7 +28,7 @@ select * from customers
 
 **stg_orders**
 
-```sql
+```
 with orders as (
     
     select

@@ -64,7 +64,7 @@ from {{ source('jaffle_shop','orders') }}
 
 **models/staging/jaffle_shop/src_jaffle_shop**
 
-```yml
+```
 version: 2
 
 sources:

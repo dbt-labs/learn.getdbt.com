@@ -14,7 +14,7 @@ title: Writing Documentation
 
 **schema.yml**
 {% raw %}
-```yml
+```
 version: 2
 
 models:
@@ -37,14 +37,14 @@ models:
             - unique
             - not_null
         - name: status
-          description: '{{ doc('order_status') }}'
+          description: '{{ doc("order_status") }}'
           tests:
             - accepted_values:
-              values:
-                - completed
-                - shipped
-                - returned
-                - placed
+                values:
+                  - completed
+                  - shipped
+                  - returned
+                  - placed
 ```
 {% endraw %}
 
