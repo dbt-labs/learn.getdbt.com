@@ -1,6 +1,6 @@
 ---
 layout: lesson
-module: Materalizations
+module: Materializations
 moduleSlug: materializations
 ---
 {% include options/ondemand/learning_objectives.html %}
