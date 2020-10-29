@@ -15,7 +15,7 @@ Using the resources in this module, complete the following in your dbt project:
 
 **`models/staging/jaffle_shop/stg_jaffle_shop.yml`**
 {% raw %}
-```yml
+```
 version: 2
 
 models:
@@ -35,17 +35,19 @@ models:
         - name: order_id
           description: Primary key for orders.
           tests:
-            - unique
-            - not_null
+            - relationships:
+                to: ref('stg_customers')
+                field: customer_id
         - name: status
-          description: '{{ doc('order_status') }}'
+          description: '{{ doc("order_status") }}'
           tests:
             - accepted_values:
-              values:
-                - completed
-                - shipped
-                - returned
-                - placed
+                values:
+                  - completed
+                  - shipped
+                  - returned
+                  - placed
+                  - return_pending
 ```
 {% endraw %}
 
