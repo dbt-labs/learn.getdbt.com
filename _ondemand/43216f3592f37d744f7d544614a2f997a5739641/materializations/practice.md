@@ -9,7 +9,7 @@ title: Practice
 
 #### Tables, Views, and Ephemeral Models
 
-To gain a deeper understanding of tables, views, and ephemeral models, try making the following changes to your project.  However, don't commit these changes to your git repository.  Use this solely as a change to experiment with these materializatons.
+To gain a deeper understanding of tables, views, and ephemeral models, try making the following changes to your project.  However, don't commit these changes to your git repository.  Use this solely as a change to experiment with these materializations.
 
 #### Incremental Models
 Try the following steps that were covered in the video to build your own incremental model.

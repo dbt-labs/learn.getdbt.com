@@ -7,7 +7,7 @@ title: Reorganize Project
 
 {% include options/ondemand/wistia_embed.html %}
 
-#### Reference: Reogranized File Structure
+#### Reference: Reorganized File Structure
 
 *Note: You will see `logs` and `target` if after you run `dbt run` for the first time.  You will not see `dbt_modules` if you have not imported a package yet (more on this in the packages module)
 

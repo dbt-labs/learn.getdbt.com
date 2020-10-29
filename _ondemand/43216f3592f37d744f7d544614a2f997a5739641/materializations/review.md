@@ -63,7 +63,7 @@ title: Review
 
 - Built as table in the database
 - On the first run, builds entire table
-- On subsequent runs, only addes new records*
+- On subsequent runs, only appends new records*
 - Faster to build because you are only adding new records
 - Does not capture 100% of the data all the time
 - [Incremental Documentation](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations#incremental)

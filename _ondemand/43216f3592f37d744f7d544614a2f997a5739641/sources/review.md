@@ -13,7 +13,7 @@ title: Review
 * Setting up Sources in dbt enables a few other important tools:
     * Multiple tables from a single sources can be configured in one place.  The source macro will then select this updated naming convention.
     * Sources will be rendered in the DAG when viewing documentation.
-    * Text and Doc Block can be used to add decriptions to sources.
+    * Text and Doc Block can be used to add descriptions to sources.
     * Tests can be run directly on sources before staging.
     * Snapshot-Freshness for checking the freshness of raw tables.
 
@@ -58,12 +58,12 @@ sources:
             description: Primary key for customers
       - name: orders
 ```
-* When the documentation is generrated, sources will be documented as well.
+* When the documentation is generated, sources will be documented as well.
 * The DAG will represent the sources in green.
 
 <img src="/ui/img/ondemand/DAG_sources.png" style="width: 80%; margin: auto">
 
-**Snapshotting Source Freshness**
+**Snapshot Source Freshness**
 * Freshness thresholds can be set in the YML file where sources are configured.  For each table, the keys `loaded_at_field` and `freshness` must be configured.
 
 ```

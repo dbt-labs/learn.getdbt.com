@@ -23,8 +23,8 @@ title: Review
 * Note: At a small company, a data team of one may own all three of these roles and responsibilities.  As your team grows, the lines between these roles will remain blurry.
 
 **dbt**
-* data build tool (dbt) empowers data teams to leverage software engineering principles for transformating data.
-* The focus of this course is to build your analytics enginerring mindsets and dbt skills to give you more leverage in your work.
+* data build tool (dbt) empowers data teams to leverage software engineering principles for transforming data.
+* The focus of this course is to build your analytics engineering mindsets and dbt skills to give you more leverage in your work.
 
 <img src="/ui/img/ondemand/modern-data-team.png" style="width: 100%;">
 

@@ -48,7 +48,7 @@ materialized='view'
 
 **ref Macro**
 * Models *can* be written to reference the underlying tables and views that were building the data warehouse (e.g. `analytics.dbt_jsmith.stg_customers`). This hard codes the table names and makes it difficult to share code between developers.
-* The `ref` function allows us to build dependencies between models in a flexible way that can be shared in a commmon code base. The `ref` function will compiled to the name of the database object as it has been created on the most recent execution of `dbt run` *in the particular development environment.* This is determined based off the environment configuration in dbt Cloud - this was set up when the dbt Cloud project was created.
+* The `ref` function allows us to build dependencies between models in a flexible way that can be shared in a common code base. The `ref` function will compiled to the name of the database object as it has been created on the most recent execution of `dbt run` *in the particular development environment.* This is determined based off the environment configuration in dbt Cloud - this was set up when the dbt Cloud project was created.
 * Example: `{{ ref('stg_customers') )}` compiles to `analytics.dbt_jsmith.stg_customers`.
 * The `ref` function also builds a DAG like the one shown below that will dbt uses to determine the order in which to build models.
 
@@ -64,8 +64,8 @@ materialized='view'
 In working on this project, we established some conventions for naming our models.
 * **Sources** (`src`) refer to the raw table data that have been built in the warehouse through a loading process. (We will cover configuring Sources in the Sources module)
 * **Staging** (`stg`) refers to models that are built directly on top of sources. These have a one to one relationship with sources tables. These are used for very light transformations that shape the data into what you want it to be. These models are used to clean and standardize the data before transforming data downstream. Note: These are typically materialized as views.
-* **Intermediate** (`int`) refers to any models that exist between final fact and dimenion tables. These should be built on intermediuate models rather than directly on sources to leverage the data cleaning that was done in staging.
-* **Fact** (`fct`) refers to any data that represents some that occured or is occuring. Examples include sessions, transactions, orders, stories, votes. These are typically skinny, long tables.
+* **Intermediate** (`int`) refers to any models that exist between final fact and dimension tables. These should be built on intermediate models rather than directly on sources to leverage the data cleaning that was done in staging.
+* **Fact** (`fct`) refers to any data that represents some that occurred or is occurring. Examples include sessions, transactions, orders, stories, votes. These are typically skinny, long tables.
 * **Dimension** (`dim`) refers to data that represents a person, place or thing. Examples include customers, products, candidates, buildings, employees.
 * Note: The Fact and Dimension naming is based on previous normalized modeling techniques.
 

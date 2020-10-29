@@ -109,7 +109,7 @@ models:
       +materialized: table
 ```
 
-*After this point is designed to be an open ended exercise - see the examplar on the next page*
+*After this point is designed to be an open ended exercise - see the exemplar on the next page to check your own work*
 
 **Building a fct_orders Model:**
 

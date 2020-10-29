@@ -26,7 +26,7 @@ If you are unsure of where to start, we recommend using BigQuery.  BigQuery offe
 
 ## BigQuery
 
-BigQuery supports public data sets that can be direclty queried.  The data is publically available with the following select statements.  This will be important for reference in the `models` and `sources` modules.
+BigQuery supports public data sets that can be directly queried.  The data is publicly available with the following select statements.  This will be important for reference in the `models` and `sources` modules.
 
 ```
 select * from `dbt-tutorial.jaffle_shop.customers`;
@@ -36,7 +36,7 @@ select * from `dbt-tutorial.stripe.payment`;
 
 ## Snowflake
 
-The instructions below assume that you have a database named `raw` in your Snowflake account and you have the correct privleges to create objects in this database.
+The instructions below assume that you have a database named `raw` in your Snowflake account and you have the correct privileges to create objects in this database.
 
 If this is not the case, you may need to modify the query below for a database that these prerequisites do apply.
 
