@@ -3,7 +3,7 @@ slug: deployment
 live: true
 
 learningObjectives:
-  - Explain the purposes of putting dbt into production
+  - Explain the purpose of putting dbt into production
   - Schedule a job in dbt Cloud
   - Review the results and artifacts of a scheduled job in dbt Cloud
 

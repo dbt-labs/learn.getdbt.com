@@ -5,8 +5,6 @@ moduleSlug: models
 title: Practice
 ---
 
-
-
 # Practice 
 Using the resources in this module, complete the following in your dbt project:
 
