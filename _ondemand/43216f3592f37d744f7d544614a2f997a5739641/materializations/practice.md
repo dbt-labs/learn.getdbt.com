@@ -34,7 +34,7 @@ Snapshots are difficult to practice without genuine type 2, slowly changing dime
 
 1. (In Snowflake) Create a table called mock_orders in your development schema.  You will have to replace `dbt_kcoapman` in the snippet below.
 
-```sql
+```
 create or replace transient table analytics.dbt_kcoapman.mock_orders (
   order_id integer,
   status varchar (100),
@@ -46,7 +46,7 @@ create or replace transient table analytics.dbt_kcoapman.mock_orders (
 
 2. (In Snowflake) Insert values into the mock_orders table in your development schema.  You will have to replace `dbt_kcoapman` in the snippet below.
 
-```sql
+```
 insert into analytics.dbt_kcoapman.mock_orders (order_id, status, created_at, updated_at)
 values (1, 'delivered', '2020-01-01', '2020-01-04'),
        (2, 'shipped', '2020-01-02', '2020-01-04'),
@@ -56,7 +56,7 @@ values (1, 'delivered', '2020-01-01', '2020-01-04'),
 
 3. (In dbt Cloud) Create a new snapshot in the folder `snapshots` with the filename `mock_orders.sql` with the following code snippet.  Note: Jinja is being used here to create a new, dedicated schema.
 {% raw %}
-```sql
+```
 {% snapshot mock_orders %}
 
 {% set new_schema = target.schema + '_snapshot' %}
@@ -97,7 +97,7 @@ create or replace transient table analytics.dbt_kcoapman.mock_orders (
 ```
 
 7. (In Snowflake) Insert these new values into the mock_orders table in your development schema.  You will have to replace `dbt_kcoapman` in the snippet below.
-```sql
+```
 insert into analytics.dbt_kcoapman.mock_orders (order_id, status, created_at, updated_at)
 values (1, 'delivered', '2020-01-01', '2020-01-05'),
        (2, 'delivered', '2020-01-02', '2020-01-05'),
@@ -109,13 +109,13 @@ values (1, 'delivered', '2020-01-01', '2020-01-05'),
 
 9. (In dbt Cloud) Run the following snippet in a statement tab to see the current snapshot table.  You will have to replace `dbt_kcoapman` with your development schema.  Now take not of how dbt has 'snapshotted' the data to capture the changes over time!
 
-```sql
+```
 select * from analytics.dbt_kcoapman_snapshot.mock_orders
 ```
 
 Note: If you want to start this process over, you will need to drop the snapshot table by running the following in Snowflake.  This will force dbt to create a new snapshot table in step 4.  (Again, you will need ot swap in your development schema for `dbt_kcoapman`)
 
-```sql
+```
 drop table analytics.dbt_kcoapman_snapshot.mock_orders
 ```
 
