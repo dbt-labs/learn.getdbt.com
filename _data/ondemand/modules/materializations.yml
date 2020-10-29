@@ -37,10 +37,16 @@ pages:
     assetLink: https://fast.wistia.net/embed/iframe/pfbixlrgy1?videoFoam=true
     assetType: video
 
-  - name: Snapshots
-    slug: snapshots
+  - name: What are Snapshots?
+    slug: snapshots-what
+    assetName: What are Snapshots?
+    assetLink: https://fast.wistia.net/embed/iframe/r2m55220a3?videoFoam=true
+    assetType: 
+      
+  - name: How do Snapshots work?
+    slug: snapshots-how
     assetName: false
-    assetLink: 
+    assetLink: https://fast.wistia.net/embed/iframe/suyr5z9dg8?videoFoam=true
     assetType: 
 
   - name: Review
