@@ -52,7 +52,7 @@ pages:
 
   - name: Exemplar
     slug: exemplar
-
+    
   - name: Review
     slug: review
     assetName: false
