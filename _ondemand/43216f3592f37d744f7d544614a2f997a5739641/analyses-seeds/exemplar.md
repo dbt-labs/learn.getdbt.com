@@ -9,6 +9,7 @@ title: Practice
 
 `analysis/total_revenue.sql`
 
+{% raw %}
 ```
 with payments as (
     select * from {{ ref('stg_payments') }}
@@ -23,6 +24,7 @@ aggregated as (
 
 select * from aggregated
 ```
+{% endraw %}
 
 `data/employees.csv`
 
