@@ -13,7 +13,7 @@ Using the resources in this module, complete the following in your dbt project:
 
 **`models/staging/jaffle_shop/src_jaffle_shop`**
 
-```yml
+```
 version: 2
 
 sources:
@@ -76,11 +76,11 @@ sources:
           description: Raw customers data.
           columns:
             - name: id
-              description: Primary key for customers.
+              description: Primary key for customers
               tests:
                 - unique
                 - not_null
-              
+
         - name: orders
           description: Raw orders data.
           columns:
