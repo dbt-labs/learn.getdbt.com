@@ -49,6 +49,12 @@ pages:
     assetLink: https://fast.wistia.net/embed/iframe/suyr5z9dg8?videoFoam=true
     assetType: 
 
+  - name: Practice
+    slug: practice
+    assetName: false
+    assetLink:
+    assetType:
+
   - name: Review
     slug: review
     assetName: false
