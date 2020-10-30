@@ -27,7 +27,7 @@ title: Review
 **Views**
 
 - Built as views in the database
-- Query is stored on dick
+- Query is stored on disk
 - Faster to build
 - Slower to query
 - Configure in dbt_project.yml or with the following config block
