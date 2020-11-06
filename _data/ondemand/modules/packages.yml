@@ -1,0 +1,54 @@
+name: Packages
+slug: packages
+live: true
+
+learningObjectives:
+  - Explain the role of packages in a dbt project
+  - Install a package from hub.getdbt.com
+  - Utilize models and macros from a package
+
+presentationName: false
+presentationSlug: 
+  
+pages: 
+  - name: What are packages?
+    slug: packages-what
+    assetName: What are Packages?
+    assetLink: https://fast.wistia.net/embed/iframe/qf1umo81f0
+    assetType: video
+
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: 
+    assetLink:
+    assetType: 
+    
+  - name: Installing Packages
+    slug: install-packages
+    assetName: Installing Packages
+    assetLink: https://fast.wistia.net/embed/iframe/y2q1f7v52o
+    assetType: 
+
+  - name: Packages with Macros
+    slug: package-macros
+    assetName: Packages with Macros
+    assetLink: https://fast.wistia.net/embed/iframe/fi9ce6uthh
+    assetType: video
+
+  - name: Packages with Models
+    slug: package-models
+    assetName: Packages with Models
+    assetLink: https://fast.wistia.net/embed/iframe/fi9ce6uthh
+    assetType: video
+
+  - name: Practice
+    slug: practice
+
+  - name: Exemplar
+    slug: exemplar
+
+  - name: Review
+    slug: review
+
+  - name: Feedback
+    slug: feedback

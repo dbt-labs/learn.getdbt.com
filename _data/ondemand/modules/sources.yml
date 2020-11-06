@@ -1,11 +1,12 @@
 name: Sources
 slug: sources
-live: false
+live: true
 
 learningObjectives:
   - Explain the purpose of sources in dbt
   - Configure and select from sources in your data warehouse
   - Configure tests and write documentation for sources
+  - Snapshot the freshness of sources with dbt source snapshot-freshness
 
 presentationName: Sources
 presentationSlug: sources
@@ -13,8 +14,8 @@ presentationSlug: sources
 pages: 
   - name: What are sources?
     slug: sources-what
-    assetName: false
-    assetLink: 
+    assetName: "What are sources in dbt?"
+    assetLink: https://fast.wistia.net/embed/iframe/unge2cc1fb?videoFoam=true
     assetType: video
   
   - name: Learning Objectives
@@ -24,26 +25,31 @@ pages:
     assetType:
       
   - name: Configure and select from sources
-    slug: sources-define
-    assetName: false
-    assetLink:
-    assetType:
+    slug: sources-config
+    assetName: Configure and select from sources
+    assetLink: https://fast.wistia.net/embed/iframe/du0tpw5v2d?videoFoam=true
+    assetType: video
     
   - name: Testing and Documenting Sources
-    slug: sources-tests-docs
-    assetName: false
-    assetLink:
-    assetType:
+    slug: sources-test-doc
+    assetName: Testing and Documenting Sources
+    assetLink: https://fast.wistia.net/embed/iframe/y4m23ql67q?videoFoam=true
+    assetType: video
       
   - name: Source Freshness
     slug: source-freshness
-    assetName: false
-    assetLink:
-    assetType:
+    assetName: Snapshot Freshness
+    assetLink: https://fast.wistia.net/embed/iframe/d233d6d60x?videoFoam=true
+    assetType: video
       
+  - name: Practice
+    slug: practice
+
+  - name: Exemplar
+    slug: exemplar
+
   - name: Review
     slug: review
-    assetName:
-    assetLink:
-    assetType: 
-      
+
+  - name: Feedback
+    slug: feedback

@@ -57,7 +57,7 @@ With dbt!
 
 ---
 
-class: title, center, middle
+class: subtitle, center, middle
 # 1. Final data artifacts
 
 ### They matter, but you don't need to get them right on the first try
@@ -102,7 +102,8 @@ implementation strategies are still applicable.
 .left-column[
 ### Given
 
-- The technology we use is _powerful_. This isn't Kimball's database.
+- The technology we use is _powerful_. This isn't Kimball's database. You can normalize
+or denormalize if you want to.
 - Designing and naming things for human intuition is _hard_. You won't get
 it right the first time, every time.
 - You're building a data product; you're not a data service provider. 
@@ -170,11 +171,11 @@ and benefit from data—your product—more than any one table or dashboard.
 
 # Interface #1: The Graph
 
-"Where are those sales numbers coming from?"
+"Where are those sales numbers coming from?" &rarr; _Which data sources, processes, and assumptions do our sales calculations depend on?_
 
-_Which data sources, processes, and assumptions do our sales calculations depend on?_
+The DAG tells the story:
 
-The DAG tells a story:
+<img src="/ui/img{{page.id}}/dag-simple.png" style="width: 80%;" class="img-center">
 
 <h3 style="text-align: center;"><span style="color: green;">Source</span>
 &rarr;

@@ -1,23 +1,25 @@
 name: Models
 slug: models
-live: false
+live: true
 
 learningObjectives:
-  - Create a simple model using a select statement
-  - Explain how to build dependencies using the `ref` macro
-  - Compile SQL vs. Run SQL vs. dbt run
-  - Explain how dbt wraps select statements in the explicit DDL/DML
-
+  - Explain what models are in a dbt project
+  - Build your first dbt model
+  - Explain the concept of modularity applied to analytics
+  - Modularize your project with the ref function
+  - Review a brief history of modeling paradigms
+  - Identify common naming conventions for tables
+  - Reorganize your project with subfolders
 
 presentationName: false
 presentationSlug: testing
   
 pages: 
-  - name: Why modularity?
-    slug: modularity
-    assetName: false
-    assetLink:
-    assetType:
+  - name: What are models?
+    slug: models-what
+    assetName: What are models?
+    assetLink: https://fast.wistia.net/embed/iframe/r0qpfq2cwu?videoFoam=true
+    assetType: video
   
   - name: "Learning Objectives"
     slug: learning-objectives
@@ -25,34 +27,50 @@ pages:
     assetLink:
     assetType: 
           
-  - name: What are models?
-    slug: models-what
-    assetName: false
-    assetLink:
-    assetType:
+  - name: Building your first model
+    slug: building-your-first-model
+    assetName: Building your First Model
+    assetLink: https://fast.wistia.net/embed/iframe/z5kb97at66
+    assetType: video
   
-  - name: Building model dependencies
-    slug: model-dependencies
-    assetName: false
-    assetLink:
-    assetType:
+  - name: What is modularity?
+    slug: modularity-what
+    assetName:  What is modularity?
+    assetLink: https://fast.wistia.net/embed/iframe/6wwzv38wzn?videoFoam=true
+    assetType: video
       
-  - name: Compiling and Running models
-    slug: compile-run-models
-    assetName: false
-    assetLink:
-    assetType:
+  - name: Modularlity and the ref function
+    slug: modularity-ref
+    assetName: Modularity and the ref Function
+    assetLink: https://fast.wistia.net/embed/iframe/cm3pp3klmp
+    assetType: video
       
-  - name: dbt under the hood
-    slug: dbt-under-the-hood
-    assetName: false
-    assetLink: 
-    assetType: 
+  - name: Quick History of Data Modeling
+    slug: model-history
+    assetName: Quick History of Data Modeling
+    assetLink: https://fast.wistia.net/embed/iframe/ibd2p94nwt?videoFoam=true
+    assetType: video
       
+  - name: Naming Conventions
+    slug: naming-conventions
+    assetName: Naming Conventions
+    assetLink: https://fast.wistia.net/embed/iframe/s6jx302nbn
+    assetType: video
+      
+  - name: Reorganize your Project
+    slug: reorganize-project
+    assetName: Reorganize your dbt Project
+    assetLink: https://fast.wistia.net/embed/iframe/rgeydtool4
+    assetType: video
+
+  - name: Practice
+    slug: practice
+
+  - name: Exemplar
+    slug: exemplar
+
   - name: Review
     slug: review
-    assetName: false
-    assetLink:
-    assetType:
-      
-      
+
+  - name: Feedback
+    slug: feedback

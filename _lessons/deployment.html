@@ -60,7 +60,7 @@ Does your production run:
 * Have monitoring and alerting if something goes wrong?
 * Have a way to debug failures?
 * Have a secure access model?
-* Build & test your code every time you want to merge changes? →  **continuous integration**
+* Build & test your modified code every time you want to merge changes? →  **continuous integration**
 * Have a secure way to host your project documentation?
 
 ---
@@ -71,11 +71,12 @@ _(Obviously we're biased)_
 
 The scheduler in dbt Cloud is purpose built for running dbt jobs on a schedule.
 
-✅ Always pulls the latest version of your project
-✅ Easy to build on Pull Request (and tear down the schema afterwards)
-✅ Easy to generate and share documentation with users
-✅ Secure access model
-✅ Email and Slack notifications if something goes wrong, with rich logs
+- ✅ Always pulls the latest version of your project
+- ✅ Easy to build on Pull Request (and tear down the schema afterwards)
+- ✅ Easy to generate and share documentation with users
+- ✅ Secure access model
+- ✅ Email and Slack notifications if something goes wrong, with rich logs
+- ✅ Persist run artifacts for later comparison and analysis
 
 
 ---
@@ -153,7 +154,7 @@ $ dbt test --exclude source:*
 # Additional strategies
 
 Recommended:
-- Separate CI job — clearer notifications
+- Separate "slim" CI job — fast runs, clear notifications
 - Weekly full refresh job — more on this tomorrow!
 
 Seen in the wild:
@@ -173,4 +174,4 @@ You should be able to:
 - List some options for deploying your dbt project
 - Deploy your dbt project with dbt Cloud
 
-{% include options/last_slide.html %}
+{% include options/last_slide_of_day.html %}

@@ -15,7 +15,7 @@ pages:
   - name: "Why is testing important?"
     slug: testing-why
     assetName: Why is Testing Important?
-    assetLink: https://fast.wistia.net/embed/iframe/ux1zymgy9b
+    assetLink: https://fast.wistia.net/embed/iframe/rqzf68cs6i?videoFoam=true
     assetType: video
   
   - name: "Learning Objectives"
@@ -27,23 +27,29 @@ pages:
   - name: "What is testing?"
     slug: testing-what
     assetName: What is Testing?
-    assetLink: https://fast.wistia.net/embed/iframe/paz9tohikt
+    assetLink: https://fast.wistia.net/embed/iframe/4jujz0a0c9?videoFoam=true
     assetType: video
     
   - name: "Schema Tests"
     slug: schema-tests
     assetName: Schema Tests in dbt
-    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
+    assetLink: https://fast.wistia.net/embed/iframe/5wfrf3a6j1
     assetType: video
     
   - name: "Data Tests"
     slug: data-tests
     assetName: Data Tests in dbt
-    assetLink: https://fast.wistia.net/embed/iframe/8t2h9rh61y
+    assetLink: https://fast.wistia.net/embed/iframe/an6jrp6ua8
     assetType: video
     
-  - name: "Review"
+  - name: Practice
+    slug: practice
+
+  - name: Exemplar
+    slug: exemplar
+
+  - name: Review
     slug: review
-    assetName: false
-    assetLink:
-    assetType: 
+
+  - name: Feedback
+    slug: feedback

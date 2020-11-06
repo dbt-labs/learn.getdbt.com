@@ -5,9 +5,13 @@ _site/
 .jekyll-metadata
 Gemfile.lock
 .jekyll-cache/*
+etc/learn_setup/__pycache__
+etc/learn_setup/html_compiled
+etc/learn_setup/credentials.json
+etc/learn_setup/token.pickle
+/etc/learn_mailmerge/html
+/etc/snowflake/html_compiled
+/ete/snowflake/__pycache__
 credentials.json
 token.pickle
-/etc/learn_mailmerge/html
-/etc/snowflake/__pycache__
-/etc/snowflake/html_compiled
-
+snowflake_creds.yml

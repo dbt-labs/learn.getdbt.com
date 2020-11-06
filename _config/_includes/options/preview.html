@@ -1,0 +1,34 @@
+<!-- This lists all the presentations in the next day -->	
+{% assign this_lesson_slug = page.id | remove: "/lessons/" %}
+{% assign tmrw_index = 0 %}
+
+{% for day in site.data.curriculum %}
+    {% assign day_index = forloop.index %}
+    {% assign lessons = '' | split: ',' %}
+    {% for session in day.sessions %}
+        {% assign lessons = lessons | concat: session.lessons %}
+        {% for lesson in lessons %}
+            
+            {% if this_lesson_slug == lesson.slug %}
+                {% assign tmrw_index = day_index | plus: 1 %}
+            {% endif %}
+                
+        {% endfor %}
+    {% endfor %}
+    
+    {% if forloop.index == tmrw_index %}
+        {% for lsn in lessons %}
+            {% assign lesson_id = "/lessons/" | append: lsn.slug %}
+            {% assign match = site.lessons | where: 'id', lesson_id %}
+            {% assign lesson = match[0] %}
+
+{% if forloop.index == 1 %}
+<li class="orange">{{lesson.title}}</li>
+{% else %}
+<li class="grey"> {{lesson.title}}</li>
+{% endif %}
+
+        {% endfor %}
+    {% endif %}
+    
+{% endfor %}

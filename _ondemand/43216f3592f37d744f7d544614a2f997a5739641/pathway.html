@@ -1,0 +1,123 @@
+---
+layout: ondemand-overview
+title: Pathway
+---
+
+<style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-gap: 10px;
+    }
+    
+    .grid-item {
+      padding: 10px 10px;
+      border: 1px silver solid;
+      background-color: #f0f2f4;
+      border-radius: 3px;
+      color: #00475c;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 20px 0 ;
+    }
+
+
+
+
+</style>
+
+
+<h1>Pathway</h1>
+<h6 style="color: #ff694b">Follow a curated sequence of lessons</h6>
+
+<div class="grid-container">
+  
+        {% assign pathway = site.data.ondemand.pathways | where: "title", "dbt Essentials" %}
+        {% for path in pathway %}
+          {% for module in path.modules %}
+            {% assign modslug = module.slug %}
+            {% assign mod = site.data.ondemand.modules | where: "slug", modslug %}
+            {% for md in mod %}
+            {% if md.live == true %}
+            <a href="/ondemand/{{ site.onDemandHash }}/{{ module.slug }}/{{ md.pages[0].slug }}" class="grid-item">
+                      {{ module.name }}
+                    </a>
+            {% else %}
+            <div class="grid-item" style="color: gray">
+            {{ module.name | prepend: " 🏗"  }}
+            </div>        
+            {% endif %}
+
+            <div class="grid-item" id="checkbox-container">
+              <label style="justify-content: center; margin: 0" for="{{ module.slug | remove: '-' }}">Complete?
+                <input type="checkbox" id="{{ module.slug | remove: '-' }}">
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            
+            
+            {% endfor %}
+          {% endfor %}
+        {% endfor %}
+
+        
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+<script>
+
+var formValues = JSON.parse(localStorage.getItem('formValues')) || {};
+var $checkboxes = $(":checkbox");
+var $button = $("#checkbox-container button");
+
+function allChecked(){
+  return $checkboxes.length === $checkboxes.filter(":checked").length;
+}
+
+function updateButtonStatus(){
+  $button.text(allChecked()? "Uncheck all" : "Check all");
+}
+
+function handleButtonClick(){
+  $checkboxes.prop("checked", allChecked()? false : true)
+}
+
+function updateStorage(){
+  $checkboxes.each(function(){
+    formValues[this.id] = this.checked;
+  });
+
+  formValues["buttonText"] = $button.text();
+  localStorage.setItem("formValues", JSON.stringify(formValues));
+}
+
+$button.on("click", function() {
+  handleButtonClick();
+  updateButtonStatus();
+  updateStorage();
+});
+
+$checkboxes.on("change", function(){
+  updateButtonStatus();
+  updateStorage();
+});
+
+// On page load
+
+console.log(formValues)
+$.each(formValues, function(key, value) {
+  $("#" + key).prop('checked', value);
+});
+
+$button.text(formValues["buttonText"]);
+</script>
+
+
+  

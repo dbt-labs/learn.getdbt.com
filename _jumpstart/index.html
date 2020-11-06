@@ -1,0 +1,272 @@
+---
+layout: page
+title: Jumpstart
+nav_included: true
+week1_form: https://forms.gle/vxsWkvSpxcjnKXmy5
+week2_form: https://forms.gle/1XSETXUuBPfbS5cj7
+week3_form: https://forms.gle/hiqZGG74qvgPgnqTA
+week4_form: https://forms.gle/nam1Z2VZ6nDbPu8z9
+
+---
+
+<style>
+    a {
+
+        font-weight: bold;
+    }
+
+    a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color:#6e7c86;
+}
+</style>
+
+<nav class="navigation">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-short">
+				<div class="navigation-content">
+					<div class="navigation-links">
+						<div class="navigation-link">
+							<a class="navigation-anchor navigation-brand" href="{{site.url}}/" title="{{site.description}}">
+                                <img src="/ui/img/dbt-logo-color.png" />
+								<strong class="navigation-brand-text">{{site.title}} - {{site.description}}</strong>
+							</a>
+						</div>
+						{% if page.permalink == '/' %}
+							{% assign baseurl = '' %}
+						{% else %}
+							{% assign baseurl = site.url %}
+                        {% endif %}
+                        
+                        <div class="navigation-link">
+							<a class="navigation-anchor" href="#overview">Overview</a>
+                        </div>
+						<div class="navigation-link">
+							<a class="navigation-anchor" href="#expectations">What to Expect</a>
+                        </div>
+						<div class="navigation-link">
+							<a class="navigation-anchor" href="#week1">Week 1</a>
+						</div>
+						<div class="navigation-link">
+							<a class="navigation-anchor" href="#week2">Week 2</a>
+                        </div>
+                        <div class="navigation-link">
+							<a class="navigation-anchor" href="#week3">Week 3</a>
+                        </div>
+                        <div class="navigation-link">
+							<a class="navigation-anchor" href="#week4">Week 4</a>
+						</div>
+                        <div class="navigation-link"> &nbsp; // &nbsp; </div>
+                        <div class="navigation-link">
+							<a class="navigation-anchor" href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" style="color:#ff694B; font-weight:bold" target="_blank" >Instructional Videos</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+
+
+<div class="bg-navy-darker">
+    <div class="section-md text-white text-navy-lightest">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="text-contain">
+                        <h1 class="h0">Jumpstart</h1>
+                        <p class="text-large">A four week, asychronous course to get your team up to speed with dbt.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="text-contain">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white">
+    <div class="section">
+        <div class="text-contain">
+
+            <div class="row" id="overview">
+                <div class="col-lg-12 col-bottomless">
+                    <div class="text-contain text-center">
+                        <h3>Overview</h3>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="list-icons text-med text-heading text-left" style="color:#383838">
+                        <li><span class="arrow-right text-blue text-medium list-icon"></span>This course is completed in a combination of asynchronous and synchronous sessions.</li>
+                        <li><span class="arrow-right text-blue text-medium list-icon"></span><strong>Asynchronous Sessions (2 hours each week):</strong> Participants watch instructional videos online, complete Google form with check for understanding questions, and complete exercises in dbt at their own pace.  </li>
+                        <li><span class="arrow-right text-blue text-medium list-icon"></span><strong>Synchronous Sessions (1 hour each week):</strong> A Fishtown Analytics team member facilitates a review of the exercises and answers questions that participants record during their asynchronous work.</li>
+                        <li><span class="arrow-right text-blue text-medium list-icon"></span><strong>Infrastructure:</strong> The course is implemented with Fishtown Analytics’ Training Snowflake account as the Data Warehouse and personal or client hosted Github repositories as the host for version control.</li>
+                        <li><span class="arrow-right text-blue text-medium list-icon"></span><strong>Criteria for Success:</strong> Participants are expected to view 100% of videos and complete 100% of the Google Forms and exercises 24 hours prior to each office hours session.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="bg-silver-light">
+	<div class="section">
+		<div class="container">
+			<div class="row" id="expectations">
+				<div class="col-lg-12">
+					<div class="text-contain">
+						<center><h3 class="h2">What to Expect</h3></center>
+						<p>
+                            <h4>Before the Kickoff Meeting</h4>
+                            <ul>    
+                                <li>Join private Jumpstart slack channel in dbt Slack.</li>
+                                <li>Accept the dbt Cloud Invitation and Login to Snowflake.</li>
+                                <li>Create an empty repository in your personal GitHub account and send the link to your instructor.</li>
+                            </ul>
+                            <h4>Kickoff Meeting</h4>
+                            <ul>    
+                                <li> Introductions and Overview of the Jumpstart Program.</li>
+                                <li> Q+A Session for Jumpstart Logistics.</li>
+                            </ul>
+                            <h4>Asynchronous Sessions</h4>
+                            <ul>    
+                                <li>Watch Instructional Videos.</li>
+                                <li>Complete Check for Understanding in Google Form.</li>
+                                <li>Practice Exercises.</li>
+                            </ul>
+                            <h4>Synchronous Sessions</h4>
+                            <ul>    
+                                <li>Instructor reviews responses to Google Form and Practice Exercises.</li>
+                                <li>Q+A Sessions on using dbt.</li>
+                            </ul>
+				            </div>
+   				</div>
+   			</div>
+   		</div>
+   	</div>
+   </div>
+</div>
+
+<div class="bg-white">
+    <div class="section">
+        <div class="text-contain">
+
+            <div class="row" id="week1">
+                <div class="col-lg-12 col-bottomless">
+                    <div class="text-contain text-center">
+                        <h3>Week 1</h3>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-large">
+                    <ul>
+                        <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank"> Start Instructional Videos:</a> Who is an Analytics Engineer & Setting up dbt Cloud</li>
+                        <li><a href="pr_template.html" target="_blank">PR Template:</a> Add this pull request template to your dbt Project. (<a href="https://dbtlearn.wistia.com/medias/cig522rdkv" target="_blank">video walkthrough</a>)</li>
+                        <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank"> Continue Instructional Videos:</a> Models.</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Models and submit a PR to your instructor with this template</li>
+                        <li><a href="{{ page.week1_form }}" target="_blank">Week 1 Check for Understanding Form.</a></li>
+                        <li>Note: All practice exercises and forms should be completed 24 hours before the next office hours. This will give adequate time for your instructor to prepare for the office hours.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="bg-silver-light">
+    <div class="section">
+        <div class="text-contain">
+
+            <div class="row" id="week2">
+                <div class="col-lg-12 col-bottomless">
+                    <div class="text-contain text-center">
+                        <h3>Week 2</h3>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-large">
+                    <ul>
+                        <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank">Instructional Videos:</a>
+                            Tests, Docs, Sources, and Deployment.</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Tests, Docs, and Sources and submit a PR to your instructor with this template</li>
+                        <li><a href="{{ page.week2_form }}" target="_blank">Week 2 Check for Understanding Form.</a></li>
+                        <li>Note: All practice exercises and forms should be completed 24 hours before the next office hours. This will give adequate time for your instructor to prepare for the office hours.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="bg-white">
+    <div class="section">
+        <div class="text-contain">
+
+            <div class="row" id="week3">
+                <div class="col-lg-12 col-bottomless">
+                    <div class="text-contain text-center">
+                        <h3>Week 3</h3>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-large">
+                    <ul>
+                        <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank">Instructional Videos:</a> Jinja Primer, Macros, and Packages.</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Jinja Primer, Macros, and Packages and submit a PR to your instructor with this template</li>
+                        <li><a href="{{ page.week3_form }}" target="_blank">Week 3 Check for Understanding Form.</a></li>
+                        <li>Note: All practice exercises and forms should be completed 24 hours before the next office hours. This will give adequate time for your instructor to prepare for the office hours.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="bg-silver-light">
+    <div class="section">
+        <div class="text-contain">
+
+            <div class="row" id="week4">
+                <div class="col-lg-12 col-bottomless">
+                    <div class="text-contain text-center">
+                        <h3 >Week 4</h3>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-large">
+                    <ul>
+                        <li><a href="{{ base_url }}/ondemand/43216f3592f37d744f7d544614a2f997a5739641/modules" target="_blank">Instructional Videos:</a>
+                            Materializations and Analyses + Seeds</li>
+                        <li><strong>Submit Pull-Request:</strong> Practice Exercises for Materializations and Analyses + Seeds and submit a PR to your instructor with this template</li>
+                        <li><a href="{{ page.week4_form }}" target="_blank">Week 4 Check for Understanding Form.</a></li>
+                        <li>Note: All practice exercises and forms should be completed 24 hours before the next office hours. This will give adequate time for your instructor to prepare for the office hours.</li>
+                        <li>Close out the course with final questions, feedback, and certificates.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

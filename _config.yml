@@ -1,8 +1,8 @@
 # --------------------------------------------------
 # Site settings
 
-title: Beyond analytics
-description: dbt learn is a two-day in-person training program designed to empower analysts.
+title: dbt Learn
+description: Level up your analytics skill set with Fishtown Analytics
 owner: http://github.com/fishtown-analytics
 repo: learn.getdbt.com
 branch: master
@@ -44,6 +44,9 @@ collections:
     output: true
     permalink: /:collection/:path
   ondemand:
+    output: true
+    permalink: /:collection/:path
+  jumpstart:
     output: true
     permalink: /:collection/:path
 

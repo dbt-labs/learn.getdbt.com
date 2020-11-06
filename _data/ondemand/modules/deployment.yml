@@ -1,0 +1,46 @@
+name: Deployment
+slug: deployment
+live: true
+
+learningObjectives:
+  - Explain the purpose of putting dbt into production
+  - Schedule a job in dbt Cloud
+  - Review the results and artifacts of a scheduled job in dbt Cloud
+
+presentationName: false
+presentationSlug: 
+  
+pages: 
+  
+  - name: What is deployment
+    slug: deployment-what
+    assetName: false
+    assetLink: https://fast.wistia.net/embed/iframe/nzd5qja8bh
+    assetType: video
+      
+  - name: "Learning Objectives"
+    slug: learning-objectives
+    assetName: false
+    assetLink:
+    assetType: 
+      
+  - name: Scheduling a Cloud Job
+    slug: schedule-job
+    assetName: Schedule a Cloud Job
+    assetLink: https://fast.wistia.net/embed/iframe/7wwu272365?videoFoam=true
+    assetType: video
+      
+  - name: Review a Scheduled Job
+    slug: review-job
+    assetName: Review a Scheduled Job
+    assetLink: https://fast.wistia.net/embed/iframe/e57yxlfnjo?videoFoam=true
+    assetType: video
+      
+  - name: Review
+    slug: review
+    assetName: false
+    assetLink:
+    assetType: 
+      
+  - name: Feedback
+    slug: feedback

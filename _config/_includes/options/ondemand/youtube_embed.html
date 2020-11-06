@@ -1,0 +1,20 @@
+{% assign mod_slug = page.moduleSlug %}
+{% assign module = site.data.ondemand.modules | where: "slug", mod_slug %}
+{% assign leadURL = "/ondemand/" | append: site.onDemandHash %}
+{% assign current_slug = page.url | remove: leadURL %}
+{% assign current_slug = current_slug | remove_first: mod_slug %}
+{% assign current_slug = current_slug | remove: "//" %}
+
+{% for mod in module %}
+  {% for pg in mod.pages %}
+
+    {% assign n_pg = forloop.length %}
+
+    {% if pg.slug == current_slug %}
+      {% assign videoURL = pg.assetLink %}
+    {% endif %}
+
+  {% endfor %}
+{% endfor %}
+
+<iframe width="560" height="315" src="{{ videoURL }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

@@ -43,8 +43,11 @@
     {% if next_pos < n_pages %}
       <h6>Next Lesson:</h6>
       <a href="./{{ next_slug }}">{{ next_name }}</a>
+    {% else %}
+      <h6>Return to:</h6>
+      <a href="{{baseurl}}/ondemand/{{ site.onDemandHash }}/pathway">Pathway</a>
+      &nbsp; // &nbsp;
+      <a href="{{baseurl}}/ondemand/{{ site.onDemandHash }}/modules">Modules</a>
     {% endif %}
-      
   </div>
-
 </div>
