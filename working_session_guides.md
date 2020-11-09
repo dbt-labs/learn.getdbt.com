@@ -285,4 +285,206 @@ pivoted as (
 
 # Working Group #4
 
-- Leave this as an open ended experience for the participants and guide them as needed.
+This is meant to be a *capstone* of sorts for learners to show what they know!  The training wheels are not completely off yet, so use this guide to provide scaffolding for learners:
+
+**Facilitation Guide** Ask people how they want to work by sending you a private message in Zoom chat:
+(1) Independently then check in towards the end
+(2) Guided with a screen share
+
+**Working Process** - Facilitate discussion to name the following steps for creating a final model.  There is no **correct** process here, but learners should be comfortable with the idea of refactoring
+
+1. Create a source for the three ticket tailor tables
+2. Create a staging model for each raw table (pro tip: use the codegen package)
+3. Create a fct_tickets model for answering the question.
+4. Refactor, refactor, refactor.
+5. Formalize with tests and documentation
+
+**Code Snippets to assist:**
+
+`stg_tt_orders`
+
+```sql
+with source as (
+
+    select * from {{ source('ticket_tailor', 'orders') }}
+
+),
+
+renamed as (
+
+    select
+        -- keys
+        id as order_id,
+        txn_id as transaction_id,
+
+
+        -- descriptions
+        object,
+        currency,
+        round(subtotal / 100, 2) as subtotal,
+        round(tax / 100) as tax,
+        round(total / 100) as total,
+        round(refund_amount / 100) as refund_amount,
+        event_summary,
+        line_items,
+
+        -- status
+        status,
+
+        -- timestamps
+        to_timestamp_ntz(created_at) as created_at,
+
+        -- metadata
+        _sdc_batched_at,
+        _sdc_received_at,
+        _sdc_sequence,
+        _sdc_table_version
+
+    from source
+
+)
+
+select * from renamed
+```
+
+`stg_tt_events`
+
+```sql
+with source as (
+
+    select * from {{ source('ticket_tailor', 'events') }}
+
+),
+
+renamed as (
+
+    select
+        -- keys
+        id as event_id,
+
+        -- descriptions
+        name,
+        description,
+        object,
+        payment_methods,
+        images,
+        ticket_types,
+        currency,
+        timezone,
+        url,
+        venue,
+        call_to_action,
+
+        -- status
+        status,
+        total_issued_tickets,
+        total_orders,  
+
+        -- booleans
+        online_event as is_online_event,
+        private as is_private,
+        tickets_available as is_tickets_available,
+
+        -- timestamps
+        to_timestamp_ntz(created_at) as created_at,
+
+        -- metadata
+        _sdc_batched_at,
+        _sdc_received_at,
+        _sdc_sequence,
+        _sdc_table_version
+
+        -- ignored
+        -- 'end',
+        -- 'start'
+        -- ticket_groups
+
+    from source
+
+)
+
+select * from renamed
+```
+
+`stg_tt_tickets`
+
+```sql
+with source as (
+
+    select * from {{ source('ticket_tailor', 'issued_tickets') }}
+
+),
+
+renamed as (
+
+    select
+        -- keys
+        id as ticket_id,
+        ticket_type_id,
+        event_id,
+        order_id,
+
+        -- descriptions
+        object,
+        barcode,
+        barcode_url,
+        
+        -- status
+        status,
+
+        -- timestamps
+        to_timestamp_ntz(created_at) as created_at,
+        to_timestamp_ntz(updated_at) as updated_at,
+        to_timestamp_ntz(voided_at) as voided_at,
+
+        -- metadata
+        _sdc_batched_at,
+        _sdc_received_at,
+        _sdc_sequence,
+        _sdc_table_version
+
+        -- ignored
+
+    from source
+
+)
+
+select * from renamed
+```
+
+`fct_tickets`
+```sql
+with tickets as (
+    select * from {{ ref('stg_tt_tickets') }}
+),
+
+events as (
+    select * from {{ ref('stg_tt_events') }}
+),
+
+orders as (
+    select * from {{ ref('stg_tt_orders') }}
+),
+
+joined as (
+    select 
+        ticket_id,
+        event_id,
+        order_id,
+        created_at,
+        updated_at,
+        events.name as event_name,
+        events.timezone as event_timezone,
+        orders.total as ticket_amount,
+        case 
+            when orders.status = 'completed' then false
+            when orders.status = 'cancelled' then true
+        end as is_refunded
+    from tickets
+    left join events using (event_id)
+    left join orders using (order_id)
+)
+
+select * from joined
+```
+
