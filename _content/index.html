@@ -2,66 +2,69 @@
 title: dbt Learn
 permalink: /
 render_chart: true
+class: homepage
 event_link: https://events.getdbt.com/
-agenda:
-  - name: Day One - Foundations
-    activities:
-      - Analytics engineering in 2020
-      - dbt fundamentals
-      - dbt Project Design
-      - Testing & Continuous Integration
-      - Data sources + freshness
-      - Documenting data models
-      - Collaboration Session
+h1: "Upgrade your analytics skills with dbt Learn"
+h2: "If you know how to write SQL, you are ready to learn dbt."
+types:
+  - name: "Public Courses"
+    description: "Public dbt Learn is a two-day intensive course including live instruction and working sessions. Classes are currently facilitated via Zoom across different time zones."
+    buttonText: "Start learning dbt right now"
+  - name: "On Demand"
+    highlightClass: "highlight"
+    description: "Learn dbt at your own pace whether you are an experienced data engineer or just starting a new path in analytics - for free."
+    buttonText: "Start learning now"
+  - name: "Private Courses"
+    description: "Interested in private training for your team? We would love to learn more about your team to select the right training experience for you."
+    buttonText: "Contact Sales"
+#agenda:
+#  - name: Day One - Foundations
+#    activities:
+#      - Analytics engineering in 2020
+#      - dbt fundamentals
+#     - dbt Project Design
+#      - Testing & Continuous Integration
+#      - Data sources + freshness
+#      - Documenting data models
+#      - Collaboration Session
       
 
-  - name: Day Two - Applications
-    activities:
-      - Polishing your dbt Project
-      - Jinja - the templating language behind dbt
-      - dbtonic Jinja
-      - Importing Packages and Projects 
-      - dbt Materializations & Incremental Models
-      - Patterns + techniques
-      - Collaboration Session
+#  - name: Day Two - Applications
+ #   activities:
+ #     - Polishing your dbt Project
+#      - Jinja - the templating language behind dbt
+#      - dbtonic Jinja
+#      - Importing Packages and Projects 
+#      - dbt Materializations & Incremental Models
+#      - Patterns + techniques
+#      - Collaboration Session
       
 ---
-
-<style>
-canvas {
-    /*-webkit-mask-image: -webkit-gradient(linear, left, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));*/
-    -webkit-mask-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));
-}
-</style>
 
 <div class="bg-navy-darker">
 	<div class="section-lg text-white text-navy-lightest">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-lg-12">
 					<div class="text-contain">
-						<h1 class="h0">Learn analytics engineering with dbt</h1>
-                        <p class="text-large">A two-day, in-person training program that teaches analysts the tools and knowledge needed to own the entire analytics engineering workflow.</p>
-					</div>
-				</div>
-				<div class="col-lg-4" style="z-index: 10">
-					<div class="text-contain">
-						<h1 class="h0">&nbsp;</h1>
-                        <a target="_blank" href="{{ page.event_link }}" class="btn btn-primary btn-lg arrow-right">View upcoming events
-                        </a>
+						<h1 class="h0 text-center">{{page.h1}}</h1>
+                        <p class="text-large text-center">{{page.h2}}</p>
+					</div><!-- /.text-contain -->
+				</div><!--/.col-->
+            </div><!-- /.row-->
+            <div class="flex-row flex-buffer">
+                {% for type in page.types %}
+                    <div class="card flex-item text-center text-white {{type.highlightClass}}">
+                        <h4 class="card-header">{{type.name}}</h4>
+                        <div class="card-body">{{type.description}}</div>
+                        <div class="card-footer">
+                            <a href="" class="btn btn-primary btn-block radius {% unless type.highlightClass %}btn-outline{% endunless %}" title="{{type.buttonText}}">{{type.buttonText}}</a>
+                        </div>
                     </div>
-                </div>
-			</div>
+                {% endfor %}
+            </div><!-- /.row -->
 		</div>
 	</div>
-    <div class="section-lg" style="padding: 0; margin-top: -100px; margin-bottom: -10px">
-        <div class="section-background-chart">
-            <div class="chart" style="height: 200px">
-                <canvas id="banner" width="800" height="200"></canvas>
-            </div>
-        </div>
-    </div>
-	<div class="mask mask-ne text-white"></div>
 </div>
 
 <div class="bg-white">
@@ -72,7 +75,7 @@ canvas {
                 <div class='col-lg-8 col-lg-offset-2 text-center'>
                     <img style="width: 100%" src="https://i.imgur.com/RbKJTOY.jpg" />
                 </div>
-            </div>
+            </div><!-- /.row -->
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="text-contain">
@@ -89,9 +92,9 @@ canvas {
 							{% endfor %}
 						</ul>
                         <p>The only technical prerequisite is a working knowledge of SQL. Prior familiarity with the command line and version control is helpful but not necessary.</p>
-					</div>
-				</div>
-			</div>
+					</div><!--/.text-contain-->
+				</div><!--/.col-lg-12-->
+			</div><!--/.row-->
 		</div>
 	</div>
 </div>
