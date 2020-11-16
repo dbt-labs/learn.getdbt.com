@@ -17,6 +17,9 @@ pages:
     assetLink:
     assetType: 
 
+  - name: dbt Cloud Architecture
+    slug: architecture
+
   - name: Setting up your Data Warehouse for Training
     slug: dw-setup
     assetName: Data Warehouse Set Up
