@@ -3,9 +3,10 @@ layout: presentation
 title: Data Warehouses
 learningObjectives:
   - Explain the difference between a transactional and analytical database
+  - Understand what databases are doing to run your queries behind the scenes
+  - Understand differences between databases, warehouses, lakes, lakehouses
   - Explain the key features of a modern data warehouse
-  - Explain which data warehouses are best in class and why
-  - Explain use cases for a Data Lake technology
+  - Explain which data platforms are best in class and why
 ---
 
 class: title, center, middle
@@ -177,7 +178,7 @@ For instance:
 
 ---
 
-# What about _for analytics_?
+# How does this affect analytics?
 
 .left-column[
 ### Then (transactional)
@@ -447,7 +448,7 @@ Databases need to move data around for:
 - Joins
 ]
 
-**The optimizer is your friend!**
+**The optimizer is your friend!** Take the time to listen.
 
 - If the database optimizer does its job perfectly, you never need to think
 about sorting, distributing, clustering, shuffling, range joining, ...
@@ -489,18 +490,20 @@ class: subtitle, center, middle
 
 # Apples to apples
 
-What's required to **optimize** and **maintain** database performance?
+What's required to **optimize** and **maintain** warehouse performance?
 
 .denser-text[
 .left-column-66[
 .left-column[
 ### Redshift
-- Sort keys: compound or interleaved?
-- Dist style: single column, even, or all?
-- Maintenance: vacuum, analyze (maybe?)
-- Column compression: ZSTD, LZO, ...
-- Scaling: classic resize? RA3?
+- Sort keys: compound or interleaved
+- Dist style: single column, even, or all<sup>1</sup>
+- Vacuum, analyze<sup>1</sup>
+- Column compression
 - Read `explain` plans
+
+.caption[<sup>1</sup> Recently improved]
+
 ]
 
 .right-column[
@@ -516,7 +519,7 @@ What's required to **optimize** and **maintain** database performance?
 ### Snowflake
 - Clustering (~sorting)
     - Only for large tables
-- Visually inspect query profile
+- Read `explain` or visually inspect query profile
 ]
 ]
 
@@ -528,69 +531,73 @@ cluster is, well, a cluster.
 
 ---
 
-# Apples to oranges...
+class: subtitle, center, middle
+# What about Data Lakes?
+
+---
+
+<img src="/ui/img{{page.id}}/jt-billion-rows.png" style="width: 100%;" class="img-center">
+
+---
+
+# Spark, Presto, Athena, ...
+
+- Incredibly powerful and cost-effective
+- Built _for_ petabyte-scale
+- May support other languages!
+    - data engineers can write Scala, Java
+    - data scientists can write Python, R
+- You _can_ run dbt on them!
+    - Delta Lake (Databricks-hosted Spark): 98% feature parity
+    
+---
+
+# Drawbacks
+
+Harder to use, and harder to reason about:
+- SQL dialects are often Hive-style, rather than PostgreSQL
+- Data storage is significantly less abstracted: file paths + formats matter
+
+dbt supports these via "adapter plugins":
+- Need additional packages to "shim" compatibility
+- Depending on the database, some features are unsupported
+
+---
+
+# Challenge: modeling at scale
+
+_Whether you're using Snowflake, BigQuery, or Spark:_
+
+- All models are materialized incrementally
+    - Replace discrete partitions, rather than merging/matching records*
+    - Full refresh: never, or manually trigger
+- Testing is relative
+    - E.g. test that `unique` failures are < 1% of all rows
+- Tables are "sharded" by a top-level identifier
+    - region, account, client, etc.
+
+---
+
+# Review: bases, warehouses, lakes
 
 | name     | tech                   | stored as | storage/ compute | optimization | semi-structured data | "external" data | intuition |
 |----------|------------------------|-----------|------------------|--------------|----------------------|-----------------|-----------|
 | Postgres | transactional database | rows      | same             | indexes      | some support         | via extensions? | everything works the way you expect |
 | Redshift | analytic database      | columns   | tightly coupled  | sort + dist  | minimal support      | S3 via Spectrum | most things |
-
-???
-### Postgres
-- Stores rows of structured, tabular data
-- High concurrency, decent parallelization
-- Compute and storage are tightly locked
-- Performance optimization via indexes
-- Decent support for semi-structured (JSON) data (as of version 9!)
-- Shaky support for querying "foreign" data (via extensions)
-- Everything works the way you expect
-]
-
-### Redshift
-- Stores columns of structured, tabular data in proprietary file format
-- Massively parallel query execution across multiple workers
-- Compute and storage are interrelated
-- Performance optimization via sorting, distribution
-- Minimal support for semi- and unstructured data (JSON)
-- Decent support for querying "external" data in S3 (via Spectrum)
-- Most things work the way you expect
-
---
-| Spark | processing engine | files | separate | file formats, metadata | first-class support | all data is external | <span class="highlight">no guarantees</span> |
-
-# ...to kumquats
-
-???
-
-### Spark
-- "Data Lake": All data is stored externally
-- Storage and compute are _completely_ separate. You pay for them independently.
-- Performance optimization means storing in a columnar file format (parquet)
-with excellent metadata
-- Semi- and unstructured data is a first-class citizen, with pretty good SQL
-functionality
-- There's no guarantee that things will work the way you expect!
-
+| Spark | data processing engine | files | separate | file formats, metadata | first-class support | all data is external | <span class="highlight">an acquired taste!</span> |
 
 ---
 
-# "Data Lake"
-
-- Spark, Presto, Athena, ...
-- Incredibly powerful and cost-effective
-- Not limited to SQL!
-- Large user base and target audience
-    - primarily data engineers
-    - some data scientists
-- Harder to use, and harder to reason about
-- You _can_ run dbt on them!
-    - Some nice-to-have features are less well supported
+class: subtitle, center, middle
+# QED
 
 ---
 
 # The Modern Data Warehouse
 
-Offers the best of both worlds:
+_a.k.a Cloud Data Platform, Data Lakehouse, ..._
+
+It offers the best of both worlds:
 
 - Intuitive **user experience** of a database: users, groups/roles,
 authentication, permissions, information schema, everything is SQL
@@ -602,17 +609,30 @@ It's what partners best with dbt!
 
 ---
 
-# Who is best in class?
+# Conditions
 
-- Snowflake + BigQuery: data lakes posing as data warehouses
-- Redshift is catching up with Spectrum, Aqua, RA3 nodes
-
-### What sets them apart?
-- Support for semi-structured data
-- Support for external data
+- 90+% of core functionality is implemented as SQL/DDL
 - Separation of compute + storage
+- Support for semi-structured + unstructured data<sup>2</sup>
+- Support for querying data from external file storage<sup>2</sup>
 
-These are features that, five years ago, were only found in Spark.
+These are features that, five years ago, were only found in Apache Spark—at the
+cost of architectural challenges and a limited SQL dialect.
+
+.caption[<sup>2</sup> See appendix for details]
+
+---
+
+# Superlatives
+
+_Most likely to..._
+- Scale without a hitch: **Snowflake**
+- Save you money in the long run: **BigQuery**
+- Reward past DBA experience: **Redshift**
+- Have a little something for everyone: **Databricks**
+
+Each of these is, to a greater or lesser extent, a data lake _posing as_ a data
+warehouse (or "lakehouse").
 
 ---
 
@@ -620,7 +640,7 @@ class: subtitle
 
 # Checkpoint:
 
-- Who are the *big three* players in data warehousing?
+- Who are the biggest players in data warehousing?
 
 --
 
@@ -637,8 +657,8 @@ You should understand:
 You should be building intuition around:
 - Why certain queries/models build more slowly
 - Which dbt features depend on features of the underlying data warehouse
-- Which data warehouses are best-in-class and why
-- Why someone might opt for a Data Lake technology (e.g. Spark)
+- Which cloud data platforms are best-in-class and why
+- Why someone might opt for a data lake or lakehouse
 
 ## Questions??
 
@@ -648,11 +668,11 @@ You should be building intuition around:
 
 class: subtitle, center, middle
 # Appendix
-## The Big Three in 2020: how they stack up
+### Specific feature support in 2020
 
 ---
 
-# Semi-structured data
+# A. Semi-structured data
 
 It's common that 90% of your data is tabular/structured, but there's a little
 bit that makes more sense as JSON!
@@ -673,67 +693,35 @@ vs.
 
 ---
 
-# Semi-structured data
+# A. Semi-structured data
 
 Can your database read unstructured data?
 
-| JSON support           | Redshift                         | Snowflake                   | BigQuery                 |
-|------------------------|----------------------------------|-----------------------------|--------------------------|
-| Unnesting dictionaries | Kind of: `json_extract_path_text`| `amenities:doorman`         | `amenities.doorman`      |
-| Flattening arrays      | Not natively                     | `lateral flatten`           | `cross join unnest`      |
-| Loading data           | Flatten + unnest first           | Load as-is (`variant` blob) | Load as repeated records |
+| JSON support           | Redshift<sup>3</sup>             | Snowflake                   | BigQuery                 | Spark                  |
+|------------------------|----------------------------------|-----------------------------|--------------------------| ---------------------- |
+| Unnesting dictionaries | Kind of: `json_extract_path_text`| `amenities:doorman`         | `amenities.doorman`      | `amenities['doorman']` |
+| Flattening arrays      | Not natively                     | `lateral flatten`           | `cross join unnest`      | `explode`              |
+| Loading data           | Flatten + unnest first           | Load as-is (`variant` blob) | Load as repeated records | Query as-is            |
 
 Can it _write_ columns of semi-structured data?
 
-| JSON support           | Redshift      | Snowflake                      | BigQuery          |
-|------------------------|---------------|--------------------------------|-------------------|
-| Creating dictionaries  | No            | `object_construct`             | `struct`          |
-| Creating arrays        | No            | `array_construct`, `array_agg` | `[]`, `array_agg` |
+| JSON support           | Redshift      | Snowflake                      | BigQuery          | Spark     |
+|------------------------|---------------|--------------------------------|-------------------|-----------|
+| Creating dictionaries  | No            | `object_construct`             | `struct`          | `map`     |
+| Creating arrays        | No            | `array_construct`, `array_agg` | `[]`, `array_agg` |`collect_` |
+
+.caption[<sup>3</sup>Better Redshift support is on the horizon]
 
 ---
 
-# External data
+# B. External data
 
-Can your database query files living in S3, Google Cloud Storage, Azure Blob storage...?
+Can your database query files living in S3, Google Cloud Storage, Azure Blob Storage, HDFS, ...?
 
-| External support                | Redshift                            | Snowflake                           | BigQuery                          |
-|---------------------------------|-------------------------------------|-------------------------------------|-----------------------------------|
-| COPY from/to                    | S3                                  | S3/GCS/Azure                        | GCS + G Drive                     |
-| Read from external tables       | Via Spectrum. Manual partitioning   | All via DDL, automatic partitioning | Powerful schema inference, no DDL |
-| External-only transformation    | Limited (cf. Athena)                | Extensive                           | Limited                           |
+| External support                | Redshift                            | Snowflake                           | BigQuery                               | Spark                 |
+|---------------------------------|-------------------------------------|-------------------------------------|----------------------------------------| --------------------- |
+| COPY from/to                    | S3                                  | S3/GCS/Azure                        | GCS + G Drive                          | S3/Azure/GCS/HDFS/etc |
+| Read from external tables       | Via Spectrum. Manual partitioning   | All via DDL, automatic partitioning | Powerful schema inference, now in DDL! | Hive-style DDL        |
+| External-only transformation    | Limited (cf. Athena)                | Extensive                           | Limited                                | Complete              |
 
 .caption[Read more about [dbt + external tables](https://github.com/fishtown-analytics/dbt-external-tables)]
-
----
-
-# Scaling: storage vs. compute
-
-What if you want more storage, without needing to pay for more compute nodes?
-- Resources are scarce and analysts shouldn't compete with each other
-- Event volume is _large_ and you can't store it all in-warehouse
-
---
-
-What if you want it _now_?
-- Scaling storage is easy: more files in S3/GCS/Blob
-- Scaling compute is harder
-- Data is never stored "on disk," it is always read from file storage
-    - Any caching is lost when compute spins down
-
----
-
-## What if you have petabytes of data?
-
-<img src="/ui/img{{page.id}}/jt-billion-rows.png" class="img-center">
-
----
-
-# Different modeling paradigms
-
-- All models are materialized incrementally
-    - Replace discrete partitions, rather than merging/matching records*
-    - Full refresh: never, or manually trigger
-- Testing is relative
-    - E.g. test that `unique` failures are < 1% of all rows
-- Tables are "sharded" by a top-level identifier
-    - region, account, client, etc.
