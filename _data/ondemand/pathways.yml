@@ -13,10 +13,10 @@
   slug: dbt-essentials
   live: true
   modules:
-    - name: Who is an analytics engineer?
-      slug: analytics-engineer
     - name: Set up dbt Cloud
       slug: setup-cloud
+    - name: Who is an analytics engineer?
+      slug: analytics-engineer
     - name: Models
       slug: models
     - name: Tests
