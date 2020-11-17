@@ -39,6 +39,7 @@ sectionExpect:
 ---
 
 <div class="bg-navy-darker top-promo">
+    <div class="mask mask-ne text-white"></div>
 	<div class="section-lg text-white text-navy-lightest">
 		<div class="container">
 			<div class="row">
@@ -49,7 +50,7 @@ sectionExpect:
                             <div class="col-md-4">
                                 <a href="{{page.scrollLink}}" class="btn btn-primary btn-block radius">
                                     {{page.scrollCta}}
-                                    <i data-icon="right-open-mini" data-toggle="tooltip" title="right-open-mini" data-placement="right"></i>
+                                    <i data-icon="right-open-mini" title="" alt=""></i>
                                 </a>
                             </div>
                         </div>
@@ -101,9 +102,9 @@ sectionExpect:
                                     {% endfor %}
                                 </ul>
                             {% endfor %}
-                            <a href="{{page.sectionExpect.buttonLink}}" class="btn btn-primary radius">
+                            <a href="{{page.sectionExpect.buttonLink}}" class="btn btn-primary radius" target="_blank">
                                 {{page.sectionExpect.buttonText}}
-                                <i data-icon="right-open-mini" title=""></i>
+                                <i data-icon="right-open-mini" title="" alt=""></i>
                             </a>
    				</div>
    			</div>

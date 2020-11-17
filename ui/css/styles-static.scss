@@ -13,6 +13,9 @@ $red: #ff3f18;
 $red-2: #ff694b;
 $white-2: #ffffff;
 
+i[data-icon="right-open-mini"] {
+    margin-top:4px;
+}
 .homepage {
     h1 {
         font-size:71px;
@@ -42,6 +45,15 @@ $white-2: #ffffff;
             }
             .btn {
                 box-shadow: inset 0 0 0 1px $red-2;
+
+                &:hover {
+                    box-shadow: inset 0 0 0 1px $red;
+                }
+                &.btn-outline {
+                    &:hover {
+                        background-color:$red;
+                    }
+                }
             }
     
             &.highlight {
@@ -61,19 +73,6 @@ $white-2: #ffffff;
             }//.highlight
         }//.card
     }//.top-promo
-    .btn {
-        &:hover {
-            box-shadow: inset 0 0 0 1px $red;
-        }
-        &.btn-outline {
-            &:hover {
-                background-color:$red;
-            }
-        }
-        i {
-            margin-top:4px;
-        }
-    }//.btn
     .testimonial {
         margin-top:0; //needs this so the navy blue wedge fits neatly under the section above
         padding-top:100px;
@@ -124,9 +123,7 @@ $white-2: #ffffff;
             @media screen and (min-width: 1440px) { 
                 top: -42px;
             }
-            i {
-                margin-top:5px;
-            }
+
         }
     }
     .what-you-will-learn {
