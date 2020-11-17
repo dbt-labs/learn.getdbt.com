@@ -2,12 +2,13 @@
 title: Public Learn - dbt Learn
 permalink: /public
 class: public
-h1: "Learn in a live session with dbt Instructors"
+h1: "Learn in a live session with dbt instructors"
 h2: "Public dbt Learn is a two-day intensive course for quickly getting up to speed on dbt"
 scrollCta: Scroll to upcoming events
+scrollLink: "#upcoming-events"
 sectionLearn:
   headline: "What you will learn"
-  desc: "Public dbt Learn is a two-day intensive course including live instruction and working sessions. Classes are currently facilitated via Zoom across different time zones."
+  desc: "Public dbt Learn is a two-day intensive course including live instruction and working sessions. Classes are currently facilitated via Zoom across multiple time zones."
   bullets:
     - name: "Build models to shape your data from raw data to transformed data"
     - name: "Configure and run tests on your data to meet your expectations"
@@ -46,7 +47,7 @@ sectionExpect:
                         <div class="row pt-0">
                             <p class="text-large col-md-8">{{page.h2}}</p>
                             <div class="col-md-4">
-                                <a href="" class="btn btn-primary btn-block radius">
+                                <a href="{{page.scrollLink}}" class="btn btn-primary btn-block radius">
                                     {{page.scrollCta}}
                                     <i data-icon="right-open-mini" data-toggle="tooltip" title="right-open-mini" data-placement="right"></i>
                                 </a>
@@ -100,9 +101,9 @@ sectionExpect:
                                     {% endfor %}
                                 </ul>
                             {% endfor %}
-                            <a href="{{page.sectionExpect.buttonText}}" class="btn btn-primary radius">
+                            <a href="{{page.sectionExpect.buttonLink}}" class="btn btn-primary radius">
                                 {{page.sectionExpect.buttonText}}
-                                <i data-icon="right-open-mini" data-toggle="tooltip" title="right-open-mini" data-placement="right"></i>
+                                <i data-icon="right-open-mini" title=""></i>
                             </a>
    				</div>
    			</div>
