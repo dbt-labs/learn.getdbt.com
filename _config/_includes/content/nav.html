@@ -5,24 +5,9 @@
 				<div class="navigation-content">
 					<div class="navigation-links">
 						<div class="navigation-link">
-							<a class="navigation-anchor navigation-brand" href="{{site.url}}/" title="{{site.description}}">
+							<a class="navigation-anchor navigation-brand" href="/" title="{{site.description}}">
                                 <img src="/ui/img/dbt-logo-color.png" />
-								<strong class="navigation-brand-text">{{site.title}} - {{site.description}}</strong>
 							</a>
-						</div>
-						{% if page.permalink == '/' %}
-							{% assign baseurl = '' %}
-						{% else %}
-							{% assign baseurl = site.url %}
-						{% endif %}
-						<div class="navigation-link">
-							<a class="navigation-anchor" href="//courses.getdbt.com" target="_blank">Learn Now</a>
-						</div>
-						<div class="navigation-link">
-							<a class="navigation-anchor" href="{{baseurl}}/public">Live Courses</a>
-						</div>
-						<div class="navigation-link">
-							<a class="navigation-anchor" href="//community.getdbt.com" target="_blank">Community</a>
 						</div>
 						
 					</div>
