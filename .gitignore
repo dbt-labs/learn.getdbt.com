@@ -15,3 +15,5 @@ etc/learn_setup/token.pickle
 credentials.json
 token.pickle
 snowflake_creds.yml
+.bundle/*
+vendor/*
