@@ -9,7 +9,7 @@
 /* container overrides */
 /* I have no idea why, but .container isn't getting this style from the submodule. This causes issues at tablet breakpoints. Thus: set it manually here */
 .container {
-    @media screen and (max-width: 959px) {
+    @media screen and (max-width: 1024px) {
         width:auto;
     }
 }
@@ -73,7 +73,6 @@ i[data-icon="right-open-mini"] {
             }//.card-header
             .card-body {
                 padding :15px 45px;
-    
             }
             .btn {
                 box-shadow: inset 0 0 0 1px $red-2;
@@ -156,20 +155,30 @@ i[data-icon="right-open-mini"] {
         .pt-0 > *{
             padding-top:0;
         }
+        .col-md-4 {
+            @media screen and (min-width: 768px) and (max-width:1024px) {
+                padding-left:0;
+                padding-right:0;
+            }
+        }
         .btn-primary.btn {
             
             height: 73px;
             padding: 1.5rem 1rem 1rem;
             width: calc(85% + 2rem);
 
-            @media screen and (min-width: 768px) and (max-width:1439px) {
+            @media screen and (min-width: 768px) {
                 white-space: normal;
                 padding-top:0.625rem;
             }
 
+            @media screen and (min-width: 1024px) {
+                padding-top:1.5rem;
+            }
+
             @media screen and (min-width: 1440px) {
                 top: -42px;
-                padding-top: 1.5rem
+                padding-top: 1.5rem;
             }
         }
     }//.top-promo
