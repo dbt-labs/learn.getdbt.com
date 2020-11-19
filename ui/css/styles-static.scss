@@ -6,6 +6,15 @@
 }
 /* end nav overrides */
 
+/* container overrides */
+/* I have no idea why, but .container isn't getting this style from the submodule. This causes issues at tablet breakpoints. Thus: set it manually here */
+.container {
+    @media screen and (max-width: 959px) {
+        width:auto;
+    }
+}
+/* end container overrides */
+
 /* styles for index and public Learn page */
 $darker-blue-2: #007b7b;
 $blue-2: #00bbbb;
@@ -16,6 +25,21 @@ $white-2: #ffffff;
 i[data-icon="right-open-mini"] {
     margin-top:4px;
 }
+/* overrides for masks at mobile/tablets breakpoints */
+/* Bootstrap .hidden-* classes don't seem to be accessible here, and I'm not sure why these don't work nicely at mobile breakpoints like they do on www */
+.mask{
+    &:before {
+        display:none;
+    }
+
+    @media screen and (min-width: 992px) {//per Bootstrap's definition of "medium devices"
+        &:before {
+            display:block;
+        }
+    }
+    
+}
+/* end mask overrides */
 .homepage {
     h1 {
         @media screen and (min-width: 768px) {
@@ -25,12 +49,7 @@ i[data-icon="right-open-mini"] {
     .flex-row {
         margin: 0 auto;
     }
-    .hidden-xs {
-        &:before {
-            transform:none;
-        }
-        
-    }
+
     .top-promo {
         .text-contain {
             max-width:860px;
@@ -41,17 +60,17 @@ i[data-icon="right-open-mini"] {
             border-radius: 4px;
             box-shadow: 1px 2px 7px 0 rgba(6, 32, 40, 0.7);
             margin:38px 10px;
+            order:1;
     
             .card-header {
                 padding: 30px 34px 15px;
                 margin-bottom:0;
 
-                @media screen and (min-width: 768px) {
+                @media screen and (min-width: 992px) {
                     font-size: 2.1875rem;
                     margin-bottom:10px;
                 }
-            }
-    
+            }//.card-header
             .card-body {
                 padding :15px 45px;
     
@@ -67,12 +86,17 @@ i[data-icon="right-open-mini"] {
                         background-color:$red;
                     }
                 }
-            }
+            }//.btn
     
             &.highlight {
                 border: solid 2px $blue-2;
                 margin:10px;
                 padding-bottom:30px;
+                order:0;
+
+                @media screen and (min-width: 768px) {
+                    order:1;
+                }
     
                 .card-body {
                     padding-top:30px;
@@ -101,7 +125,7 @@ i[data-icon="right-open-mini"] {
             font-size:1.5rem;
             margin:1rem;
         }
-    }
+    }//.testimonial
     .stats {
         .card {
             box-shadow:none;
@@ -115,12 +139,12 @@ i[data-icon="right-open-mini"] {
                 margin: 0;
                 background-position:center;
             }
-        }
+        }//.card
         .stat-number {
             font-size:76px;
             margin-bottom:20px;
         }
-    }
+    }//.stats
 }//.homepage
 .public {
     .top-promo {
@@ -138,12 +162,17 @@ i[data-icon="right-open-mini"] {
             padding: 1.5rem 1rem 1rem;
             width: calc(85% + 2rem);
 
-            @media screen and (min-width: 768px) { 
-                top: -42px;
+            @media screen and (min-width: 768px) and (max-width:1439px) {
+                white-space: normal;
+                padding-top:0.625rem;
             }
 
+            @media screen and (min-width: 1440px) {
+                top: -42px;
+                padding-top: 1.5rem
+            }
         }
-    }
+    }//.top-promo
     .what-you-will-learn {
         h3 {
             font-weight: 600;
@@ -156,7 +185,7 @@ i[data-icon="right-open-mini"] {
         p {
             font-size:21px;
         }
-    }
+    }//.what-you-will-learn
     .what-to-expect {
         h3 {
             font-weight: 600;
@@ -174,11 +203,11 @@ i[data-icon="right-open-mini"] {
         .btn {
             margin-top:40px;
         }
-    }
+    }//.what-to-expect
     .upcoming-events {
         h3 {
             margin-bottom:2.5rem;
         }
-    }
-}
+    }//.upcoming-events
+}//.public
 /* end styles for index and public Learn page */
