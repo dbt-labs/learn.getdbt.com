@@ -1,0 +1,102 @@
+{% comment %} This is the new course rating page. Here, a user can fill out a
+course review. {% endcomment %}
+
+<main class="course-review" id="main-content" role="main">
+  <div class="course-review__container">
+    <div class="course-review__wrapper">
+      <article class="course-review__form">
+        <h2 class="course-review__heading">
+          {{
+          'liquid.views.new_course_review_page.custom_tell_us_what_you_thought_text'
+          | translate }}
+        </h2>
+        <h3 class="course-review__course-name">
+          {{ page.course_review.course.name }}
+        </h3>
+        {% form 'new_course_review' %} {% if errors.size > 0 %} {% include
+        'form_errors' %} {% endif %}
+        <div class="form__group">
+          {% assign field = fields.title %}
+          <label for="{{ field.name }}" class="form__label">
+            {{ field.label }}
+          </label>
+          <input
+            type="text"
+            id="{{ field.name }}"
+            name="{{ field.name }}"
+            value="{{ field.value }}"
+            {%
+            if
+            field.required
+            %}required{%
+            endif
+            %}
+            class="form__control"
+          />
+        </div>
+        <div class="form__group">
+          {% assign field = fields.review_text %}
+          <label for="{{ field.name }}" class="form__label">
+            {{ field.label }}
+          </label>
+          <textarea
+            id="{{ field.name }}"
+            name="{{ field.name }}"
+            {%
+            if
+            field.required
+            %}required{%
+            endif
+            %}
+            class="form__control"
+          >
+{{ field.value }}</textarea
+          >
+          
+        </div>
+
+
+        {% assign field = fields.rating %}
+        <div role="radiogroup" aria-labelledby="stars">
+          <span id="stars" for="{{ field.name }}" class="form__label">
+            {{ field.label }}
+          </span>
+          <span class="review__stars review__stars-input">
+            {% for i in (1..5) %} <input type="radio" aria-label="{{ i }}"
+            value="{{ i }}" name="{{ field.name }}" {% if i == 5
+            %}checked="checked"{% endif %} /> {% include 'star' %} {% endfor %}
+          </span>
+        </div>
+        <div class="form__button-group course-review__submit">
+          <input
+            type="submit"
+            value="{{ fields.submit.label }}"
+            class="button button-primary"
+          />
+        </div>
+        {% endform %}
+      </article>
+    </div>
+  </div>
+</main>
+
+
+<input type="radio"  aria-label="1" value="1" name="{{
+  field.name }}"/>
+  <label>1 star</label>
+  <input type="radio"  aria-label="2" value="2" name="{{
+    field.name }}"/>
+    <label>2 stars</label>
+
+  <input type="radio"  aria-label="3" value="3" name="{{
+      field.name }}"/>
+      <label>3 stars</label>
+
+  <input type="radio"  aria-label="4" value="4" name="{{
+        field.name }}"/>
+        <label>4 stars</label>
+
+  <input type="radio"  aria-label="5" value="5" name="{{
+          field.name }}" checked="checked"/>
+          <label>5 stars</label>
+</span>
