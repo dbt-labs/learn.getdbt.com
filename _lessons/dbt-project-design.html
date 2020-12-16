@@ -461,7 +461,31 @@ Your BI layer should be:
 
 ---
 
-# Can your BI tool write this SQL?
+# Bad for BI
+
+```sql
+SELECT
+	B.Brand,
+	G.Country,
+	SUM(F.Units_Sold)
+FROM Fact_Sales F
+INNER JOIN Dim_Date D             ON F.Date_Id = D.Id
+INNER JOIN Dim_Store S            ON F.Store_Id = S.Id
+INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id
+INNER JOIN Dim_Product P          ON F.Product_Id = P.Id
+INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id
+INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id
+WHERE
+	D.Year = 1997 AND
+	C.Product_Category = 'tv'
+GROUP BY
+	B.Brand,
+	G.Country
+```
+
+---
+
+# Can your BI tool write this?
 
 {% raw %}
 ```sql
@@ -480,7 +504,7 @@ group by 1
 
 class: center
 # Yes!
-<img src="/ui/img{{page.id}}/bi-logos-2.png" style="width: 40%;" class="img-center">
+<img src="/ui/img{{page.id}}/bi-logos-3.png" style="width: 40%;" class="img-center">
 
 ---
 

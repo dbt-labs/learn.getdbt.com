@@ -1,0 +1,135 @@
+---
+title: Public Learn - dbt Learn
+permalink: /public
+class: public
+h1: "Learn in a live session with dbt instructors"
+h2: "Public dbt Learn is a two-day intensive course for quickly getting up to speed on dbt"
+scrollCta: Scroll to upcoming events
+scrollLink: "#upcoming-events"
+sectionLearn:
+  headline: "What you will learn"
+  desc: "Public dbt Learn is a two-day intensive course including live instruction and working sessions. Classes are currently facilitated via Zoom across multiple time zones."
+  bullets:
+    - name: "Build models to shape your data from raw data to transformed data"
+    - name: "Configure and run tests on your data to meet your expectations"
+    - name: "Write, generate, and view documentation while you develop"
+    - name: "Deploy your dbt Project to run on a schedule with dbt Cloud"
+    - name: "Leverage Jinja and Macros to write DRY code"
+    - name: "Learn about how dbt interacts with Data Warehouse and BI Tools"
+sectionExpect:
+  headline: What to Expect
+  subsections:
+    - title: "Before You Begin"
+      bullets:
+        - name: "Guided tutorial for getting started with dbt on Snowflake"
+        - name: "Primers for SQL Foundations and Bash/Git"
+    - title: "During"
+      bullets: 
+        - name: "A two-day course, taught by instructors from Fishtown Analytics 👋"
+        - name: "Integrated working sessions for hands-on exploration of dbt features"
+        - name: "Dedicated time for questions and small group working sessions"
+        - name: "Access to presentations for reference and training your team"
+    - title: "After"
+      bullets:
+        - name: "A cohort of peers to network with and learn from"
+        - name: "Office Hours to meet with your instructors 1-2 weeks after the course"
+        - name: "A verified dbt Learn certificate"
+  buttonText: "View upcoming events"
+  buttonLink: "#upcoming-events"
+---
+
+<div class="bg-navy-darker top-promo">
+    <div class="mask mask-ne text-white"></div>
+	<div class="section-lg text-white text-navy-lightest">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+						<h1 class="h0">{{page.h1}}</h1>
+                        <div class="row pt-0">
+                            <p class="text-large col-md-8">{{page.h2}}</p>
+                            <div class="col-md-4">
+                                <a href="{{page.scrollLink}}" class="btn btn-primary btn-block radius">
+                                    {{page.scrollCta}}
+                                    <i data-icon="right-open-mini" title="" alt=""></i>
+                                </a>
+                            </div>
+                        </div>
+                </div><!--/.col-->
+            </div><!-- /.row-->
+		</div>
+	</div>
+</div>
+
+<section class="bg-white what-you-will-learn">
+	<div class="mask mask-nw text-navy-darker"></div>
+	<div class="section">
+		<div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <img src="{{site.baseurl}}/ui/img/public-learn-photo.jpg" />
+                </div>
+            </div><!-- /.row -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain text-center text-navy-darkest">
+						<h3>{{page.sectionLearn.headline}}</h3>
+						<p class="text-left">{{page.sectionLearn.desc}}</p>
+						<ul class="list-cols text-left">
+							{% for bullet in page.sectionLearn.bullets %}
+								<li>{{bullet.name}}</li>
+							{% endfor %}
+						</ul>
+					</div><!--/.text-contain-->
+				</div><!--/.col-lg-12-->
+			</div><!--/.row-->
+		</div><!--/.container-->
+	</div>
+</section>
+<section class="bg-silver-light what-to-expect">
+    <div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain text-center text-navy-darkest">
+                        <h3>{{page.sectionExpect.headline}}</h3>
+                            {% for subsection in page.sectionExpect.subsections %}
+                                <h4 class="text-left">{{subsection.title}}:</h4>
+                                <ul class="text-left text-gray">
+                                    {% for bullet in subsection.bullets %}
+                                        <li>{{bullet.name}}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
+                            <a href="{{page.sectionExpect.buttonLink}}" class="btn btn-primary radius" target="_blank">
+                                {{page.sectionExpect.buttonText}}
+                                <i data-icon="right-open-mini" title="" alt=""></i>
+                            </a>
+   				</div>
+   			</div>
+   		</div>
+   	</div>
+   </div>
+</section>
+
+<section id="upcoming-events" class="bg-white upcoming-events">
+    <div class="mask mask-nw text-silver-light"></div>
+    <div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-contain text-center">
+                        <h3>Upcoming Events</h3>
+
+                        <!-- Ticket Tailor Widget. Paste this in to your website where you want the widget to appear. Do no change the code or the widget may not work properly. -->
+                        <div class="tt-widget"><div class="tt-widget-fallback"><p><a href="https://www.tickettailor.com/all-tickets/fishtownanalytics/ref/website_widget/" target="_blank">Click here to buy tickets</a><br /><small><a href="https://www.tickettailor.com?rf=wdg" class="tt-widget-powered">Sell tickets online with Ticket Tailor</a></small></p></div><script src="https://www.tickettailor.com/js/widgets/min/widget.js" data-url="https://www.tickettailor.com/all-tickets/fishtownanalytics/ref/website_widget/" data-type="inline" data-inline-minimal="false" data-inline-show-logo="true"  data-inline-bg-fill="true"></script></div>
+                        <!-- End of Ticket Tailor Widget -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+

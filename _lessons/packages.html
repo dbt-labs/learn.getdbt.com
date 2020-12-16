@@ -43,9 +43,12 @@ And from there we can talk a little bit about writing custom tests + using custo
 # packages.yml
 packages:
   - package: fishtown-analytics/dbt_utils
-    version: 0.3.0
+    version: 0.6.2
 
 ```
+
+.caption[Always check [hub.getdbt.com](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/)] for latest
+
 Note: you can also install a package from a git URL, or from a local directory.
 
 ---
@@ -112,21 +115,21 @@ background-color: #005E7A
 
 
 ---
-## Use case: Using models from a package
-We're going to install GitLab's [snowflake-spend package](https://gitlab.com/gitlab-data/snowflake_spend)
+## Use case: models from a package
+Install GitLab's [snowflake_spend](https://gitlab.com/gitlab-data/snowflake_spend) package:
 
 ```yml
 # packages.yml
 packages:
-  - git: https://gitlab.com/gitlab-data/snowflake_spend.git
-    revision: v1.1.0
-
-
+  - package: gitlabhq/snowflake_spend
+    version: 1.2.0
 ```
 
 As per their instructions, we also need to add a [seed file](https://gitlab.com/gitlab-data/analytics/blob/master/transform/snowflake-dbt/data/snowflake_contract_rates.csv)¹ to our project
 
-Then: `dbt deps`, `dbt seed`, `dbt run`.
+- `dbt deps`
+- `dbt seed`
+- `dbt run`
 
 .caption[¹ More on these later]
 
@@ -143,28 +146,33 @@ Then: `dbt deps`, `dbt seed`, `dbt run`.
 
 ---
 
-### Hold up, what about all those other macros?
-Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
-.center[
-<img src="/ui/img{{page.id}}/127-macros.png" style="width: 50%;">
-]
-???
-This slide is truly for curious minds.
---
-.dense-text[
-dbt is itself [a package](https://github.com/fishtown-analytics/dbt/tree/dev/barbara-gittings/core/dbt/include/global_project)!
-* a.k.a "the dbt global project"
-* Tests are macros prefixed with `test_`
-* Materializations use macros
-]
-???
-Hint: we might need this information later today!
+class: subtitle, center, middle
+# Hold up
 
 ---
 
-<img src="/ui/img{{page.id}}/dbt-global-project.png" style="width: 100%;">
+### What about all those _other_ macros?
+Even before we added `dbt_utils`, we had a ton of macros whenever we ran dbt.
+.center[
+<img src="/ui/img{{page.id}}/builtin-macros.png">
+]
+???
+This slide is truly for curious minds.
+---
 
-[_Check it out!_](https://github.com/fishtown-analytics/dbt/tree/dev/marian-anderson/core/dbt/include/global_project)
+# dbt is itself a package!
+
+.left-column-33[
+* a.k.a "the dbt global project", named `dbt`
+* Schema tests are macros prefixed with `test_`
+* Materializations are macros, too
+
+[_Check it out!_](https://github.com/fishtown-analytics/dbt/tree/dev/kiyoshi-kuromiya/core/dbt/include/global_project)
+]
+
+.right-column-66[
+<img src="/ui/img{{page.id}}/dbt-global-project.png" style="width: 100%;">
+]
 
 ---
 # Everything's a project!

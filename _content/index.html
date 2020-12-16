@@ -1,291 +1,110 @@
 ---
-title: dbt Learn
+title: Home - dbt Learn
 permalink: /
-render_chart: true
-event_link: https://events.getdbt.com/
-agenda:
-  - name: Day One - Foundations
-    activities:
-      - Analytics engineering in 2020
-      - dbt fundamentals
-      - dbt Project Design
-      - Testing & Continuous Integration
-      - Data sources + freshness
-      - Documenting data models
-      - Collaboration Session
-      
-
-  - name: Day Two - Applications
-    activities:
-      - Polishing your dbt Project
-      - Jinja - the templating language behind dbt
-      - dbtonic Jinja
-      - Importing Packages and Projects 
-      - dbt Materializations & Incremental Models
-      - Patterns + techniques
-      - Collaboration Session
-      
+class: homepage
+h1: "Upgrade your analytics skills with dbt Learn"
+h2: "If you can write SQL, you are ready to learn dbt."
+types:
+  - name: "Public Courses"
+    description: "Public dbt Learn is a two-day intensive course including live instruction and working sessions. Classes are currently facilitated via Zoom across different time zones."
+    buttonText: "Register"
+    buttonLink: /public
+  - name: "On Demand"
+    highlightClass: "highlight"
+    description: "Learn dbt at your own pace whether you are an experienced data engineer or just starting a new path in analytics &mdash; for free."
+    buttonText: "Get started"
+    buttonLink: //courses.getdbt.com
+  - name: "Private Courses"
+    description: "Interested in private training for your team? We would love to learn more about your team to select the right training experience for you."
+    buttonText: "Contact Sales"
+    buttonLink: //www.getdbt.com/contact
+quote: 
+  headline: "I loved the interactive sessions. I learned a lot of things that I did not know, especially on the 2nd day, even though I have been using dbt cloud for nearly a year!"
+  person: "William Tsu"
+  jobTitle: "Customer Success Operations"
+  photo: "/ui/img/wtsu.jpeg"
+stats:
+  - name: Net Promoter Score
+    number: "50"
+    icon: /ui/img/plus@2x.png
+  - name: Students Trained
+    number: "450"
+    icon: /ui/img/user@2x.png
+  - name: Sessions Delivered
+    number: "23"
+    icon: /ui/img/desktop@2x.png
 ---
 
-<style>
-canvas {
-    /*-webkit-mask-image: -webkit-gradient(linear, left, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));*/
-    -webkit-mask-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,1));
-}
-</style>
-
-<div class="bg-navy-darker">
+<section class="top-promo bg-navy-darker">
+    <div class="mask mask-ne text-white"></div>
 	<div class="section-lg text-white text-navy-lightest">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8">
-					<div class="text-contain">
-						<h1 class="h0">Learn analytics engineering with dbt</h1>
-                        <p class="text-large">A two-day, in-person training program that teaches analysts the tools and knowledge needed to own the entire analytics engineering workflow.</p>
-					</div>
-				</div>
-				<div class="col-lg-4" style="z-index: 10">
-					<div class="text-contain">
-						<h1 class="h0">&nbsp;</h1>
-                        <a target="_blank" href="{{ page.event_link }}" class="btn btn-primary btn-lg arrow-right">View upcoming events
-                        </a>
-                    </div>
-                </div>
-			</div>
-		</div>
-	</div>
-    <div class="section-lg" style="padding: 0; margin-top: -100px; margin-bottom: -10px">
-        <div class="section-background-chart">
-            <div class="chart" style="height: 200px">
-                <canvas id="banner" width="800" height="200"></canvas>
-            </div>
-        </div>
-    </div>
-	<div class="mask mask-ne text-white"></div>
-</div>
-
-<div class="bg-white">
-	<div class="mask mask-nw text-navy-darker"></div>
-	<div class="section">
-		<div class="container">
-            <div class="row">
-                <div class='col-lg-8 col-lg-offset-2 text-center'>
-                    <img style="width: 100%" src="https://i.imgur.com/RbKJTOY.jpg" />
-                </div>
-            </div>
-			<div class="row">
 				<div class="col-lg-12">
 					<div class="text-contain">
-						<h3 id="about" class="h2">About dbt Learn</h3>
-						<p>
-                            <a href="https://blog.getdbt.com/what-is-an-analytics-engineer/">Analytics engineering</a> is the data transformation work that happens between loading data
-                            into your warehouse and analyzing it. At dbt Learn, the Fishtown Analytics team will teach analysts how to use dbt to manage that workflow.
-                            Attendees will learn about:
-                        </p>
-						<ul class="list-icons list-cols text-med text-heading text-left">
-							{% assign checks = 'Data Warehouses; Automated Testing; Modeling Strategies; Performance Optimization; Writing DRY code; and more!' | split: ';' %}
-							{% for check in checks %}
-								<li><span class="arrow-check text-red text-large list-icon"></span> {{check}}</li>
-							{% endfor %}
-						</ul>
-                        <p>The only technical prerequisite is a working knowledge of SQL. Prior familiarity with the command line and version control is helpful but not necessary.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="bg-silver-light">
-	<div class="mask mask-ne text-white"></div>
-	<div class="mask mask-sw text-white"></div>
-	<div class="section">
-		<div class="text-contain">
-			<div class="row">
-				<div class="col-lg-12 col-bottomless">
-					<div class="text-contain text-center">
-						<h3 id="agenda" class="h2">Agenda</h3>
-					</div>
-                </div>
-            </div>
-			<div class="row">
-                {% for agendum in page.agenda %}
-                <div class="col-md-6">
-                    <h4>{{ agendum.name }}</h4>
-                        <ul class='list-icons text-med text-heading text-left'>
-                            {% for activity in agendum.activities %}
-                            <li><span class='arrow-right text-blue text-medium list-icon'></span> {{ activity }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endfor %}
-			</div>
-		</div>
-    </div>
-</div>
-
-<div class="bg-white">
-	<div class="section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="text-contain">
-						<center><h3 class="h2">What to Expect</h3></center>
-						<p>
-                            <h4>Before you begin:</h4>
-                                <li> Guided tutorial for getting started with dbt on Snowflake</li>
-                                <li> Primers for SQL Foundations and Bash/Git</li>
-                            <h4>During:</h4>
-                                <li> A two-day course, taught by instructors from Fishtown Analytics 👋 </li>
-                                <li> Integrated working sessions for hands-on exploration of dbt features</li>
-                                <li> Dedicated time for questions and small group working sessions</li>
-                                <li> Access to presentations for reference and training your team</li>
-                            <h4>After:</h4>
-                                <li>A cohort of peers to network with and learn from</li>
-                                <li>Office Hours to meet with your instructors 1-2 weeks after the course</li>
-                                <li>A verified dbt Learn certificate</li>
-                            <div class="text-contain text-center">
-                            <br>
-                        <p><a target="_blank" href="{{ page.event_link }}" class="btn btn-primary btn-lg arrow-right">View upcoming events</a></p>
-				            </div>
-   				</div>
-   			</div>
-   		</div>
-   	</div>
-   </div>
-</div>
-
-<div class="bg-silver-light">
-
-	<div class="mask mask-ne text-white"></div>
-	<div class="mask mask-sw text-white"></div>
-	<div class="section">
-        <div class='row'>
-            <div class='col-md-6 col-md-offset-3'>
-                <form action="https://formspree.io/h8qf9swk@robot.zapier.com" method="POST" />
-                <div class="text-contain text-center">
-                    <h3 id="interest" class="h2">Interested in attending a future session?</h3>
-                </div>
-                    <div class='card'>
-                        <div class='card-body card-form'>
-                                <div class="card-formrow">
-                                    <div class="card-control condensed">
-                                        <label class="form-control">Your Name</label>
-                                    </div>
-                                    <div class="card-control">
-                                        <input class='form-control' type="text" name="name" placeholder="Kiki Ogino" />
-                                    </div>
-                                </div>
-                                <div class="card-formrow">
-                                    <div class="card-control condensed">
-                                        <label class="form-control">Your Email</label>
-                                    </div>
-                                    <div class="card-control">
-                                        <input class='form-control' type="text" name="email" placeholder="kiki@breadshop.com" />
-                                    </div>
-                                </div>
-                                <div class="card-formrow">
-                                    <div class="card-control condensed">
-                                        <label class="form-control">Your Company</label>
-                                    </div>
-                                    <div class="card-control">
-                                        <input class='form-control' type="text" name="company" placeholder="Bread Shop" />
-                                    </div>
-                                </div>
-                                <div class="card-formrow">
-                                    <div class="card-control condensed">
-                                        <label class="form-control">Session Preference</label>
-                                    </div>
-                                    <div class="select">
-                                    	<select class="form-control" id="session" name="session">
-                                    		<option>Spring 2020</option>
-                                    		<option>Summer 2020</option>
-                                    		<option>Fall 2020</option>
-                                    	</select>
-                                    </div>
-                                </div>
-                                <div class="card-formrow">
-                                    <div class="card-control condensed">
-                                        <label class="form-control">Attendees</label>
-                                    </div>
-                                    <div class="select">
-                                    	<select class="form-control" id="attendees" name="attendees">
-                                            <option>1</option>
-                                    		<option>2</option>
-                                    		<option>3</option>
-                                    		<option>4</option>
-                                    		<option>5+</option>
-                                    	</select>
-                                    </div>
-                                </div>
-                                <div class="card-formrow">
-                                    <div class="card-control condensed">
-                                        <label class="form-control">Location Preferences</label>
-                                    </div>
-                                    <div class="card-control">
-                                            <input class='form-control' id="location" name="location" placeholder="e.g. Philadelphia, USA (west coast), Europe, etc.">
-                                    </div>
-                                </div>
-                                <div class="card-formrow">
-                                    <div class="card-control condensed">
-                                        <label class="form-control">Other Notes</label>
-                                    </div>
-                                    <div class="card-control">
-                                        <textarea class='form-control' id="other" name="other" placeholder="Additional information or questions"></textarea>
-                                    </div>
-                                </div>
+						<h1 class="h0 text-center">{{page.h1}}</h1>
+                        <p class="text-large text-center text-blue">{{page.h2}}</p>
+					</div><!-- /.text-contain -->
+				</div><!--/.col-->
+            </div><!-- /.row-->
+            <div class="flex-row flex-buffer">
+                {% for type in page.types %}
+                    <div class="card flex-item text-center text-white {{type.highlightClass}}">
+                        <h4 class="card-header">{{type.name}}</h4>
+                        {% if type.highlightClass %}<hr />{% endif %}
+                        <div class="card-body">{{type.description}}</div>
+                        <div class="card-footer">
+                            <a href="{{type.buttonLink}}" class="btn btn-primary btn-block radius {% unless type.highlightClass %}btn-outline{% endunless %}" title="{{type.buttonText}}">
+                                {{type.buttonText}} 
+                                <i data-icon="right-open-mini" title="" alt=""></i>                            
+                            </a>
                         </div>
                     </div>
-                    <p class="btn-inliner">
-                        <center>
-                           <button type="submit" class="btn btn-primary">Let us know!</button>
-                        </center>
+                {% endfor %}
+            </div><!-- /.flex-row -->
+		</div><!--/.container -->
+	</div>
+</section><!-- /.top-promo-->
+<section class="bg-white section student-testimonial text-navy-darker">
+    <div class="mask mask-nw text-navy-darker"></div>
+    <div class="container testimonial ">
+        <div class="quote top"><img src="//www.getdbt.com/ui/img/ecosystem/detail-quote-top.png" /></div>
+        <div class="quote bottom"><img src="//www.getdbt.com/ui/img/ecosystem/detail-quote-bottom.png" /></div>
+        <div class="row bg-white">
+            <div class="col-md-8">
+                <div class="text-contain">
+                    <p class="text-large">
+                        {{page.quote.headline}}
                     </p>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="bg-white">
-	<div class="section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="text-contain">
-						<center><h3 id="faq" class="h2">FAQ</h3></center>
-						<p>
-                            <h5>Is there a free online version?</h5>
-                                <p> Our self-service version of Learn is currently in development and we are eager to put it into production.  The <a href="https://docs.getdbt.com">dbt docs</a> are an excellent resource in the meantime for learning dbt and analytics engineering.</p>
-                            <h5> Who should attend dbt Learn?</h5>
-                                <p> If some of the following statements are true for you, then dbt Learn will likely be a good fit:
-                                    <ul>
-                                        <li>I'm thinking about building models incrementally.</li>
-                                        <li>My dbt project doesn't have tests.</li>
-                                        <li>I'm interested in learning about the latest workflows and tools in analytics.</li>
-                                        <li>I am unsure how to debug errors.</li>
-                                        <li>I want the official dbt training.</li>
-                                        <li>I'm not someone who regularly adopts new software just by reading documentation.</li>
-                                      </ul></p>
-                                <p> We have found dbt Learn to be particularly powerful for the following roles:
-                                    <ul>
-                                        <li>Data Analysts who have been using dbt for ~3 months.</li>
-                                        <li>Self-starters in the analytics space - some working SQL knowledge</li>
-                                        <li>Data Engineers who are new to dbt</li>
-                                        <li>Data Team Managers</li>
-                                        <li>Analytics Consultants</li>
-                                    </ul>
-                                </p>
-                                      
-                            <h5>Is it possible to see a course syllabus ahead of time?</h5>
-                                <p> We are constantly updating and improving on dbt Learn! We provide registered students with a detailed
-                                    agenda a few weeks before each session. The <a href="#agenda">agenda</a> lists some topic areas we always cover and our <a href="./lessons">lessons</a> are available to preview.</p>
-                            <h5>The cost of the event is prohibitive for me, is there any flexibility on the price?</h5>
-                                <p> We are committed to making dbt, and knowledge of analytics engineering, accessible to as many people as possible.
-                                    To that end, we have a <a href="https://docs.google.com/forms/d/e/1FAIpQLSf71YlOWjjX6Uuf5v0Y5S9NNj58A7-Ug8a2Lpt1rVnnHqm5rg/viewform">diversity scholarship</a>
-                                    available to decrease or waive the cost of participation.
-                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <div class="col-md-4">
+                <div class="text-contain text-center">
+                    <img src="{{page.quote.photo}}" alt="" class="testimonial-img">
+                    <p>
+                        {{page.quote.person}}<br />
+                        <small><em>{{page.quote.jobTitle}}</em></small>
+                    </p>
+                </div>
+            </div>
+        </div><!-- /.row-->
+    </div><!--/.container -->
+</section><!-- /.student-testimonial-->
+<section class="stats section bg-white text-navy-darker text-larger text-bold">
+    <div class="container">
+        <div class="flex-row flex-buffer">
+            {% for stat in page.stats %}
+                <div class="card flex-item text-center bg-silver">
+                    <div class="card-body" style="background-image:url({{stat.icon}});">
+                        <div class="stat-number">{{stat.number}}</div>
+                        <div class="stat-name">{{stat.name}}</div>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        </div><!--/.flex-row -->
+    </div><!--/.container -->
+
+</section><!-- /.stats-->
+
+
