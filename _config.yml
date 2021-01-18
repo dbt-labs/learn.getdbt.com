@@ -7,7 +7,6 @@ owner: http://github.com/fishtown-analytics
 repo: learn.getdbt.com
 branch: master
 robots: true
-onDemandHash: "43216f3592f37d744f7d544614a2f997a5739641"
 
 # --------------------------------------------------
 # Site imagery
@@ -41,9 +40,6 @@ collections:
     output: true
     permalink: /:path/
   lessons:
-    output: true
-    permalink: /:collection/:path
-  ondemand:
     output: true
     permalink: /:collection/:path
   jumpstart:

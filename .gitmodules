@@ -2,6 +2,3 @@
 	path = www.getdbt.com
 	url = git@github.com:fishtown-analytics/www.getdbt.com.git
 	branch = master
-[submodule "reveal.js"]
-	path = reveal.js
-	url = https://github.com/hakimel/reveal.js.git
