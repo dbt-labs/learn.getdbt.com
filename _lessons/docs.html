@@ -89,7 +89,7 @@ Descriptions can be added to models, sources, and columns (in your existing `.ym
 version: 2
 
 models:
-  - name: orders
+  - name: stg_orders
     description: One record per order
     columns:
       - name: order_id
@@ -154,6 +154,7 @@ Docs blocks are added to `.md` files in your `models/` directory.
 .denser-text[
 ```md
 {% docs order_status %}
+
 One of the following values:
 
 | status         | definition                                                 |
