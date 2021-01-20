@@ -54,7 +54,7 @@ For each exercise, we recommend you follow a git flow.
     - Navigate to your repository in GitHub
     - Click the "New pull request" button
 4. [Bonus] Assign it to a classmate to review:
-    - You will need to add your classmate as a [collaborator](https://docs.github.com/en/github-ae@latest/github/setting-up-and-managing-your-github-user-account/inviting-collaborators-to-a-personal-repository)
+    - You will need to add your classmate as a [collaborator](https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/inviting-collaborators-to-a-personal-repository)
 <center>
 <img src="/ui/img{{page.id}}/create-new-branch.png" style="width: 50%;">
 </center>
