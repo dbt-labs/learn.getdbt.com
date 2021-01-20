@@ -15,7 +15,7 @@ Then, try using the resources available to you during dbt Learn, including:
 * Ask in our shared Slack channel
 
 If you get _really_ stuck, we do have worked solutions. Use these as a last resort — writing code that doesn't work is part of the learning experience!
-* Each exercise maps to a separate pull request [here](https://github.com/fishtown-analytics/dbt-learn-demo/pulls?q=is%3Apr+is%3Amerged+). You can use to see how we completed this exercise. Remember that the code is only half of the exercise, you should also be comfortable running the related dbt commands.
+* Each exercise maps to a separate pull request [here](https://github.com/fishtown-analytics/dbt-learn-demo-v2/pulls?q=is%3Apr+is%3Amerged+). You can use to see how we completed this exercise. Remember that the code is only half of the exercise, you should also be comfortable running the related dbt commands.
 * If you get yourself into an absolute tangle, consider forking the above [demo repo](https://github.com/fishtown-analytics/dbt-learn-demo-v2/) to get back on track.
 
 ---
@@ -54,7 +54,7 @@ For each exercise, we recommend you follow a git flow.
     - Navigate to your repository in GitHub
     - Click the "New pull request" button
 4. [Bonus] Assign it to a classmate to review:
-    - You will need to add your classmate as a [collaborator](https://help.github.jp/enterprise/2.11/user/articles/inviting-collaborators-to-a-personal-repository/)
+    - You will need to add your classmate as a [collaborator](https://docs.github.com/en/github-ae@latest/github/setting-up-and-managing-your-github-user-account/inviting-collaborators-to-a-personal-repository)
 <center>
 <img src="/ui/img{{page.id}}/create-new-branch.png" style="width: 50%;">
 </center>
