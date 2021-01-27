@@ -260,6 +260,7 @@ pivoted as (
         sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount,
         -- how to handle trailing comma? (if we remove the last column)
 
+        {% endfor %}
     from payments
 
     group by 1
@@ -272,10 +273,81 @@ pivoted as (
 - Use the jinja docs to handle the trailing column with if loop.last
 - Use set at the top of the model
 
+```sql
+-- can we use {% set %} for our payment method
+-- what happens if there's a new payment method
+-- can we make a macro?
+
+{% set payment_methods = ['credit_card', 'coupon', 'bank_transfer', 'gift_card'] %}
+
+with payments as (
+    select * from {{ ref('stg_payments') }}
+),
+
+pivoted as (
+    select
+        order_id,
+
+        {% for payment_method in payment_methods %}
+
+        sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount
+
+        {% if not loop.last %}
+        ,
+        {% endif %}
+
+        {% endfor %}
+    from payments
+
+    group by 1
+
+)
+
+```
+
+
 **Step 4: Get column values with macro**
 
 - Import dbt_utils
 - change the set to be the `get_column_values` macro
+
+**packages.yml**
+
+```
+packages:
+  - package: fishtown-analytics/dbt_utils
+    version: 0.6.4
+```
+
+**payments__pivoted.sql**
+
+```sql
+{% set payment_methods = dbt_utils.get_column_values(table=ref('stg_payments'), column='payment_method') -%}
+
+with payments as (
+    select * from {{ ref('stg_payments') }}
+),
+
+pivoted as (
+    select
+        order_id,
+
+        {%- for payment_method in payment_methods -%}
+
+        sum(case when payment_method = '{{ payment_method }}' then amount else 0 end) as {{ payment_method }}_amount
+        
+        {%- if not loop.last -%}
+        ,
+        {% endif -%}
+        
+        {%- endfor %}
+    
+    from payments
+    group by 1
+)
+
+select * from pivoted
+```
 
 **Step 5: Write a macro of your own / find the pivot macro**
 
