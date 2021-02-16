@@ -87,9 +87,9 @@ stats:
           <li data-target="#carousel1" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner">
-        {% for quote in page.quotes %}
+        {% for quote in page.quotes %} <!-- looping through quotes in the YAML front matter -->
             {% if forloop.first %}
-            <div class="item active" style="padding: 0px 0px">
+            <div class="item active" style="padding: 0px 0px">  <!-- padding set to zero to ensure the filling of the row, overriding default for carousel -->
             {% else %}
             <div class="item" style="padding: 0px 0px">
             {% endif %}
