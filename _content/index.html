@@ -19,20 +19,28 @@ types:
     description: "Interested in private training for your team? We would love to learn more about your team to select the right training experience for you."
     buttonText: "Contact Sales"
     buttonLink: //www.getdbt.com/contact
-quote: 
-  headline: "I loved the interactive sessions. I learned a lot of things that I did not know, especially on the 2nd day, even though I have been using dbt cloud for nearly a year!"
-  person: "William Tsu"
-  jobTitle: "Customer Success Operations"
-  photo: "/ui/img/wtsu.jpeg"
+quotes: 
+  - headline: "I loved the interactive sessions. I learned a lot of things that I did not know, especially on the 2nd day, even though I have been using dbt cloud for nearly a year!"
+    person: "William Tsu"
+    jobTitle: "Customer Success Operations"
+    photo: "/ui/img/wtsu.jpeg"
+  - headline: "The course covered a wide range of skill levels and catered well to everybody's needs. I appreciated having multiple instructors so that someone was always available for questions while another was presenting."
+    person: "Rob Bramwell"
+    jobTitle: "Senior Analytics Engineer"
+    photo: "/ui/img/rbramwell.jpg"
+  - headline: "You will learn not only how to make the best use of dbt, but also some core concepts and best practices that will transform how you write code and approach and tackle data & analytical challenges in your organization!"
+    person: "Stefka Antonova"
+    jobTitle: "Analytics Engineer"
+    photo: "/ui/img/santonova.jpg"
 stats:
   - name: Net Promoter Score
     number: "50"
     icon: /ui/img/plus@2x.png
   - name: Students Trained
-    number: "450"
+    number: "883"
     icon: /ui/img/user@2x.png
   - name: Sessions Delivered
-    number: "23"
+    number: "31"
     icon: /ui/img/desktop@2x.png
 ---
 
@@ -66,31 +74,54 @@ stats:
 		</div><!--/.container -->
 	</div>
 </section><!-- /.top-promo-->
+
 <section class="bg-white section student-testimonial text-navy-darker">
     <div class="mask mask-nw text-navy-darker"></div>
     <div class="container testimonial ">
         <div class="quote top"><img src="//www.getdbt.com/ui/img/ecosystem/detail-quote-top.png" /></div>
         <div class="quote bottom"><img src="//www.getdbt.com/ui/img/ecosystem/detail-quote-bottom.png" /></div>
-        <div class="row bg-white">
+        <div id="carousel1" class="carousel slide row bg-white" data-interval="9000" data-carousel>
+        <ol class="carousel-indicators">
+          <li data-target="#carousel1" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel1" data-slide-to="1"></li>
+          <li data-target="#carousel1" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+        {% for quote in page.quotes %} <!-- looping through quotes in the YAML front matter -->
+            {% if forloop.first %}
+            <div class="item active" style="padding: 0px 0px">  <!-- padding set to zero to ensure the filling of the row, overriding default for carousel -->
+            {% else %}
+            <div class="item" style="padding: 0px 0px">
+            {% endif %}
             <div class="col-md-8">
                 <div class="text-contain">
                     <p class="text-large">
-                        {{page.quote.headline}}
+                        {{quote.headline}}
                     </p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="text-contain text-center">
-                    <img src="{{page.quote.photo}}" alt="" class="testimonial-img">
+                    <img src="{{quote.photo}}" alt="" class="testimonial-img">
                     <p>
-                        {{page.quote.person}}<br />
-                        <small><em>{{page.quote.jobTitle}}</em></small>
+                        {{quote.person}}<br />
+                        <small><em>{{quote.jobTitle}}</em></small>
                     </p>
                 </div>
             </div>
-        </div><!-- /.row-->
-    </div><!--/.container -->
+          </div>
+        {% endfor %}
+        </div>
+        <a class="left carousel-control" href="#carousel1" data-slide="prev">
+          <span data-symbol="previous" class="symbol-large"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel1" data-slide="next">
+          <span data-symbol="next" class="symbol-large"></span>
+        </a>
+    </div><!-- /.row-->
+</div><!--/.container -->
 </section><!-- /.student-testimonial-->
+
 <section class="stats section bg-white text-navy-darker text-larger text-bold">
     <div class="container">
         <div class="flex-row flex-buffer">
@@ -105,7 +136,4 @@ stats:
             {% endfor %}
         </div><!--/.flex-row -->
     </div><!--/.container -->
-
 </section><!-- /.stats-->
-
-
