@@ -1,0 +1,115 @@
+// Testimonials
+// ======================================
+
+.testimonials {
+  overflow: hidden;
+
+  .section__headings {
+    margin: 0 0 $gutter-width * 2;
+  }
+
+  .section__heading,
+  .section__subheading {
+    color: $heading__color;
+  }
+}
+
+.testimonials__container {
+  @include make-container;
+}
+
+.testimonials__list {
+  @include screen-lg-min {
+    @include make-col(8);
+  }
+  @include make-col(12);
+
+  margin: 0 auto;
+
+  &.owl-carousel {
+
+    .owl-nav {
+      @include screen-sm-max {
+        position: relative;
+        padding-top: $gutter-width;
+        text-align: center;
+
+        .owl-next,
+        .owl-prev {
+          position: relative;
+          top: initial;
+          right: initial;
+          left: initial;
+          padding: 0px;
+        }
+
+        .owl-prev {
+          margin-right: $gutter-width;
+        }
+      }
+
+      @include screen-md-min {
+        .owl-prev {
+          left: $gutter-width / 2;
+          padding: 0px;
+        }
+
+        .owl-next {
+          right: $gutter-width / 2;
+          padding: 0px;
+        }
+      }
+    }
+
+    .owl-item {
+
+      img {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+      }
+
+      &.active {
+        @include screen-md-min {
+          padding-right: $gutter-width / 2;
+          padding-left: $gutter-width / 2;
+        }
+      }
+    }
+  }
+}
+
+.testimonials__list-item {
+  @include screen-md-min {
+    padding-right: 20%;
+    padding-left: 20%;
+  }
+
+  padding-right: $gutter-width;
+  padding-left: $gutter-width;
+  text-align: center;
+
+  header {
+    margin: 0 0 $gutter-width / 2;
+  }
+
+  img {
+    margin: 0 auto $gutter-width;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+}
+
+.testimonial__title {
+  margin: 0 0 $gutter-width / 4;
+  font-family: $heading__font-family;
+  font-size: modular-scale(1);
+}
+
+.testimonial__author {
+  margin-bottom: $gutter-width / 1.5;
+  color: $body__text-color;
+  font-family: $body__font-family;
+  font-size: modular-scale(-1);
+  font-weight: bold;
+}

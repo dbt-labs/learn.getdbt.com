@@ -1,0 +1,610 @@
+// Mixins
+// ======================================
+
+// Accessibility
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+}
+
+@mixin sr-only-focusable {
+  &:active,
+  &:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    white-space: normal;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+  }
+}
+
+// Background
+@mixin section-background-decoration($top: 10%, $background: $body__background-color, $gradient: $background-decoration__color) {
+  position: relative;
+  z-index: 1;
+
+  &:before,
+  &:after {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    content: "";
+  }
+
+  &:before {
+    @include screen-md-min {
+      -webkit-clip-path: ellipse(60% 75% at 50% 120%);
+      clip-path: ellipse(60% 75% at 50% 120%);
+    }
+
+    height: 4rem;
+    background-color: $background;
+    -webkit-clip-path: ellipse(60% 60% at 50% 100%);
+    clip-path: ellipse(60% 60% at 50% 100%);
+  }
+
+  &:after {
+    height: 100%;
+    background: -webkit-linear-gradient(180deg, rgba(255, 255, 255, 0) $top, transparentize($gradient, 0.9) 90%, transparentize($gradient, 0.8) 110%);
+    background: -o-linear-gradient(180deg, rgba(255, 255, 255, 0) $top, transparentize($gradient, 0.9) 90%, transparentize($gradient, 0.8) 110%);
+    background: -moz-linear-gradient(180deg, rgba(255, 255, 255, 0) $top, transparentize($gradient, 0.9) 90%, transparentize($gradient, 0.8) 110%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) $top, transparentize($gradient, 0.9) 90%, transparentize($gradient, 0.8) 110%);
+    content: "";
+    z-index: -1;
+  }
+}
+
+// Breakpoints
+@mixin screen-legacy-max {
+  @media all and (max-width: $screen-legacy-max) {
+    @content;
+  }
+}
+
+@mixin screen-xs-max {
+  @media all and (max-width: $screen-xs-max) {
+    @content;
+  }
+}
+
+@mixin screen-sm-min {
+  @media all and (min-width: $screen-sm) {
+    @content;
+  }
+}
+
+@mixin screen-sm-max {
+  @media all and (max-width: $screen-sm-max) {
+    @content;
+  }
+}
+
+@mixin screen-md-min {
+  @media all and (min-width: $screen-md) {
+    @content;
+  }
+}
+
+@mixin screen-md-max {
+  @media all and (max-width: $screen-md-max) {
+    @content;
+  }
+}
+
+@mixin screen-lg-min {
+  @media all and (min-width: $screen-lg) {
+    @content;
+  }
+}
+
+@mixin screen-lg-max {
+  @media all and (max-width: $screen-lg-max) {
+    @content;
+  }
+}
+
+@mixin screen-xl-min {
+  @media all and (min-width: $screen-xl) {
+    @content;
+  }
+}
+
+@mixin screen-xl-max {
+  @media all and (min-width: $screen-xl) {
+    @content;
+  }
+}
+
+@mixin screen-xxl-min {
+  @media all and (min-width: $screen-xxl) {
+    @content;
+  }
+}
+
+@mixin screen-tablet-only {
+  @media all and (min-width: $screen-md) and (max-width: $screen-lg) {
+    @content;
+  }
+}
+
+// Buttons
+@mixin button {
+  @include transition(all 200ms ease, font-size 200ms ease);
+
+  display: inline-block;
+  padding: $button__padding;
+  border: $button__border-width $button__border-style transparent;
+  border-radius: $button__border-radius;
+  font-family: $button__font-family;
+  font-size: $button__font-size;
+  font-weight: $button__font-weight;
+  line-height: normal;
+  text-align: center;
+  text-decoration: none;
+
+  &:active,
+  &:hover,
+  &:focus {
+    @include transition(all 300ms ease, box-shadow 400ms ease);
+
+    box-shadow: $shadow-button;
+  }
+}
+
+@mixin button-primary {
+  border: $button__border-width $button__border-style $button__primary-border;
+  background-color: $button__primary-background;
+  color: $button__primary-color;
+
+  &:active,
+  &:hover,
+  &:focus {
+    border-color: $button__primary-border--active;
+    background-color: $button__primary-background--active;
+    color: $button__primary-color--active;
+  }
+}
+
+@mixin button-secondary {
+  border: $button__border-width $button__border-style $button__secondary-border;
+  background-color: $button__secondary-background;
+  color: $button__secondary-color;
+
+  &:active,
+  &:hover,
+  &:focus {
+    border-color: $button__secondary-border--active;
+    background-color: $button__secondary-background--active;
+    color: $button__secondary-color--active;
+  }
+}
+
+@mixin button-group {
+  @include make-row(false);
+  @include align-items(flex-start);
+
+  .button {
+    @include display(flex);
+    @include align-self(center);
+    @include flex-basis(auto);
+    @include justify-content(center);
+    @include order(2);
+    @include screen-xs-max {
+      width: 100%;
+    }
+    @include screen-sm-min {
+      margin-right: $gutter-width / 2;
+    }
+  }
+
+  .button-primary {
+    @include order(1);
+  }
+}
+
+// Background
+@mixin section-background-image {
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+// Cards
+@mixin card {
+  @include display(flex);
+  @include flex-direction(column);
+  @include transition(transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease);
+
+  height: 100%;
+  border: $interface__border;
+  background-color: $interface__background-color;
+  color: $body__text-color;
+  text-decoration: none;
+
+  &:active,
+  &:focus,
+  &:hover {
+    @include transition(transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease);
+    @include transform(translateY($gutter-width / -2));
+
+    outline: 0;
+    background-color: $interface__background-color--active;
+    color: $body__text-color;
+    box-shadow: $shadow-card;
+
+  }
+
+  h2,
+  h3 {
+    color: $heading__color;
+    font-family: $subheading__font-family;
+  }
+}
+
+// Container
+@mixin make-container($add-padding: true) {
+  @include screen-md-min {
+    max-width: $screen-md;
+  }
+  @include screen-lg-min {
+    max-width: $screen-lg;
+  }
+  @include screen-xl-min {
+    max-width: $screen-xl;
+  }
+
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  @if $add-padding == true {
+    padding-right: $gutter-width / 2;
+    padding-left: $gutter-width / 2;
+  }
+}
+
+// Rows
+@mixin make-row($negative-margins: true) {
+  @include display(flex);
+  @include flex-wrap(wrap);
+
+  &:after,
+  &:before {
+    @include flex-basis(0);
+    order: 1;
+  }
+
+  @if $negative-margins == true {
+    margin-right: $gutter-width / -2;
+    margin-left: $gutter-width / -2;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+// Columns
+@mixin column($add-gutter: true) {
+  position: relative;
+  width: 100%;
+  @if $add-gutter == true {
+    padding-right: $gutter-width / 2;
+    padding-left: $gutter-width / 2;
+  }
+}
+
+@mixin make-col($size, $add-gutter: true, $columns: $grid-columns) {
+  @include column($add-gutter);
+
+  flex: 0 0 percentage($size / $columns);
+  max-width: percentage($size / $columns);
+}
+
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  margin-left: percentage($size / $columns);
+}
+
+@mixin make-col-push($size, $columns: $grid-columns) {
+  left: if($size > 0, percentage($size / $columns), auto);
+}
+
+@mixin make-col-pull($size, $columns: $grid-columns) {
+  right: if($size > 0, percentage($size / $columns), auto);
+}
+
+// Dropdown
+@mixin dropdown($trigger) {
+  position: absolute;
+  top: 100%;
+  right: -15px;
+  box-shadow: $shadow-menu;
+  opacity: 0;
+  visibility: hidden;
+  z-index: z-index(page-background);
+
+  // Parent 'state' classname to modify the targets properties
+  #{$trigger} & {
+    @include transition(all 0.3s ease-in-out 0s, visibility 0s linear 400ms, z-index 0s linear 0.01s);
+    @include transform(translateY(-1em));
+    @include transform(translateY(0%));
+    @include transition-delay(0s);
+
+    opacity: 1;
+    visibility: visible;
+    z-index: z-index(navigation--foreground);
+  }
+}
+
+// Floats
+@mixin clearfix {
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+// Forms
+@mixin form-group {
+  @include make-row(false);
+  @include align-items(center);
+
+  margin: 0 0 $gutter-width / 2;
+
+  .input__group {
+    @include screen-sm-max {
+      margin-right: 0;
+    }
+    @include flex-grow(1);
+    margin-right: $gutter-width / 2;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .button {
+    @include screen-sm-max {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .form__notice {
+    margin: 0;
+  }
+}
+
+@mixin form-label {
+  color: $body__text-color;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 2;
+
+  input,
+  textarea {
+    display: block;
+  }
+
+  input {
+    &[type="checkbox"] {
+      display: inline-block;
+      width: auto;
+      margin-right: 5px;
+      font-size: 1rem;
+    }
+  }
+}
+
+@mixin form-select-label {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+
+  &:after {
+    @include transform(translatey(-50%));
+
+    display: block;
+    position: absolute;
+    top: 39px;
+    right: 14px;
+    width: 8px;
+    height: 8px;
+    font-family: $icon__font-family;
+    font-size: 1.2rem;
+    content: "\f0d7";
+    z-index: z-index(element--middleground);
+    pointer-events: none;
+  }
+}
+
+@mixin form-select-no-label {
+  display: inline-block;
+  position: relative;
+
+  &:after {
+    @include transform(translatey(-50%));
+
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    font-family: $icon__font-family;
+    font-size: 1rem;
+    content: "\f0d7";
+    z-index: z-index(element--background);
+    pointer-events: none;
+  }
+}
+
+@mixin form-control {
+  @include transition(border-color 200ms ease, outline 200ms ease);
+
+  display: block;
+  width: 100%;
+  padding: $form__control-padding;
+  border: $form__control-border;
+  border-radius: 0;
+  background-color: $form__input-background-color;
+  font-size: 1rem;
+  line-height: normal;
+
+  &[readonly] {
+    background-color: $form__input-disabled;
+  }
+
+  &:active,
+  &:hover {
+    @include transition(border-color 200ms ease, outline 200ms ease);
+  }
+}
+
+// Page Padding
+@mixin page-padding($padding-top: $gutter-width * 2, $padding-bottom: $gutter-width * 2) {
+  @include screen-md-min {
+    padding-top: $padding-top;
+    padding-bottom: $padding-bottom;
+  }
+
+  padding-top: $padding-top / 2;
+  padding-bottom: $padding-bottom / 2;
+}
+
+// Section Height
+@mixin section-height($padding-top: $section-height__large, $padding-bottom: $padding-top) {
+
+  & > [class*="__container"] {
+    padding-top: $padding-top;
+    padding-bottom: $padding-bottom;
+  }
+}
+
+// Transition Prefixer
+@mixin trans-prefix($value, $prefix: "") {
+  $slice: str-slice(inspect($value), 0, 9);
+  @if $slice == "transform" {
+    #{$prefix}transition: #{$prefix}#{$value};
+  } @else {
+    #{$prefix}transition: $value;
+  }
+}
+
+// Override transition mixin due to libsass issues
+// Details: https://github.com/thoughtbot/bourbon/issues/794
+@mixin transition($properties...) {
+  @if length($properties) > 1 {
+    $spec: ();
+    @for $i from 1 through length($properties) {
+      $spec: append($spec, nth($properties, $i), comma);
+    }
+  } @else {
+    $spec: $properties;
+  }
+  @include trans-prefix($spec, -webkit-);
+  @include trans-prefix($spec, -moz-);
+  @include trans-prefix($spec);
+}
+
+// Typography
+@mixin heading {
+  margin: 0;
+  font-family: $heading__font-family;
+  font-weight: $heading__font-weight;
+  line-height: $heading__line-height;
+}
+
+@mixin subheading {
+  font-family: $subheading__font-family;
+  font-weight: $subheading__font-weight;
+  line-height: $heading__line-height;
+}
+
+@mixin page-heading {
+  @include h1;
+}
+
+@mixin heading-ornament {
+  position: relative;
+
+  &:before {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: $gutter-width / -2;
+    width: 4px;
+    height: 100%;
+    background-color: $accent__color;
+    content: "";
+  }
+}
+
+@mixin h1 {
+  @include screen-md-min {
+    font-size: modular-scale(4, $modular-scale-base-md);
+  }
+  @include screen-lg-min {
+    font-size: modular-scale(4);
+  }
+  margin: 0 0 $gutter-width / 2;
+  font-family: $heading__font-family;
+  font-size: modular-scale(4, $modular-scale-base-sm);
+  font-weight: 400;
+  line-height: $heading__line-height;
+}
+
+@mixin h2 {
+  @include screen-md-min {
+    font-size: modular-scale(3, $modular-scale-base-md);
+  }
+  @include screen-lg-min {
+    font-size: modular-scale(3);
+  }
+  margin: 0 0 $gutter-width / 2;
+  font-family: $heading__font-family;
+  font-size: modular-scale(3, $modular-scale-base-sm);
+  font-weight: 600;
+  line-height: $heading__line-height;
+}
+
+@mixin h3 {
+  @include screen-md-min {
+    font-size: modular-scale(2, $modular-scale-base-md);
+  }
+  @include screen-lg-min {
+    font-size: modular-scale(2);
+  }
+  margin: 0 0 $gutter-width / 2;
+  font-family: $heading__font-family;
+  font-size: modular-scale(2, $modular-scale-base-sm);
+  font-weight: 700;
+  line-height: $heading__line-height;
+}
+
+@mixin h4 {
+  @include screen-md-min {
+    font-size: modular-scale(1, $modular-scale-base-md);
+  }
+  @include screen-lg-min {
+    font-size: modular-scale(1);
+  }
+  margin: 0 0 $gutter-width / 2;
+  font-family: $heading__font-family;
+  font-size: modular-scale(1, $modular-scale-base-sm);
+  font-weight: 700;
+  line-height: $heading__line-height;
+}

@@ -1,0 +1,98 @@
+<section class="gallery" data-preview-item="gallery">
+  <article class="section__content">
+    {% if section.blocks != empty %}
+      <ul class="gallery__list">
+        {% for block in section.blocks %}
+        <li class="gallery__list-item {{ 'gallery__list-item-count-' | append: forloop.length }}">
+          <img
+            src="{{ block.settings.gallery_image }}"
+            alt="{{ block.settings.gallery_image_alt }}"
+            loading="lazy"
+          >
+        </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </article>
+</section>
+
+{% style %}
+
+.gallery {
+  {% include 'section_style_gallery_height' %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Image gallery",
+  "settings":[
+    {
+      "type":"select",
+      "id":"gallery_image_height",
+      "label":"Image height",
+      "description":"",
+      "default":"25rem",
+      "options":[
+        {
+          "value":"15rem",
+          "label":"Small"
+        },
+        {
+          "value":"25rem",
+          "label":"Medium"
+        },
+        {
+          "value":"35rem",
+          "label":"Large"
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add image",
+    "limit":3,
+    "types":[
+      {
+        "type":"image",
+        "label":"Image",
+        "settings":[
+          {
+            "type":"image",
+            "id":"gallery_image",
+            "label":"Image",
+            "default":"https://cdn.thinkific.com/13/20180205/2fe50a485eaf445b855d83b153605d08.png"
+          },
+          {
+            "type":"text",
+            "id":"gallery_image_alt",
+            "label":"Image alt text",
+            "description":"<small>Describe your image for the visually impaired.</small>"
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"image",
+        "values":{
+          "gallery_image":"https://cdn.thinkific.com/13/20180214/63b95a5b9612f1435211547fc1493f5a.png"
+        }
+      },
+      {
+        "type":"image",
+        "values":{
+          "gallery_image":"https://cdn.thinkific.com/13/20180214/c8dbeeb4456e56be560a6fa30ba9adcb.png"
+        }
+      },
+      {
+        "type":"image",
+        "values":{
+          "gallery_image":"https://cdn.thinkific.com/13/20180214/3b77685a22be373650fd216e3144ff26.png"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

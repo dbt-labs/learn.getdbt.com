@@ -1,0 +1,250 @@
+<section class=
+  "
+    text-image section-height__medium
+    {% include 'section_utility_content_alignment' %}
+  "
+  data-preview-item="text-image"
+>
+  <div class="text-image__container">
+    <article class="section__content">
+      <div class="text-image__body {% if section.settings.body != blank %}has-image{% endif %}">
+        {% include 'section_headings' %}
+        <div class="section__body">
+          {{ section.settings.body }}
+        </div>
+        {% if section.settings.button_text != empty and section.settings.button_link != blank %}
+          <div class="section__button-group">
+            <a class="button button-{{ section.settings.button_type }}" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+          </div>
+        {% endif %}
+      </div>
+      {% if section.settings.image != blank %}
+        <div class="text-image__image">
+          <img
+            src="{{ section.settings.image }}"
+            alt="{{ section.settings.image_alt }}"
+            class="img-responsive"
+            loading="lazy"
+          />
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% style %}
+
+.text-image {
+  {% include 'section_style_content_alignment' %}
+
+  .text-image__image {
+    {% if section.settings.image_alignment == "left" %}
+      @include order(1);
+    {% endif %}
+
+    {% if section.settings.image != blank %}
+      @include screen-lg-min {
+        {% if section.settings.image_alignment == "left" %}
+          @include justify-content(flex-end);
+        {% else %}
+          @include justify-content(flex-start);
+        {% endif %}
+        img {
+          width: {{ section.settings.image_size | append: '%' }};
+          height: auto;
+        }
+      }
+      @include screen-md-max {
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    {% endif %}
+  }
+
+  .text-image__body {
+    {% if section.settings.image_alignment == "left" %}
+      @include order(2);
+      @include screen-lg-min {
+        padding-left: $gutter-width * 2.5;
+      }
+    {% else %}
+      @include screen-lg-min {
+        padding-right: $gutter-width * 2.5;
+      }
+    {% endif %}
+  }
+
+  {% if section.settings.section_space %}
+    margin-top: 0;
+  {% endif %}
+
+  {% if section.settings.image != blank %}
+    .text-image__image {
+
+      img {
+        width: {{ section.settings.image_size | append: '%' }};
+        height: auto;
+      }
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_top %}
+    .text-image__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .text-image__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Image & text (with CTA)",
+  "settings":[
+    {
+      "label":"Text",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Image & text (with CTA)"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"textarea",
+          "id":"body",
+          "label":"Description",
+          "default":"Use this area to describe the image or provide supporting information."
+        }
+      ]
+    },
+    {
+      "label":"Image",
+      "settings":[
+        {
+          "type":"image",
+          "id":"image",
+          "label":"",
+          "default":"https://cdn.thinkific.com/13/20180205/2fe50a485eaf445b855d83b153605d08.png"
+        },
+        {
+          "type":"text",
+          "id":"image_alt",
+          "label":"Image alt text",
+          "description":"<small>Describe your image for the visually impaired.</small>"
+        },
+        {
+          "type":"number",
+          "min":50,
+          "max":150,
+          "id":"image_size",
+          "default":100,
+          "label":"Image size",
+          "description":"<small>Scale your image width from 50% to 150%</small>"
+        }
+      ]
+    },
+    {
+      "label":"Button",
+      "settings":[
+        {
+          "type":"page_picker",
+          "id":"button_link",
+          "label":"Link to",
+          "default":""
+        },
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Button text",
+          "default":"Call to action"
+        },
+        {
+          "type":"radio",
+          "id":"button_type",
+          "label":"Button style",
+          "description":"",
+          "default":"primary",
+          "options":[
+            {
+              "value":"primary",
+              "label":"Primary"
+            },
+            {
+              "value":"secondary",
+              "label":"Secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"content_alignment",
+          "label":"Content alignment",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"image_alignment",
+          "label":"Image alignment",
+          "default":"right",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

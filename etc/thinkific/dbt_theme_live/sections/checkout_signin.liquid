@@ -1,0 +1,163 @@
+<article class="checkout__form">
+  {% unless page.cart.is_free or page.cart.is_free_trial %}
+    <ul class="progress-bar">
+      <li class="active">{{ 'checkouts.new.list_item_1' | translate }}</li>
+      <li>{{ 'checkouts.new.list_item_2' | translate }}</li>
+    </ul>
+  {% endunless %}
+  <section class="checkout__form--sign-in">
+    <h2 class="checkout__heading margin-small">{{ 'liquid.views.sign_in_page.header_welcome_back' | translate }}</h2>
+    {% form 'checkout_sign_in' %}
+    {% if errors.size > 0 %}
+      {% include 'form_errors' %}
+    {% endif %}
+    <div class="form-grid form-grid-left">
+    <div class="form__group form-row">
+      {% assign field = fields.email %}
+      <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+      <div class="form-response"><input type="email" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.placeholder }}" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" {% if field.required %}required{% endif %} autofocus class="form__control form-control input-white input-shadow" /></div>
+    </div>
+    <div class="form__group form-row">
+      {% assign field = fields.password %}
+      <div class="form-label"><label for="user[sign-in][email]" class="form__label">{{ field.label }}</label></div>
+      <div class="form-response"><input type="password" id="user[sign-in][email]" name="{{ field.name }}" placeholder="{{ field.placeholder }}" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" {% if field.required %}required{% endif %} class="form__control form-control input-white input-shadow" /></div>
+    </div>
+    <div class="form__group form__remember-me form-row">
+      {% assign field = fields.remember_me %}
+      {% comment %}
+        This hidden input is necessary so that things behave correctly when the checkbox is left unticked.
+      {% endcomment %}
+      <div class="form-label"><input type="hidden" name="{{ field.name }}" value="0" /></div>
+      <div class="form-response">
+        <label class="option option-inline">
+          <input type="checkbox" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" />
+          <i class="option-icon"></i>
+          <span for="{{ field.name }}">{{ field.label }}</span>
+        </label>
+      </div>
+    </div>
+    </div>
+    <div class="form__button-group form-footer btn-inliner">
+    {% if site.invisible_recaptcha_enabled %}
+      {% include 'checkout_recaptcha', submitName: 'submitSignin', formSelector: 'sign-in' %}
+    {% else %}
+      
+        <input type="submit" value="{{ fields.submit.label }}" class="button button-primary btn btn-info" id="signin" />
+      
+    {% endif %}
+        <a id="button__sign-up"class="btn btn-link" href="#">{{ 'liquid.views.sign_in_page.link_create_account' | translate }}</a>
+        <a href="{{ page.forgot_password_url }}" class="form__forgot-password btn btn-link">{{ 'liquid.views.sign_in_page.forgot_password' | translate }}</a>
+    </div>
+    {% endform %}
+    {% include 'remote_sign_in' %}
+  </section>
+  
+  <section class="checkout__form--sign-up">
+    <h2 class="page__heading margin-small">
+      {% if page.is_social_sign_up_step_two %}
+        {{ 'liquid.views.sign_up_page.header_complete_social_sign_up' | translate }}
+      {% else %}
+        {{ 'liquid.views.sign_up_page.header_create_account' | translate }}
+      {% endif %}
+    </h2>
+    {% form 'checkout_sign_up' %}
+    {% if errors.size > 0 %}
+      {% include 'form_errors' %}
+    {% endif %}
+    <div class="form-grid form-grid-left">
+
+    {% if fields.first_name || fields.last_name %}
+      <div class="form__group form-row">
+        <div class="form-label">
+          {% assign field = fields.first_name %}
+          <label for="{{ field.name }}" class="form__label">{{ field.label }}</label>
+        </div>
+        <div class="form-response">
+          <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %} autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" autofocus class="form__control form-control input-white input-shadow" />
+        </div>
+      </div>
+      <div class="form__group form-row">
+        <div class="form-label">
+          {% assign field = fields.last_name %}
+          <label for="{{ field.name }}" class="form__label">{{ field.label }}</label>
+        </div>
+        <div class="form-response">
+          <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %} autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" class="form__control form-control input-white input-shadow" />
+        </div>
+      </div>
+    {% endif %}
+
+    {% if fields.email %}
+      {% assign field = fields.email %}
+      <div class="form__group form-row">
+        <div class="form-label"><label for="user[sign-up][email]" class="form__label">{{ field.label }}</label></div>
+        <div class="form-response"><input type="email" id="user[sign-up][email]" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %} autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" class="form__control form-control input-white input-shadow" /></div>
+      </div>
+    {% endif %}
+
+    {% if fields.password %}
+      {% assign field = fields.password %}
+      <div class="form__group form-row">
+        <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+        <div class="form-response"><input type="password" id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %} autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" class="form__control form-control input-white input-shadow" /></div>
+      </div>
+    {% endif %}
+
+    {% for field in custom_signup_fields %}
+      <div class="form__group form-row">
+        {{ field.hidden_input }}
+        {% if field.type_is_country %}
+          <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+          <div class="form-response">
+            <select id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required{% endif %} class="form__control form-control input-white input-shadow">
+              {{ field.country_options }}
+            </select>
+          </div>
+        {% else %}
+          <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+          <div class="form-response"><input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.label }}" {% if field.required %}required{% endif %} class="form__control form-control input-white input-shadow" ></div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% if fields.terms != blank %}
+      {% assign field = fields.terms %}
+      <div class="form__group form-row">
+        {% comment %}
+          This hidden input is necessary so that things behave correctly when the checkbox is left unticked.
+        {% endcomment %}
+        <div class="form-label"><input type="hidden" name="{{ field.name }}" value="0" /></div>
+        <div class="form-response">
+          <label class="option">
+            <input type="checkbox" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" required class="form__control" />
+            <i class="option-icon"></i>
+            <span for="{{ field.name }}">{{ field.label }}</span>
+          </label>
+        </div>
+      </div>
+    {% endif %}
+
+    </div>
+    <div class="form__button-group form-footer btn-inliner">
+    {% if site.invisible_recaptcha_enabled %}
+      {% include 'checkout_recaptcha', submitName: 'submitSignup', formSelector: 'sign-up' %}
+    {% else %}
+      
+        <input type="submit" value="{{ fields.submit.label }}" class="button button-primary btn btn-info" id="signup" />
+      
+    {% endif %}
+        <a id="button__sign-in" class="btn btn-link" href="#">{{ 'liquid.views.sign_up_page.link_sign_in' | translate }}</a>
+    </div>
+    {% endform %}
+    
+    {% include 'remote_sign_in' %}
+  </section>
+</article>
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[]
+}
+{% endschema %}

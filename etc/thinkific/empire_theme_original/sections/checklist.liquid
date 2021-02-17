@@ -1,0 +1,175 @@
+<section class="checklist section-height__medium
+{% include 'section_utility_background_decoration' %}
+{% include 'section_utility_column_layout' %}
+{% include 'section_utility_heading_alignment' %}" data-preview-item="checklist">
+  <div class="checklist__container">
+    <div class="checklist__wrapper">
+      {% include 'section_headings' %}
+      {% if section.blocks != empty %}
+        <article class="section__content">
+          <ul class="checklist__list section__body">
+            {% for block in section.blocks %}
+              <li class="checklist__list-item">
+                <p><i class="fa {{ block.settings.item_icon }}" aria-hidden="true"></i>{{ block.settings.item_name }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        </article>
+        {% endif %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+.checklist {
+  {% include 'section_style_column_layout' %}
+  {% include 'section_style_background_decoration' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .checklist__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .checklist__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Checklist",
+  "settings":[
+    {
+      "type":"checkbox",
+      "id":"section_background_decoration",
+      "label":"Show styled background",
+      "default":true
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Checklist"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Include a list of items to support the central theme of your page. Bulleted lists are a great way to parse information into digestible pieces."
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"column_layout",
+          "label":"Layout",
+          "description":"",
+          "default":"two-column",
+          "options":[
+            {
+              "value":"one-column",
+              "label":"One Column"
+            },
+            {
+              "value":"two-column",
+              "label":"Two Columns"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Heading alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add checklist item",
+    "limit":10,
+    "types":[
+      {
+        "type":"item",
+        "label":"Checklist item",
+        "settings":[
+          {
+            "type":"icon",
+            "id":"item_icon",
+            "label":"Icon",
+            "default":"fa-check"
+          },
+          {
+            "type":"text",
+            "id":"item_name",
+            "label":"Description"
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"item",
+        "values":{
+          "item_icon":"fa-check",
+          "item_name":"Text length of individual points can be shorter or longer depending on your needs"
+        }
+      },
+      {
+        "type":"item",
+        "values":{
+          "item_icon":"fa-check",
+          "item_name":"Text length of individual points can be shorter or longer depending on your needs"
+        }
+      },
+      {
+        "type":"item",
+        "values":{
+          "item_icon":"fa-check",
+          "item_name":"Text length of individual points can be shorter or longer depending on your needs"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

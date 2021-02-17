@@ -1,0 +1,155 @@
+<section class=
+  "
+    bundle-includes section-height__medium
+    {% include 'section_utility_heading_alignment' %}
+  "
+  data-preview-item="bundle-includes"
+>
+  <div class="bundle-includes__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% assign bundle = page.bundle %}
+      {% if bundle.courses.size > 0 %}
+        {% assign initial_courses = 6 %}
+      {% endif %}
+      <ul class="bundle-includes__list section__body">
+        {% for course in bundle.courses limit: initial_courses %}
+          <li class="bundle-includes__list-item">
+            {% include 'course_card' with course %}
+          </li>
+        {% endfor %}
+        {% for course in bundle.courses offset: initial_courses %}
+          <li class="bundle-includes__list-item bundle-includes--hidden hidden">
+            {% include 'course_card' with course %}
+          </li>
+        {% endfor %}
+      </ul>
+      {% if bundle.courses.size > initial_courses %}
+        <div id="see-more" class="section__button-group">
+          <a href="#see-more" class="button button-primary bundle-includes__see-all-button">
+            {{ 'liquid.views.bundle_landing_page.link_view_all' | translate }} {{ page.bundle_num_of_courses }} {{ 'liquid.views.bundle_landing_page.link_courses' | translate }}
+          </a>
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+<script>
+$(document).ready(function() {
+  var $seeAllCoursesButton = $('#see-more'),
+      $additionalCoursesArea = $('.bundle-includes--hidden.hidden');
+
+  $seeAllCoursesButton.on('click', function(e) {
+    $additionalCoursesArea.removeClass('hidden');
+    $(this).addClass('hidden');
+  });
+});
+
+</script>
+
+{% style %}
+
+.bundle-includes {
+  {% include 'section_style_card_alignment' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .bundle-includes__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .bundle-includes__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Bundle includes [smart section]",
+  "description":"This smart section automatically includes all of the courses included in this bundle. <a href='/manage/courses/bundles/' target='_blank'>Edit Bundles »</a>",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Bundle includes"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Here are all the courses that are included in your bundle."
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"card_alignment",
+          "label":"Card alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Heading alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

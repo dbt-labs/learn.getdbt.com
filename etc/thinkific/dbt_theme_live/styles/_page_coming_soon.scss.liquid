@@ -1,0 +1,21 @@
+// Coming Soon
+// ======================================
+
+.coming-soon__wrapper {
+  @include make-row(false);
+  @include justify-content(center);
+}
+
+.coming-soon__form,
+.coming-soon__thank-you {
+  @include screen-lg-min {
+    @include make-col(8, false);
+  }
+  @include make-col(12, false);
+}
+
+.coming-soon__thank-you {
+  .coming-soon__subheading {
+    text-align: center;
+  }
+}

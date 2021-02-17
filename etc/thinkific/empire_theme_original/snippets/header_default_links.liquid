@@ -1,0 +1,13 @@
+{% comment %}
+  These are the links defined as School defaults and must be available
+{% endcomment %}
+
+{% if site.current_user.signed_in %}
+  {% if section.settings.show_dashboard_link %}
+    <li class="header__nav-item header__nav-item--default">
+      <a href="{{ site.student_dashboard_url }}">
+        {{ 'liquid.partials.header_with_links.link_my_dashboard' | translate }}
+      </a>
+    </li>
+  {% endif %}
+{% endif %}

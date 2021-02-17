@@ -1,0 +1,58 @@
+{% if section.settings.column_layout == "one-column" %}
+  [class*="__wrapper"] {
+    @include screen-xl-min {
+      @include flex-direction(column);
+    }
+    @include justify-content(center);
+    @include align-items(center);
+  }
+
+  .section__headings {
+    margin: 0 0 $gutter-width;
+  }
+
+  .section__headings,
+  .section__content {
+    @include screen-lg-min {
+      @include make-col(8);
+    }
+    @include make-col(12);
+  }
+
+  .section__button-group {
+    @include justify-content(center);
+  }
+{% endif %}
+
+{% if section.settings.column_layout == "two-column" %}
+  .section__headings,
+  .section__content {
+    @include screen-lg-min {
+      @include make-col(6);
+    }
+    @include make-col(12);
+  }
+
+  .section__headings {
+    @include screen-lg-min {
+      margin: 0;
+      padding-right: $gutter-width * 2;
+    }
+
+    margin: 0 0 $gutter-width;
+  }
+{% endif %}
+
+{% if section.settings.column_layout == "one-column" and section.settings.heading_alignment == "center" %}
+  .section__body,
+  .section__button-group {
+    text-align: center;
+  }
+{% endif %}
+
+{% if section.settings.column_layout == "one-column" and section.settings.heading_alignment == "right" %}
+  .section__body,
+  .section__button-group {
+    text-align: right;
+  }
+{% endif %}

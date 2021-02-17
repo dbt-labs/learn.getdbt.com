@@ -1,0 +1,182 @@
+<section class=
+  "
+    testimonials section-height__medium
+    {% include 'section_utility_heading_alignment' %}
+  "
+  data-preview-item="testimonials"
+>
+  <div class="testimonials__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <div class="testimonials__list section__body" role="list">
+          {% for block in section.blocks %}
+            <div class="testimonials__list-item" role="listitem">
+              <img
+                src="{{ block.settings.testimonial_avatar }}"
+                alt=""
+                loading="lazy"
+                width="100"
+              />
+              {% if block.settings.testimonial_title != nil %}
+                <h3 class="testimonial__title">{{ block.settings.testimonial_title }}</h3>
+              {% endif %}
+              <p class="testimonial__author">{{ block.settings.testimonial_author }}</p>
+              <div>
+                {{ block.settings.testimonial_body }}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+<script>
+$(window).load(function() {
+  var $testimonialsCarousel = $('.testimonials__list').addClass('owl-carousel'),
+      testimonialCount = $('.testimonials__list .testimonials__list-item').length,
+      looped = (testimonialCount < 3) ? false : true,
+      testimonialsOwlOptions = {
+        center: false,
+        dots: false,
+        loop: true,
+        items: 1,
+        margin: 0,
+        nav: true,
+        navText: ['<i role="img" class="fa fa-angle-left" aria-hidden="true"></i>','<i role="img" class="fa fa-angle-right" aria-hidden="true"></i>'],
+        slideBy: 1
+      };
+  $testimonialsCarousel.owlCarousel(testimonialsOwlOptions);
+  $('.testimonials__list .owl-next').attr('aria-label', "Next");
+  $('.testimonials__list .owl-prev').attr('aria-label', "Previous");
+});
+</script>
+
+{% style %}
+
+.testimonials {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .testimonials__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .testimonials__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Social proof: testimonials",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Social proof: testimonials"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add testimonial",
+    "limit":10,
+    "types":[
+      {
+        "type":"testimonial",
+        "label":"Testimonial",
+        "settings":[
+          {
+            "type":"text",
+            "id":"testimonial_title",
+            "label":"Testimonial title"
+          },
+          {
+            "type":"text",
+            "id":"testimonial_author",
+            "label":"Author's name"
+          },
+          {
+            "type":"image",
+            "id":"testimonial_avatar",
+            "label":"Avatar",
+            "default":"https://cdn.thinkific.com/13/20180205/39756c0116e7c268ccc233356a72736d.png"
+          },
+          {
+            "type":"textarea",
+            "id":"testimonial_body",
+            "label":"Text"
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"testimonial",
+        "values":{
+          "testimonial_title":"Testimonial title",
+          "testimonial_author":"by Author's name",
+          "testimonial_avatar":"https://cdn.thinkific.com/13/20180205/39756c0116e7c268ccc233356a72736d.png",
+          "testimonial_body":"Share testimonials about you, your course, or your content. Don’t be afraid to reach out to your network to get some glowing words about the work you’ve done. Most potential students will look to the opinions of others when making purchase decisions online."
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

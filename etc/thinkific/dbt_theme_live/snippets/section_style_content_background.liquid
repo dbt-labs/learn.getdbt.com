@@ -1,0 +1,38 @@
+{% if section.settings.background_image != blank or section.settings.overlay_color != blank %}
+  $background-image: '{{ section.settings.background_image }}';
+{% else %}
+  $background-image: null;
+{% endif %}
+
+$background-overlay-color: {{ section.settings.overlay_color }};
+$background-overlay-opacity: {{ section.settings.overlay_opacity }} * 0.01;
+
+@if $background-overlay-opacity {
+  $color: rgba($background-overlay-color, $background-overlay-opacity);
+  $overlay: linear-gradient(
+    $color,
+    $color
+  );
+} @else {
+  $overlay: null;
+}
+$img: if($background-image, url('#{$background-image}'), null);
+
+@if $img {
+  $background: ($overlay, $img);
+} @else {
+  $background: (rgba($background-overlay-color, $background-overlay-opacity));
+}
+
+.section__content {
+  @include background($background...);
+  @include section-background-image;
+}
+
+{% if section.settings.text_color != blank %}
+  .section__heading,
+  .section__subheading,
+  .section__body {
+    color: {{ section.settings.text_color }};
+  }
+{% endif %}

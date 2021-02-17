@@ -1,0 +1,180 @@
+<footer class="footer hidden-print" data-preview-item="footer">
+  <div class="footer__container">
+    <article class="section__content">
+      <ul class="footer__nav-site">
+        {% for block in section.blocks %}
+          <li class="footer__nav-item">
+            <a href="{{ block.settings.nav_link }}" target="{{ block.settings.nav_target }}">{{ block.settings.nav_text }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+      {% if section.settings.social_icon != blank and section.settings.social_link != blank %}
+        {% assign footer_social_link = true %}
+      {% endif %}
+      {% if section.settings.social_icon_2 != blank and section.settings.social_link_2 != blank %}
+        {% assign footer_social_link_2 = true %}
+      {% endif %}
+      {% if section.settings.social_icon_3 != blank and section.settings.social_link_3 != blank %}
+        {% assign footer_social_link_3 = true %}
+      {% endif %}
+      {% if footer_social_link or footer_social_link_2 or footer_social_link_3 %}
+        <ul class="footer__nav-social">
+          {% if footer_social_link %}
+            <li class="footer__nav-item"><a href="{{ section.settings.social_link }}" target="_blank"><i class="fa {{ section.settings.social_icon }}" aria-label="{{ section.settings.social_link }} ({{ 'liquid.accessibility.new_window_warning' | translate }})"></i></a></li>
+          {% endif %}
+          {% if footer_social_link_2 %}
+            <li class="footer__nav-item"><a href="{{ section.settings.social_link_2 }}" target="_blank"><i class="fa {{ section.settings.social_icon_2 }}" aria-label="{{ section.settings.social_link_2 }} ({{ 'liquid.accessibility.new_window_warning' | translate }})"></i></a></li>
+          {% endif %}
+          {% if footer_social_link_3 %}
+            <li class="footer__nav-item"><a href="{{ section.settings.social_link_3 }}" target="_blank"><i class="fa {{ section.settings.social_icon_3 }}" aria-label="{{ section.settings.social_link_3 }} ({{ 'liquid.accessibility.new_window_warning' | translate }})"></i></a></li>
+          {% endif %}
+        </ul>
+      {% endif %}
+      <span class="section__divide"></span>
+      {% if section.settings.show_copyright %}
+        <div class="footer__copyright">
+          {% if section.settings.custom_copyright != blank and section.settings.custom_copyright != "" %}
+            {{ section.settings.custom_copyright }}
+          {% else %}
+            {{ site.copyright }}
+          {% endif %}
+        </div>
+      {% endif %}
+      {% unless site.white_labelling_activated %}
+        <div class="footer__white-label">
+          <a href="//www.thinkific.com/?utm_source={{ site.subdomain }}&utm_medium=powered-by&utm_campaign=Referral" target="_blank" rel="noopener">
+            {% include 'thinkific_branding' %}
+            <span class="sr-only">{{ 'liquid.accessibility.new_window_warning' | translate }}</span>
+          </a>
+        </div>
+      {% endunless %}
+    </article>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "label":"Footer",
+  "settings":[
+    {
+      "label":"Social links",
+      "settings":[
+        {
+          "type":"icon",
+          "id":"social_icon",
+          "label":"Social icon one",
+          "default":""
+        },
+        {
+          "type":"text",
+          "id":"social_link",
+          "description":"<small>Copy and paste the full URL of your social media account, e.g. https://www.facebook.com/groups/thinkific/</small>",
+          "label":"Link"
+        },
+        {
+          "type":"icon",
+          "id":"social_icon_2",
+          "label":"Social icon two",
+          "default":""
+        },
+        {
+          "type":"text",
+          "id":"social_link_2",
+          "description":"<small>Leave these blank if you do not need social links.</small>",
+          "label":"Link"
+        },
+        {
+          "type":"icon",
+          "id":"social_icon_3",
+          "label":"Social icon three",
+          "default":""
+        },
+        {
+          "type":"text",
+          "id":"social_link_3",
+          "description":"<small>Leave these blank if you do not need social links.</small>",
+          "label":"Link"
+        }
+      ]
+    },
+    {
+      "label":"Copyright",
+      "settings":[
+        {
+          "type":"textarea",
+          "id":"custom_copyright",
+          "label":"Custom copyright",
+          "description":"",
+          "default":""
+        },
+        {
+          "type":"checkbox",
+          "id":"show_copyright",
+          "label":"Show copyright",
+          "default":true
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add link",
+    "limit":6,
+    "types":[
+      {
+        "type":"nav_link",
+        "label":"Link",
+        "settings":[
+          {
+            "type":"text",
+            "id":"nav_text",
+            "label":"Text"
+          },
+          {
+            "type":"page_picker",
+            "id":"nav_link",
+            "label":"Link"
+          },
+          {
+            "type": "select",
+            "id": "nav_target",
+            "label": "Open link in",
+            "default": "_self",
+            "options": [
+              {
+                "value": "_self",
+                "label": "Same window"
+              },
+              {
+                "value": "_blank",
+                "label": "New window"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"nav_link",
+        "values":{
+          "nav_text":"Home",
+          "nav_link":{
+            "type":"url",
+            "id":"/"
+          }
+        }
+      },
+      {
+        "type":"nav_link",
+        "values":{
+          "nav_text":"All Courses",
+          "nav_link":{
+            "type":"url",
+            "id":"/collections"
+          }
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,184 @@
+<section class="bonus section-height__medium
+{% include 'section_utility_content_background' %}
+{% include 'section_utility_heading_alignment' %}" data-preview-item="bonus">
+  <div class="bonus__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <ul class="bonus__list section__body">
+          {% for block in section.blocks %}
+            <li class="bonus__list-item">
+              <i class="fa {{ block.settings.bonus_icon }}" aria-hidden="true"></i>
+              <h3>{{ block.settings.bonus_name }}</h3>
+              <p>{{ block.settings.bonus_body }}</p>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% style %}
+
+.bonus {
+  {% include 'section_style_content_background' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .bonus__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .bonus__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Bonus material",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Bonus material"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Include additional content to your course curriculum to provide further value to your students."
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Background & layout",
+      "settings":[
+        {
+          "type":"image",
+          "id":"background_image",
+          "default":"https://cdn.thinkific.com/13/20180205/7e57f4d425ca1d31db8380c97d3f6771.png",
+          "label":"Image",
+          "description":"<small>Recommended: <strong>1440px x 720px (1MB)</strong></small>"
+        },
+        {
+          "type":"image_origin",
+          "id":"background_image_origin",
+          "default": "center center",
+          "label":"Image focal point"
+        },
+        {
+          "type":"color",
+          "id":"overlay_color",
+          "label":"Overlay color",
+          "default":"#000000"
+        },
+        {
+          "type":"number",
+          "id":"overlay_opacity",
+          "label":"Overlay opacity",
+          "default":30,
+          "min":0,
+          "max":100
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add bonus",
+    "limit":3,
+    "types":[
+      {
+        "type":"bonus",
+        "label":"Bonus",
+        "settings":[
+          {
+            "type":"icon",
+            "id":"bonus_icon",
+            "label":"Icon"
+          },
+          {
+            "type":"text",
+            "id":"bonus_name",
+            "label":"Name"
+          },
+          {
+            "type":"textarea",
+            "id":"bonus_body",
+            "label":"Description"
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"bonus",
+        "values":{
+          "bonus_icon":"fa-file-text-o",
+          "bonus_name":"Bonus material",
+          "bonus_body":"Explain the value your additional content will bring to a student’s overall learning experience. Use this opportunity to sell potential students on the extra benefits your bonus material provides."
+        }
+      },
+      {
+        "type":"bonus",
+        "values":{
+          "bonus_icon":"fa-clock-o",
+          "bonus_name":"Bonus material",
+          "bonus_body":"Explain the value your additional content will bring to a student’s overall learning experience. Use this opportunity to sell potential students on the extra benefits your bonus material provides."
+        }
+      },
+      {
+        "type":"bonus",
+        "values":{
+          "bonus_icon":"fa-user",
+          "bonus_name":"Bonus material",
+          "bonus_body":"Explain the value your additional content will bring to a student’s overall learning experience. Use this opportunity to sell potential students on the extra benefits your bonus material provides."
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,13 @@
+{% for line_item in page.order.line_items %}
+  <tr>
+    <td data-label="{{ 'liquid.views.my_account_orders_show_page.table_th_date' | translate }}">{{ line_item.created_date }}</td>
+    <td data-label="{{ 'liquid.views.my_account_orders_show_page.table_th_product' | translate }}">
+      {{ line_item.description }}
+      {% if page.order.description_of_subscription != blank %}
+        <br />
+        <small>{{ page.order.description_of_subscription }}</small>
+      {% endif %}
+    </td>
+    <td class="text-right" data-label="{{ 'liquid.views.my_account_orders_show_page.table_th_amount' | translate }}">{{ line_item.price }}</td>
+  </tr>
+{% endfor %}

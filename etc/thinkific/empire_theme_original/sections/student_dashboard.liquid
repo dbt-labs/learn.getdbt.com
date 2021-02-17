@@ -1,0 +1,104 @@
+<div class="student-dashboard__banner">
+  <div class="student-dashboard__container">
+    <p class="student-dashboard__welcome">{{ 'liquid.views.student_dashboard.header_dashboard' | translate }}, {{ site.current_user.first_name_last_initial }}</p>
+  </div>
+</div>
+<section class="student-dashboard__content">
+  <div class="student-dashboard__container">
+    <div class="student-dashboard__form">
+      <form action="{{ site.student_dashboard_url }}" method="get" id="search-form">
+        <div class="form__group">
+          <h2 class="student-dashboard__heading">{{ 'liquid.partials.student_dashboard.header_my_courses' | translate }}</h2>
+          <div class="products__search-box">
+            <div class="form__search">
+              <label for="q" class="sr-only">
+                {{ 'liquid.partials.product_search.search_placeholder' | translate }}
+              </label>
+              <input type="search" id="q" name="q" placeholder="{{ 'liquid.partials.product_search.search_placeholder' | translate }}" value="{{ page.search_query }}" class="form__control form__control-search" />
+            </div>
+          </div>
+        </div>
+        <div class="form__group">
+          <a href='{{ site.collections_url }}'>{{ 'liquid.views.student_dashboard.link_view_more_courses' | translate }}</a>
+          <div class="form__select-no-label">
+            <label for="status" class="form__label sr-only">
+              {{ 'liquid.accessibility.select_label_sort_by_status' | translate }}
+            </label>
+            <select name="status" id="status" class="form__control" aria-label="status">
+              {% for type in page.status_types %}
+              <option value="{{type[0]}}">{{type[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    {% if page.has_search_query %}
+      {% include 'products_search_query' %}
+    {% endif %}
+    {% comment %}
+      Display the course and bundle cards
+    {% endcomment %}
+    {% if page.enrolled_cards != empty %}
+    {% assign cards = page.enrolled_cards | sort: 'last_accessed' | reverse %}
+    {% paginate cards by 6 %}
+      <ul class="products__list">
+        {% for card in paginate.collection %}
+          {% unless card.is_hidden %}
+            <li class="products__list-item">
+              {% include 'dashboard_course_card' with card %}
+            </li>
+          {% endunless %}
+        {% endfor %}
+      </ul>
+    {% include 'pagination' with paginate %}
+    {% endpaginate %}
+    {% else %}
+      <p class="student-dashboard__no-enrollments">
+        {{ 'liquid.views.student_dashboard.text_no_courses_found' | translate }}
+      </p>
+    {% endif %}
+
+    {% if page.communities != empty %}
+      {% include 'student_dashboard_communities' %}
+    {% endif %}
+  </div>
+</section>
+
+{% style %}
+
+.student-dashboard__content {
+  {% include 'section_style_card_alignment' %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[
+    {
+      "type":"radio",
+      "id":"card_alignment",
+      "label":"Card alignment",
+      "description":"",
+      "default":"left",
+      "options":[
+        {
+          "value":"left",
+          "label":"Left"
+        },
+        {
+          "value":"center",
+          "label":"Center"
+        },
+        {
+          "value":"right",
+          "label":"Right"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

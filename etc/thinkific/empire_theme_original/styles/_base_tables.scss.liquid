@@ -1,0 +1,113 @@
+// Tables
+// ======================================
+
+table {
+  @include screen-lg-min {
+    table-layout: fixed;
+  }
+  @include screen-md-max {
+    width: 100%;
+    overflow-x: scroll;
+    // See https://github.com/twbs/bootstrap/pull/10057
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: $gutter-width;
+  background-color: $interface__background-color;
+  border-collapse: collapse;
+
+  &.table--responsive {
+    @include screen-md-max {
+      border: 0;
+      background: transparent;
+
+      thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+
+      tr {
+        display: block;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid $interface__border-color;
+        background-color: $interface__background-color;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      td {
+        display: block;
+        min-height: 3rem;
+        font-size: modular-scale(-1);
+        text-align: right;
+
+        &:before {
+          /*
+          * aria-label has no advantage, it won't be read inside a table
+          content: attr(aria-label);
+          */
+          float: left;
+          font-weight: bold;
+          content: attr(data-label);
+        }
+
+        &:last-child {
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+
+  table {
+    background-color: $interface__background-color;
+  }
+
+  thead {
+    th {
+      border-bottom: $interface__border;
+      text-align: left;
+      vertical-align: bottom;
+    }
+  }
+
+  tbody {
+    & + tbody {
+      border-top: $interface__border;
+    }
+
+    tr {
+      @include transition(background-color 200ms ease);
+
+      &:nth-of-type(odd) {
+        background-color: $interface__background-color;
+      }
+
+      &,
+      &:active,
+      &:hover {
+        @include transition(background-color 200ms ease);
+      }
+
+      &:active,
+      &:hover {
+        background-color: $interface__background-color--active;
+      }
+    }
+  }
+
+  th,
+  td {
+    padding: $gutter-width / 3;
+    border-top: $interface__border;
+  }
+}

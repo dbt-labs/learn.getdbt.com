@@ -1,0 +1,179 @@
+<section class="upsells section-height__medium
+{% include 'section_utility_heading_alignment' %}" data-preview-item="upsells">
+  <div class="upsells__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <ul class="upsells__list section__body">
+          {% for block in section.blocks %}
+            {% assign upsell = block.settings %}
+            {% assign price = upsell.price %}
+            <li class="upsells__list-item">
+              {% if upsell.icon != blank %}
+                <i class="fa {{ upsell.icon }}" aria-hidden="true"></i>
+              {% endif %}
+              <div class="upsells__details">
+                {% if price != blank %}
+                  <h3 class="upsells__price">
+                    {{ price.display_price }}
+                  </h3>
+                {% endif %}
+                <section class="upsells__details__wrapper">
+                  <h3 class="upsells__title"><span class="upsells__title__price">{{ price.display_price }}</span>{{ price.product.name }}</h3>
+                  <div class="upsells__description">
+                    {{ upsell.body }}
+                  </div>
+                </section>
+              </div>
+              {% if price != blank %}
+                <span class="upsells__buy">
+                  <a href="{{ price.links.add_to_cart }}" class="button button-{{ upsell.button_type }}">
+                    {% if upsell.button_text != empty %} {{ upsell.button_text }} {% else %} {{ price.buy_button_text }} {% endif %}
+                  </a>
+                </span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% style %}
+
+.upsells {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .upsells__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .upsellss__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label": "Upsells",
+  "settings": [
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Upsells"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add upsell",
+    "limit":12,
+    "types":[
+      {
+        "type":"upsell",
+        "label":"Upsell",
+        "settings":[
+          {
+            "type":"icon",
+            "id":"icon",
+            "label":"",
+            "description":"",
+            "default":"fa-calendar-o"
+          },
+          {
+            "type":"price_picker",
+            "id":"price",
+            "label":"Product",
+            "description":""
+          },
+          {
+            "type":"textarea",
+            "id":"body",
+            "label":"Description",
+            "description":""
+          },
+          {
+            "type":"text",
+            "id":"button_text",
+            "label":"Button text",
+            "default":"Buy Now"
+          },
+          {
+            "type":"radio",
+            "id":"button_type",
+            "label":"Button style",
+            "description":"",
+            "default":"primary",
+            "options":[
+              {
+                "value":"primary",
+                "label":"Primary"
+              },
+              {
+                "value":"secondary",
+                "label":"Secondary"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

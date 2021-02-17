@@ -1,0 +1,172 @@
+<section class=
+  "
+    description section-height__medium
+    {% include 'section_utility_column_layout' %}
+    {% include 'section_utility_heading_alignment' %}
+  "
+  data-preview-item="description"
+>
+  <div class="description__container">
+    <div class="description__wrapper">
+      {% include 'section_headings' %}
+      <article class="section__content">
+        <div class="section__body">
+          {{ section.settings.body }}
+        </div>
+        {% if section.settings.button_link != blank and section.settings.button_text != blank %}
+          <div class="section__button-group">
+            <a class="button button-{{ section.settings.button_type }}" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+          </div>
+        {% endif %}
+      </article>
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+.description {
+  {% include 'section_style_column_layout' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.column_layout == "one-column" and section.settings.heading_alignment == "center" %}
+    .section__body,
+    .section__button-group {
+      text-align: center;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_top %}
+    .description__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .description__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Text (with CTA)",
+  "settings":[
+    {
+      "label":"Text",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Text (with CTA)"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Include supporting information here."
+        },
+        {
+          "type":"textarea",
+          "id":"body",
+          "label":"Text",
+          "default":"Use this section to explain to potential students the value of your offering. Great copy shows your audience how their life might look after working with you. Start by identifying the problem you're solving. Next, present how their life will be different with the solution you’re providing. Finally, explain why you’re uniquely positioned to provide this solution."
+        }
+      ]
+    },
+    {
+      "label":"Button",
+      "settings":[
+        {
+          "type":"page_picker",
+          "id":"button_link",
+          "label":"Link to",
+          "default":""
+        },
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Button text",
+          "default":"Call to action"
+        },
+        {
+          "type":"radio",
+          "id":"button_type",
+          "label":"Button style",
+          "description":"",
+          "default":"primary",
+          "options":[
+            {
+              "value":"primary",
+              "label":"Primary"
+            },
+            {
+              "value":"secondary",
+              "label":"Secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"column_layout",
+          "label":"Layout",
+          "description":"",
+          "default":"two-column",
+          "options":[
+            {
+              "value":"one-column",
+              "label":"One Column"
+            },
+            {
+              "value":"two-column",
+              "label":"Two Columns"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Heading alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

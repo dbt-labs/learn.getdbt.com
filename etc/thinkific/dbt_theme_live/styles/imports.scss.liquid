@@ -1,0 +1,381 @@
+// Soup of the Day
+// ======================================
+
+@import 'bourbon';
+
+
+// Functions
+// ======================================
+
+@function dynamic-contrast-color($color) {
+  @if (lightness($color) > 85) {
+    @return $black;
+  } @else {
+    @return $white;
+  }
+}
+
+@function dynamic-hover-color($color) {
+  @if (lightness($color) > 45) {
+    @return darken($color, 10%);
+  } @else {
+    @return lighten($color, 10%);
+  }
+}
+
+@function gray-scale($key) {
+  @if map-has-key($gray-scale, $key) {
+    @return map-get($gray-scale, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $gray-scale.";
+  @return null;
+}
+
+@function section-height-preset($key) {
+  @if map-has-key($section-height, $key) {
+    @return map-get($section-height, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $section-height.";
+  @return null;
+}
+
+@function z-index($key) {
+  @if map-has-key($z-index, $key) {
+    @return map-get($z-index, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $z-index.";
+  @return null;
+}
+
+// Grid
+// ======================================
+$grid-columns: 12 !default;
+$gutter-width: 2rem !default;
+
+
+// Breakpoints
+// ======================================
+
+$screen-xs: 320px !default;
+$screen-sm: 480px !default;
+$screen-md: 768px !default;
+$screen-lg: 992px !default;
+$screen-xl: 1200px !default;
+$screen-xxl: 1440px !default;
+
+$screen-legacy-max: ($screen-xs - 1px) !default;
+$screen-xs-max: ($screen-sm - 1px) !default;
+$screen-sm-max: ($screen-md - 1px) !default;
+$screen-md-max: ($screen-lg - 1px) !default;
+$screen-lg-max: ($screen-xl - 1px) !default;
+$screen-xl-max: ($screen-xxl - 1px) !default;
+
+
+// Modular Scale
+// ======================================
+$modular-scale-base: 1rem !default;
+$modular-scale-base-md: 0.9rem !default;
+$modular-scale-base-sm: 0.8rem !default;
+$modular-scale-ratio: 1.25 !default;
+
+
+// Colors
+// ======================================
+
+// Accents
+$accent__color: {{ theme.settings.accent_color }} !default;
+$background-decoration__color: {{ theme.settings.background_decoration }} !default;
+
+// Alert
+$alert--info: #FFED8F !default;
+$alert--error: #E75725 !default;
+$alert--success: #54C670 !default;
+
+// Core
+$black: #000000 !default;
+$white: #ffffff !default;
+$gray-0: #f7f7f7 !default;
+$gray-1: #e5e5e5 !default;
+$gray-2: #eceeef !default;
+$gray-3: #ced4da !default;
+$gray-4: #adb5bd !default;
+$gray-5: #999999 !default;
+$gray-6: #636c72 !default;
+$gray-7: #505050 !default;
+$gray-8: #495057 !default;
+$gray-9: #343a40 !default;
+$gray-10: #292b2c !default;
+
+$gray-scale: (
+  0: $gray-0,
+  1: $gray-1,
+  2: $gray-2,
+  3: $gray-3,
+  4: $gray-4,
+  5: $gray-5,
+  6: $gray-6,
+  7: $gray-7,
+  8: $gray-8,
+  9: $gray-9,
+  10: $gray-10
+);
+
+
+// Shadows
+$shadow-button: 0 4px 8px 0 rgba(0, 0, 0, 0.15) !default;
+$shadow-card: 0 8px 22px rgba(0, 0, 0, 0.15) !default;
+$shadow-interface: 1px 1px 0 rgba(0, 0, 0, 0.05) !default;
+$shadow-menu: 0 2px 16px 0 rgba(0,0,0,0.1) !default;
+$shadow-1: 0 2px 4px 0 rgba(0, 0, 0, 0.05) !default;
+$shadow-2: 0 2px 8px 0 rgba(0, 0, 0, 0.1) !default;
+$shadow-3: 0 2px 16px 0 rgba(0, 0, 0, 0.1) !default;
+$shadow-image: 0 24px 30px 0 rgba(46, 46, 46, 0.2) !default;
+
+
+// Vendors
+$facebook: #3b5998 !default;
+$google-plus: #db4437 !default;
+$instagram: #c32aa3 !default;
+$linked-in: #007bb5 !default;
+$pinterest: #bd081c !default;
+$skype: #00aff0 !default;
+$slack: #4d394b !default;
+$spotify: #1ed760 !default;
+$twitter: #1da1f2 !default;
+$youtube: #ff0000 !default;
+
+
+// Global
+// ======================================
+
+// Root
+$root__font-size: {{ theme.settings.root_font_size }} !default;
+
+// Body
+$body__background-color: {{ theme.settings.background_color }} !default;
+$body__text-color: {{ theme.settings.text_color }} !default;
+$body__font-family: '{{ theme.settings.body_font }}', Sans-Serif !default;
+$body__font-size: modular-scale(0) !default;
+$body__font-weight: 400 !default;
+$body__line-height: 1.375rem !default;
+
+// Buttons
+$button__padding: 0.5rem 1rem !default;
+$button__padding--large: 15px 30px !default;
+$button__border-width: 2px !default;
+$button__border-style: solid !default;
+$button__border-radius: 100px !default;
+$button__font-family: $body__font-family;
+$button__font-size: $body__font-size !default;
+$button__font-weight: 500 !default;
+
+// Primary
+{% if theme.settings.primary_button_style == "solid" %}
+  $button__primary-background: {{ theme.settings.primary_button_background_color }} !default;
+  $button__primary-border: $button__primary-background !default;
+  $button__primary-color: {{ theme.settings.primary_button_text_color }} !default;
+  $button__primary-background--active: $button__primary-background !default;
+  $button__primary-border--active: $button__primary-border !default;
+  $button__primary-color--active: $button__primary-color !default;
+{% endif %}
+
+{% if theme.settings.primary_button_style == "outline" %}
+  $button__primary-background: transparent !default;
+  $button__primary-border: {{ theme.settings.primary_button_background_color }} !default;
+  $button__primary-color: {{ theme.settings.primary_button_text_color }} !default;
+  $button__primary-background--active: $button__primary-background !default;
+  $button__primary-border--active: $button__primary-border !default;
+  $button__primary-color--active: $button__primary-color !default;
+{% endif %}
+
+{% if theme.settings.primary_button_style == "outline_with_fill" %}
+  $button__primary-background: transparent !default;
+  $button__primary-border: {{ theme.settings.primary_button_background_color }} !default;
+  $button__primary-color: {{ theme.settings.primary_button_text_color }} !default;
+  $button__primary-background--active: $button__primary-border !default;
+  $button__primary-border--active: $button__primary-border !default;
+  $button__primary-color--active: dynamic-contrast-color($button__primary-background--active) !default;
+{% endif %}
+
+// Secondary
+{% if theme.settings.secondary_button_style == "solid" %}
+  $button__secondary-background: {{ theme.settings.secondary_button_background_color }} !default;
+  $button__secondary-border: $button__secondary-background !default;
+  $button__secondary-color: {{ theme.settings.secondary_button_text_color }} !default;
+  $button__secondary-background--active: $button__secondary-background !default;
+  $button__secondary-border--active: $button__secondary-border !default;
+  $button__secondary-color--active: $button__secondary-color !default;
+{% endif %}
+
+{% if theme.settings.secondary_button_style == "outline" %}
+  $button__secondary-background: transparent !default;
+  $button__secondary-border: {{ theme.settings.secondary_button_background_color }} !default;
+  $button__secondary-color: {{ theme.settings.secondary_button_text_color }} !default;
+  $button__secondary-background--active: $button__secondary-background !default;
+  $button__secondary-border--active: $button__secondary-border !default;
+  $button__secondary-color--active: $button__secondary-color !default;
+{% endif %}
+
+{% if theme.settings.secondary_button_style == "outline_with_fill" %}
+  $button__secondary-background: transparent !default;
+  $button__secondary-border: {{ theme.settings.secondary_button_background_color }} !default;
+  $button__secondary-color: {{ theme.settings.secondary_button_text_color }} !default;
+  $button__secondary-background--active: $button__secondary-border !default;
+  $button__secondary-border--active: $button__secondary-border !default;
+  $button__secondary-color--active: dynamic-contrast-color($button__secondary-background--active) !default;
+{% endif %}
+
+// Links
+$link__color: {{ theme.settings.link_color }} !default;
+$link__color--active: $link__color !default;
+
+// Cards
+$card__background-color: {{ theme.settings.card_background_color }} !default;
+$card__background-color--active: {{ theme.settings.card_background_hover_color }} !default;
+
+// Banner
+$banner__font-family: '{{ theme.settings.banner_font }}', sans-serif !default;
+$banner__font-weight: {{ theme.settings.banner_weight }} !default;
+
+// Headings
+$heading__color: {{ theme.settings.heading_color }} !default;
+$heading__font-family: '{{ theme.settings.heading_font }}', sans-serif !default;
+$heading__font-weight: {{ theme.settings.heading_weight }} !default;
+$heading__line-height: 1.2 !default;
+
+$subheading__font-family: '{{ theme.settings.subheading_font }}', sans-serif !default;
+$subheading__font-weight: {{ theme.settings.subheading_weight }} !default;
+
+// Interface
+$interface__background-color: $card__background-color !default;
+$interface__background-color--active: $card__background-color--active !default;
+$interface__border-color: transparent !default;
+$interface__border-width: 1px !default;
+$interface__border-style: solid !default;
+$interface__border: $interface__border-width $interface__border-style $interface__border-color !default;
+
+// Icon
+$icon__font-family: 'FontAwesome' !default
+
+// Navigation
+$nav__background-color: {{ theme.settings.menu_background_color }} !default;
+$nav__link-color: {{ theme.settings.menu_link_color }} !default;
+$nav__background-color--active: $nav__background-color !default;
+$nav__link-color--active: dynamic-contrast-color($nav__background-color) !default;
+$nav__fixed-background-color: $nav__background-color !default;
+$nav__fixed-link-color: $nav__link-color !default;
+$nav__fixed-link-color--active: $nav__link-color--active !default;
+$nav__floating-link-color: {{ theme.settings.menu_floating_link_color }} !default;
+$nav__floating-link-color--active: dynamic-hover-color($nav__floating-link-color) !default;
+$nav__mobile-background-color: $accent__color !default;
+$nav__mobile-link-color: dynamic-contrast-color($nav__mobile-background-color) !default;
+$nav__mobile-background-color--active: $accent__color !default;
+$nav__mobile-link-color--active: dynamic-contrast-color($accent__color) !default;
+
+// Mobile Menu (Icon)
+$mobile-menu__width: 24px;
+$mobile-menu__height: 24px;
+$mobile-menu__thickness: 3px;
+$mobile-menu__space: 4px;
+$mobile-menu__transition: 250ms;
+
+// Dropdown
+$dropdown__background-color: $nav__background-color !default;
+$dropdown__link-color: $nav__link-color !default;
+$dropdown__link-background-color: $nav__background-color !default;
+$dropdown__link-color--active: $nav__link-color--active !default;
+$dropdown__link-background-color--active: $nav__background-color !default;
+
+// Footer
+$footer__background-color: $nav__background-color !default;
+$footer__text-color: $nav__link-color !default;
+$footer__link-color: $nav__link-color !default;
+$footer__link-color--active: $nav__link-color--active !default;
+
+
+// Decoration
+// ======================================
+
+$base__border-radius: 5px !default;
+$base__border-color: transparent !default;
+$base__border-width: 1px !default;
+$base__border-style: solid !default;
+
+
+// Forms & Inputs
+// ======================================
+
+$form__control-border-width: 1px !default;
+$form__control-border-style: solid !default;
+$form__control-border: $form__control-border-width $form__control-border-style $base__border-color !default;
+$form__control-padding: 10px 15px !default;
+$form__input-color: $body__text-color !default;
+$form__input-background-color: $interface__background-color !default;
+$form__input-color-placeholder: tint($form__input-color, 50%) !default;
+$form__input-disabled: shade($interface__background-color, 3%) !default;
+$form__input-height: calc($body__font-size * $body__line-height) + ($gutter-width) !default;
+
+
+// Review Stars
+// ======================================
+
+$review-star__size: 0.75rem !default;
+$review-star__icon: 'fa-star' !default;
+$review-star__icon-empty: 'fa-star-o' !default;
+$review-star__filled-color: $accent__color !default;
+$review-star__empty-color: $accent__color !default;
+
+// Progress Bar (Circle)
+$progress__circle-size: 60px !default;
+$progress__meter-size: 6px !default;
+$progress__circle-background: $white !default;
+$progress__circle-color: $accent__color !default;
+$progress__inset-size: $progress__circle-size - $progress__meter-size !default;
+$progress__inset-color: $white !default;
+$progress__transition: transform 400ms ease !default;
+
+// Section Padding
+
+$section-height__small: $gutter-width !default;
+$section-height__medium: $gutter-width * 2 !default;
+$section-height__large: $gutter-width * 3.75 !default;
+$section-height__xlarge: $gutter-width * 10 !default;
+
+$section-height: (
+  small: $section-height__small,
+  medium: $section-height__medium,
+  large: $section-height__large,
+  xlarge: $section-height__xlarge
+);
+
+// Stack Order
+// ======================================
+
+$z-index__default: 0 !default;
+$z-index__element--background: 101 !default;
+$z-index__element--middleground: 102 !default;
+$z-index__element--foreground: 103 !default;
+$z-index__overlay: 200 !default;
+$z-index__navigation--background: 301 !default;
+$z-index__navigation--middleground: 302 !default;
+$z-index__navigation--foreground: 303 !default;
+$z-index__modal: 400 !default;
+$z-index__saiyan: 9999 !default;
+$z-index__yamcha: -9999 !default;
+
+$z-index: (
+  default: $z-index__default,
+  element--background: $z-index__element--background,
+  element--middleground: $z-index__element--middleground,
+  element--foreground: $z-index__element--foreground,
+  overlay: $z-index__overlay,
+  navigation--background: $z-index__navigation--background,
+  navigation--middleground: $z-index__navigation--middleground,
+  navigation--foreground: $z-index__navigation--foreground,
+  modal: $z-index__modal,
+  page-foreground: $z-index__saiyan,
+  page-background: $z-index__yamcha
+);

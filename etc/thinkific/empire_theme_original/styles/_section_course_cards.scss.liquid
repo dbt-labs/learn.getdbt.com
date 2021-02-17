@@ -1,0 +1,44 @@
+// Course Cards
+// ======================================
+
+.course-cards {
+
+  .section__headings {
+    margin: 0 0 $gutter-width * 2;
+  }
+
+  .section__button-group {
+    @include button-group;
+  }
+}
+
+.course-cards__container {
+  @include make-container;
+}
+
+.course-cards__list {
+  @include make-row(true);
+}
+
+.course-card__featured {
+  @include flex-direction(row);
+}
+
+.course-cards__featured-list-item {
+  @include make-col(12);
+
+	padding-bottom: $gutter-width;
+}
+
+.course-cards__list-item {
+  @include screen-md-min {
+    @include make-col(6);
+  }
+  @include screen-lg-min {
+    @include make-col(4);
+  }
+  @include make-col(12);
+
+  max-width: 410px;
+  padding-bottom: $gutter-width;
+}

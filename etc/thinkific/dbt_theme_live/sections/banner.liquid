@@ -1,0 +1,130 @@
+<section class=
+  "
+    banner
+    {% include 'section_utility_has_additional_prices' %}
+    {% include 'section_utility_has_free_trial' %}
+  "
+  data-preview-item="banner"
+>
+
+
+	
+	
+	
+	
+  <div class="banner__container">
+    <div class="banner__wrapper">
+      <article class="section__content">
+        {% if section.settings.heading != blank or section.settings.subheading != blank %}
+          <header class="section__headings">
+            {% if section.settings.heading != blank %}
+              <h2 class="section__heading">{{ section.settings.heading }}</h2>
+            {% endif %}
+            {% if section.settings.subheading != blank %}
+              <p class="section__subheading">{{ section.settings.subheading }}</p>
+            {% endif %}
+          </header>
+        {% endif %}
+        {% if section.blocks != empty %}
+          <div class="section__button-group">
+            {% for block in section.blocks %}
+              <a class="button button-{{ block.settings.button_type }}" href="{{ block.settings.button_link }}">{{ block.settings.button_text }}</a>
+            {% endfor %}
+            {% if page.product_is_course %}
+              {% assign course = page.course %}
+              {% if course.has_free_trial %}
+                <a href="{{ course.links.enroll_free_trial }}" class="button{% unless course.user_can_purchase %} button-primary{% else %} button-secondary{% endunless %}">{{ 'liquid.partials.course_landing_page_action_buttons.link_free_trial' | translate }}</a>
+              {% endif %}
+            {% endif %}
+          </div>
+        {% else %}
+          {% if section.settings.hide_default_buttons == false %}
+            {% include 'product_action_buttons' %}
+          {% endif %}
+        {% endif %}
+      </article>
+    </div>
+  </div>
+</section>
+
+<!--
+{% style %}
+.banner {
+  {% include 'section_style_background' %}
+  {% include 'section_style_content_alignment' %}
+}
+{% endstyle %}
+-->
+
+{% schema %}
+{
+  "label":"Banner",
+  "description":"",
+  "settings":[
+    {
+      "type":"checkbox",
+      "id":"hide_default_buttons",
+      "label":"Hide default buttons (product pages only)",
+      "default":false
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Banner"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Your banner contains a hero image with text overlay. You can also add call to action buttons."
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add button",
+    "limit":2,
+    "types":[
+      {
+        "type":"banner_button",
+        "label":"Button",
+        "settings":[
+          {
+            "type":"page_picker",
+            "id":"button_link",
+            "label":"Link to"
+          },
+          {
+            "type":"text",
+            "id":"button_text",
+            "label":"Button text",
+            "default":"Call to action"
+          },
+          {
+            "type":"radio",
+            "id":"button_type",
+            "label":"Button style",
+            "description":"",
+            "default":"primary",
+            "options":[
+              {
+                "value":"primary",
+                "label":"Primary"
+              },
+              {
+                "value":"secondary",
+                "label":"Secondary"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

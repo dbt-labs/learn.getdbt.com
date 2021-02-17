@@ -1,0 +1,38 @@
+{% comment %}
+  This is the express sign in page.
+{% endcomment %}
+
+<main class="express-sign-in" id="main-content" role="main">
+  <div class="express-sign-in__container">
+    <div class="express-sign-in__wrapper">
+      <article class="express-sign-in__form">
+        <h2 class="page__heading">{{ 'liquid.views.express_sign_in_page.thinkific_express_signin' | translate }}</h2>
+        <p class="page__subheading">{{ 'liquid.views.express_sign_in_page.set_password' | translate }}</p>
+        {% form 'express_sign_in' %}
+        {% if errors.size > 0 %}
+          {% include 'form_errors' %}
+        {% endif %}
+        {% assign field = fields.email %}
+        <input type="hidden" name="{{ field.name }}" value="{{ field.value }}">
+        <div class="form__group">
+          {% assign field = fields.password %}
+          <label for="{{ field.name }}" class="form__label">
+            {{ field.label }}
+          </label>
+          <input type="password" id="{{ field.name }}" name="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %} autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" autofocus class="form__control" />
+        </div>
+        <div class="form__group">
+          {% assign field = fields.password_confirmation %}
+          <label for="user_password_confirmation" class="form__label">
+            {{ field.label }}
+          </label>
+          <input type="password" name="{{ field.name }}" placeholder="{{ field.placeholder }}" id="user_password_confirmation" {% if field.required %}required{% endif %} autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" class="form__control" />
+        </div>
+        <div class="form__button-group">
+          <input type="submit" name="commit" value="{{ fields.submit.label }}" class="button button-primary" id="sign-in">
+        </div>
+        {% endform %}
+      </article>
+    </div>
+  </div>
+</main>

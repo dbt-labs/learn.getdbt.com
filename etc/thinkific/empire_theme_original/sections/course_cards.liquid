@@ -1,0 +1,220 @@
+<section class=
+  "
+    course-cards section-height__medium
+    {% include 'section_utility_heading_alignment' %}
+  "
+  data-preview-item="course-cards"
+>
+  <div class="course-cards__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <ul class="course-cards__list section__body">
+          {% for block in section.blocks %}
+            {% assign product = block.settings.course_card %}
+            {% if product.is_course %}
+              {% assign course = product.course %}
+            {% elsif product.is_bundle %}
+              {% assign bundle = product.bundle %}
+            {% endif %}
+            {% if forloop.first %}
+              {% if section.settings.show_featured_product == true %}
+                <li class="course-cards__featured-list-item">
+                  {% if product.is_course %}
+                    {% include 'course_featured_card' with course %}
+                  {% elsif product.is_bundle %}
+                    {% include 'bundle_featured_card' with bundle %}
+                  {% endif %}
+                </li>
+              {% else %}
+                <li class="course-cards__list-item">
+                  {% if product.is_course %}
+                    {% include 'course_card' with course %}
+                  {% elsif product.is_bundle %}
+                    {% include 'bundle_card' with bundle %}
+                  {% endif %}
+                </li>
+              {% endif %}
+            {% else %}
+              <li class="course-cards__list-item">
+                {% if product.is_course %}
+                  {% include 'course_card' with course %}
+                {% elsif product.is_bundle %}
+                  {% include 'bundle_card' with bundle %}
+                {% endif %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        {% if section.settings.show_button %}
+          <div class="section__button-group">
+            <a class="button button-{{ section.settings.button_type }}" href="{{ site.collections_url }}">{{ section.settings.button_text }}</a>
+          </div>
+        {% endif %}
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% style %}
+
+.course-cards {
+  {% include 'section_style_card_alignment' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .course-cards__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .course-cards__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Additional products",
+  "settings":[
+    {
+      "type":"checkbox",
+      "id":"show_featured_product",
+      "label":"Show featured product",
+      "default":true
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Additional products"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        }
+      ]
+    },
+    {
+      "label":"Button",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"show_button",
+          "label":"Show link to All Courses page",
+          "default":true
+        },
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Button text",
+          "default":"View more courses"
+        },
+        {
+          "type":"radio",
+          "id":"button_type",
+          "label":"Button style",
+          "description":"",
+          "default":"primary",
+          "options":[
+            {
+              "value":"primary",
+              "label":"Primary"
+            },
+            {
+              "value":"secondary",
+              "label":"Secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"card_alignment",
+          "label":"Card alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Heading alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add product",
+    "limit":12,
+    "types":[
+      {
+        "type":"course_card",
+        "label":"Product",
+        "settings":[
+          {
+            "type":"product_picker",
+            "id":"course_card",
+            "label":"Product"
+          }
+        ]
+      }
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

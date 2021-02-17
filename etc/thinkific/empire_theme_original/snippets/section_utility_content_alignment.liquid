@@ -1,0 +1,7 @@
+{% if section.settings.content_alignment == "left" %}
+  section__content-alignment--left
+{% elsif section.settings.content_alignment == "center" %}
+  section__content-alignment--center
+{% else section.settings.content_alignment == "right" %}
+  section__content-alignment--right
+{% endif %}

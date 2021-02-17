@@ -1,0 +1,42 @@
+{% comment %}
+  This is the Affiliate Links page.
+  This is where affiliate users can view their affiliate links.
+{% endcomment %}
+
+<div class="affiliate">
+  <div class="affiliate__container">
+    <div class="affiliate__wrapper">
+      <aside class="affiliate__menu hidden-print">
+        {% include 'affiliate_dashboard_menu' %}
+      </aside>
+      <main class="affiliate__content" id="main-content" role="main">
+        <h2 class="affiliate__heading">{{ 'liquid.views.affiliate_links_page.header_affiliate_links' | translate }}</h2>
+        <section class="affiliate__links">
+          <h3>{{ 'liquid.views.affiliate_links_page.header_homepage_link' | translate }}</h3>
+          <p class="affiliate__links-homepage">{{ page.homepage_link }}</p>
+          <h4>{{ 'liquid.views.affiliate_links_page.header_product_links' | translate }}</h4>
+          {% if page.has_affiliate_links %}
+            <table class="affiliate__links table--responsive">
+              <thead>
+                <tr>
+                  <th>{{ 'liquid.views.affiliate_links_page.table_header_name' | translate }}</th>
+                  <th>{{ 'liquid.views.affiliate_links_page.table_header_link' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for affiliate_link in page.affiliate_links %}
+                  <tr>
+                    <td data-label="{{ 'liquid.views.affiliate_links_page.table_header_name' | translate }}">{{ affiliate_link.product_name }}</td>
+                    <td data-label="{{ 'liquid.views.affiliate_links_page.table_header_link' | translate }}">{{ affiliate_link.url }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            {{ 'liquid.views.affiliate_links_page.message_no_products' | translate }}
+          {% endif %}
+        </section>
+      </main>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,189 @@
+<section class=
+  "
+    call-to-action
+    {% include 'section_utility_background' %}
+    {% include 'section_utility_content_alignment' %}
+    {% include 'section_utility_height_preset' %}
+  "
+  data-preview-item="call-to-action"
+>
+  {% if section.settings.button_show and section.settings.button_link != null %}
+    <a href="{{ section.settings.button_link }}" class="call-to-action__section-link">
+  {% endif %}
+  <div class="call-to-action__container">
+    <div class="call-to-action__wrapper">
+      <article class="section__content">
+        {% include 'section_headings' %}
+        {% if section.settings.button_show != true and section.settings.button_text != empty %}
+          <div class="section__button-group">
+            <a class="button button-{{ section.settings.button_type }}" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+          </div>
+        {% endif %}
+      </article>
+    </div>
+  </div>
+  {% if section.settings.button_show and section.settings.button_link != null %}
+    </a>
+  {% endif %}
+</section>
+
+{% style %}
+
+.call-to-action {
+  {% include 'section_style_background' %}
+  {% include 'section_style_content_alignment' %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Call to action",
+  "settings":[
+    {
+      "label":"Text",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Call to action"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"This is where you seal the deal. Sprinkle this section throughout your page to push prospects to purchase!"
+        },
+        {
+          "type":"color",
+          "id":"text_color",
+          "label":"Text color override",
+          "default":"#ffffff"
+        }
+      ]
+    },
+    {
+      "label":"Button",
+      "settings":[
+        {
+          "type":"page_picker",
+          "id":"button_link",
+          "label":"Link to"
+        },
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Button text",
+          "default":"Get started now"
+        },
+        {
+          "type":"radio",
+          "id":"button_type",
+          "label":"Button style",
+          "description":"",
+          "default":"primary",
+          "options":[
+            {
+              "value":"primary",
+              "label":"Primary"
+            },
+            {
+              "value":"secondary",
+              "label":"Secondary"
+            }
+          ]
+        },
+        {
+          "type":"checkbox",
+          "id":"button_show",
+          "label":"Hide button & make entire section clickable",
+          "default":false
+        }
+      ]
+    },
+    {
+      "label":"Background image",
+      "settings":[
+        {
+          "type":"image",
+          "id":"background_image",
+          "default":"https://cdn.thinkific.com/13/20180205/7e57f4d425ca1d31db8380c97d3f6771.png",
+          "description":"<small>Recommended: <strong>1440px x 720px (1MB)</strong></small>",
+          "label":"Image"
+        },
+        {
+          "type":"image_origin",
+          "id":"background_image_origin",
+          "default": "center center",
+          "label":"Image focal point"
+        },
+        {
+          "type":"color",
+          "id":"overlay_color",
+          "label":"Overlay color",
+          "default":"#000000"
+        },
+        {
+          "type":"number",
+          "id":"overlay_opacity",
+          "label":"Overlay opacity",
+          "default":30,
+          "min":0,
+          "max":100
+        }
+      ]
+    },
+    {
+      "label":"Size & alignment",
+      "settings":[
+        {
+          "type":"select",
+          "id":"section_height_preset",
+          "label":"Height",
+          "description":"",
+          "default":"medium",
+          "options":[
+            {
+              "value":"small",
+              "label":"Small"
+            },
+            {
+              "value":"medium",
+              "label":"Medium"
+            },
+            {
+              "value":"large",
+              "label":"Large"
+            },
+            {
+              "value":"xlarge",
+              "label":"Extra large"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"content_alignment",
+          "label":"Alignment",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

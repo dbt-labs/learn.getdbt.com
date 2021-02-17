@@ -1,0 +1,66 @@
+{% comment %}
+  This is the 'my account notifications' page.
+  Here, a user can opt-in/out of notification emails.
+{% endcomment %}
+
+<div class="my-account">
+  {% include 'my_account_banner' %}
+  <div class="my-account__container">
+    <div class="my-account__wrapper">
+      <aside class="my-account__menu hidden-print">
+        {% include 'my_account_menu' %}
+      </aside>
+      <main class="my-account__content" id="main-content" role="main">
+        {% form 'my_account_notifications' %}
+        {% if errors.size > 0 %}
+          {% include 'form_errors' %}
+        {% endif %}
+        <h2 class="my-account__subheading">
+          {{ 'liquid.views.my_account_notifications_page.header_notifications' | translate }}
+        </h2>
+        {% if page.allow_weekly_email_reminders or page.allow_discussion_question_answered_email %}
+          <h3>
+            {{ 'liquid.partials.student_dashboard.header_my_courses' | translate }}
+          </h3>
+        {% endif %}
+        {% if page.allow_weekly_email_reminders %}
+          <div class="form__group">
+            {% assign field = fields.notify_on_weekly_reminder %}
+            <input name="{{ field.name }}" type="hidden" value="0" />
+            <input type="checkbox" id="{{ field.name }}" name="{{ field.name }}" value="1" {% if field.value %}checked="checked"{% endif %} class="form__control" />
+            <label for="{{ field.name }}" class="form__label form__label-checkbox">
+              {{ field.label }}
+            </label>
+          </div>
+        {% endif %}
+        {% if page.allow_discussion_question_answered_email %}
+          <div class="form__group">
+            {% assign field = fields.notify_on_my_discussion_question_answered %}
+            <input name="{{ field.name }}" type="hidden" value="0">
+            <input type="checkbox" id="{{ field.name }}" name="{{ field.name }}" value="1" {% if field.value %}checked="checked"{% endif %} class="form__control" />
+            <label for="{{ field.name }}" class="form__label form__label-checkbox">
+              {{ field.label }}
+            </label>
+          </div>
+        {% endif %}
+        {% if page.user_has_communities %}
+          <h3>
+            {{ 'liquid.partials.student_dashboard.header_my_communities' | translate }}
+          </h3>
+          <div class="form__group">
+            {% assign field = fields.notify_on_community_post_reply %}
+            <input name="{{ field.name }}" type="hidden" value="0">
+            <input type="checkbox" id="{{ field.name }}" name="{{ field.name }}" value="1" {% if field.value %}checked="checked"{% endif %} class="form__control" />
+            <label for="{{ field.name }}" class="form__label form__label-checkbox">
+              {{ field.label }}
+            </label>
+          </div>
+        {% endif %}
+        <div class="form__button-group">
+          <input type="submit" name="commit" value="{{ fields.submit.label }}" class="button button-primary">
+        </div>
+        {% endform %}
+      </main>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+{% comment %}
+  This is the menu that appears on the My Account page.
+{% endcomment %}
+
+<div>
+  
+    <a href="{{ site.account_edit_url }}" class="strong btn btn-link text-left {% if page.page_identifier == 'my_account_page' %}text-dark arrow-right{% endif %}" style="display: block">
+      {{ 'liquid.partials.my_account_menu.custom_profile' | translate }}
+    </a>
+  
+    <a href="{{ site.account_edit_password_url }}" class="strong btn btn-link text-left {% if page.page_identifier == 'my_account_password_page' %}text-dark arrow-right{% endif %}" style="display: block">
+      {{ 'liquid.partials.my_account_menu.custom_password' | translate }}
+    
+    </a>
+    
+    {% comment %}
+  {% if site.certificates_enabled %}
+    
+      <a href="{{ site.account_certificates_url }}" class="strong btn btn-link text-left {% if page.page_identifier == 'my_account_certificates_page' %}text-dark arrow-right{% endif %}" style="display: block">
+        {{ 'liquid.partials.my_account_menu.custom_certificates' | translate }}
+      </a>
+    
+  {% endif %}
+  {% endcomment %}
+  {% if site.current_user.can_change_notifications %}
+  
+      <a href="{{ site.account_notifications_edit_url }}" class="strong btn btn-link text-left {% if page.page_identifier == 'my_account_notifications_page' %}text-dark arrow-right{% endif %}" style="display: block">
+        {{ 'liquid.partials.my_account_menu.custom_notifications' | translate }}
+      </a>
+  
+  {% endif %}
+  {% comment %}
+    <a href="{{ site.account_billings_url }}" class="strong btn btn-link text-left {% if page.page_identifier == 'my_account_billings_page' %}text-dark arrow-right{% endif %}" style="display: block">
+      {{ 'liquid.partials.my_account_menu.custom_billing' | translate }}
+    </a>
+  
+    <a href="{{ site.account_orders_url }}" class="strong btn btn-link text-left {% if page.page_identifier == 'my_account_order_list_page' or page.page_identifier == 'my_account_order_page' %}text-dark arrow-right{% endif %}" style="display: block">
+      {{ 'liquid.partials.my_account_menu.custom_order_history' | translate }}
+    </a>
+  {% endcomment %}
+</div>

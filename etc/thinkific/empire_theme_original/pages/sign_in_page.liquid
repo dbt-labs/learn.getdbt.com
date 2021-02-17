@@ -1,0 +1,28 @@
+{% comment %}
+  This is the sign in page.
+{% endcomment %}
+
+<main class="sign-in" id="main-content" role="main">
+  <div class="sign-in__container">
+    <div class="sign-in__wrapper">
+      {% section 'signin_form' %}
+    </div>
+  </div>
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "banner",
+      "course_cards",
+      "frequently_asked_questions",
+      "call_to_action",
+      "countdown",
+      "video"
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

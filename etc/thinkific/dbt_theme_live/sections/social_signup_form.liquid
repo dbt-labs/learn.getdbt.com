@@ -1,0 +1,86 @@
+<article class="social-sign-up__form">
+  <h2 class="page__heading margin-small">
+    {{ 'liquid.views.social_sign_up_page.header_thanks_for_sign_up' | translate }}
+  </h2>
+  <p class="section__subheading">
+    {{ 'liquid.views.social_sign_up_page.description_complete_sign_up' | translate }}
+  </p>
+  {% form 'social_sign_up' %}
+  {% if errors.size > 0 %}
+    {% include 'form_errors' %}
+  {% endif %}
+  
+  <div class="form-grid">
+
+    {% if page.requiring_email %}
+    <div class="form-row">
+      <div class="form-label">
+        {% assign field = fields.email %}
+        <label for="{{ field.name }}" class="form__label">{{ field.label }}</label>
+      </div>
+      <!-- <div class="tooltip"><i class="fa fa-question-circle" aria-hidden="true"></i><span>{{ 'liquid.views.social_sign_up_page.tooltip_email_required' | translate }}</span></div> -->
+      <div class="form-response">
+        <input type="email" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %} autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" class="form__control form-control input-white input-shadow" />
+      </div>
+    </div>
+    {% endif %}
+
+    {% for field in custom_signup_fields %}
+      {{ field.hidden_input }}
+        {% if field.type_is_country %}
+          <div class="form-row">
+            <div class="form__select-label form-label">
+              <label for="{{ field.name }}" class="form__label">{{ field.label }}</label>
+            </div>
+            <div class="form-response">
+              <select id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required{% endif %} class="form__control form-control input-white input-shadow">
+                {{ field.country_options }}
+              </select>
+            </div>
+          </div>
+        {% else %}
+          <div class="form-row">
+            <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+          </div>
+          <div class="form-response">
+            <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.label }}" {% if field.required %}required{% endif %} class="form__control form-control input-white input-shadow" />
+          </div>
+        {% endif %}
+      <div>
+      
+    {% endfor %}
+    {% if fields.terms != blank %}
+      <div class="form-row">
+        {% assign field = fields.terms %}
+        {% comment %}
+          This hidden input is necessary so that things behave correctly when the checkbox is left unticked.
+        {% endcomment %}
+        <div class="form-label">
+          <input type="hidden" name="{{ field.name }}" value="0" />
+        </div>
+        <div class="form-response">
+
+          
+          <label for="{{ field.name }}" class="option">
+            <input type="checkbox" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" required class="form__control" />
+            <i class="option-icon"></i>
+            <span>{{ field.label }}</span>
+          </label>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="form__button-group form-footer ">
+    <input type="submit" value="{{ fields.submit.label }}" class="button button-primary btn btn-info" id="social-sign-up" />
+  </div>
+  {% endform %}
+</article>
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[]
+}
+{% endschema %}

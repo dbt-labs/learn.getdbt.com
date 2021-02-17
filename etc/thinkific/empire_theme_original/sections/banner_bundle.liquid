@@ -1,0 +1,241 @@
+{% assign bundle = page.bundle %}
+
+<section class=
+  "
+    banner-bundle
+    {% include 'section_utility_background' %}
+    {% include 'section_utility_content_alignment' %}
+    {% include 'section_utility_height_preset' %}
+    {% include 'section_utility_has_additional_prices' %}
+    {% include 'section_utility_has_free_trial' %}
+  "
+  data-preview-item="banner-bundle"
+>
+  <div class="banner-bundle__container">
+    <div class="banner-bundle__wrapper">
+      <article class="section__content">
+        {% if section.settings.show_default_banner_text == true %}
+          <header class="section__headings">
+            <h2 class="section__heading">{{ page.bundle.name }}</h2>
+            <p class="section__subheading">{{ page.bundle.description }} </p>
+          </header>
+        {% else %}
+          {% if section.settings.heading != blank or section.settings.subheading != blank %}
+            <header class="section__headings">
+              {% if section.settings.heading != blank %}
+                <h2 class="section__heading">{{ section.settings.heading }}</h2>
+              {% endif %}
+              {% if section.settings.subheading != blank %}
+                <p class="section__subheading">{{ section.settings.subheading }}</p>
+              {% endif %}
+            </header>
+          {% endif %}
+        {% endif %}
+        {% if section.blocks != empty %}
+          <div class="section__button-group">
+            {% for block in section.blocks %}
+              <a class="button button-{{ block.settings.button_type }}" href="{{ block.settings.button_link }}">{{ block.settings.button_text }}</a>
+            {% endfor %}
+          </div>
+        {% else %}
+          {% if section.settings.hide_default_buttons == false %}
+            {% include 'product_action_buttons' %}
+          {% endif %}
+        {% endif %}
+      </article>
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+.banner-bundle {
+  {% include 'section_style_background' %}
+  {% include 'section_style_content_alignment' %}
+
+  .section__heading {
+    @include screen-md-min {
+      font-size: {{ section.settings.heading_size | append: 'rem' }};
+    }
+
+    font-size: ( {{ section.settings.heading_size | append: 'rem' }} / 1.25 );
+  }
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Banner (bundle)",
+  "description":"",
+  "settings":[
+    {
+      "type":"checkbox",
+      "id":"hide_default_buttons",
+      "label":"Hide default buttons (product pages only)",
+      "default":false
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"show_default_banner_text",
+          "label":"Automatically add bundle name and description",
+          "default":true
+        },
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Banner"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Your banner contains a hero image with text overlay. You can also add call to action buttons."
+        },
+        {
+          "type":"color",
+          "id":"text_color",
+          "label":"Text color override",
+          "default":"#ffffff"
+        },
+        {
+          "type":"number",
+          "min":1,
+          "max":9,
+          "id":"heading_size",
+          "default":3,
+          "label":"Size",
+          "description":""
+        }
+      ]
+    },
+    {
+      "label":"Hero image",
+      "settings":[
+        {
+          "type":"image",
+          "id":"background_image",
+          "default":"https://cdn.thinkific.com/13/20180205/b9f6367337c12ad2b139a95537cc561f.png",
+          "label":"Image",
+          "description":"<small>Recommended: <strong>1440px x 720px (1MB)</strong></small>"
+        },
+        {
+          "type":"image_origin",
+          "id":"background_image_origin",
+          "default": "center center",
+          "label":"Image focal point"
+        },
+        {
+          "type":"color",
+          "id":"overlay_color",
+          "label":"Overlay color",
+          "default":"#000000"
+        },
+        {
+          "type":"number",
+          "id":"overlay_opacity",
+          "label":"Overlay opacity",
+          "default":30,
+          "min":0,
+          "max":100
+        }
+      ]
+    },
+    {
+      "label":"Size & alignment",
+      "settings":[
+        {
+          "type":"select",
+          "id":"section_height_preset",
+          "label":"Height",
+          "description":"",
+          "default":"large",
+          "options":[
+            {
+              "value":"small",
+              "label":"Small"
+            },
+            {
+              "value":"medium",
+              "label":"Medium"
+            },
+            {
+              "value":"large",
+              "label":"Large"
+            },
+            {
+              "value":"xlarge",
+              "label":"Extra large"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"content_alignment",
+          "label":"Alignment",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add button",
+    "limit":2,
+    "types":[
+      {
+        "type":"banner_button",
+        "label":"Button",
+        "settings":[
+          {
+            "type":"page_picker",
+            "id":"button_link",
+            "label":"Link to"
+          },
+          {
+            "type":"text",
+            "id":"button_text",
+            "label":"Button text",
+            "default":"Call to action"
+          },
+          {
+            "type":"radio",
+            "id":"button_type",
+            "label":"Button style",
+            "description":"",
+            "default":"primary",
+            "options":[
+              {
+                "value":"primary",
+                "label":"Primary"
+              },
+              {
+                "value":"secondary",
+                "label":"Secondary"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

@@ -1,0 +1,78 @@
+{% comment %}
+  This is the signin/signup page that preceeds the checkout page.
+  Specifically, this is the page where a user can either sign in or sign up
+  as a part of the purchase process. It preceeds the step where the user
+  enters his or her credit card details.
+  Note that you cannot edit the actual form, however the surrounding content
+  of the page may be modified.
+{% endcomment %}
+
+<main class="checkout" id="main-content" role="main">
+  <div class="checkout__container">
+    <div class="checkout__wrapper">
+      {% section 'checkout_signin' %}
+      {% section 'checkout_overview' %}
+    </div>
+  </div>
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "banner",
+      "course_cards",
+      "frequently_asked_questions",
+      "call_to_action",
+      "countdown",
+      "video"
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}
+
+<script type="text/javascript">
+  (function ($) {
+
+    $('input:text:visible:first').focus();
+
+    $buttonSignIn = $('#button__sign-in');
+    $buttonSignUp = $('#button__sign-up');
+    $formSignIn = $('.checkout__form--sign-in');
+    $formSignUp = $('.checkout__form--sign-up');
+
+    if ('{{ page.active_tab }}' === 'signin') {
+      hide($formSignUp);
+    } else {
+      hide($formSignIn);
+    }
+
+    function hide($container) {
+      $container.hide();
+      return true;
+    }
+    function show($container) {
+      $container.show();
+      return true;
+    }
+
+    $buttonSignIn.click(function (e) {
+      // Display Sign In container
+      e.preventDefault();
+      hide($formSignUp);
+      show($formSignIn);
+      $('input:visible:first').focus();
+    })
+
+    $buttonSignUp.click(function (e) {
+      // Display Sign Up container
+      e.preventDefault();
+      hide($formSignIn);
+      show($formSignUp);
+      $('input:visible:first').focus();
+    })
+
+  })(jQuery)
+</script>

@@ -1,0 +1,61 @@
+{% comment %}
+  This is the 'my account order history' page.
+  Here, a user can view all of their orders.
+{% endcomment %}
+
+<div class="my-account">
+  {% include 'my_account_banner' %}
+  <div class="my-account__container">
+    <div class="my-account__wrapper">
+      <aside class="my-account__menu hidden-print">
+        {% include 'my_account_menu' %}
+      </aside>
+      <main class="my-account__content" id="main-content" role="main">
+        <h3 class="my-account__subheading">{{ 'liquid.views.my_account_orders_index_page.header_orders' | translate }}</h3>
+        <table class="my-account__order-history table--responsive">
+          <thead>
+            <tr>
+              <th>{{ 'liquid.views.my_account_orders_index_page.column_order_number' | translate }}</th>
+              <th>{{ 'liquid.views.my_account_orders_index_page.column_product' | translate }}</th>
+              <th>{{ 'liquid.views.my_account_orders_index_page.column_date' | translate }}</th>
+              <th>{{ 'liquid.views.my_account_orders_shared.expires' | translate }}</th>
+              <th>{{ 'liquid.views.my_account_orders_index_page.column_status' | translate }}</th>
+              <th>{{ 'liquid.views.my_account_orders_index_page.column_current_value' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if page.has_orders %}
+              {% for order in page.orders %}
+                <tr id="order-{{ order.id }}">
+                  <td data-label="{{ 'liquid.views.my_account_orders_index_page.column_order_number' | translate }}">
+                    <a href="{{ site.account_orders_url }}/{{ order.id }}">
+                      {{ order.number }}
+                    </a>
+                  </td>
+                  <td data-label="{{ 'liquid.views.my_account_orders_index_page.column_product' | translate }}">
+                    {% if order.has_subscription %}
+                      {{ 'liquid.views.my_account_orders_index_page.link_subscription' | translate }}
+                    {% endif %}
+                    {{ order.product_name }}
+                  </td>
+                  <td data-label="{{ 'liquid.views.my_account_orders_index_page.column_date' | translate }}">{{ order.created_date }}</td>
+                  <td data-label="{{ 'liquid.views.my_account_orders_shared.expires' | translate }}">{{ order.product_expiry_date }}</td>
+                  <td data-label="{{ 'liquid.views.my_account_orders_index_page.column_status' | translate }}">{{ order.status_key | translate }}</td>
+                  <td data-label="{{ 'liquid.views.my_account_orders_index_page.column_current_value' | translate }}">{{ order.cost }}</td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6" class="order-history--empty">
+                  <span>
+                    {{ 'liquid.views.my_account_orders_index_page.msg_empty_table' | translate }}
+                  </span>
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+</div>

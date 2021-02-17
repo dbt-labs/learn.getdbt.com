@@ -1,0 +1,151 @@
+// Countdown Timer
+// ======================================
+
+.countdown {
+  position: relative;
+
+  .section__headings {
+    @include screen-md-max {
+      margin: 0 0 $gutter-width;
+      text-align: center;
+    }
+    @include make-col(12);
+
+    margin: 0 0 $gutter-width;
+    text-align: center;
+  }
+
+  .section__heading,
+  .section__subheading {
+    color: $heading__color;
+  }
+
+  .section__heading {
+    margin: 0 0 $gutter-width / 4;
+    font-size: modular-scale(2);
+  }
+
+  .section__button-group {
+    display: block;
+    width: 100%;
+    padding-top: $gutter-width;
+    text-align: center;
+  }
+
+  .section__content {
+    @include make-col(12);
+
+    text-align: center;
+  }
+
+  ul {
+    margin-left: 0;
+  }
+}
+
+.countdown__container {
+  @include make-container;
+}
+
+.countdown__wrapper {
+  @include make-row(true);
+
+  padding-bottom: $gutter-width;
+}
+
+.countdown-clock {
+  @include screen-md-min {
+    width: auto;
+  }
+
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  font-size: 0;
+  list-style: none;
+  text-align: center;
+
+  li {
+    @include screen-sm-max {
+
+      &:nth-child(1),
+      &:nth-child(2) {
+        border-bottom: 1px solid $body__background-color;
+      }
+
+      &:nth-child(2) {
+
+        .countdown__chrono {
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 0;
+        }
+      }
+
+      &:nth-child(3) {
+
+        .countdown__chrono {
+          border-bottom-left-radius: 5px;
+        }
+      }
+    }
+    @include screen-sm-max {
+      width: 50%;
+    }
+    @include screen-sm-min {
+      font-size: 2rem;
+    }
+    @include screen-md-min {
+      min-width: 120px;
+    }
+
+    display: inline-block;
+    min-width: 25%;
+    border-right: 1px solid transparent;
+
+    &:nth-child(1) {
+
+      .countdown__chrono {
+        @include screen-md-min {
+          border-bottom-left-radius: 5px;
+        }
+
+        border-top-left-radius: 5px;
+      }
+    }
+
+    &:nth-child(4) {
+      border-right: 0;
+
+      .countdown__chrono {
+        @include screen-md-min {
+          border-top-right-radius: 5px;
+        }
+
+        border-bottom-right-radius: 5px;
+      }
+    }
+  }
+}
+
+.countdown__chrono {
+  padding: $gutter-width / 2;
+  background: $interface__background-color;
+  font-family: $heading__font-family;
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1;
+  text-align: center;
+  word-break: normal;
+
+  strong {
+    display: block;
+    padding: 5px 0 0;
+    font-family: $body__font-family;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+
+  span {
+    opacity: .6;
+  }
+}

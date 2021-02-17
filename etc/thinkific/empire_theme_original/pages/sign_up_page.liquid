@@ -1,0 +1,28 @@
+{% comment %}
+  This is the sign up page.
+{% endcomment %}
+
+<main class="sign-up" id="main-content" role="main">
+  <div class="sign-up__container">
+    <div class="sign-up__wrapper">
+      {% section 'signup_form' %}
+    </div>
+  </div>
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "banner",
+      "course_cards",
+      "frequently_asked_questions",
+      "call_to_action",
+      "countdown",
+      "video"
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

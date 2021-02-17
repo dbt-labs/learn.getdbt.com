@@ -1,0 +1,130 @@
+// Footer
+// ======================================
+
+.footer {
+  margin-top: auto;
+  padding-top: $gutter-width;
+  padding-bottom: $gutter-width / 2;
+  background-color: $footer__background-color;
+  color: $footer__text-color;
+
+  // TODO: BEM selectors for page_identifier
+  .home-landing-page &,
+  .course-landing-page &,
+  .bundle-landing-page & {
+    border-top: 0;
+  }
+
+  .section__content {
+    @include make-row(true);
+  }
+
+  .section__divide {
+    background-color: $body__text-color;
+  }
+}
+
+.footer__container {
+  @include make-container;
+}
+
+.footer__nav-site,
+.footer__nav-social,
+.footer__copyright,
+.footer__white-label {
+  @include screen-sm-min {
+    @include make-col(6);
+  }
+  @include make-col(12);
+}
+
+.footer__nav-site,
+.footer__nav-social {
+  text-align: center;
+
+  a {
+    display: inline-block;
+    color: $footer__link-color;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:active,
+    &:hover {
+      color: $footer__link-color--active;
+    }
+  }
+
+  li {
+    display: inline-block;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.footer__nav-site {
+  @include screen-sm-max {
+    margin-bottom: $gutter-width;
+  }
+  @include screen-sm-min {
+    text-align: left;
+  }
+
+  li {
+    margin-right: $gutter-width;
+  }
+
+  .footer__nav-item {
+
+    a {
+      font-size: modular-scale(-1);
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.footer__nav-social {
+  @include screen-sm-min {
+    text-align: right;
+  }
+
+  a {
+    font-size: 1.2rem;
+  }
+
+  li {
+    margin-right: $gutter-width / 2.5;
+  }
+}
+
+.footer__copyright,
+.footer__white-label {
+  color: $footer__text-color;
+  font-size: 0.875rem;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.footer__copyright {
+  @include screen-sm-min {
+    text-align: left;
+  }
+}
+
+.footer__white-label {
+  @include screen-sm-min {
+    text-align: right;
+  }
+
+  margin-right: 0;
+  margin-left: auto;
+
+  a {
+    color: $footer__text-color;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,258 @@
+<article class="sign-up__form">
+  <h3 class="page__heading margin-small">
+    {% if page.is_social_sign_up_step_two %}
+      {{ 'liquid.views.sign_up_page.header_complete_social_sign_up' | translate }}
+    {% else %}
+      {{ 'liquid.views.sign_up_page.header_create_account' | translate }}
+    {% endif %}
+  </h3>
+
+  {% form 'sign_up' %}
+    {% if errors.size > 0 %}
+      {% include 'form_errors' %}
+    {% endif %}
+
+    <div class="form-grid form-grid-left">
+
+      {% if fields.first_name || fields.last_name %}
+        <div class="form__group form-row">
+        
+          {% assign field = fields.first_name %}
+          <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+          <div class="form-response">
+            <input
+              type="text"
+              id="{{ field.name }}"
+              name="{{ field.name }}"
+              value="{{ field.value }}"
+              placeholder="{{ field.placeholder }}"
+              {% if field.required %}required{% endif %}
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              class="form__control form-control input-white input-shadow"
+              aria-describedby="{{ field.name }}-error"
+            />
+
+            <p
+              id="{{ field.name }}-error"
+              class="form__error-msg hidden help-block text-red"
+              role="alert"
+            >
+              {{ 'liquid.partials.form.field_cannot_be_blank' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="form-row">
+          
+
+          {% assign field = fields.last_name %}
+          <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+          <div class="form-response">
+            <input
+              type="text"
+              id="{{ field.name }}"
+              name="{{ field.name }}"
+              value="{{ field.value }}"
+              placeholder="{{ field.placeholder }}"
+              {% if field.required %}required{% endif %}
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              class="form__control form-control input-white input-shadow"
+              aria-describedby="{{ field.name }}-error"
+            />
+
+            <p
+              id="{{ field.name }}-error"
+              class="form__error-msg hidden help-block text-red"
+              role="alert"
+            >
+              {{ 'liquid.partials.form.field_cannot_be_blank' | translate }}
+            </p>
+          </div>
+          
+        </div>
+      {% endif %}
+
+      {% if fields.email %}
+        <div class="form__group form-row">
+          {% assign field = fields.email %}
+          <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+          <div class="form-response">
+            <input
+              type="email"
+              id="{{ field.name }}"
+              name="{{ field.name }}"
+              value="{{ field.value }}"
+              placeholder="{{ field.placeholder }}"
+              {% if field.required %}required{% endif %}
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              class="form__control form-control input-white input-shadow"
+              aria-describedby="{{ field.name }}-error"
+            />
+
+            <p
+              id="{{ field.name }}-error"
+              class="form__error-msg hidden help-block text-red"
+              role="alert"
+            >
+              {{ 'liquid.partials.form.please_enter_valid_email' | translate }}
+            </p>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if fields.password %}
+        <div class="form__group form-row">
+          {% assign field = fields.password %}
+          <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+          <div class="form-response">
+            <input
+              type="password"
+              id="{{ field.name }}"
+              name="{{ field.name }}"
+              placeholder="{{ field.placeholder }}"
+              {% if field.required %}required{% endif %}
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              class="form__control form-control input-white input-shadow"
+              aria-describedby="{{ field.name }}-error"
+            />
+
+            <p
+              id="{{ field.name }}-error"
+              class="form__error-msg hidden help-block text-red"
+              role="alert"
+            >
+              {{ 'liquid.partials.form.password_length' | translate }}
+            </p>
+          </div>
+        </div>
+      {% endif %}
+
+      {% for field in custom_signup_fields %}
+        {{ field.hidden_input }}
+
+        <div class="form__group form-row">
+          {% if field.type_is_country %}
+            <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+            <div class="form-response">
+              <select
+                id="{{ field.name }}"
+                name="{{ field.name }}"
+                {% if field.required %}required aria-describedby="custom-select-error"{% endif %}
+                class="form__control custom-select form-control input-white input-shadow"
+              >
+                <option value="" disabled selected>
+                  {{ 'users.registrations.custom_profile_field_definitions.prompt_select_country' | translate }}
+                </option>
+                {{ field.country_options }}
+              </select>
+
+              <p
+                id="custom-select-error"
+                class="form__error-msg hidden help-block text-red"
+                role="alert"
+              >
+                {{ 'liquid.partials.form.please_select_country' | translate }}
+              </p>
+            </div>
+              
+          {% else %}
+            <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+            <div class="form-response">
+              <input
+                type="text"
+                id="{{ field.name }}"
+                name="{{ field.name }}"
+                value="{{ field.value }}"
+                placeholder="{{ field.label }}"
+                {% if field.required %}required aria-describedby="custom-field-error"{% endif %}
+                class="form__control custom-field form-control input-white input-shadow"
+              />
+
+              <p
+                id="custom-field-error"
+                class="form__error-msg hidden help-block text-red"
+                role="alert"
+              >
+                {{ 'liquid.partials.form.field_cannot_be_blank' | translate }}
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {% if fields.terms != blank %}
+        <div class="form__group form-row">
+          {% assign field = fields.terms %}
+          {% comment %}
+            This hidden input is necessary so that things behave correctly when the checkbox is left unticked.
+          {% endcomment %}
+          <div class="form-label"><input type="hidden" name="{{ field.name }}" value="0" /></div>
+          <div class="form-response">
+            <label class="option">
+              <input
+                type="checkbox"
+                id="{{ field.name }}"
+                name="{{ field.name }}"
+                value="{{ field.value }}"
+                required
+                class="form__control"
+                aria-describedby="{{ field.name }}-error"
+              />
+              <i class="option-icon"></i>
+              <span for="{{ field.name }}">{{ field.label }}</span>
+            </label>
+            <p id="{{ field.name }}-error" class="form__error-msg hidden help-block text-red" role="alert">{{ 'liquid.partials.form.please_check_this_box' | translate }}</p>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+
+    <div class="form-footer btn-inliner">
+    {% if site.invisible_recaptcha_enabled %}
+      {% include 'recaptcha' %}
+    {% else %}
+      
+        <input
+          type="submit"
+          value="{{ fields.submit.label }}"
+          class="button button-primary btn btn-info"
+          id="sign-up"
+        />
+      
+    {% endif %}
+    {% unless page.is_social_sign_up_step_two %}
+  
+    <a href='{{ page.sign_in_url }}' class="btn btn-link">
+      {{ 'liquid.views.sign_up_page.link_sign_in' | translate }}
+    </a>
+  
+    {% endunless %}
+    </div>
+  {% endform %}
+
+  {% include 'remote_sign_in' %}
+</article>
+
+
+
+{% include 'form_validation_script' %}
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[]
+}
+{% endschema %}

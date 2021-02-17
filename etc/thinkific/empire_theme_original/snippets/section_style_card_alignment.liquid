@@ -1,0 +1,32 @@
+{% if section.settings.card_alignment == "left" %}
+  [class*="__list"],
+  .section__button-group {
+    @include screen-sm-min {
+      @include justify-content(flex-start);
+    }
+
+    @include screen-xs-max {
+      @include justify-content(center);
+    }
+  }
+{% endif %}
+
+{% if section.settings.card_alignment == "center" %}
+  [class*="__list"],
+  .section__button-group {
+    @include justify-content(center);
+  }
+{% endif %}
+
+{% if section.settings.card_alignment == "right" %}
+  [class*="__list"],
+  .section__button-group {
+    @include screen-sm-min {
+      @include justify-content(flex-end);
+    }
+
+    @include screen-xs-max {
+      @include justify-content(center);
+    }
+  }
+{% endif %}

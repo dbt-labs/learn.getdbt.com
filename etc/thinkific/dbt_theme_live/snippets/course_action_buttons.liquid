@@ -1,0 +1,79 @@
+{% comment %}
+  These are the buttons that can appear on a course landing page
+  Free Trial, Buy, Enroll for Free, etc.
+{% endcomment %}
+
+
+
+
+  {% assign course = page.course %}
+  
+    {% if course.user_can_resume %}
+      {% if course.user_enrollment_complete %}
+        <div class="card-control"><a href="{{ course.links.resume }}" target="_blank" class="btn btn-blue card-action">{{ 'liquid.partials.course_landing_page_action_buttons.link_review_course' | translate }}</a></div>
+      {% else %}
+        <div class="card-control"><a href="{{ course.links.resume }}" target="_blank" class="btn btn-blue card-action">{{ 'liquid.partials.course_landing_page_action_buttons.link_resume_course' | translate }}</a></div>
+      {% endif %}
+      {% if course.reviews_enabled %}
+        {% unless course.user_can_purchase %}
+          <div class="card-control"><a href="{{ course.links.review }}" target="_blank" class="btn btn-blue card-action">{{ 'liquid.partials.course_landing_page_action_buttons.link_rate_course' | translate }}</a></div>
+        {% endunless %}
+      {% endif %}
+    {% endif %}
+    {% if course.is_public %}
+      {% if course.is_free %}
+        <div class="card-control"><a href="{{ course.links.enroll_free }}" target="_blank" class="btn btn-blue card-action">{{ 'liquid.partials.course_landing_page_action_buttons.link_enroll_free' | translate }}</a></div>
+      {% endif %}
+      {% if course.user_can_purchase %}
+        <!--
+        {% if course.additional_prices != empty %}
+          <div class="form__select-no-label">
+            <label for="{{ course.name | kebab_case }}" class="sr-only">
+              {{ 'liquid.accessibility.select_label_multiple_prices' | translate }}
+            </label>
+            <select id="{{ course.name | kebab_case }}" name="{{ course.display_price }}" class="form__control course-action-buttons__additional-prices">
+              <option value="{{ course.links.buy }}" selected>{{ course.display_price }}</option>
+              {% for price in course.additional_prices %}
+                <option value="{{ price.links.add_to_cart }}">{{ price.display_price }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+        -->
+        <div class="card-control">
+        <a href="{{ course.links.buy }}" target="_blank" class="btn btn-blue card-action">
+          {% if course.additional_prices != empty %}
+            {{ 'liquid.partials.course_landing_page_action_buttons.buy_button_multiple_prices' | translate }}
+          {% else %}
+            {{ course.buy_button_text }}
+          {% endif %}
+        </a>
+        </div>
+        {% if course.has_free_trial %}
+          <div class="card-control"><a href="{{ course.links.enroll_free_trial }}" target="_blank" class="btn btn-blue card-action">{{ 'liquid.partials.course_landing_page_action_buttons.link_free_trial' | translate }}</a></div>
+        {% endif %}
+    {% endif %}
+  
+  {% else %}
+    {% if course.user_can_resume == false %}
+      <p class="product-action-button--private">
+        <i class="fa fa-lock" aria-hidden="true"></i>
+        <a href="mailto:{{ site.support_email }}" target="_blank">
+          {{ 'liquid.partials.course_landing_page_action_buttons.private_course_cta_text' | translate: site_support_email: site.support_email }}
+          <i class='fa fa-external-link' role='img' aria-label="{{ 'liquid.accessibility.new_window_warning' | translate }}"></i>
+        </a>
+      </p>
+    {% endif %}
+  {% endif %}
+
+
+<script>
+$(window).load(function() {
+  var $priceList = $('.course-action-buttons__additional-prices'),
+      $buttonPurchase = $('.course-action-buttons .button-purchase');
+  $buttonPurchase.attr('href', $priceList.val());
+  $priceList.on('change', function() {
+    $buttonPurchase.attr('href', $(this).val());
+  });
+});
+</script>

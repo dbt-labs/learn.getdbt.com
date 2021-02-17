@@ -1,0 +1,25 @@
+{% comment %}
+  This is the vendor logins for LinkedIn, etc.
+{% endcomment %}
+
+{% if page.has_remote_signin %}
+  <div class="remote-sign-in__vendor-logins">
+    <h3 class="remote-sign-in__divider">
+      <span>{{ 'liquid.views.sign_in_page.sign_in_or_text' | translate }}</span>
+    </h3>
+    <h3 class="remote-sign-up__divider">
+      <span>{{ 'liquid.views.sign_up_page.sign_up_or_text' | translate }}</span>
+    </h3>
+    {% if page.social_providers != null %}
+      <ul class="remote-sign-in__vendor-list">
+        {% for provider in page.social_providers %}
+          <li class="remote-sign-in__vendor-list-item">
+            <a href="{{ provider.oauth_url }}" class="button {{ provider.class }}" aria-label="{{ provider.oauth_url }}">
+              <i class="fa {{ provider.fa_icon }}" aria-hidden="true"></i>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endif %}

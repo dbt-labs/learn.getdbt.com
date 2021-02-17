@@ -1,0 +1,39 @@
+{% comment %}
+  This is the pagination list displayed below a list of products
+{% endcomment %}
+
+{% if paginate.pages > 1 %}
+  <nav class="pagination">
+    {% assign pagination_offset = paginate.current_offset | plus: 1 %}
+    {% if paginate.current_page != paginate.pages %}
+    {% assign pagination_offset_last = paginate.current_offset | plus: paginate.page_size %}
+    {% else %}
+    {% assign pagination_offset_last = paginate.items %}
+    {% endif %}
+    <ul class="pagination__pages">
+      <li>
+        {% if paginate.previous_page %}
+          <a href="{{ paginate.previous_page.url }}" aria-label="{{ 'liquid.accessibility.pagination_previous' | translate }}">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </a>
+        {% else %}
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        {% endif %}
+      </li>
+      {% for page in paginate.parts %}
+        <li {% if page.title == paginate.current_page %}class="active"{% endif %}>
+          <a href="{{ page.url }}" class="pagination__page-number">{{ page.title }}</a>
+        </li>
+      {% endfor %}
+      <li>
+        {% if paginate.next_page %}
+          <a href="{{ paginate.next_page.url }}" aria-label="{{ 'liquid.accessibility.pagination_next' | translate }}">
+            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+          </a>
+        {% else %}
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        {% endif %}
+      </li>
+    </ul>
+  </nav>
+{% endif %}

@@ -1,0 +1,89 @@
+// Typography
+// ======================================
+
+body {
+  font-family: $body__font-family;
+  font-size: $body__font-size;
+  font-weight: $body__font-weight;
+  line-height: $body__line-height;
+  // Legibility enhancement
+  text-rendering: optimizeLegibility;
+  text-shadow: 0 0 1px transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  word-break: break-word;
+}
+
+form,
+input,
+textarea,
+label,
+fieldset,
+legend,
+select,
+optgroup,
+option,
+datalist,
+keygen,
+output {
+  font-family: $body__font-family;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 $gutter-width / 2;
+  font-family: $heading__font-family;
+  line-height: $heading__line-height;
+}
+
+@each $size in 1, 2, 3, 4, 5, 6 {
+  h#{$size} {
+    font-size: modular-scale(6 - $size, $modular-scale-base-sm);
+  }
+}
+
+@include screen-md-min {
+  @each $size in 1, 2, 3, 4, 5, 6 {
+    h#{$size} {
+      font-size: modular-scale(6 - $size, $modular-scale-base-md);
+    }
+  }
+}
+
+@include screen-lg-min {
+  @each $size in 1, 2, 3, 4, 5, 6 {
+    h#{$size} {
+      font-size: modular-scale(6 - $size);
+    }
+  }
+}
+
+.page__heading {
+  @include page-heading;
+}
+
+.section__headings {
+  margin: 0 0 $gutter-width;
+}
+
+.section__heading {
+  @include heading;
+  @include screen-sm-min {
+    font-size: 2.2rem;
+  }
+
+  margin-bottom: $gutter-width / 4;
+  color: $heading__color;
+  font-size: 1.8rem;
+}
+
+.section__subheading {
+  @include subheading;
+
+  color: $heading__color;
+  font-size: 1.5rem;
+}

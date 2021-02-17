@@ -1,0 +1,170 @@
+<section class="countdown section-height__medium
+{% include 'section_utility_background_decoration' %}" data-preview-item="countdown">
+  <div class="countdown__container">
+    <div class="countdown__wrapper">
+      {% if section.settings.heading != blank or section.settings.subheading != blank %}
+        <header class="section__headings">
+          {% if section.settings.heading != blank %}
+            <h2 class="section__heading">{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <p class="section__subheading">{{ section.settings.subheading }}</p>
+          {% endif %}
+        </header>
+      {% endif %}
+      <div class="section__content section__body" role="timer" aria-atomic="true">
+        <ul class="countdown-clock section__body" data-deadline="{{ section.settings.expiry_date }}">
+          <li class="clock-days">
+            <div class="countdown__chrono">
+              <span class="countdown__count">00</span><strong>{{ 'liquid.partials.countdown.days' | translate }}</strong>
+            </div>
+          </li>
+          <li class="clock-hours">
+            <div class="countdown__chrono">
+              <span class="countdown__count">00</span><strong>{{ 'liquid.partials.countdown.hours' | translate }}</strong>
+            </div>
+          </li>
+          <li class="clock-minutes">
+            <div class="countdown__chrono">
+              <span class="countdown__count">00</span><strong>{{ 'liquid.partials.countdown.minutes' | translate }}</strong>
+            </div>
+          </li>
+          <li class="clock-seconds">
+            <div class="countdown__chrono">
+              <span class="countdown__count">00</span><strong>{{ 'liquid.partials.countdown.seconds' | translate }}</strong>
+            </div>
+          </li>
+        </ul>
+      </div>
+      {% if section.settings.button_text != blank %}
+        <div class="section__button-group">
+          <a class="button button-{{ section.settings.button_type }}" href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+$(document).ready(function() {
+  var dueDate = $('.countdown-clock');
+
+  if (dueDate) {
+    var deadline = dueDate.attr('data-deadline');
+    function getTimeRemaining(endtime) {
+      var t = Date.parse(endtime) - Date.parse(new Date().toISOString());
+      var negativeDate = t < 0;
+      var seconds = negativeDate ? 0 : Math.floor((t / 1000) % 60);
+      var minutes = negativeDate ? 0 : Math.floor((t / 1000 / 60) % 60);
+      var hours = negativeDate ? 0 : Math.floor((t / (1000 * 60 * 60)) % 24);
+      var days = negativeDate ? 0 : Math.floor(t / (1000 * 60 * 60 * 24));
+      return {
+        'total': t,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+      };
+    }
+    function initializeClock(id, endtime) {
+      var clock = $(id);
+      var daysSpan = clock.find('.clock-days .countdown__count');
+      var hoursSpan = clock.find('.clock-hours .countdown__count');
+      var minutesSpan = clock.find('.clock-minutes .countdown__count');
+      var secondsSpan = clock.find('.clock-seconds .countdown__count');
+      function updateClock() {
+        var t = getTimeRemaining(endtime);
+        daysSpan.html(t.days);
+        hoursSpan.html(('0' + t.hours).slice(-2));
+        minutesSpan.html(('0' + t.minutes).slice(-2));
+        secondsSpan.html(('0' + t.seconds).slice(-2));
+        if (t.total <= 0) {
+          clearInterval(timeinterval);
+        }
+      }
+      updateClock();
+      var timeinterval = setInterval(updateClock, 1000);
+    }
+    initializeClock(dueDate, deadline);
+  }
+});
+</script>
+
+{% style %}
+
+.countdown {
+  {% include 'section_style_background_decoration' %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Countdown timer",
+  "settings":[
+    {
+      "type":"checkbox",
+      "id":"section_background_decoration",
+      "label":"Show styled background",
+      "default":true
+    },
+    {
+      "type":"datetime",
+      "id":"expiry_date",
+      "label":"Expiry date and time (UTC)",
+      "default":"2018-12-31T18:00:00.000Z"
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Countdown timer"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Use this section to create urgency for your offer."
+        }
+      ]
+    },
+    {
+      "label":"Button",
+      "settings":[
+        {
+          "type":"page_picker",
+          "id":"button_link",
+          "label":"Link to",
+          "default":""
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Call to action"
+        },
+        {
+          "type":"radio",
+          "id":"button_type",
+          "label":"Button style",
+          "description":"",
+          "default":"primary",
+          "options":[
+            {
+              "value":"primary",
+              "label":"Primary"
+            },
+            {
+              "value":"secondary",
+              "label":"Secondary"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,40 @@
+{% comment %}
+  This is the menu that appears on the My Account page.
+{% endcomment %}
+
+<ul>
+  <li>
+    <a href="{{ site.account_edit_url }}" class="{% if page.page_identifier == 'my_account_page' %}active{% endif %}">
+      {{ 'liquid.partials.my_account_menu.custom_profile' | translate }}
+    </a>
+  </li>
+  <li>
+    <a href="{{ site.account_edit_password_url }}" class="{% if page.page_identifier == 'my_account_password_page' %}active{% endif %}">
+      {{ 'liquid.partials.my_account_menu.custom_password' | translate }}
+    </a>
+  </li>
+  {% if site.certificates_enabled %}
+    <li>
+      <a href="{{ site.account_certificates_url }}" class="{% if page.page_identifier == 'my_account_certificates_page' %}active{% endif %}">
+        {{ 'liquid.partials.my_account_menu.custom_certificates' | translate }}
+      </a>
+    </li>
+  {% endif %}
+  {% if site.current_user.can_change_notifications %}
+    <li>
+      <a href="{{ site.account_notifications_edit_url }}" class="{% if page.page_identifier == 'my_account_notifications_page' %}active{% endif %}">
+        {{ 'liquid.partials.my_account_menu.custom_notifications' | translate }}
+      </a>
+    </li>
+  {% endif %}
+  <li>
+    <a href="{{ site.account_billings_url }}" class="{% if page.page_identifier == 'my_account_billings_page' %}active{% endif %}">
+      {{ 'liquid.partials.my_account_menu.custom_billing' | translate }}
+    </a>
+  </li>
+  <li>
+    <a href="{{ site.account_orders_url }}" class="{% if page.page_identifier == 'my_account_order_list_page' or page.page_identifier == 'my_account_order_page' %}active{% endif %}">
+      {{ 'liquid.partials.my_account_menu.custom_order_history' | translate }}
+    </a>
+  </li>
+</ul>

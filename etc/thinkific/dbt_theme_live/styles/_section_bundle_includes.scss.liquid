@@ -1,0 +1,44 @@
+// Bundle Includes
+// ======================================
+
+.bundle-includes {
+
+  .section__headings {
+    margin: 0 0 $gutter-width;
+  }
+
+  .section__heading,
+  .section__subheading {
+    color: $heading__color;
+  }
+
+  .section__button-group {
+    text-align: right;
+  }
+
+  .course-card__lesson-count,
+  .course-card__price {
+    display: none;
+  }
+}
+
+.bundle-includes__container {
+  @include make-container;
+}
+
+.bundle-includes__list {
+  @include make-row(true);
+}
+
+.bundle-includes__list-item {
+  @include screen-sm-min {
+    max-width: 384px;
+  }
+  @include screen-lg-min {
+    max-width: 400px;
+  }
+  @include make-col(12);
+
+  max-width: 320px;
+  padding-bottom: $gutter-width;
+}

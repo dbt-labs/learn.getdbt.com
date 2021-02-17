@@ -1,0 +1,119 @@
+<section class="student-certificate" data-preview-item="student-certificate">
+  <div class="student-certificate__container">
+    {% if page.expired %}
+      <div class="student-certificate__expired">
+        <span class="student-certificate__expired__hr"></span>
+        <div class="student-certificate__expired__label__container">
+          <i class="toga-icon toga-icon-warning" aria-hidden="true"></i>
+          <span class="student-certificate__expired__label">{{ 'liquid.partials.student_certificate.certificate_expired' | translate }}</span>
+        </div>
+        <span class="student-certificate__expired__hr"></span>
+      </div>
+    {% endif %}
+
+    <div class="student-certificate__image">
+      <img src="{{ page.credential_image_url }}" alt="Certificate" class="img-responsive {% if page.expired %}faded{% endif %}" loading="lazy" />
+    </div>
+
+    <div class="student-certificate__data">
+      <div class="student-certificate__data__container">
+        <span class="student-certificate__data__label">{{ 'liquid.partials.student_certificate.student' | translate }}: </span>
+        <span class="student-certificate__data__value">{{page.student_name}}</span>
+      </div>
+      <div class="student-certificate__data__container">
+        <span class="student-certificate__data__label">{{ 'liquid.partials.student_certificate.school' | translate }}: </span>
+        <span class="student-certificate__data__value">{{page.school}}</span>
+      </div>
+      <div class="student-certificate__data__container">
+        <span class="student-certificate__data__label">{{ 'liquid.partials.student_certificate.course' | translate }}: </span>
+        <span class="student-certificate__data__value">{{page.course}}</span>
+      </div>
+      <div class="student-certificate__data__container">
+        <span class="student-certificate__data__label">{{ 'liquid.partials.student_certificate.certificate_id' | translate }}: </span>
+        <span class="student-certificate__data__value">{{page.certificate_id}}</span>
+      </div>
+      <div class="student-certificate__data__container">
+        <span class="student-certificate__data__label">{{ 'liquid.partials.student_certificate.issued' | translate }}: </span>
+        <span class="student-certificate__data__value">{{page.issue_date}}</span>
+      </div>
+      <div class="student-certificate__data__container">
+        <span class="student-certificate__data__label">{{ 'liquid.partials.student_certificate.expires' | translate }}: </span>
+        <span class="student-certificate__data__value">{{page.expiry_date}}</span>
+      </div>
+    </div>
+    
+    <div class="student-certificate__share">
+      {% if page.is_preview %}
+        <div class="addthis_inline_share_toolbox"></div>
+        <button class="button button-secondary">{{ 'liquid.partials.student_certificate.copy_link' | translate }}</button>
+        <button class="button button-secondary">{{ 'liquid.partials.student_certificate.download_pdf' | translate }}</button>      
+      {% else %}
+        {% if page.is_certificate_owner %}
+          <div class="addthis_inline_share_toolbox"></div>
+        {% endif %}
+        <button class="button button-secondary" id="copy-link">{{ 'liquid.partials.student_certificate.copy_link' | translate }}</button>
+        <button class="button button-secondary" id="download-pdf" data-pdf-url="{{page.pdf_path}}">{{ 'liquid.partials.student_certificate.download_pdf' | translate }}</button>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5eb1bccf7db2ae28"></script>
+<script>
+  function copyLink(e) {
+    const href = window.location.href;
+
+    if (navigator.clipboard) {
+      copyLinkUsingClipboardApi(e.target, href);
+    } else {
+      copyLinkUsingExecCommand(e.target, href);
+    }
+  }
+
+  async function copyLinkUsingClipboardApi(el, href) {
+    try {
+      await navigator.clipboard.writeText(href);
+      notifyCopiedToClipboard(el, 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
+  function copyLinkUsingExecCommand(el, href) {
+    const dummy = document.createElement('input');
+    document.body.appendChild(dummy);
+    dummy.value = href;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+    notifyCopiedToClipboard(el, 2000);
+  }
+
+  function notifyCopiedToClipboard(el, time) {
+    el.innerText = "{{ 'liquid.partials.student_certificate.copied' | translate }}";
+    setTimeout(() => {
+      el.innerText = "{{ 'liquid.partials.student_certificate.copy_link' | translate }}";
+    }, time);
+  }
+
+  function downloadPdf(e) {
+    const { origin } = window.location;
+    const pdfPath = $(e.target).data('pdf-url');
+    const downloadUrl = origin + pdfPath;
+    window.open(downloadUrl, '_blank', 'noopener');
+    ThinkificAnalytics.track('Certificate Record Downloaded', { 'Student Name': '{{ page.student_name | escape }}' });
+  }
+
+  $(document).ready(function () {
+    $('#copy-link').on('click', copyLink);
+    $('#download-pdf').on('click', downloadPdf);
+  });
+</script>
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[]
+}
+{% endschema %}

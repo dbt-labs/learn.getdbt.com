@@ -1,0 +1,22 @@
+{% comment %}
+  Javascript run at the bottom of the student dashboard page
+{% endcomment %}
+
+<script>
+  $(function() {
+    var result = /[\?&]status=(\w+)/.exec(window.location.href);
+    var statusDropdown = $('#status');
+    var searchForm = $('#search-form');
+
+    if(result != null) {
+      statusDropdown.val(result[1]);
+    }
+
+    statusDropdown.on('change', function() {
+      var status = $(this).val();
+      if(status) {
+        searchForm.submit();
+      }
+    });
+  });
+</script>

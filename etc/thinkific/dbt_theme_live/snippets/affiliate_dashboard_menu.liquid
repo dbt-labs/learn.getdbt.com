@@ -1,0 +1,26 @@
+{% comment %}
+  This is the menu that appears on the Affiliate Dashboard.
+{% endcomment %}
+
+<ul>
+  <li>
+    <a href="{{ site.affiliate_root_url }}" class="{% if page.page_identifier == 'affiliate_index_page' %}active{% endif %}">
+      {{ 'liquid.partials.affiliate_dashboard_menu.link_general_affiliate_information' | translate }}
+    </a>
+  </li>
+  <li>
+    <a href="{{ site.affiliate_links_url }}" class="{% if page.page_identifier == 'affiliate_links_page' %}active{% endif %}">
+      {{ 'liquid.partials.affiliate_dashboard_menu.link_affiliate_links' | translate }}
+    </a>
+  </li>
+  <li>
+    <a href="{{ site.affiliate_reports_url }}" class="{% if page.page_identifier == 'affiliate_reports_page' %}active{% endif %}">
+      {{ 'liquid.partials.affiliate_dashboard_menu.link_financial_reports' | translate }}
+    </a>
+  </li>
+  <li>
+    <a href="{{ site.edit_affiliate_settings_url }}" class="{% if page.page_identifier == 'affiliate_settings_page' %}active{% endif %}">
+      {{ 'liquid.partials.affiliate_dashboard_menu.link_settings' | translate }}
+    </a>
+  </li>
+</ul>

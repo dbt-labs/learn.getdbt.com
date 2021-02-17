@@ -1,0 +1,89 @@
+// Video
+// ======================================
+
+.video {
+
+  .section__content {
+    @include section-background-image;
+
+    border-radius: $base__border-radius;
+    z-index: 1;
+
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      content: "";
+      z-index: -1;
+      pointer-events: none;
+    }
+  }
+
+  .section__content__wrapper {
+    @include screen-sm-min {
+      padding: $gutter-width * 1.5 0 $gutter-width * 2;
+    }
+    @include screen-md-min {
+      padding: $gutter-width * 2 0 $gutter-width * 3;
+    }
+    @include screen-lg-min {
+      padding: $gutter-width * 3 0 $gutter-width * 4;
+    }
+
+    padding: $gutter-width 0;
+    text-align: center;
+  }
+
+  .section__headings {
+    margin: 0;
+    padding-top: $gutter-width;
+  }
+
+  .section__subheading {
+    margin: 0;
+  }
+}
+
+.video__container {
+  @include make-container;
+}
+
+.video__play-button {
+  @include screen-md-min {
+    width: 2.5em;
+    height: 2.5em;
+    font-size: modular-scale(2);
+    line-height: 2.5em;
+  }
+  @include transition(opacity 200ms ease);
+  @include backface-visibility(hidden);
+  @include filter(blur(0));
+
+  display: block;
+  width: 2em;
+  height: 2em;
+  margin: 0 auto;
+  border: 0;
+  border-radius: 50%;
+  background-color: $accent__color;
+  font-size: modular-scale(1);
+  letter-spacing: -3px;
+  line-height: 2em;
+  text-align: center;
+
+  &:active,
+  &:hover {
+    cursor: pointer;
+  }
+
+  .fa {
+    color: $white;
+  }
+}
+
+.section__video--trigger {
+  height: 0;
+  overflow: hidden;
+}

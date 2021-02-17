@@ -1,0 +1,85 @@
+// Affiliate
+// ======================================
+
+.affiliate {
+  @include page-padding;
+}
+
+.affiliate__container {
+  @include make-container;
+}
+
+.affiliate__wrapper {
+  @include make-row(true);
+}
+
+.affiliate__heading {
+  @include page-heading;
+}
+
+.affiliate__menu {
+  @include screen-sm-max {
+    @include order(2);
+  }
+  @include screen-lg-min {
+    @include make-col(3);
+  }
+  @include make-col(12);
+
+  @media screen and (min-width: $screen-md) and (max-width: $screen-md-max) {
+    margin: 0 0 $gutter-width;
+  }
+}
+
+.affiliate__content {
+  @include screen-sm-max {
+    @include order(1);
+    margin: 0 0 $gutter-width;
+  }
+  @include make-col(12);
+
+  .affiliate__menu + & {
+    @include screen-lg-min {
+      @include make-col(9);
+
+      padding-left: $gutter-width;
+    }
+  }
+
+  h2 {
+    @include page-heading;
+  }
+}
+
+.affiliate__links {
+  table-layout: auto;
+}
+
+.affiliate__links-homepage {
+  @include form-control;
+
+  display: inline-block;
+  width: auto;
+  background-color: $form__input-disabled;
+  line-height: 1;
+}
+
+.affiliate__commissions-owed {
+  p {
+    @include form-control;
+
+    display: inline-block;
+    width: auto;
+    min-width: 10rem;
+    background-color: $form__input-disabled;
+    line-height: 1;
+  }
+}
+
+.affiliate__commissions-owed,
+.affiliate__commissions-paid,
+.affiliate__commissions-overview {
+  h2 {
+    @include h3;
+  }
+}

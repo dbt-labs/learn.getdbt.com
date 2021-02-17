@@ -1,0 +1,199 @@
+// Sign-In/Out & Express Sign-In
+// ======================================
+
+.sign-in,
+.sign-up,
+.express-sign-in,
+.social-sign-up {
+  @include page-padding;
+}
+
+.sign-in,
+.sign-up,
+.social-sign-up {
+  .page__heading {
+    margin-bottom: $gutter-width;
+    text-align: center !important;
+  }
+}
+
+.sign-in__container,
+.sign-up__container,
+.express-sign-in__container,
+.social-sign-up__container {
+  @include make-container;
+}
+
+.sign-in__wrapper,
+.sign-up__wrapper,
+.express-sign-in__wrapper,
+.social-sign-up__wrapper {
+  @include make-row(false);
+  @include justify-content(center);
+}
+
+.sign-in__form,
+.sign-up__form,
+.express-sign-in__form,
+.social-sign-up__form {
+  @include screen-md-min {
+    @include make-col(10, false);
+  }
+  @include screen-lg-min {
+    @include make-col(6, false);
+  }
+  @include make-col(12, false);
+
+  form {
+    margin-bottom: $gutter-width * 1.5;
+  }
+
+  .button-primary {
+    margin: 0 auto;
+  }
+}
+
+.sign-in__sign-up,
+.sign-up__sign-in {
+  @include screen-md-min {
+    @include make-col(10, false);
+  }
+  @include screen-lg-min {
+    @include make-col(8, false);
+  }
+  @include make-col(12, false);
+
+  text-align: center;
+
+  a {
+    color: $body__text-color;
+    font-size: 0.875rem;
+  }
+}
+
+.sign-in {
+  .remote-sign-up__divider {
+    display: none;
+  }
+}
+
+.sign-up {
+
+  .remote-sign-in__divider {
+    display: none;
+  }
+}
+
+.remote-sign-in__vendor {
+
+  &-logins {
+    position: relative;
+    margin-bottom: $gutter-width;
+    text-align: center;
+  }
+
+  &-list {
+    margin-bottom: $gutter-width;
+    list-style: none;
+    text-align: center;
+
+    &-item {
+      display: inline-block;
+      margin: 0 $gutter-width / 4;
+
+      & a {
+        display: inline-block;
+        position: relative;
+        width: 3.5rem;
+        height: 3.5rem;
+        padding: 0 !important;
+        border-radius: 50%;
+        color: $white;
+        font-size: $gutter-width / 1.25;
+        line-height: 1.5;
+
+        &.facebook {
+          background-color: $facebook;
+        }
+
+        &.google-plus {
+          background-color: $google-plus;
+        }
+
+        &.instagram {
+          background-color: $instagram;
+        }
+
+        &.linkedin {
+          background-color: $linked-in;
+        }
+
+        &.pinterest {
+          background-color: $pinterest;
+        }
+
+        &.skype {
+          background-color: $skype;
+        }
+
+        &.slack {
+          background-color: $slack;
+        }
+
+        &.spotify {
+          background-color: $spotify;
+        }
+
+        &.twitter {
+          background-color: $twitter;
+        }
+
+        &.youtube {
+          background-color: $youtube;
+        }
+
+        .fa {
+          @include transform(translate3d(-50%, -50%, 0));
+
+          position: absolute;
+          top: 50%;
+          left: 50%;
+        }
+      }
+    }
+  }
+}
+
+.remote-sign-in__divider,
+.remote-sign-up__divider {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin-top: $gutter-width;
+  font-size: modular-scale(1) !important;
+  font-weight: 400;
+  text-align: center !important;
+  text-transform: lowercase;
+  opacity: 0.5;
+
+  &:before {
+    @include transform(translatex(-50%));
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 1px;
+    border-top: $interface__border-width $interface__border-style $body__text-color;
+    content: "";
+    z-index: 0;
+  }
+
+  span {
+    display: inline-block;
+    position: relative;
+    padding: 0 1rem;
+    background-color: $body__background-color;
+    z-index: 1;
+  }
+}

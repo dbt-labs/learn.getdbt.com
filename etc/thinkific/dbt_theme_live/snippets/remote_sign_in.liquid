@@ -1,0 +1,31 @@
+{% comment %}
+  This is the vendor logins for LinkedIn, etc.
+{% endcomment %}
+<hr/>
+{% if page.has_remote_signin %}
+  <div class="remote-sign-in__vendor-logins">
+    <!--<h5 class="remote-sign-in__divider">-->
+    <!--  <span>{{ 'liquid.views.sign_in_page.sign_in_or_text' | translate }}</span>-->
+    <!--</h5>-->
+    <h5 class="remote-sign-up__divider">
+      <span>{{ 'liquid.views.sign_up_page.sign_up_or_text' | translate }}</span>
+    </h5>
+    {% if page.social_providers != null %}
+      <div class="btn-inliner">
+        {% for provider in page.social_providers %}
+          
+            <a href="{{ provider.oauth_url }}" class="button {{ provider.class }} btn btn-white btn-shadow" aria-label="{{ provider.oauth_url }}">
+                {% case provider.class %}
+                    {% when 'facebook' %}<svg style="width:24px; top: -2px; vertical-align: middle; margin-right: 3px;" viewBox="0 0 24 24"><use xlink:href="#icon-facebook"></use></svg>
+                    {% when 'linkedin' %}<svg style="width:24px; top: -2px; vertical-align: middle; margin-right: 3px;" viewBox="0 0 24 24"><use xlink:href="#icon-linkedin"></use></svg>
+                    {% when 'google' %}<svg style="width:24px; top: -2px; vertical-align: middle; margin-right: 3px;" viewBox="0 0 24 24"><use xlink:href="#icon-google"></use></svg>
+                {% endcase %}
+                {{ provider.class | capitalize }}
+              
+            </a>
+          
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

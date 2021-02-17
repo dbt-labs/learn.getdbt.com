@@ -1,0 +1,9 @@
+{% assign counter = page.order.payments.size | plus: 1 %}
+{% for payment in page.order.payments %}
+  {% assign counter = counter | minus: 1 %}
+  <tr>
+    <td data-label="{{ 'liquid.views.my_account_orders_show_page.table_th_date' | translate }}">{{ payment.created_date }}</td>
+    <td data-label="{{ 'liquid.views.my_account_orders_show_page.table_th_product' | translate }}">{{ page.order.line_items.first.description }}: {{ counter }} of {{ page.order.number_of_recurring_payments }}</td>
+    <td data-label="{{ 'liquid.views.my_account_orders_show_page.table_th_amount' | translate }}">{{ payment.total }}</td>
+  </tr>
+{% endfor %}

@@ -1,0 +1,181 @@
+<section class="faq section-height__medium
+{% include 'section_utility_heading_alignment' %}" data-preview-item="faq">
+  <div class="faq__container">
+    <div class="faq__wrapper">
+      {% include 'section_headings' %}
+      <article class="section__content">
+        {% if section.blocks != empty %}
+        <ul class="faq__list section__body">
+          {% for block in section.blocks %}
+            <li class="faq__list-item">
+              <input type="checkbox" {% if !section.settings.show_collapsed %} checked="checked" {% endif %} aria-label="Expand or collapse"/>
+              <strong>{{ block.settings.faq_question }}<i aria-hidden="true"></i></strong>
+              <p>{{ block.settings.faq_answer }}</p>
+            </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </article>
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+.faq {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.heading_alignment == "center" %}
+    .section__body {
+      text-align: center;
+    }
+  {% endif %}
+
+  {% if section.settings.heading_alignment == "right" %}
+    .section__body {
+      text-align: right;
+    }
+
+    .faq__list-item {
+
+      i {
+        right: 0;
+        left: initial;
+      }
+
+      strong,
+      p {
+        padding-left: 0;
+        padding-right: $gutter-width;
+      }
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_top %}
+    .faq__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .faq__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Frequently asked questions",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"FAQ"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"show_collapsed",
+          "label":"Collapsed by default",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add FAQ",
+    "limit":9,
+    "types":[
+      {
+        "type":"faq",
+        "label":"Frequently asked question",
+        "settings":[
+          {
+            "type":"text",
+            "id":"faq_question",
+            "label":"Question"
+          },
+          {
+            "type":"textarea",
+            "id":"faq_answer",
+            "label":"Answer"
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"faq",
+        "values":{
+          "faq_question":"Include questions a potential student may have before purchase.",
+          "faq_answer":"Address common questions ahead of time to save yourself an email."
+        }
+      },
+      {
+        "type":"faq",
+        "values":{
+          "faq_question":"Include questions a potential student may have before purchase.",
+          "faq_answer":"Address common questions ahead of time to save yourself an email."
+        }
+      },
+      {
+        "type":"faq",
+        "values":{
+          "faq_question":"Include questions a potential student may have before purchase.",
+          "faq_answer":"Address common questions ahead of time to save yourself an email."
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

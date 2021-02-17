@@ -1,0 +1,210 @@
+{% if page.has_after_purchase_flow and page.after_purchase_flow.show_upsell_products %}
+<section class="checkout__thank-you-upsells">
+  <div class="checkout__thank-you-upsells__container">
+    {% if page.after_purchase_flow.upsell_products_heading != blank %}
+      <header class="section__headings checkout__thank-you-upsells__headings">
+        <h2 class="section__heading checkout__thank-you-upsells__heading">{{ page.after_purchase_flow.upsell_products_heading }}</h2>
+      </header>
+    {% endif %}
+
+    {% if page.after_purchase_flow.upsell_products.size > 1 %}
+      <article class="section__content">
+        <ul class="checkout__thank-you-upsells__list section__body">
+        {% for product in page.after_purchase_flow.upsell_products %}
+          <li class="checkout__thank-you-upsells__list-item">
+            <div class="course-card">
+              <a href="{{ product.links.landing_page_url }}" target="_blank" class="checkout__thank-you-upsells__list-item__link" aria-label="{{ product.name }} ({{ 'liquid.accessibility.new_window_warning' | translate }})">
+                {% if product.course.is_presell %}
+                  <div class="course-card__header-banner">
+                    {{ 'liquid.partials.course_card.presell_banner_text' | translate }}
+                  </div>
+                {% endif %}
+                <img
+                  src="{{ product.card_image_url }}"
+                  alt=""
+                  class="course-card__img"
+                  loading="lazy"
+                />
+              </a>
+              <div>
+                <a href="{{ product.links.landing_page_url }}" target="_blank">
+                  <div class="checkout__thank-you-upsells__details-container">
+                    <div class="checkout__thank-you-upsells__details">
+                      <h2 class="checkout__thank-you-upsells__title">{{ product.name }}</h2>
+                      <p class="checkout__thank-you-upsells__lesson-count course-card__lesson-count">
+                        {% if product.is_course %}
+                        {% assign course = product.course %}
+                          {{ course.lesson_count }} {{ 'liquid.partials.course_card.details_lessons' | translate }}
+                        {% elsif product.is_bundle %}
+                        {% assign bundle = product.bundle %}
+                          {{ bundle.courses.size }} {{ 'liquid.partials.bundle_card.details_courses' | translate }}
+                        {% endif %}
+                        <i class='fa fa-external-link' role='img' aria-label="{{ 'liquid.accessibility.new_window_warning' | translate }}"></i>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+                <div class="checkout__thank-you-upsells__purchase">
+                  {% if product.additional_prices != empty %}
+                    <div class="form__select-no-label checkout__thank-you-upsells__label">
+                      <label for="{{ product.name | kebab_case }}" class="sr-only">
+                        {{ 'liquid.accessibility.select_label_multiple_prices' | translate }}
+                      </label>
+                      <select id="{{ product.name | kebab_case }}" name="{{ product.display_price }}" class="form__control course-action-buttons__additional-prices checkout__thank-you-upsells__select" aria-label="{{ 'liquid.partials.course_landing_page_action_buttons.buy_button_multiple_prices' | translate }}">
+                        <option value="{{ product.links.buy }}" selected>{{ product.display_price }}</option>
+                          {% for price in product.additional_prices %}
+                            <option value="{{ price.links.add_to_cart }}">{{ price.display_price }}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                  {% else %}
+                    <h3 class="checkout__thank-you-upsells__price">{{ product.display_price }}</h3>
+                  {% endif %}
+                  <span class="checkout__thank-you-upsells__buy">
+                    <a href="{{ product.links.buy }}" class="button button-primary button-purchase checkout__thank-you-upsells__buy-link">
+                      {{ 'liquid.partials.course_landing_page_action_buttons.buy_button_multiple_prices' | translate }}
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+        </ul>
+
+      {% elsif page.after_purchase_flow.upsell_products.size == 1 %}
+        <article class="section__content checkout__thank-you-upsells__list-featured">
+        {% for product in page.after_purchase_flow.upsell_products %}
+          <div class="checkout__thank-you-upsells__details-container">
+            <div class="checkout__thank-you-upsells__details">
+              <a href="{{ product.links.landing_page_url }}" target="_blank">
+                <h2 class="checkout__thank-you-upsells__title">{{ product.name }}</h2>
+                <p class="checkout__thank-you-upsells__lesson-count course-card__lesson-count">
+                  {% if product.is_course %}
+                  {% assign course = product.course %}
+                    {{ course.lesson_count }} {{ 'liquid.partials.course_card.details_lessons' | translate }}
+                  {% elsif product.is_bundle %}
+                  {% assign bundle = product.bundle %}
+                    {{ bundle.courses.size }} {{ 'liquid.partials.bundle_card.details_courses' | translate }}
+                  {% endif %}
+                  <i class='fa fa-external-link' role='img' aria-label="{{ 'liquid.accessibility.new_window_warning' | translate }}"></i>
+                </p>
+              </a>
+              <div class="checkout__thank-you-upsells__purchase">
+                {% if product.additional_prices != empty %}
+                  <div class="form__select-no-label">
+                    <label for="{{ product.name | kebab_case }}" class="sr-only">
+                      {{ 'liquid.accessibility.select_label_multiple_prices' | translate }}
+                    </label>
+                    <select id="{{ product.name | kebab_case }}" name="{{ product.display_price }}" class="form__control course-action-buttons__additional-prices" aria-label="{{ 'liquid.partials.course_landing_page_action_buttons.buy_button_multiple_prices' | translate }}">
+                      <option value="{{ product.links.buy }}" selected>{{ product.display_price }}</option>
+                        {% for price in product.additional_prices %}
+                          <option value="{{ price.links.add_to_cart }}">{{ price.display_price }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                {% else %}
+                  <h3 class="checkout__thank-you-upsells__price">
+                    {{ product.display_price }}
+                  </h3>
+                {% endif %}
+                <span class="checkout__thank-you-upsells__buy">
+                  <a href="{{ product.links.buy }}" class="button button-primary button-purchase checkout__thank-you-upsells__buy-link">
+                    {{ 'liquid.partials.course_landing_page_action_buttons.buy_button_multiple_prices' | translate }}
+                  </a>
+                </span>
+              </div>
+            </div>
+            <a href="{{ product.links.landing_page_url }}" target="_blank" class="course-card__img-container" aria-label="{{ product.name }} ({{ 'liquid.accessibility.new_window_warning' | translate }})">
+              <img
+                src="{{ product.card_image_url }}"
+                alt=""
+                class="course-card__img"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        {% endfor %}
+      </article>
+    {% endif %}
+  </div>
+</section>
+{% endif%}
+
+<script>
+$(window).load(function() {
+  $('.checkout__thank-you-upsells__purchase').each(function() {
+    var $priceList = $(this).find('.course-action-buttons__additional-prices'),
+        $buttonPurchase = $(this).find('.button-purchase');
+
+    $priceList.on('change', function() {
+      $buttonPurchase.attr('href', $(this).val());
+    });
+  });
+});
+</script>
+
+{% style %}
+.checkout__thank-you-upsells {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .checkout__thank-you-upsells__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .checkout__thank-you-upsells__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+{% endstyle %}
+
+{% schema %}
+{
+  "label": "Upsells [smart section]",
+  "description":"This smart section automatically displays upsells configured in a course or bundle's after purchase settings. <a href='/manage/courses/' target='_blank'>Go to your courses</a>.",
+  "settings": [
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Heading alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

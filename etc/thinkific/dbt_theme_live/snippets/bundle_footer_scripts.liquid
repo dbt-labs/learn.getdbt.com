@@ -1,0 +1,17 @@
+{% comment %}
+  These are scripts that run in the footer of all bundle landing pages
+{% endcomment %}
+
+<script>
+$(document).ready(function() {
+  var buyButton = $('.button-purchase');
+
+  ThinkificAnalytics.track('Bundle Landing Page', { 'Bundle Name': '{{ page.bundle_name }}' });
+
+  buyButton.on('click', function(e){
+    ThinkificAnalytics.track('Buy Bundle Btn Clicked', { 'Bundle Name': '{{ page.bundle_name }}' });
+  });
+});
+</script>
+
+{{ page.landing_page_code }}

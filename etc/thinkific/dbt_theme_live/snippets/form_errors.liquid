@@ -1,0 +1,11 @@
+{% comment %}
+  This is the wrapper for form errors
+{% endcomment %}
+
+<div id="notice" class="notice__form-error text-red margin-small">
+  
+    {% for error in errors %}
+      <span role="alert">{{ error }}.</span>
+    {% endfor %}
+  
+</div>

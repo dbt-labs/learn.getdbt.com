@@ -1,0 +1,150 @@
+<section class="course-categories section-height__medium
+{% include 'section_utility_heading_alignment' %}" data-preview-item="course-categories">
+  <div class="course-categories__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <ul class="course-category__list">
+          {% for block in section.blocks %}
+          {% assign category = block.settings.category %}
+            <li class="course-category__list-item">
+              <a class="course-category-card" href="{{ category.url }}" aria-label="{{ category.name }}">
+                <div class="course-category-card__img-container">
+                  {% if category.image.medium != blank %}
+                    {% assign category_image = category.image.medium %}
+                  {% else %}
+                    {% assign category_image = category.image.original %}
+                  {% endif %}
+
+                  {% if block.settings.show_category_name %}
+                    <img
+                      src="{{ category_image }}"
+                      alt="{{ category.name }}"
+                      class="course-category-card__img"
+                      loading="lazy"
+                    />
+                    <h3 class="course-category-card__title">{{ category.name }}</h3>
+                  {% else %}
+                    <img
+                      src="{{ category_image }}"
+                      alt="{{ category.name }}"
+                      class="course-category-card__img"
+                      loading="lazy"
+                    />
+                  {% endif %}
+                </div>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% style %}
+
+.course-categories {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .course-categories__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .course-categories__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Categories",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Categories"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add category",
+    "limit":12,
+    "types":[
+      {
+        "type":"category",
+        "label":"Category",
+        "settings":[
+          {
+            "type":"category_picker",
+            "id":"category",
+            "label":"Category"
+          },
+          {
+            "type":"checkbox",
+            "id":"show_category_name",
+            "label":"Show category name",
+            "default":true
+          }
+        ]
+      }
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

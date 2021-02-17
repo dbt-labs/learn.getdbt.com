@@ -1,0 +1,3 @@
+{% if section.settings.section_height_preset != blank %}
+  {{ section.settings.section_height_preset | prepend: 'section-height__' }}
+{% endif %}

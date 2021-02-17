@@ -1,0 +1,40 @@
+{% comment %}
+  The default theme page layout
+{% endcomment %}
+
+<!DOCTYPE html>
+<!--
+
+@@@@@@@@@@@@@    @@          @@    @@    @@@       @@    @@@     @@@    @@@    @@@@@@@@@@@    @@@       @@@@@@@@@@
+     @@@         @@          @@    @@    @@@@@     @@    @@@    @@@     @@@    @@             @@@      @@@      @@@
+     @@@         @@          @@    @@    @@ @@@    @@    @@@   @@@      @@@    @@             @@@     @@
+     @@@         @@@@@@@@@@@@@@    @@    @@  @@@   @@    @@@  @@@       @@@    @@             @@@    @@
+     @@@         @@@@@@@@@@@@@@    @@    @@   @@@@ @@    @@@  @@@       @@@    @@@@@@@@@@@    @@@    @@
+     @@@         @@          @@    @@    @@    @@@ @@    @@@   @@@      @@@    @@             @@@     @@@
+     @@@         @@          @@    @@    @@      @@@@    @@@    @@@     @@@    @@             @@@      @@@@      @@
+     @@@         @@          @@    @@    @@       @@@    @@@     @@@    @@@    @@             @@@       @@@@@@@@@@
+
+    Everything you need to create and launch courses on your own site [ https://www.thinkific.com ]
+-->
+<html lang="{{site.locale}}">
+  <head>
+    {{ required_header_content }}
+    {% include 'meta_tags' %}
+    {% include 'page_wide_css' %}
+    {% include 'theme_wide_css' %}
+  </head>
+  <body class="{{ page.page_identifier | kebab_case }} {{ theme.preset_name | kebab_case }}">
+    <div id="skip-link">
+      <a href="#main-content">
+        {{ 'liquid.accessibility.skip_to_main_content' | translate }}
+      </a>
+    </div>
+    {% section 'page_header' %}
+    {{ content_for_layout }}
+    {% section 'footer' %}
+    {{ required_footer_content }}
+    {% include 'site_wide_script' %}
+    {% include 'theme_wide_script' %}
+    <div class="overlay"></div>
+  </body>
+</html>

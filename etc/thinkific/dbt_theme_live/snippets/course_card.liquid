@@ -1,0 +1,34 @@
+{% comment %}
+  This is the card representation of your course.
+{% endcomment %}
+
+
+{% if item.course.image.medium != blank %}{% assign product_image = item.course.image.medium %}{% else %}{% assign product_image = item.course.image.original %}{% endif %}
+
+<div class="card">
+	<a href="{{ item.resume_course_url | default: item.course.links.landing_page_url }}" class="card-graphic"><img src="{{ product_image }}"/></a>
+	<div class="card-body compact">
+		<h4>{{ item.course.name }}</h4>
+		<p class="text-small">{{item.course.description}}</p>
+		<p class="margin-small-top">
+			<a href="{{ item.course.links.landing_page_url }}" class="btn btn-sm btn-blue margin-large-right" >
+			{% if item.course.is_presell %}
+			    View Course
+            {% elsif item.progress_percentage > 0 and item.progress_percentage < 100 %}
+                {{ 'liquid.partials.dashboard_course_card.link_resume_course' | translate }}
+            {% elsif item.progress_percentage == 100 %}
+                {{ 'liquid.partials.dashboard_course_card.link_replay_course' | translate }}
+            {% else %}
+                <!--{{ 'liquid.partials.dashboard_course_card.link_start_course' | translate }}-->
+                View Course
+            {% endif %}
+		    </a>
+			{% if item.has_enrollment and item.progress_percentage > 0 %}
+			<span class="completion">
+				<svg class="completion-ring text-blue" style="--completion: {{item.progress_percentage}}"><use xlink:href="#completion"></use></svg>
+				<span class="completion-text">{{item.progress_percentage}}% Complete</span>
+			</span>
+			{% endif %}
+		</p>
+	</div>
+</div>

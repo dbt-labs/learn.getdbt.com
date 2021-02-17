@@ -1,0 +1,199 @@
+<section class="pricing-table pricing-options section-height__medium
+{% include 'section_utility_column_layout' %}
+{% include 'section_utility_heading_alignment' %}" data-preview-item="pricing-options">
+  <div class="pricing-table__container">
+    <div class="pricing-table__wrapper">
+      {% include 'section_headings' %}
+      <article class="section__content">
+        {% if section.settings.product_prices != null %}
+          {% assign product = section.settings.product_prices %}
+          <ul class="pricing-table__list section__body">
+            {% if product.is_course %}
+              {% if product.is_free %}
+                {% assign enroll_free_text = 'liquid.partials.course_landing_page_action_buttons.link_enroll_free' | translate %}
+              {% endif %}
+            {% elsif product.is_bundle %}
+              {% if product.is_free %}
+                {% assign enroll_free_text = product.enroll_free_button_text %}
+              {% endif %}
+            {% endif %}
+            {% if section.settings.button_text != empty %}
+              {% assign button_text = section.settings.button_text %}
+            {% else %}
+              {% assign button_text = "Buy Now" %}
+            {% endif %}
+            <li class="pricing-table__list-item">
+              <div class="pricing-table__list-item-details">
+                <p class="pricing-table__list-item-details__price">{{ product.display_price }}</p>
+                {% if section.settings.price_name != empty %}
+                  <p class="pricing-table__list-item-details__name">{{ section.settings.price_name }}</p>
+                {% endif %}
+              </div>
+              {% if product.is_free %}
+                <a href="{{ product.links.enroll_free }}" class="button button-{{ section.settings.button_type }}">{% if section.settings.button_text != empty %}{{ button_text }}{% else %}{{ enroll_free_text }}{% endif %}
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+              {% else %}
+                {% assign product_url = product.links.buy %}
+                <a href="{{ product_url }}" class="button button-{{ section.settings.button_type }}">
+                  {{ button_text }}
+                  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+              {% endif %}
+            </li>
+            {% for price in product.additional_prices %}
+              <li class="pricing-table__list-item">
+                <div class="pricing-table__list-item-details">
+                  <p class="pricing-table__list-item-details__price">{{ price.display_price }}</p>
+                  <p class="pricing-table__list-item-details__name">{{ price.name }}</p>
+                </div>
+                <a href="{{ price.links.add_to_cart }}" class="button button-{{ section.settings.button_type }}">{{ button_text }}<i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </article>
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+.pricing-options {
+  {% include 'section_style_column_layout' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .pricing-table__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .pricing-table__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Pricing options",
+  "description":"This section includes all of the pricing options for a product of your choice.",
+  "settings":[
+    {
+      "type":"product_picker",
+      "id":"product_prices",
+      "label":"Product"
+    },
+    {
+      "type": "text",
+      "id": "price_name",
+      "label": "Default price description",
+      "default": "Regular price"
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Pricing options"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Explain how different pricing options might be valuable to different segments of your audience."
+        }
+      ]
+    },
+    {
+      "label":"Button & text",
+      "settings":[
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Button text",
+          "default":"Get started now"
+        },
+        {
+          "type":"radio",
+          "id":"button_type",
+          "label":"Button style",
+          "description":"",
+          "default":"primary",
+          "options":[
+            {
+              "value":"primary",
+              "label":"Primary"
+            },
+            {
+              "value":"secondary",
+              "label":"Secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"column_layout",
+          "label":"Layout",
+          "description":"",
+          "default":"two-column",
+          "options":[
+            {
+              "value":"one-column",
+              "label":"One Column"
+            },
+            {
+              "value":"two-column",
+              "label":"Two Columns"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Heading alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

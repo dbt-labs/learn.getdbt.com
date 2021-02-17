@@ -1,0 +1,105 @@
+// Lists
+// ======================================
+
+[class*="__wrapper"] {
+  & > [class*="__menu"] {
+    ul {
+      @include screen-sm-max {
+        box-shadow: $shadow-interface;
+      }
+      @include screen-lg-min {
+        box-shadow: $shadow-interface;
+      }
+    }
+
+    li {
+      display: block;
+
+      a {
+        @include transition(color 0 ease);
+
+        display: block;
+        position: relative;
+        padding: 8px 16px;
+        background-color: $interface__background-color;
+        color: dynamic-contrast-color($body__background-color);
+        font-weight: 500;
+        text-align: left;
+        text-decoration: none;
+        text-transform: capitalize;
+
+        &.active,
+        &:active,
+        &:hover {
+          color: $accent__color;
+        }
+
+        &:before {
+          @include transition(width 200ms ease-in-out);
+
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 0;
+          height: 100%;
+          background-color: $accent__color;
+          content: "";
+        }
+
+        &:active,
+        &:hover,
+        &.active {
+          &:before {
+            @include transition(width 300ms ease-in-out);
+
+            width: 5px;
+          }
+        }
+      }
+    }
+
+    @media screen and (min-width: $screen-md) and (max-width: $screen-md-max) {
+      ul {
+        border: 0;
+        border-bottom: $interface__border;
+        font-size: 0;
+      }
+
+      li {
+        display: inline-block;
+        width: auto;
+
+        &:first-child {
+          a {
+            border-left: $interface__border;
+          }
+        }
+
+        a {
+          position: relative;
+          top: 1px;
+          border-top: $interface__border;
+          border-right: $interface__border;
+          font-size: 1rem;
+
+          &:before {
+            content: none;
+          }
+
+          &.active {
+            border-bottom: 1px solid $interface__background-color;
+            background: $interface__background-color--active;
+          }
+
+          &.active,
+          &:active,
+          &:hover {
+            border-bottom-color: $body__background-color;
+            background-color: $body__background-color;
+          }
+        }
+      }
+    }
+  }
+}

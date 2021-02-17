@@ -1,0 +1,25 @@
+{% comment %}
+  This is the card representation of your course categories.
+{% endcomment %}
+<a class="course-category-card" href="{{ collection.url }}">
+  <div class="course-category-card__img-container">
+    {% if collection.image.medium != blank %}
+      {% assign category_image = collection.image.medium %}
+    {% else %}
+      {% assign category_image = collection.image.original %}
+    {% endif %}
+    <img
+      src="{{ category_image }}"
+      {% if section.settings.show_category_name %}
+        alt=""
+      {% else %}
+        alt="{{ collection.name }}"
+      {% endif %}
+      class="course-category-card__img"
+      loading="lazy"
+    />
+    {% if section.settings.show_category_name %}
+      <h3>{{ collection.name }}</h3>
+    {% endif %}
+  </div>
+</a>

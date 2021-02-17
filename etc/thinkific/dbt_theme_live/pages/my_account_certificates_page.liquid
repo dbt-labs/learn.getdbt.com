@@ -1,0 +1,49 @@
+{% comment %}
+  This is the 'my account certificates' page.
+  Here, a user can view all of their completed certificates.
+  Note: Completion Certificates are only available on certain plans.
+        This page will be hidden if Completion Certificates are not enabled.
+{% endcomment %}
+
+<div class="my-account">
+  {% include 'my_account_banner' %}
+  <div class="my-account__container">
+    <div class="my-account__wrapper">
+      <aside class="my-account__menu hidden-print">
+        {% include 'my_account_menu' %}
+      </aside>
+      <main class="my-account__content" id="main-content" role="main">
+        <h3 class="my-account__subheading">{{ 'liquid.views.my_account_certificates_page.header_my_certificates' | translate }}</h3>
+        {% if site.current_user.has_certificates %}
+          <p>{{ 'liquid.views.my_account_certificates_page.table.header_certificates' | translate }}</p>
+          <table class="my-account__certificates table--responsive">
+            <thead>
+              <tr>
+                <th>{{ 'liquid.views.my_account_certificates_page.table.column_course' | translate }}</th>
+                <th>{{ 'liquid.views.my_account_certificates_page.table.column_completed_at' | translate }}</th>
+                <th>{{ 'liquid.views.my_account_certificates_page.table.column_certificate' | translate }}</th>
+              </tr>
+            <tbody>
+              {% for enrollment in page.enrollments_with_certificates %}
+                <tr>
+                  <td class="certificate-entry" data-label="{{ 'liquid.views.my_account_certificates_page.table.column_course' | translate }}">{{ enrollment.course_name | truncate: 25 }}</td>
+                  <td data-label="{{ 'liquid.views.my_account_certificates_page.table.column_completed_at' | translate }}">{{ enrollment.completed_at | date: '%B %d, %Y %H:%M' }}</td>
+                  <td data-label="{{ 'liquid.views.my_account_certificates_page.table.column_certificate' | translate }}">
+                    <a href="{{ enrollment.certificate_url }}" target="_blank">
+                      {{ 'liquid.views.my_account_certificates_page.table.view' | translate }}
+                      <i class='fa fa-external-link' role='img' aria-label="{{ 'liquid.accessibility.new_window_warning' | translate }}"></i>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="my-account__no-certificates">
+            {{ 'liquid.views.my_account_certificates_page.msg_no_certificates' | translate }}
+          </p>
+        {% endif %}
+      </main>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,190 @@
+// Banner
+// ======================================
+
+.banner-course {
+  @include screen-lg-min {
+    @include display(flex);
+    @include align-items(center);
+  }
+
+  &.section--has-video,
+  &.section--has-video-thumbnail {
+
+    &.section__content-alignment--left,
+    &.section__content-alignment--center {
+
+      .section__content {
+        @include screen-lg-min {
+          padding-right: $gutter-width;
+        }
+        @include screen-xl-min {
+          padding-right: $gutter-width * 1.5;
+        }
+      }
+    }
+
+    &.section__content-alignment--right {
+      @include screen-lg-min {
+        .section__content {
+          @include order(2);
+        }
+
+        .section__video {
+          @include order(1);
+        }
+      }
+
+      .section__content {
+        @include screen-lg-min {
+          padding-right: 0;
+          padding-left: $gutter-width * 1.5;
+        }
+      }
+    }
+
+    .section__content {
+      @include screen-md-max {
+        padding-bottom: $gutter-width * 1.5;
+      }
+    }
+  }
+
+  &.section--has-video-thumbnail {
+
+    .section__video__wrapper {
+      @include screen-md-min {
+        min-height: 24rem;
+      }
+      min-height: 18rem;
+    }
+  }
+
+  &.section-background-image {
+    background-position: top;
+  }
+
+  &.section--has-free-trial {
+
+    .section__content {
+      @include screen-tablet-only {
+        @include make-col(12, false);
+      }
+    }
+
+    .section__video {
+      @include screen-tablet-only {
+        @include make-col(12, false);
+      }
+    }
+
+    .course-action-buttons--has-additional-prices {
+       @include screen-sm-max {
+        .button,
+        .form__control.course-action-buttons__additional-prices {
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+
+  .section__content {
+    @include screen-md-min {
+      @include make-col(8);
+    }
+    @include screen-lg-min {
+      @include make-col(6);
+    }
+    @include make-col(12);
+  }
+
+  .section__headings {
+    @include screen-lg-min {
+      margin: 0;
+      padding-top: $gutter-width * 2;
+    }
+  }
+
+  .section__heading {
+    font-family: $banner__font-family;
+    font-size: modular-scale(4);
+    font-weight: $banner__font-weight;
+  }
+
+  .section__subheading {
+    font-family: $subheading__font-family;
+    font-size: modular-scale(0);
+    font-weight: $subheading__font-weight;
+  }
+
+  .section__button-group {
+    @include button-group;
+    @include screen-xl-min {
+      @include flex-wrap(nowrap);
+    }
+
+    margin-bottom: $gutter-width;
+
+    .course-action-buttons__purchase {
+
+      &:only-child {
+        width: 100%;
+      }
+    }
+
+    .button {
+      @include screen-xs-max {
+        margin-bottom: 1rem;
+      }
+
+      padding: 0.5rem 1.5rem;
+
+      &-free-trial {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .video__play-button {
+    @include transform(translate3d(-50%, -50%, 0));
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: z-index(element--foreground);
+  }
+  .section__video {
+    @include screen-lg-min {
+      @include make-col(6, false);
+
+      padding-right: 0;
+      padding-left: 0;
+    }
+    @include make-col(12, false);
+    @include align-self(center);
+
+    &:after {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      z-index: z-index(element--background);
+    }
+
+    &__wrapper {
+      box-shadow: $shadow-image;
+    }
+  }
+}
+
+.banner-course__container {
+  @include make-container;
+}
+
+.banner-course__wrapper {
+  @include make-row(true);
+}

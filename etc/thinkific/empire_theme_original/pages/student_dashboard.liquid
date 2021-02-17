@@ -1,0 +1,28 @@
+{% comment %}
+  This is the page students will see when they log in. It shows their all of
+  the courses they have taken, and lets them filter by
+  Completed, In Progress or Expired.
+{% endcomment %}
+
+<main class="student-dashboard" id="main-content" role="main">
+  {% section 'student_dashboard' %}
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "banner",
+      "course_cards",
+      "frequently_asked_questions",
+      "call_to_action",
+      "countdown",
+      "video"
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}
+
+{% include 'dashboard_footer_scripts' %}

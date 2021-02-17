@@ -1,0 +1,82 @@
+{% comment %}
+  These are scripts run in the footer of course landing pages.
+{% endcomment %}
+
+<script>
+  $(function(){
+    ThinkificAnalytics.track('Course Landing Page', {{ page.thinkific_analytics_course_data }});
+
+    var buyButton = $('.btn-purchase');
+    var readMoreText = "{{ 'liquid.partials.course_footer_scripts.read_more_text' | translate }}";
+    var readLessText = "{{ 'liquid.partials.course_footer_scripts.read_less_text' | translate }}";
+    var readmoreBtn = $('.readmore-toggle');
+    var readmore = $('.readmore');
+    var	readmoreHeight = readmore.height(), minHeight = 270;
+
+    buyButton.on('click', function(e){
+      ThinkificAnalytics.track('Buy Course Btn Clicked', {{ page.thinkific_analytics_course_data }});
+    });
+
+    if ($('#cta-overlay').length > 0) {
+      $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+        if (scroll >= 500) {
+            $('#cta-overlay').removeClass('hide');
+        } else {
+            $('#cta-overlay').addClass('hide');
+        }
+      });
+    }
+
+    if(readmoreHeight > minHeight) {
+      readmore.addClass('less');
+      readmoreBtn.on('click', function() {
+        readmore.toggleClass('less');
+        if(readmore.hasClass('less')) {
+          readmoreBtn.text(readMoreText);
+          var sideBar = $(".sidebar-filler");
+          $('html, body').animate({scrollTop: sideBar.offset().top - 0}, 'slow');
+        } else {
+          readmoreBtn.text(readLessText);
+        }
+      });
+    }
+    else if(readmoreHeight == minHeight) {
+      readmoreBtn.addClass('hidden');
+    }
+    else {
+      readmoreBtn.addClass('hidden');
+    }
+
+    $('.toggle-content').on('click', function() {
+      var toggleText = $(this).text().trim();
+      if(toggleText == "{{ 'liquid.partials.course_footer_scripts.hide_content_text' | translate }}") {
+        var showText = "{{ 'liquid.partials.course_footer_scripts.show_content_text' | translate }}";
+        $(this).text(showText);
+      } else {
+        var hideText = "{{ 'liquid.partials.course_footer_scripts.hide_content_text' | translate }}";
+        $(this).text(hideText);
+      }
+    });
+  });
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=284275161658450";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Twitter
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,'script','twitter-wjs');
+
+  // Google+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+{{ page.landing_page_code }}

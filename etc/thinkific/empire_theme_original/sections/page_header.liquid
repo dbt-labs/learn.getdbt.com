@@ -1,0 +1,290 @@
+{% if section.settings.site_url != null %}
+  {% assign site_url = section.settings.site_url %}
+{% else %}
+  {% assign site_url = site.home_url %}
+{% endif %}
+{% include 'section_utility_header_style' %}
+<header class="header" data-preview-item="header" data-menu-style="{{ header_style }}" data-menu-type="header__nav--overlay" aria-expanded="false">
+  <div class="header__container">
+    <div class="header__wrapper">
+      {% include 'logo' %}
+      {% include 'navigation' %}
+    </div>
+  </div>
+</header>
+
+<script>
+$(document).ready(function() {
+  var headerHeight = 0
+
+  function dynamicHeaderHeight() {
+    var $logo = $('.logo');
+    $logo.bind('load', function () {
+      headerHeight = this.height;
+      {% if section.settings.header_style == "floating" %}
+        $main.find('section').eq(0).css({
+          'padding-top': headerHeight
+        });
+      {% endif %}
+    });
+  }
+
+  var $adminBar = $('.admin-notice__bar'),
+      $body = $('body.home-landing-page, body.course-landing-page, body.bundle-landing-page, body.page-template, body.coming-soon-page, body.student-certificate-page'),
+      $header = $('.header'),
+      $main = $('.home-landing-page main, .course-landing-page main, .bundle-landing-page main, .page-template main, .coming-soon-page main, .student-certificate-page main'),
+      $dropdownToggle = $('.dropdown__toggle-button'),
+      $mobileButton = $('.header__mobile-button'),
+      $navigation = $('.header__nav'),
+      $dropdownMenu = $('.dropdown__menu');
+
+      dynamicHeaderHeight();
+
+  var adminBarHeight = $adminBar.outerHeight(),
+      beforeHeaderHeight = $body.find('>div').nextUntil('.header').outerHeight(),
+      headerTop = $header.offset().top,
+      isMobile = window.matchMedia("only screen and (max-width: 767px)");
+
+  if(adminBarHeight != NaN) {
+    $body.css({
+      'margin-bottom': adminBarHeight
+    });
+  }
+  $dropdownToggle.on('click keypress', function(e) {
+    if (e.which === 13 || e.type === 'click') {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.dropdown').toggleClass('open');
+      $dropdownMenu.attr('aria-expanded', $dropdownMenu.attr('aria-expanded') == 'true' ? 'false' : 'true');
+    }
+  });
+  $mobileButton.on('click keypress', function(e) {
+    if (e.which === 13 || e.type === 'click') {
+      e.preventDefault();
+      e.stopPropagation();
+      $header.attr('data-menu', $header.attr('data-menu') == 'open' ? 'closed' : 'open');
+      $header.attr('aria-expanded', $header.attr('aria-expanded') == 'true' ? 'false' : 'true');
+      $mobileButton.toggleClass('open');
+      $navigation.focus();
+    }
+  });
+  {% if section.settings.menu_fixed %}
+    $(window).bind('scroll', function (e) {
+      if(!isMobile.matches) {
+        if ($(window).scrollTop() > headerTop) {
+          $adminBar.addClass('fixed');
+          $header.addClass('fixed');
+          if($header.data('menu-style') != 'floating') {
+            $body.css({
+              'padding-top': beforeHeaderHeight + headerHeight,
+            });
+          }
+        }
+        if ($(window).scrollTop() <= headerTop) {
+          $adminBar.removeClass('fixed');
+          if($header.data('menu-style') != 'floating') {
+            $body.css({
+              'padding-top': 0
+            });
+          }
+          $header.removeClass('fixed');
+        }
+      }
+      else {
+        $header.removeClass('fixed');
+      }
+    });
+  {% endif %}
+  $(window).resize(function() {
+    dynamicHeaderHeight();
+    {% if section.settings.header_style == "floating" %}
+      $main.find('section').eq(0).css({
+        'padding-top': headerHeight
+      });
+    {% endif %}
+  });
+});
+</script>
+
+{% style %}
+header.header {
+  .header__logo {
+
+    img {
+      max-height: none;
+      width: {{ section.settings.site_logo_size | append: 'rem' }};
+      height: auto;
+    }
+  }
+}
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Header",
+  "settings":[
+    {
+      "label":"Logo",
+      "settings":[
+        {
+          "type":"image",
+          "id":"site_logo",
+          "default":"",
+          "label":"Image",
+          "description": ""
+        },
+        {
+          "type":"number",
+          "min":1,
+          "max":24,
+          "id":"site_logo_size",
+          "default":10,
+          "label":"Image size",
+          "description":"<small>This will scale the size of your logo and header.</small>"
+        },
+        {
+          "type":"page_picker",
+          "id":"site_url",
+          "label":"Link",
+          "description":"",
+          "default":""
+        },
+        {
+          "type":"text",
+          "id":"logo_alt",
+          "label":"Image alt text",
+          "default":"",
+          "description":"<small>Describe your image for the visually impaired.</small>"
+        }
+      ]
+    },
+    {
+      "label":"Style & alignment",
+      "settings":[
+        {
+          "type":"select",
+          "id":"header_style",
+          "label":"Background",
+          "description":"<small>Make sure to check all pages to ensure the header links are visible for your students.</small>",
+          "default":"solid",
+          "options":[
+            {
+              "value":"floating",
+              "label":"Transparent"
+            },
+            {
+              "value":"solid",
+              "label":"Solid"
+            }
+          ]
+        },
+        {
+          "type":"checkbox",
+          "id":"menu_fixed",
+          "label":"Sticky navigation",
+          "description":"<small>Top level menu remains visible while scrolling</small>",
+          "default":true
+        },
+        {
+          "type":"checkbox",
+          "id":"show_dashboard_link",
+          "label":"Show 'My Dashboard' link",
+          "description":"<small>My Dashboard link will appear in the top level navigation for students that are signed in.</small>",
+          "default":true
+        },
+        {
+          "type":"checkbox",
+          "id":"show_menu_label",
+          "label":"Show 'Menu' label",
+          "description":"<small>For mobile navigation. Recommended for accessibility.</small>",
+          "default":true
+        },
+        {
+          "type":"radio",
+          "id":"menu_position",
+          "label":"Alignment",
+          "default":"right",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Button (product pages only)",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"hide_default_buttons",
+          "label":"Hide the button that appears on product pages",
+          "default":false
+        },
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Text",
+          "default":"Get started now"
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add link",
+    "limit":6,
+    "types":[
+      {
+        "type":"nav_item",
+        "label":"Link",
+        "settings":[
+          {
+            "type":"text",
+            "id":"nav_text",
+            "label":"Text"
+          },
+          {
+            "type":"page_picker",
+            "id":"nav_link",
+            "label":"Link"
+          },
+          {
+            "type": "select",
+            "id": "nav_target",
+            "label": "Open link in",
+            "default": "_self",
+            "options": [
+              {
+                "value": "_self",
+                "label": "Same window"
+              },
+              {
+                "value": "_blank",
+                "label": "New window"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"nav_item",
+        "values":{
+          "nav_text":"All Courses",
+          "nav_link":{
+            "type":"url",
+            "id":"/collections"
+          },
+          "nav_target":"_self"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

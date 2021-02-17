@@ -1,0 +1,105 @@
+<section class="lead_capture section__content-alignment--left section-height__medium" data-preview-item="lead_capture">
+
+  <div class="lead_capture__container">
+    <div class="lead_capture__wrapper">
+      <article class="section__content">
+        {% include 'section_headings' %}
+
+        {% form 'new_lead' remote: true %}
+          {% assign field = fields.email %}
+            <label for="{{ id }}-email" class="form__label">
+              {{field.label}}
+            </label>
+            <input id="{{ id }}-email" type="email" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.placeholder }}" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" {% if field.required %}required{% endif %} class="form__control" aria-describedby="{{id}}-error"/>
+            <p id="{{ id }}-error" class="form__error-msg hidden" role="alert">{{ 'liquid.partials.form.please_enter_valid_email' | translate }}</p>
+          {% unless section.settings.hide_checkbox %}
+            <div class="form__group">
+              <input id="{{ id }}-accept" class="form__group-checkbox" name="accept" type="checkbox" value="y" required/>
+              <label for="{{ id }}-accept">{{ section.settings.checkbox_label }}</label>
+            </div>
+          {% endunless %}
+
+            <div class="form__group form__button-group">
+              <input id="{{ id }}-submit-lead" type="submit" value="{{ fields.submit.label }}" class="button button-primary" aria-label="{{ fields.submit.label }}" {% unless section.settings.hide_checkbox %} disabled {% endunless%}/>
+              <p class="lead_capture-error" role="alert">{{ 'liquid.partials.lead_capture.error' | translate }}</p>
+            </div>
+
+          <script>
+            {% assign field = fields.page_url %}
+            $(function() {
+              $("#{{ id }} > input[name='{{ field.name }}']").val(window.location.href)
+            });
+            document.getElementById('{{ id }}').addEventListener('thinkific:success', function(event) {
+              $('#{{ id }}-submit-lead').val("{{ 'liquid.partials.lead_capture.success' | translate }}");
+              $('#{{ id }}').addClass('lead_capture-success')
+              $('#{{ id }} .lead_capture-error').hide();
+              setTimeout(function(){
+                  $('#{{ id }}-submit-lead').val('{{ fields.submit.label }}');
+                  $('#{{ id }}').removeClass('lead_capture-success')
+                  $('#{{ id }}')[0].reset();
+                  $('#{{ id }}-submit-lead').attr('disabled', 'disabled');
+              }, 6000);
+            })
+            document.getElementById('{{ id }}').addEventListener('thinkific:error', function(event) {
+              $('#{{ id }} .lead_capture-error').show();
+            })
+            $('#{{ id }}-accept').click(function() {
+              if ($('#{{ id }}-accept').is (':checked')) {
+                  $('#{{ id }}-submit-lead').removeAttr('disabled');
+                } else {
+                  $('#{{ id }}-submit-lead').attr('disabled', 'disabled');
+               }
+            });
+          </script>
+
+          {% include 'form_validation_script' %}
+
+        {% endform %}
+
+      </article>
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "label":"Lead Capture",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Coming soon!"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":"Add your email to the mailing list to get the latest updates."
+        }
+      ]
+    },
+    {
+      "label":"Checkbox",
+      "settings":[
+        {
+          "type":"text",
+          "id":"checkbox_label",
+          "label":"Checkbox Text",
+          "default":"Yes please, save my details so you can send me educational content that is relevant and helpful."
+        },
+        {
+          "type":"checkbox",
+          "id":"hide_checkbox",
+          "label":"Hide checkbox",
+          "default":false
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

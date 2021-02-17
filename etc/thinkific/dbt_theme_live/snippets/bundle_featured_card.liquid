@@ -1,0 +1,35 @@
+{% comment %}
+  This is the card representation of your bundle.
+{% endcomment %}
+<a href="{{ bundle.links.landing_page_url }}" aria-label="{{ 'liquid.partials.bundle_card.link_landing_page' | translate }}">
+  <section class="course-card course-card__featured course-card__public {{ bundle.status }}" data-card-url="{{ bundle.links.landing_page_url }}" tabindex="0">
+    <div class="course-card__body">
+      <p class="course-card__category">
+        {% for collection in bundle.collections %}
+          {% if forloop.last == false %}
+            {{ collection.name | append: ", " }}
+          {% else %}
+            {{ collection.name }}
+          {% endif %}
+        {% endfor %}
+      </p>
+      <h3>{{ bundle.name }}</h3>
+      <p>{{ bundle.description | truncate: 250 }}</p>
+    {% if bundle.courses.size != blank OR bundle.lesson_hours != blank %}
+      <footer class="course-card__details">
+        {% if bundle.courses.size != blank %}<span class="course-card__lesson-count"><strong>{{ bundle.courses.size }}</strong>  {{ 'liquid.partials.bundle_card.details_courses' | translate }}</span>{% endif %}
+        {% if bundle.lesson_hours != blank %}<span class="course-card__lesson-hours">{{ bundle.lesson_hours }}</span>{% endif %}
+        {% if bundle.is_public %}<span class="course-card__price">{{ bundle.display_price }}</span>{% endif %}
+      </footer>
+    {% endif %}
+    </div>
+    <header class="course-card__img-container">
+      <img
+        src="{{ bundle.image.original }}"
+        alt=""
+        class="course-card__img"
+        loading="lazy"
+      />
+    </header>
+  </section>
+</a>

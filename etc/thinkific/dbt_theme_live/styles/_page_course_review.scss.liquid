@@ -1,0 +1,89 @@
+// Course & Course Reviews
+// ======================================
+
+// Course Review
+.course-review {
+  @include page-padding;
+}
+
+.course-review__container {
+  @include make-container;
+}
+
+.course-review__wrapper {
+  @include make-row(true);
+  @include justify-content(center);
+}
+
+.course-review__heading {
+  @include page-heading;
+}
+
+.course-review__course-name {
+  @include h2;
+}
+
+.course-review__form {
+  @include screen-lg-min {
+    @include make-col(6);
+  }
+  @include screen-md-min {
+    @include make-col(8);
+  }
+  @include make-col(12);
+
+  .review__stars {
+
+    input {
+      width: 2rem;
+      height: 2rem;
+
+      &:focus {
+        outline: 0; // this is okay because it takes the hover style instead
+      }
+    }
+  }
+
+  .review__star {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+    font-size: 2rem;
+    letter-spacing: 0.42rem;
+  }
+
+  .review__stars-input {
+    display: block;
+    margin-top: 1rem;
+
+    &:before {
+      font-size: 2rem;
+    }
+  }
+
+  .review__star ~ .review__star {
+    left: 1.677777rem * 1.25;
+  }
+
+  .review__star ~ .review__star ~ .review__star {
+    left: 1.677777rem * 2.5;
+  }
+
+  .review__star ~ .review__star ~ .review__star ~ .review__star {
+    left: 1.677777rem * 3.75;
+  }
+
+  .review__star
+    ~ .review__star
+    ~ .review__star
+    ~ .review__star
+    ~ .review__star {
+    left: 1.677777rem * 4.9;
+  }
+}
+
+.course-review__submit {
+  padding-top: $gutter-width * 1.5;
+}

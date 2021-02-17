@@ -1,0 +1,66 @@
+{% comment %}
+  If a user enters a coupon URL ( yoursite.com?coupon=100) they
+  will see a small section that displays details about the coupon.
+{% endcomment %}
+
+{% if page.course.coupon_supported and page.coupon_code_provided %}
+  {% include 'product_landing_page_coupon_block' %}
+{% endif %}
+
+<main class="course" id="main-content" role="main">
+
+{% if page.course.image.medium != blank %}{% assign product_image = page.course.image.medium %}{% else %}{% assign product_image = page.course.image.original %}{% endif %}
+
+
+<div class="bg-silver-light">
+	<div class="mask mask-ne text-white"></div>
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>{{ page.course.name }}</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 snug">
+					<div class="card">
+						<div class="card-graphic"><img src="{{product_image}}"/></div>
+						<div class="card-body">
+							<p class="text-small">{{ page.course.description }}</p>
+						</div>
+						<div class="card-footer card-toolbar">
+						    {% include 'product_action_buttons' %}
+						</div>
+					</div>
+				</div>
+				
+		
+
+				<div class="col-md-7 snug">
+					
+					
+					<div class="card">
+						<div class="card-body">
+							{% for chapter in page.course.chapters %}
+								{% assign index = forloop.index + 1 %}
+								<h5><a class="toggle" data-target="#section{{index}}" data-toggle="collapse">{{ chapter.name }} <i class="toggle-icon" data-icon="down-open-big"></i></a></h5>
+								<div class="collapse fade" id="section{{index}}">
+									<div class="list-group list-group-simple small">
+										{% for content in chapter.contents %}
+											<a href="{{content.take_course_url}}" class="list-group-item">{{content.name}}</a>
+										{% endfor %}
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+  
+</main>

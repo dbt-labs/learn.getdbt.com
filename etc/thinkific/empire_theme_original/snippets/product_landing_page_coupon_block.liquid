@@ -1,0 +1,32 @@
+{% comment %}
+  This is the visual indication on a course or bundle landing page that displays
+  an applied coupon (one that was specified in the url)
+{% endcomment %}
+
+<div class=
+  "
+    products-coupon
+    {% if page.coupon.is_valid %}
+      products-coupon--valid
+    {% else %}
+      products-coupon--invalid
+    {% endif %}
+  "
+>
+  <div class="products-coupon__container">
+    {% if page.coupon.is_valid %}
+      {{ page.coupon.applied_text }}
+    {% else %}
+      {{ 'liquid.partials.course_landing_page_coupon_block.text_invalid_coupon' | translate }}
+    {% endif %}
+  </div>
+  <a class="products-coupon__close" aria-label="Close product coupon code modal">&times;</a>
+</div>
+<script>
+$(window).load(function() {
+  $('.products-coupon__close').on('click', function(e) {
+    e.preventDefault();
+    $('.products-coupon').fadeOut(400, function() { $(this).remove(); });
+  });
+})
+</script>
