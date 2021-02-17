@@ -1,0 +1,167 @@
+<section class="course-curriculum section-height__medium
+{% include 'section_utility_heading_alignment' %}" data-preview-item="course-curriculum">
+  <div class="course-curriculum__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      <ul class="course-curriculum__chapter-list section__body">
+        {% for chapter in page.course.chapters %}
+          {% assign index = forloop.index + 1 %}
+          <li class="course-curriculum__chapter">
+            {% if index < 10 %}
+              {% assign chapter_prefix = "0" %}
+            {% else %}
+              {% assign chapter_prefix = "" %}
+            {% endif %}
+            <div class="course-curriculum__chapter-content-wrapper">
+              <span class="course-curriculum__chapter-number">{{ index }}</span>
+              <header class="course-curriculum__chapter-header">
+                <h3 class="course-curriculum__chapter-title">{{ chapter.name }}</h3>
+                <span class="course-curriculum__chapter-header__toggle"><button aria-label="{{ 'liquid.partials.course_footer_scripts.show_content_text' | translate }}"></button></span>
+              </header>
+              <ul class="course-curriculum__chapter-content" id="chapter-{{ index + 1 }}">
+                {% for content in chapter.contents %}
+                  <li>
+                    {% if page.course.has_free_trial and content.free %}
+                      <a href="{{ page.course.links.enroll_free_trial }}" class="course-curriculum__chapter-lesson">
+                    {% else %}
+                      <span class="course-curriculum__chapter-lesson">
+                    {% endif %}
+                    <i class="{{ content.icon_css_class }}" aria-hidden="true"></i>
+                    <div class="course-curriculum__lesson-title">
+                      <p>{{ content.name }}</p>
+                      {% if page.course.has_free_trial and content.free %}
+                        <span class="course-curriculum__chapter-lesson--free">{{ 'liquid.partials.course_landing_page_curriculum.label_free' | translate }}</span>
+                      {% endif %}
+                    </div>
+                    {% if page.course.has_free_trial and content.free %}
+                      </a>
+                    {% else %}
+                      </span>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </article>
+  </div>
+</section>
+
+<script>
+$(document).ready(function() {
+  var $header = $('.course-curriculum .course-curriculum__chapter-header');
+  {% if section.settings.show_collapsed %}
+    $header.not(":eq(0)").each(function(k,v) {
+      $(v).parents('.course-curriculum__chapter').addClass('course-curriculum__chapter--collapsed');
+      $(v).next('.course-curriculum__chapter-content').hide();
+    });
+  {% endif %}
+  $header.on('click keypress', function(e) {
+    if (e.type === 'click') {
+      e.stopPropagation();
+      var $content = $(this).next('.course-curriculum__chapter-content');
+
+      if($content.is(":visible")) {
+        $content.slideUp(350).fadeOut(350);
+        $(this).parents('.course-curriculum__chapter').addClass('course-curriculum__chapter--collapsed');
+      }
+      else {
+        $content.slideDown(350).fadeIn(350);
+        $(this).parents('.course-curriculum__chapter').removeClass('course-curriculum__chapter--collapsed');
+      }
+    }
+  });
+});
+</script>
+
+{% style %}
+
+.course-curriculum {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .course-curriculum__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .course-curriculum__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Curriculum [smart section]",
+  "description":"This smart section automatically updates as you update the curriculum of your course. <a href='/manage/courses/' target='_blank'>Edit Course »</a>",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Course curriculum"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"show_collapsed",
+          "label":"Collapsed by default",
+          "default":true
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,11 @@
+<script>
+  function onSubmit(token) {
+    document.getElementsByTagName('form')[0].submit();
+  }
+</script>
+<div class="form__button-group">
+  <input type="submit" value="{{ fields.submit.label }}"
+    class="button button-primary g-recaptcha"
+    data-sitekey="{{ site.invisible_recaptcha_key }}"
+    data-callback='onSubmit' />
+</div>

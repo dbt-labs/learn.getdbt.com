@@ -1,0 +1,13 @@
+{% if page.page_identifier == 'home_landing_page' or
+      page.page_identifier == 'bundle_landing_page' or
+      page.page_identifier == 'course_landing_page' or
+      page.page_identifier == 'page_template' or
+      page.page_identifier == 'coming_soon_page' or
+      page.page_identifier == 'student_dashboard' or
+      page.page_identifier == 'collections_landing_page' or
+      page.page_identifier == 'student_certificate_page'
+%}
+  {% if section.settings.header_style == 'floating' %}
+    {% assign header_style = "floating" %}
+  {% endif %}
+{% endif %}

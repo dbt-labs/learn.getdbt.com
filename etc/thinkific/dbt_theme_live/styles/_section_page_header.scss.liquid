@@ -1,0 +1,592 @@
+// Page Header
+// ======================================
+
+.header {
+  @include transition(background-color 400ms ease, box-shadow 200ms ease);
+
+  position: relative;
+  border-bottom: $interface__border;
+  background-color: $nav__background-color;
+  z-index: z-index(navigation--background);
+
+  .home-landing-page &,
+  .course-landing-page &,
+  .bundle-landing-page &,
+  .page-template &,
+  .coming-soon-page &,
+  .student-dashboard &,
+  .student-certificate-page &,
+  .collections-landing-page & {
+    border-bottom: 0;
+
+    &.fixed {
+      @include screen-md-min {
+        @include transition(background-color 400ms ease, box-shadow 200ms ease);
+
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        margin: 0 auto;
+        background-color: $nav__fixed-background-color;
+        box-shadow: $shadow-menu;
+
+        .header__nav-item {
+          & > a {
+            color: $nav__fixed-link-color;
+
+            &:active,
+            &:hover {
+              color: $nav__fixed-link-color--active;
+            }
+          }
+        }
+
+        .header__school-name {
+          a {
+            color: $nav__fixed-link-color--active;
+
+            &:active,
+            &:hover {
+              color: $nav__fixed-link-color--active;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.header__container {
+  @include make-container;
+
+  padding: $gutter-width / 1.25 $gutter-width / 2;
+}
+
+.header__wrapper {
+  @include make-row(false);
+  @include align-items(center);
+  @include flex-wrap(nowrap);
+  @include justify-content(space-between);
+
+  position: relative;
+  margin: 0;
+}
+
+.header__logo {
+  @include screen-sm-max {
+    max-width: 12rem;
+  }
+
+  padding-right: $gutter-width / 2;
+  line-height: 1;
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  img {
+    @include screen-sm-max {
+      display: block;
+      max-width: 100%;
+      max-height: 60px;
+    }
+
+    width: auto;
+    max-width: initial;
+    max-height: 35px;
+  }
+}
+
+.header__school-name {
+  display: inline-block;
+  min-width: 12rem;
+  margin-bottom: 0;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+
+  a {
+    color: $nav__link-color;
+
+    [data-menu-style="floating"] & {
+      color: $nav__floating-link-color;
+    }
+
+    &:active,
+    &:hover {
+
+      [data-menu-style="floating"] & {
+        color: $nav__floating-link-color--active;
+      }
+    }
+  }
+}
+
+// Navigation
+.header__nav {
+  @include screen-sm-max {
+    display: block;
+    position: absolute;
+    top: 160%;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    box-shadow: $shadow-menu;
+    opacity: 0;
+    overflow: hidden;
+    visibility: hidden;
+    z-index: z-index(page-background);
+
+    .header__nav-item {
+      display: block;
+
+      a {
+        display: block;
+        padding: 8px 16px;
+        color: $nav__mobile-link-color;
+        font-weight: 500;
+        text-align: center;
+        text-decoration: none;
+
+        &:active,
+        &:hover {
+          background-color: darken($nav__mobile-background-color--active, 5%);
+          color: $nav__mobile-link-color--active;
+        }
+      }
+
+      .dropdown__toggle-button {
+        display: none;
+      }
+    }
+  }
+  @include screen-md-min {
+    &.header__nav--left {
+      & > ul {
+        text-align: left;
+      }
+
+      .header__logo {
+        padding-right: $gutter-width * 1.5;
+      }
+
+      .dropdown,
+      .header__nav-sign-in {
+        float: right;
+      }
+
+      .dropdown__menu {
+        right: -10px;
+      }
+    }
+  }
+  @include screen-lg-min {
+
+    &.header__nav--left.header__nav--has-cta {
+
+      .header__nav-sign-in {
+        position: relative;
+        top: $gutter-width / 4;
+      }
+    }
+  }
+
+
+  width: 100%;
+
+  & > ul {
+    text-align: right;
+
+    & > li {
+      @include screen-md-min {
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+
+[data-menu-style="floating"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: transparent;
+
+  .student-dashboard &,
+  .collections-landing-page & {
+    position: relative;
+
+    &.fixed {
+      position: sticky;
+    }
+  }
+
+  // Add minimum header height padding to the first section if the menu is floating
+  ~ .home,
+  ~ .course,
+  ~ .bundle,
+  ~ .coming-soon,
+  ~ .student-certificate,
+  ~ .custom {
+    > section {
+      &:first-of-type {
+        padding-top: 66px;
+      }
+    }
+  }
+}
+
+[data-menu-type="header__nav--dropdown"] {
+  // This selector is used for specificity to override the [class="header floating"] selector chain
+  &.header {
+    @include screen-sm-max {
+      &[data-menu="open"] {
+        .header__nav {
+          @include transition(opacity 400ms ease, visibility 400ms ease, z-index 400ms ease);
+
+          opacity: 1;
+          visibility: visible;
+          z-index: z-index(navigation--middleground);
+        }
+      }
+
+      .header__nav {
+        @include transition(opacity 400ms ease, visibility 400ms ease, z-index 400ms ease);
+      }
+    }
+  }
+}
+
+[data-menu-type="header__nav--overlay"] {
+  // This selector is used for specificity to override the [class="header floating"] selector chain
+  &.header {
+    @include screen-sm-max {
+      &[data-menu="open"] {
+        @include transition(background-color 200ms ease, opacity 400ms ease, visibility 400ms ease, z-index 400ms ease);
+
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: $nav__mobile-background-color !important;
+        z-index: z-index(navigation--middleground);
+
+        .header__nav {
+          padding-top: $gutter-width;
+          box-shadow: none;
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .header__school-name {
+          a {
+            color: $nav__mobile-link-color;
+          }
+        }
+
+        .header__mobile-button {
+          z-index: z-index(navigation--foreground);
+
+          span {
+            &:before,
+            &:after {
+              background-color: $nav__mobile-link-color;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.header__nav-item {
+  @include screen-md-min {
+    margin-left: $gutter-width;
+
+    &.dropdown {
+      margin-right: 10px;
+    }
+
+    & > a {
+      @include screen-sm-max {
+        display: inline-block;
+        background-color: transparent;
+        font-family: $heading__font-family;
+        font-size: modular-scale(1);
+        text-transform: none;
+
+        &:after {
+          display: block;
+          position: relative;
+          top: -5px;
+          width: 100%;
+          height: 2px;
+          background-color: transparent;
+          content: "";
+          opacity: 0.6;
+        }
+
+        &:active,
+        &:hover {
+          &:after {
+            background-color: $nav__mobile-link-color--active;
+          }
+        }
+      }
+
+      color: $nav__link-color;
+      font-weight: 500;
+      text-decoration: none;
+
+      [data-menu-style="floating"] & {
+        color: $nav__floating-link-color;
+      }
+
+      &:active,
+      &:hover {
+        color: $nav__link-color--active;
+
+        [data-menu-style="floating"] & {
+          color: $nav__floating-link-color--active;
+        }
+      }
+    }
+  }
+
+  display: inline-block;
+  font-size: modular-scale(-1);
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.header__nav-item--default {
+  .user-signed-in .dropdown__menu & {
+    display: none;
+  }
+
+  @include screen-tablet-only {
+    .user-signed-in &.header__nav-item {
+      display: none;
+    }
+
+    .user-signed-in .dropdown__menu & {
+      display: block;
+    }
+  }
+}
+
+.header__nav-cta {
+  @include screen-lg-min {
+    display: inline-block;
+  }
+
+  display: none;
+}
+
+.header__user-avatar {
+  display: inline-block;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  margin: 0 5px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.header__mobile-button {
+  @include screen-md-min {
+    display: none;
+  }
+
+  position: relative;
+  width: $mobile-menu__width;
+  height: $mobile-menu__height;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+
+  &:hover,
+  &:active {
+
+    .header__mobile-button__toggle-icon span {
+      background-color: $nav__link-color--active;
+
+      &:before,
+      &:after {
+        background-color: $nav__link-color--active;
+      }
+    }
+  }
+}
+
+.header__mobile-button__label {
+  @include transform(translatex(-50%));
+
+  display: block;
+  position: absolute;
+  left: 50%;
+  width: max-content;
+  margin-top: 2px;
+  color: $nav__link-color;
+  font-size: 0.6rem;
+  line-height: normal;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  [data-menu-style="floating"] & {
+    color: $nav__floating-link-color;
+  }
+
+  .open & {
+    color: $nav__mobile-link-color;
+  }
+}
+
+.header__mobile-button__toggle-icon {
+  @include transition(background $mobile-menu__transition);
+
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  text-indent: -9999px;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  span {
+    @include transition(background $mobile-menu__transition ease);
+
+    display: block;
+    position: absolute;
+    top: ($mobile-menu__height / 2) - ($mobile-menu__thickness / 2);
+    right: 0;
+    left: 0;
+    height: $mobile-menu__thickness;
+    background-color: $nav__link-color;
+
+    &:before,
+    &:after {
+      @include transition-duration($mobile-menu__transition, $mobile-menu__transition);
+      @include transition-delay($mobile-menu__transition, 0s);
+
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: $mobile-menu__thickness;
+      background-color: $nav__link-color;
+      content: "";
+
+      .open & {
+        @include transition-delay(0s, $mobile-menu__transition);
+      }
+    }
+
+    &:before {
+      @include transition-property(top, -webkit-transform, -moz-transform, transform);
+
+      top: -$mobile-menu__thickness - $mobile-menu__space;
+
+      .open & {
+        top: 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    &:after {
+      @include transition-property(bottom, -webkit-transform, -moz-transform, transform);
+
+      bottom: -$mobile-menu__thickness - $mobile-menu__space;
+
+      .open & {
+        bottom: 0;
+        transform: rotate(-45deg);
+      }
+    }
+
+    [data-menu-style="floating"] & {
+      background-color: $nav__floating-link-color;
+
+      &:before,
+      &:after {
+        background-color: $nav__floating-link-color;
+      }
+    }
+
+    .open & {
+      background: none !important;
+    }
+  }
+}
+
+// Dropdown(s)
+.dropdown {
+  position: relative;
+}
+
+.dropdown__toggle-button {
+  display: block;
+  position: relative;
+  width: 100%;
+
+  &:active,
+  &:hover {
+    cursor: pointer;
+  }
+
+  .fa-caret-down {
+    @include transform(translatey(-50%));
+
+    position: absolute;
+    top: 50%;
+    right: -10px;
+  }
+}
+
+.dropdown__menu {
+  @include screen-md-min {
+    @include dropdown(".dropdown.open");
+
+    width: auto;
+    min-width: 11rem;
+    background-color: $dropdown__background-color;
+
+    li {
+      display: block;
+
+      &.dropdown__menu-item {
+        a {
+          @include transition(none);
+
+          display: block;
+          padding: 5px 16px;
+          background-color: $dropdown__link-background-color;
+          color: $dropdown__link-color;
+          font-weight: 500;
+          text-align: left;
+          text-decoration: none;
+          text-transform: capitalize;
+
+          &:active,
+          &:hover {
+            background-color: $dropdown__link-background-color--active;
+            color: $dropdown__link-color--active;
+          }
+        }
+      }
+    }
+  }
+}

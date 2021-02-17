@@ -1,0 +1,80 @@
+{% comment %}
+  Place CSS that you need on a specific page here.
+  The name of the page is available as page.page_identifier
+  Note that any CSS placed here must be wrapped in a <style> tag.
+
+  You can further refine this CSS if you need to have different CSS on
+  sub-pages. To do so, you can check the 'page_name' property.
+{% endcomment %}
+
+{% case page.page_identifier %}
+
+  {% when 'home_landing_page' %}
+
+  {% when 'bundle_landing_page' %}
+
+  {% when 'course_landing_page' %}
+
+  {% when 'collections_landing_page' %}
+
+  {% when 'collection_landing_page' %}
+
+  {% when 'student_certificate_page' %}
+
+  {% when 'sign_in_page' %}
+
+  {% when 'sign_up_page' %}
+
+  {% when 'student_dashboard' %}
+
+  {% when 'privacy_policy_page' %}
+
+  {% when 'terms_of_use_page' %}
+
+  {% when 'checkout_page' %}
+
+  {% when 'checkout_thankyou_page' %}
+
+  {% when 'paypal_confirm_page' %}
+
+  {% when 'checkout_signin_signup_page' %}
+
+  {% when 'new_course_review_page' %}
+
+  {% when 'edit_course_review_page' %}
+
+  {% when 'my_account_page' %}
+
+  {% when 'my_account_password_page' %}
+
+  {% when 'my_account_notifications_page' %}
+
+  {% when 'my_account_billings_page' %}
+
+  {% when 'my_account_credit_card_page' %}
+
+  {% when 'my_account_order_list_page' %}
+
+  {% when 'my_account_order_page' %}
+
+  {% when 'my_account_certificates_page' %}
+
+  {% when 'password_reset_request_page' %}
+
+  {% when 'password_reset_sent_page' %}
+
+  {% when 'password_reset_page' %}
+
+  {% when 'page_template' %}
+
+  {% when 'express_sign_in_page' %}
+
+  {% when 'affiliate_index_page' %}
+
+  {% when 'affiliate_reports_page' %}
+
+  {% when 'affiliate_links_page' %}
+
+  {% when 'affiliate_settings_page' %}
+
+{% endcase %}

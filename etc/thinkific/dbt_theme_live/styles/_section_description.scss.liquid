@@ -1,0 +1,38 @@
+// Description
+// ======================================
+
+.description {
+
+  &.section__column-layout__two-column {
+    @include screen-lg-min {
+
+      .section__content {
+        padding-left: 0;
+      }
+    }
+  }
+
+  .section__heading,
+  .section__subheading {
+    color: $heading__color;
+  }
+
+  .section__content {
+    @include screen-md-min {
+      @include make-col(6);
+    }
+    @include make-col(12);
+  }
+
+  .section__button-group {
+    padding-top: $gutter-width * 1.5;
+  }
+}
+
+.description__container {
+  @include make-container;
+}
+
+.description__wrapper {
+  @include make-row(true);
+}

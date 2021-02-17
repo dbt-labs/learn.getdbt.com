@@ -1,0 +1,625 @@
+{
+  "info": {
+    "name": "Empire",
+    "author": "Thinkific",
+    "version": "1.18.2",
+    "documentation_url": "https://help.thinkific.com/",
+    "support_url": "https://support.thinkific.com/"
+  },
+  "settings": [
+    {
+      "label": "Colors",
+      "settings": [
+        {
+          "type": "header",
+          "label": "Header & footer"
+        },
+        {
+          "type": "color",
+          "id": "menu_background_color",
+          "label": "Background",
+          "default": "#f5f5f5"
+        },
+        {
+          "type": "color",
+          "id": "menu_link_color",
+          "label": "Link",
+          "default": "#969696"
+        },
+        {
+          "type": "color",
+          "id": "menu_floating_link_color",
+          "label": "Transparent header menu link",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Page",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "card_background_color",
+          "label": "Box",
+          "default": "#f5f5f5"
+        },
+        {
+          "type": "color",
+          "id": "card_background_hover_color",
+          "label": "Box (Hover)",
+          "default": "#fafafa"
+        },
+        {
+          "type": "header",
+          "label": "Text & links"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Headings",
+          "default": "#191919"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Body",
+          "default": "#191919"
+        },
+        {
+          "type": "color",
+          "id": "link_color",
+          "label": "Link",
+          "default": "#b8a88f"
+        },
+        {
+          "type": "header",
+          "label": "Primary button"
+        },
+        {
+          "type": "color",
+          "id": "primary_button_background_color",
+          "label": "Background",
+          "default": "#b8a88f"
+        },
+        {
+          "type": "color",
+          "id": "primary_button_text_color",
+          "label": "Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "radio",
+          "id": "primary_button_style",
+          "label": "Style",
+          "default": "solid",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            },
+            {
+              "value": "outline_with_fill",
+              "label": "Outline (fill on hover)"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "label": "Secondary button"
+        },
+        {
+          "type": "color",
+          "id": "secondary_button_background_color",
+          "label": "Secondary background",
+          "default": "#b8a88f"
+        },
+        {
+          "type": "color",
+          "id": "secondary_button_text_color",
+          "label": "Secondary text",
+          "default": "#b8a88f"
+        },
+        {
+          "type": "radio",
+          "id": "secondary_button_style",
+          "label": "Style",
+          "default": "outline",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            },
+            {
+              "value": "outline_with_fill",
+              "label": "Outline (fill on hover)"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "label": "Accent"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Primary",
+          "default": "#969696"
+        },
+        {
+          "type": "color",
+          "id": "background_decoration",
+          "label": "Styled background",
+          "default": "#969696"
+        }
+      ]
+    },
+    {
+      "label": "Typography",
+      "settings": [
+        {
+          "type": "select",
+          "id": "root_font_size",
+          "label": "Base font size - all text will scale accordingly",
+          "default": "16px",
+          "options": [
+            {
+              "value": "14px",
+              "label": "14px - small"
+            },
+            {
+              "value": "16px",
+              "label": "16px - recommended"
+            },
+            {
+              "value": "18px",
+              "label": "18px - large"
+            },
+            {
+              "value": "20px",
+              "label": "20px - extra large"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "banner_font",
+          "label": "Banner font",
+          "default": "Roboto",
+          "options": [
+            {
+              "value": "Droid Serif",
+              "label": "Droid Serif",
+              "group": "Serif"
+            },
+            {
+              "value": "Lato",
+              "label": "Lato",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Montserrat",
+              "label": "Montserrat",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Open Sans",
+              "label": "Open Sans",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Raleway",
+              "label": "Raleway",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Roboto Slab",
+              "label": "Roboto Slab",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Teko",
+              "label": "Teko",
+              "group": "Sans-serif"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "banner_weight",
+          "label": "Banner weight",
+          "default": "300",
+          "options": [
+            {
+              "value": "100",
+              "label": "Thin"
+            },
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            },
+            {
+              "value": "900",
+              "label": "Black"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "heading_font",
+          "label": "Heading font",
+          "default": "Roboto",
+          "options": [
+            {
+              "value": "Droid Serif",
+              "label": "Droid Serif",
+              "group": "Serif"
+            },
+            {
+              "value": "Lato",
+              "label": "Lato",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Montserrat",
+              "label": "Montserrat",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Open Sans",
+              "label": "Open Sans",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Raleway",
+              "label": "Raleway",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Roboto Slab",
+              "label": "Roboto Slab",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Teko",
+              "label": "Teko",
+              "group": "Sans-serif"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "heading_weight",
+          "label": "Heading weight",
+          "default": "300",
+          "options": [
+            {
+              "value": "100",
+              "label": "Thin"
+            },
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            },
+            {
+              "value": "900",
+              "label": "Black"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "subheading_font",
+          "label": "Subheading font",
+          "default": "Roboto",
+          "options": [
+            {
+              "value": "Abel",
+              "label": "Abel",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Droid Serif",
+              "label": "Droid Serif",
+              "group": "Serif"
+            },
+            {
+              "value": "Lato",
+              "label": "Lato",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Montserrat",
+              "label": "Montserrat",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Open Sans",
+              "label": "Open Sans",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Raleway",
+              "label": "Raleway",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Roboto",
+              "label": "Roboto",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Teko",
+              "label": "Teko",
+              "group": "Sans-serif"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "subheading_weight",
+          "label": "Subheading weight",
+          "default": "300",
+          "options": [
+            {
+              "value": "100",
+              "label": "Thin"
+            },
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi-bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            },
+            {
+              "value": "900",
+              "label": "Black"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "body_font",
+          "label": "Body font",
+          "default": "Roboto",
+          "options": [
+            {
+              "value": "Abel",
+              "label": "Abel",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Lato",
+              "label": "Lato",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Montserrat",
+              "label": "Montserrat",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Open Sans",
+              "label": "Open Sans",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Raleway",
+              "label": "Raleway",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Roboto",
+              "label": "Roboto",
+              "group": "Sans-serif"
+            },
+            {
+              "value": "Teko",
+              "label": "Teko",
+              "group": "Sans-serif"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Favicon",
+      "settings": [
+        {
+          "type": "image",
+          "id": "favicon",
+          "label": "Image",
+          "default": "https://cdn.thinkific.com/51/20180809/f1a1de9d3260c96d3a81ee781bc9808e.ico"
+        }
+      ]
+    }
+  ],
+  "presets": {
+    "halo": {
+      "title": "Halo",
+      "description": "",
+      "settings": {
+        "menu_background_color": "#f5f5f5",
+        "menu_link_color": "#969696",
+        "menu_floating_link_color": "#000000",
+        "background_color": "#ffffff",
+        "card_background_color": "#f5f5f5",
+        "card_background_hover_color": "#fafafa",
+        "heading_color": "#191919",
+        "text_color": "#191919",
+        "link_color": "#b8b88f",
+        "primary_button_background_color": "#b8b88f",
+        "primary_button_text_color": "#ffffff",
+        "primary_button_style": "solid",
+        "secondary_button_background_color": "#b8b88f",
+        "secondary_button_text_color": "#b8b88f",
+        "secondary_button_style": "outline",
+        "accent_color": "#969696",
+        "background_decoration": "#969696",
+        "root_font_size": "16px",
+        "banner_font": "Roboto",
+        "banner_weight": "300",
+        "heading_font": "Roboto",
+        "heading_weight": "300",
+        "subheading_font": "Roboto",
+        "subheading_weight": "300",
+        "body_font": "Roboto",
+        "favicon": "https://cdn.thinkific.com/51/20180809/f1a1de9d3260c96d3a81ee781bc9808e.ico"
+      }
+    },
+    "jet": {
+      "title": "Jet",
+      "description": "",
+      "settings": {
+        "menu_background_color": "#000a19",
+        "menu_link_color": "#ffffff",
+        "menu_floating_link_color": "#ffffff",
+        "background_color": "#000a19",
+        "card_background_color": "#2f3841",
+        "card_background_hover_color": "#485158",
+        "heading_color": "#ffffff",
+        "text_color": "#f5f5f5",
+        "link_color": "#00b4fa",
+        "primary_button_background_color": "#00b4fa",
+        "primary_button_text_color": "#ffffff",
+        "primary_button_style": "solid",
+        "secondary_button_background_color": "#00b4fa",
+        "secondary_button_text_color": "#00b4fa",
+        "secondary_button_style": "outline",
+        "accent_color": "#00b4fa",
+        "background_decoration": "#00b4fa",
+        "root_font_size": "16px",
+        "banner_font": "Roboto Slab",
+        "banner_weight": "500",
+        "heading_font": "Roboto Slab",
+        "heading_weight": "500",
+        "subheading_font": "Roboto",
+        "subheading_weight": "400",
+        "body_font": "Roboto",
+        "favicon": "https://cdn.thinkific.com/51/20180809/f1a1de9d3260c96d3a81ee781bc9808e.ico"
+      }
+    },
+    "spark": {
+      "title": "Spark",
+      "description": "",
+      "settings": {
+        "menu_background_color": "#ffffff",
+        "menu_link_color": "#fa8491",
+        "menu_floating_link_color": "#000000",
+        "background_color": "#ffffff",
+        "card_background_color": "#f5f5f5",
+        "card_background_hover_color": "#fafafa",
+        "heading_color": "#0c1721",
+        "text_color": "#0c1721",
+        "link_color": "#fa8491",
+        "primary_button_background_color": "#fa8491",
+        "primary_button_text_color": "#ffffff",
+        "primary_button_style": "solid",
+        "secondary_button_background_color": "#fa8491",
+        "secondary_button_text_color": "#fa8491",
+        "secondary_button_style": "outline",
+        "accent_color": "#fa8491",
+        "background_decoration": "#969696",
+        "root_font_size": "16px",
+        "banner_font": "Montserrat",
+        "banner_weight": "600",
+        "heading_font": "Montserrat",
+        "heading_weight": "600",
+        "subheading_font": "Montserrat",
+        "subheading_weight": "600",
+        "body_font": "Montserrat",
+        "favicon": "https://cdn.thinkific.com/51/20180809/f1a1de9d3260c96d3a81ee781bc9808e.ico"
+      }
+    },
+    "edge": {
+      "title": "Edge",
+      "description": "",
+      "settings": {
+        "menu_background_color": "#000000",
+        "menu_link_color": "#ffffff",
+        "menu_floating_link_color": "#000000",
+        "background_color": "#ffffff",
+        "card_background_color": "#f5f5f5",
+        "card_background_hover_color": "#fafafa",
+        "heading_color": "#000000",
+        "text_color": "#000000",
+        "link_color": "#ff0404",
+        "primary_button_background_color": "#ff0404",
+        "primary_button_text_color": "#ffffff",
+        "primary_button_style": "solid",
+        "secondary_button_background_color": "#ff0404",
+        "secondary_button_text_color": "#ff0404",
+        "secondary_button_style": "outline",
+        "accent_color": "#ff0404",
+        "background_decoration": "#969696",
+        "root_font_size": "18px",
+        "banner_font": "Teko",
+        "banner_weight": "700",
+        "heading_font": "Teko",
+        "heading_weight": "700",
+        "subheading_font": "Teko",
+        "subheading_weight": "500",
+        "body_font": "Abel",
+        "favicon": "https://cdn.thinkific.com/51/20180809/f1a1de9d3260c96d3a81ee781bc9808e.ico"
+      }
+    }
+  }
+}

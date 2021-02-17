@@ -1,0 +1,37 @@
+{% comment %}
+  This is the card representation of your bundle.
+{% endcomment %}
+
+<a class="course-card course-card__public {{ bundle.status }}" href="{{ bundle.links.landing_page_url }}">
+  <div class="course-card__body">
+    <p class="course-card__category">
+      {% for collection in bundle.collections %}
+        {% if forloop.last == false %}
+          {{ collection.name | append: ", " }}
+        {% else %}
+          {{ collection.name }}
+        {% endif %}
+      {% endfor %}
+    </p>
+    <h3 class="course-card__course-name">{{ bundle.name }}</h3>
+  </div>
+  {% if bundle.display_price %}
+    <footer class="course-card__details">
+      {% if bundle.is_public %}<span class="course-card__price"><strong>{{ bundle.display_price }}</strong></span>{% endif %}
+    </footer>
+  {% endif %}
+  {% if bundle.image.medium != blank %}
+    {% assign product_image = bundle.image.medium %}
+  {% else %}
+    {% assign product_image = bundle.image.original %}
+  {% endif %}
+  <header class="course-card__img-container">
+    <img
+      src="{{ bundle.image.original }}"
+      alt=""
+      class="course-card__img"
+      loading="lazy"
+    />
+    <span class="course-card__bundle-size"><i class="fa fa-clone" aria-hidden="true"></i>{{ bundle.courses.size }} {{ 'liquid.partials.bundle_card.details_courses' | translate }}</span>
+  </header>
+</a>

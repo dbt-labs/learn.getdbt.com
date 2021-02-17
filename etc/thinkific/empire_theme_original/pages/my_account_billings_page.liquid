@@ -1,0 +1,38 @@
+{% comment %}
+  This is the 'my account billings' page.
+  Here, a user can view and delete stored credit cards.
+{% endcomment %}
+
+<div class="my-account">
+  {% include 'my_account_banner' %}
+  <div class="my-account__container">
+    <div class="my-account__wrapper">
+      {% if page.has_form_errors %}
+        <div id="notice" class="notice__form-error">
+          <p role="alert">
+            {% if page.form_error_count == 1 %}
+              {{ page.form_error_count }}
+              {{ 'liquid.views.my_account_billings_page.error.one' | translate }}
+              {{ 'liquid.views.my_account_billings_page.msg_error_get.one' | translate }}
+            {% else %}
+              {{ page.form_error_count }}
+              {{ 'liquid.views.my_account_billings_page.error.other' | translate }}
+              {{ 'liquid.views.my_account_billings_page.msg_error_get.other' | translate }}
+            {% endif %}
+          </p>
+          <ul class="form-error__list">
+            {% for error_message in page.form_error_messages %}
+              <li class="form-error__list-item" role="alert">{{ error_message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <aside class="my-account__menu">
+        {% include 'my_account_menu' %}
+      </aside>
+      <main class="my-account__content" id="main-content" role="main">
+        {{ page.edit_billings_form }}
+      </main>
+    </div>
+  </div>
+</div>

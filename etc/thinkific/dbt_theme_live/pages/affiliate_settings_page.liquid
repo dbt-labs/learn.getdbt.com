@@ -1,0 +1,44 @@
+{% comment %}
+  This is the Affiliate Settings page.
+  This is where affiliate users can edit their affiliate settings.
+{% endcomment %}
+
+<div class="affiliate">
+  <div class="affiliate__container">
+    <div class="affiliate__wrapper">
+      <aside class="affiliate__menu hidden-print">
+        {% include 'affiliate_dashboard_menu' %}
+      </aside>
+      <main class="affiliate__content" id="main-content" role="main">
+        <h2 class="affiliate__heading">{{ 'liquid.views.affiliate_settings_page.header_affiliate_information' | translate }}</h2>
+        {% form 'affiliate_settings' %}
+        {% if errors.size > 0 %}
+          {% include 'form_errors' %}
+        {% endif %}
+        <div class="form__group">
+          {% assign field = fields.affiliate_code %}
+          <label for="{{ field.name }}" class="form__label">
+            {{ field.label }}
+          </label>
+          <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" readonly class="form__control" />
+          {% assign field = fields.affiliate_commission %}
+          <label for="{{ field.name }}" class="form__label">
+            {{ field.label }}
+          </label>
+          <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" readonly class="form__control" />
+        </div>
+        <div class="form__group">
+          {% assign field = fields.affiliate_payout_email %}
+          <label for="{{ field.name }}" class="form__label">
+            {{ field.label }}
+          </label>
+          <input type="email" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" class="form__control" />
+        </div>
+        <div class="form__button-group">
+          <input type="submit" value="{{ fields.submit.label }}" class="button button-primary" />
+        </div>
+        {% endform %}
+      </main>
+    </div>
+  </div>
+</div>

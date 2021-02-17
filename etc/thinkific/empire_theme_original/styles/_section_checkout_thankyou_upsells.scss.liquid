@@ -1,0 +1,191 @@
+// Thank you upsells
+// ======================================
+
+.checkout__thank-you-upsells {
+  @include make-col(12);
+
+  .checkout__thank-you-upsells__container {
+    @include make-container(false);
+    padding-top: $gutter-width * 2;
+    padding-right: 1rem;
+    padding-bottom: $gutter-width * 2;
+    padding-left: 1rem;
+
+    .section__headings {
+      margin: 0 0 $gutter-width;
+    }
+
+    .section__heading {
+      @include heading;
+      @include screen-sm-min {
+        font-size: 2.2rem;
+      }
+
+      margin-bottom: $gutter-width / 4;
+      color: $heading__color;
+      font-size: 1.8rem;
+    }
+
+    .checkout__thank-you-upsells__title {
+      margin-bottom: 0.5rem;
+      font-size: 1.125rem;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .checkout__thank-you-upsells__price {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .checkout__thank-you-upsells__lesson-count {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: $body__text-color;
+      font-size: modular-scale(-1);
+      opacity: 0.6;
+    }
+  }
+
+  .checkout__thank-you-upsells__list {
+    @include make-row(true);
+    @include screen-md-min {
+      padding: 0;
+    }
+    padding: 0 1rem;
+  }
+
+  .checkout__thank-you-upsells__list-item {
+    @include screen-xl-min {
+      @include make-col(4);
+    }
+    @include make-col(12);
+
+    max-width: 410px;
+    margin-bottom: $gutter-width;
+    border-radius: $base__border-radius;
+
+    a {
+      position: relative;
+      text-decoration: none;
+    }
+
+    .course-card__img-container {
+      border: 0;
+      border-radius: $base__border-radius;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .checkout__thank-you-upsells__details-container,
+  .checkout__thank-you-upsells__purchase {
+    padding: 16px;
+  }
+
+  .checkout__thank-you-upsells__details-container {
+    @include display(flex);
+    @include align-items(center);
+    min-height: 150px;
+
+   .checkout__thank-you-upsells__details {
+      width: 100%;
+      position: relative;
+    }
+  }
+
+  .checkout__thank-you-upsells__purchase {
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include align-items(center);
+    @include justify-content(space-between);
+    @include screen-lg-min {
+      @include flex-wrap(nowrap);
+    }
+
+    .checkout__thank-you-upsells__select {
+      border-color: $accent__color;
+    }
+
+    .checkout__thank-you-upsells__buy-link {
+      @include screen-lg-min {
+        margin-top: 0;
+      }
+      width: 100%;
+      margin-top: 16px;
+      padding: 0.8rem;
+    }
+
+    .checkout__thank-you-upsells__price,
+    .checkout__thank-you-upsells__label {
+      @include screen-lg-min {
+        max-width: 60%;
+      }
+      width: 100%;
+    }
+
+    .checkout__thank-you-upsells__buy {
+      @include screen-lg-min {
+        margin-left: 8px;
+        width: 65%;
+      }
+      width: 100%;
+    }
+  }
+}
+
+// Featured upsell (when there is only one)
+.checkout__thank-you-upsells__list-featured {
+  @include card;
+
+  .checkout__thank-you-upsells__details-container {
+    @include display(flex);
+    @include screen-md-max {
+      @include flex-wrap(wrap-reverse);
+    }
+    @include flex-direction(row);
+    width: 100%;
+    padding: 0;
+  }
+
+  .checkout__thank-you-upsells__details {
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include align-items(center);
+    @include justify-content(space-between);
+    @include screen-lg-min {
+      min-height: 200px;
+    }
+    max-width: 410px;
+    min-height: 300px;
+    margin: 0 auto;
+
+    a {
+      width: 100%;
+      padding-top: 16px;
+      text-decoration: none;
+    }
+
+    .checkout__thank-you-upsells__purchase {
+      .checkout__thank-you-upsells__buy-link {
+        @include screen-lg-min {
+          margin-top: 0;
+        }
+      }
+      width: 100%;
+    }
+  }
+
+  .course-card__img-container {
+    @include screen-lg-min {
+      width: 50%;
+    }
+    width: 100%;
+    border-radius: 0;
+
+    .course-card__img {
+      height: 100%;
+    }
+  }
+}

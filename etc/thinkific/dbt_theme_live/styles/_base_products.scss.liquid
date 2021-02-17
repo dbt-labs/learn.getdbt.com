@@ -1,0 +1,873 @@
+// Products
+// ======================================
+// Course Card
+.course-card {
+  @include card;
+
+  border: 0;
+  border-radius: $base__border-radius;
+  overflow: hidden;
+  -webkit-border-radius: $base__border-radius;
+  -moz-border-radius: $base__border-radius;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.course-card__img {
+  @include screen-sm-min {
+    height: 198px;
+  }
+  @include screen-lg-min {
+    height: 207px;
+  }
+  display: block;
+  width: 100%;
+  height: 162px;
+  margin: 0 auto;
+}
+
+// Dashboard Card
+// -------------------------------------------------
+.course-card__dashboard {
+
+  .course-card__body {
+    @include display(flex);
+    @include flex-direction(column);
+    @include flex-grow(1);
+
+    margin: 0;
+
+    .course-card__header {
+      text-decoration: none;
+    }
+
+    .course-card__header-title {
+      padding: 0 $gutter-width * 1.5 $gutter-width * 1.5;
+      padding-top: 2rem;
+      text-align: center;
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.25;
+    }
+  }
+
+  .course-card__img {
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .course-card__details {
+    display: flex;
+    flex: 1;
+
+    height: 3rem;
+
+    a,
+    span {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      height: 3rem;
+      font-weight: 400;
+
+      &,
+      &:active,
+      &:hover {
+        background-color: transparent;
+        color: dynamic-contrast-color($interface__background-color);
+      }
+
+      &:first-child {
+        border: 0;
+      }
+    }
+  }
+
+  .course-card__progress--bar {
+    flex: 0;
+    flex-basis: 0;
+
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+
+// Featured Card
+// -----------------------------------------------------------------
+.course-card__featured {
+  @include make-row(false);
+
+  .course-card__img {
+    @include screen-sm-min {
+      min-height: 22rem;
+    }
+  }
+
+  .course-card__body {
+    @include screen-md-min {
+      @include display(flex);
+      @include flex-direction(column);
+      @include make-col(6);
+    }
+    @include make-col(12);
+
+    padding-right: $gutter-width;
+  }
+
+  .course-card__details {
+    margin-top: auto;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .course-card__img-container {
+    @include screen-md-max {
+      min-height: 12rem;
+    }
+    @include screen-md-min {
+      @include make-col(6, false);
+
+      border-top-right-radius: $base__border-radius;
+      border-bottom-left-radius: 0;
+    }
+    @include make-col(12);
+
+    min-height: 22rem;
+    margin-top: 0;
+    padding-right: 0;
+    padding-left: 0;
+
+
+    a {
+      margin-right: $gutter-width / -2;
+      margin-left: $gutter-width / -2;
+    }
+  }
+}
+
+.course-card__public {
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .course-card__body {
+    padding: $gutter-width $gutter-width / 2 $gutter-width / 2;
+  }
+
+  .course-card__reviews {
+    padding-top: $gutter-width / 2;
+  }
+}
+
+.course-card__header-banner {
+  display: block;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: $base__border-radius;
+  background-color: $button__primary-background;
+  color: $button__primary-color;
+  font-size: 0.875rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  z-index: z-index(element--foreground);
+}
+
+.course-card__img-container {
+
+  position: relative;
+  width: 100%;
+  border-bottom-left-radius: $base__border-radius;
+  border-bottom-right-radius: $base__border-radius;
+  overflow: hidden;
+
+  a {
+    display: block;
+    position: relative;
+    height: 100%;
+  }
+
+  .course-card__bundle-size {
+    display: inline-block;
+    position: absolute;
+    bottom: $gutter-width / 2;
+    left: $gutter-width / 2;
+    padding: $gutter-width / 4 $gutter-width / 2;
+    border-radius: $base__border-radius;
+    background-color: $interface__background-color;
+    font-size: modular-scale(-1);
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    .fa {
+      margin-right: $gutter-width / 4;
+    }
+  }
+}
+
+.course-card__body {
+  @include flex-grow(1);
+
+  position: relative;
+  margin-bottom: auto;
+  text-align: center;
+
+  .course-card__category {
+    margin: 0 0 $gutter-width / 4;
+    font-size: 0.75019rem !important;
+    font-weight: bold;
+    opacity: 0.6;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  h2 {
+    margin: 0 0 $gutter-width / 4;
+    font-size: modular-scale(-1);
+    opacity: 0.6;
+  }
+}
+
+.course-card__reviews {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 $gutter-width / 2;
+}
+
+.course-card__progress--circle {
+  @include transform(translatex(-50%));
+
+  position: absolute;
+  top: -($progress__circle-size/2);
+  left: 50%;
+  width: $progress__circle-size;
+  height: $progress__circle-size;
+  margin: 0 auto;
+  text-align: left;
+  z-index: z-index(element--foreground);
+
+  .circle {
+
+    .fill,
+    .mask {
+      @include backface-visibility(hidden);
+      @include transition($progress__transition);
+
+      position: absolute;
+      width: $progress__circle-size;
+      height: $progress__circle-size;
+      border-radius: 50%;
+    }
+
+    .mask {
+      clip: rect(0, $progress__circle-size, $progress__circle-size, $progress__circle-size/2);
+
+      .fill {
+        background-color: $progress__circle-color;
+        clip: rect(0, $progress__circle-size/2, $progress__circle-size, 0);
+      }
+    }
+  }
+
+  .progress__percentage {
+    position: absolute;
+    width: $progress__inset-size;
+    height: $progress__inset-size;
+    margin-top: ($progress__circle-size - $progress__inset-size)/2;
+    margin-left: ($progress__circle-size - $progress__inset-size)/2;
+    border-radius: 50%;
+    background-color: $interface__background-color;
+    color: $accent__color;
+    line-height: $progress__inset-size;
+    text-align: center;
+
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: $progress__inset-size;
+      height: $progress__inset-size;
+      border: $interface__border;
+      border-radius: 50%;
+      content: "";
+    }
+  }
+
+  $i: 0;
+  $increment: 180deg / 100;
+  @for $i from 1 through 100 {
+
+    &[data-progress="#{$i}"] {
+
+      .circle {
+
+        .fill,
+        .mask.full {
+          @include transition-delay(1s);
+          @include transform(rotate($increment * $i));
+        }
+
+        .fill.fix {
+          @include transform(rotate($increment * $i * 2));
+        }
+      }
+    }
+  }
+}
+
+.course-card__progress--bar {
+  @include make-col(12);
+
+  margin: 0 0 $gutter-width;
+  padding: 0;
+
+  .progress__percentage {
+    position: relative;
+    margin: 0;
+
+    .progress__percentage-value {
+      @include transform(translatex(-1.5rem));
+
+      display: inline-block;
+      position: absolute;
+      top: -0.5em;
+      width: 3rem;
+      font-size: modular-scale(-1);
+      content: attr(data-percentage);
+    }
+
+    &:after {
+      display: block;
+      position: absolute;
+      top: -0.95rem;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: $white;
+      content: "";
+      z-index: z-index(default);
+    }
+  }
+
+  .progress__bar {
+    display: block;
+    position: relative;
+    top: -0.75rem;
+    height: 3px;
+    background-color: $accent__color;
+    z-index: z-index(element--background);
+  }
+}
+
+.course-card__details {
+  @include make-row(false);
+
+  margin-top: auto;
+  margin-right: 0;
+  margin-left: 0;
+  font-size: 0;
+  line-height: 1;
+
+  & > * {
+    @include make-col(6);
+
+    display: inline-block;
+    position: relative;
+    padding: 0.75rem 0.5rem;
+    border: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4rem;
+    text-align: center;
+
+    &:after {
+      @include transform(translatex(-50%) translatey(-50%));
+
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 1px;
+      height: $gutter-width / 2;
+      background-color: $white;
+      content: "";
+      opacity: 0.5;
+    }
+
+    &:only-child,
+    &:last-child {
+      border-right: 0;
+    }
+
+    &:only-child {
+      @include make-col(12);
+    }
+
+    &:last-child {
+      &:after {
+        content: none;
+      }
+    }
+  }
+
+  a {
+    @include transition(all 200ms ease);
+
+    text-decoration: none;
+
+    &:first-child {
+      border-right: $interface__border;
+    }
+
+    &:active,
+    &:hover {
+      @include transition(all 400ms ease);
+
+      background-color: $interface__background-color;
+      color: dynamic-contrast-color($interface__background-color);
+      box-shadow: $shadow-button;
+    }
+
+    .fa {
+      display: block;
+    }
+  }
+}
+
+.course-card__coming-soon {
+  font-weight: normal;
+  opacity: 0.75;
+}
+
+.course-card__lesson-count,
+.course-card__lesson-time,
+.course-card__price {
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+.course-card__lesson-count {
+  position: relative;
+
+  &:after {
+    @include transform(translatey(-50%));
+
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 2px;
+    height: 50%;
+    background-color: transparentize($body__text-color, 0.8);
+  }
+}
+
+.course-card__cta-secondary {
+  @include make-row(false);
+  @include justify-content(space-between);
+
+  padding-right: $gutter-width / 2;
+  padding-left: $gutter-width / 2;
+
+  & > a {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:first-child {
+      text-align: left;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+}
+
+.course-card__cta {
+  margin-top: auto;
+  padding: $gutter-width;
+}
+
+.course-action-buttons,
+.bundle-action-buttons {
+  &--has-additional-prices {
+
+    .button,
+    .form__select-no-label {
+      @include screen-sm-min {
+        max-width: 50%;
+      }
+    }
+
+    .form__select-no-label {
+      @include screen-xs-max {
+        margin-bottom: $gutter-width / 2;
+      }
+      @include screen-sm-min {
+        margin-right: $gutter-width / 2;
+      }
+      @include align-self(flex-start);
+
+      width: 100%;
+    }
+
+    .form__control {
+      &.course-action-buttons__additional-prices,
+      &.bundle-action-buttons__additional-prices {
+        @include screen-lg-min {
+          font-size: 0.875rem;
+        }
+
+        @include screen-xl-min {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .button {
+      @include screen-sm-min {
+        padding-right: 1rem;
+        padding-left: 1rem;
+      }
+      @include screen-lg-min {
+        padding-right: 0.875rem;
+        padding-left: 0.875rem;
+        font-size: 0.875rem;
+      }
+      @include screen-xl-min {
+        padding-right: 1rem;
+        padding-left: 1rem;
+        font-size: 1rem;
+      }
+
+      &-purchase {
+        @include screen-sm-min {
+          @include flex-grow(1);
+        }
+      }
+
+      white-space: nowrap;
+    }
+  }
+
+  &__purchase {
+    @include display(flex);
+    @include align-items(center);
+    @include screen-xs-max {
+      @include flex-direction(column);
+
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    @include screen-sm-min {
+      @include flex-wrap(nowrap);
+      @include flex(1 0 auto);
+    }
+    @include screen-lg-min {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.products__list {
+  @include make-row(true);
+}
+
+.products__list-item {
+  @include screen-sm-min {
+    max-width: 384px;
+  }
+  @include screen-lg-min {
+    max-width: 400px;
+  }
+  @include make-col(12);
+
+  max-width: 320px;
+  padding-bottom: $gutter-width;
+}
+
+.products__collections-list {
+  @include make-row(false);
+  @include align-items(center);
+
+  margin: 0 0 $gutter-width / 2;
+}
+
+.products__collections-list-item {
+  @include screen-md-min {
+    display: inline-block;
+    width: auto;
+    margin: 0 $gutter-width / 2 0 0;
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  display: block;
+  width: 100%;
+  padding: $gutter-width / 4 0;
+  line-height: 1;
+
+  a {
+    @include screen-md-min {
+      padding-left: 0;
+    }
+
+    position: relative;
+    padding-left: $gutter-width / 2.5;
+    line-height: 1;
+    text-decoration: none;
+
+    &:after {
+      @include screen-md-min {
+        bottom: -5px;
+        width: 100%;
+        height: 1px;
+      }
+
+      display: inline-block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background-color: $accent__color;
+      content: none;
+    }
+
+    &.active,
+    &:active,
+    &:focus,
+    &:hover {
+      &:after {
+        content: "";
+      }
+    }
+  }
+}
+
+.product-action-button--private {
+  a {
+    text-decoration: none;
+  }
+
+  .fa {
+    margin-right: $gutter-width / 8;
+  }
+}
+
+.products-coupon {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  border-radius: $base__border-radius;
+  color: $white;
+  font-weight: bold;
+  line-height: normal;
+  text-align: center;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  z-index: z-index(modal);
+
+  &.products-coupon--valid {
+    background-color: $alert--success;
+  }
+
+  &.products-coupon--invalid {
+    background-color: $alert--error;
+  }
+}
+
+.products-coupon__container {
+  @include make-container;
+}
+
+.products-coupon__close {
+  @include screen-sm-min {
+    @include transform(translatey(-50%));
+
+    top: 50%;
+    right: 1rem;
+  }
+
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: $white;
+  font-size: modular-scale(2);
+  font-weight: bold;
+  line-height: 0.5;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+
+  &,
+  &:active,
+  &:hover {
+    color: $white;
+  }
+}
+
+.products__search {
+  margin: 0 0 $gutter-width;
+}
+
+.products__search-form {
+  @include make-row(false);
+  @include justify-content(space-between);
+}
+
+.products__search-box {
+  @include screen-md-min {
+    min-width: 20rem;
+  }
+
+  min-width: 100%;
+  margin: 0 0 $gutter-width / 2 auto;
+}
+
+// Review Stars
+.review__stars {
+  @include align-self(center);
+
+  display: inline-block;
+  position: relative;
+  width: auto;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+
+  .review__star {
+    width: $review-star__size;
+    height: $review-star__size;
+    color: $review-star__filled-color;
+    font-size: $review-star__size;
+    line-height: normal;
+    opacity: 1;
+    z-index: z-index(element--background);
+  }
+
+  input {
+    @include appearance(none);
+
+    display: inline-block;
+    position: relative;
+    width: $review-star__size;
+    height: $review-star__size;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    z-index: z-index(element--middleground);
+
+    &:hover,
+    &:active, {
+      outline: none;
+      background-color: transparent;
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+
+  label {
+    display: inline-block;
+    position: relative;
+    width: $review-star__size;
+    height: $review-star__size;
+  }
+
+  .review__star ~ .review__star {
+    left: $review-star__size * 1.25;
+  }
+
+  .review__star ~ .review__star ~ .review__star {
+    left: $review-star__size * 2.5;
+  }
+
+  .review__star ~ .review__star ~ .review__star ~ .review__star {
+    left: $review-star__size * 3.75;
+  }
+
+  .review__star
+    ~ .review__star
+    ~ .review__star
+    ~ .review__star
+    ~ .review__star {
+    left: $review-star__size * 5;
+  }
+}
+
+.review__stars-input {
+  cursor: pointer;
+
+  &:before {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: $review-star__empty-color;
+    font-family: $icon__font-family;
+    font-size: $review-star__size;
+    letter-spacing: 0.21rem;
+    line-height: 1;
+    content: "\f006 \f006 \f006 \f006 \f006";
+  }
+
+  .review__star {
+    cursor: pointer;
+    opacity: 1;
+  }
+
+  input {
+    position: relative;
+    cursor: pointer;
+
+    &:checked + .review__star ~ .review__star {
+      opacity: 0;
+    }
+  }
+
+  &:hover {
+    .review__star {
+      opacity: 1 !important;
+    }
+
+    input {
+      &:hover + .review__star ~ .review__star {
+        opacity: 0 !important;
+      }
+    }
+  }
+}
+
+.review__stars-count {
+  position: relative;
+  top: 1px;
+  left: 7px;
+  font-size: modular-scale(-1);
+  letter-spacing: 1px;
+  line-height: 1;
+  opacity: 0.5;
+}

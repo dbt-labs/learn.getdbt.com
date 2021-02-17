@@ -1,0 +1,67 @@
+// Showcase
+// ======================================
+
+.showcase {
+  .section__headings {
+    margin: 0 0 $gutter-width * 2;
+  }
+
+  .section__heading,
+  .section__subheading {
+    color: $heading__color;
+  }
+
+  .owl-carousel {
+    .owl-nav {
+      top: 50%;
+      padding-top: $gutter-width;
+      text-align: center;
+
+      .owl-next,
+      .owl-prev {
+        position: relative;
+        top: initial;
+        right: initial;
+        left: initial;
+        padding: 0;
+      }
+
+      .owl-prev {
+        margin-right: $gutter-width;
+      }
+    }
+  }
+}
+
+.showcase__container {
+  @include make-container;
+}
+
+.showcase__list {
+  @include make-row(false);
+  @include justify-content(center);
+}
+
+.showcase__list-item {
+  @include align-self(center);
+  @include screen-md-max {
+    margin: 0 0 $gutter-width;
+  }
+  @include screen-md-min {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  @include screen-lg-min {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: 100%;
+  min-height: 1px; // Prevent collapsing
+  padding-right: $gutter-width / 2;
+  padding-left: $gutter-width / 2;
+  text-align: center;
+}

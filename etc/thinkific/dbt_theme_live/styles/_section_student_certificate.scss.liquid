@@ -1,0 +1,91 @@
+// Student certificate
+// ======================================
+
+.student-certificate__container {
+  max-width: 960px;
+  margin: 32px auto 64px;
+}
+
+.student-certificate__image {
+  padding: 16px;
+
+  .faded {
+    opacity: 0.3;
+  }
+}
+
+.student-certificate__data {
+  @include screen-md-min {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .student-certificate__data__container {
+    display: flex;
+    padding: 4px 16px;
+
+    .student-certificate__data__label {
+      padding-right: 8px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.student-certificate__share {
+  @include screen-md-min {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  padding: 24px 0;
+
+  .button {
+    margin-bottom: 5px;
+    margin-left: 12px;
+    padding: 8px 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .addthis_inline_share_toolbox {
+    @include screen-md-min {
+      margin: 0;
+    }
+
+    margin-bottom: 12px;
+    margin-left: 12px;
+  }  
+}
+
+.student-certificate__expired {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 32px;
+  padding: 0 16px;
+
+  .student-certificate__expired__hr {
+    width: 100%;
+    border-top: 1px solid #000;
+  }
+
+  .student-certificate__expired__label__container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin: 0 16px;
+
+    .toga-icon {
+      font-size: 24px;
+    }
+
+    .student-certificate__expired__label {
+      margin-left: 8px;
+      font-weight: 700;
+    }
+  }
+}

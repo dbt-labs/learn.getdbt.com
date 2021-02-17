@@ -1,0 +1,53 @@
+{% comment %}
+  This is the default Bundle landing page
+
+  If a user enters a coupon URL ( yoursite.com?coupon=100) they
+  will see a small section that displays details about the coupon.
+{% endcomment %}
+
+{% if page.bundle.coupon_supported and page.coupon_code_provided %}
+  {% include 'product_landing_page_coupon_block' %}
+{% endif %}
+
+<main class="bundle" id="main-content" role="main">
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "course_cards",
+      "banner_bundle",
+      "bonus",
+      "bundle_includes",
+      "call_to_action",
+      "checklist",
+      "course_categories_all",
+      "course_categories",
+      "countdown",
+      "frequently_asked_questions",
+      "image_and_text",
+      "gallery",
+      "instructor",
+      "lead_capture",
+      "pricing_options",
+      "pricing_table",
+      "reviews",
+      "showcase",
+      "testimonials",
+      "icon_and_text",
+      "description",
+      "rich_text",
+      "upsells",
+      "video"
+    ],
+    "defaults":[
+      "banner_bundle",
+      "bundle_includes"
+    ]
+  }
+}
+{% endschema %}
+
+{% include 'bundle_footer_scripts' %}

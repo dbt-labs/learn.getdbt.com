@@ -1,0 +1,105 @@
+{% comment %}
+  These are scripts that run on forms with required fields.
+{% endcomment %}
+
+<script>
+  function addErrorMsg(fieldId, errorId) {
+    fieldId.addClass('input--error');
+    fieldId.attr("aria-invalid", "true");
+    errorId.removeClass('hidden');
+  }
+  function removeErrorMsg(fieldId, errorId) {
+    fieldId.removeClass('input--error');
+    fieldId.attr("aria-invalid", "false");
+    errorId.addClass('hidden');
+  }
+
+  var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  var $email = $('#user\\[email\\]');
+  var $emailError = $('#user\\[email\\]-error')
+  $email.focusout(function() {
+    if (!regex.test($email.val())) {
+      addErrorMsg($email, $emailError);
+    } else {
+      removeErrorMsg($email, $emailError);
+    }
+  });
+  var $leadCapture = $('#{{ id }}-email')
+  var $leadCaptureError = $('#{{ id }}-error')
+  $leadCapture.focusout(function() {
+    if (!regex.test($leadCapture.val())) {
+      addErrorMsg($leadCapture, $leadCaptureError);
+    } else {
+      removeErrorMsg($leadCapture, $leadCaptureError);
+    }
+  });
+
+  var $password = $('#user\\[password\\]');
+  var $passwordError = $('#user\\[password\\]-error')
+  $password.focusout(function() {
+  if ($password.val().length < 6) {
+    addErrorMsg($password, $passwordError);
+  } else {
+    removeErrorMsg($password, $passwordError);
+  }
+  });
+
+  var $firstName = $('#user\\[first_name\\]');
+  var $firstNameError = $('#user\\[first_name\\]-error');
+  $firstName.focusout(function() {
+    if ($firstName.val() === '') {
+      addErrorMsg($firstName, $firstNameError);
+    } else {
+      removeErrorMsg($firstName, $firstNameError);
+    }
+  });
+
+  var $lastName = $('#user\\[last_name\\]');
+  var $lastNameError = $('#user\\[last_name\\]-error');
+  $lastName.focusout(function() {
+    if ($lastName.val() === '') {
+      addErrorMsg($lastName, $lastNameError);
+    } else {
+      removeErrorMsg($lastName, $lastNameError);
+    }
+  });
+
+  var $checkbox = $('#user\\[terms\\]');
+  var $checkboxError = $('#user\\[terms\\]-error');
+  $checkbox.focusout(function() {
+    if (!$checkbox.is(':checked')) {
+      addErrorMsg($checkbox, $checkboxError);
+    } else {
+      removeErrorMsg($checkbox, $checkboxError);
+    }
+  });
+
+  var $file = $('.my-account__avatar-label');
+  $file.change(function() {
+    $file.append('<p id="my-account__avatar--error" class="sr-only" role="alert">{{ 'liquid.partials.form.file_changed' }}</p>')
+  });
+
+  var $select = $('.custom-select');
+  var $selectError = $('#custom-select-error')
+  $select.focusout(function() {
+    if($(this).prop('required')){
+      if (!$select.val()) {
+        addErrorMsg($select, $selectError);
+      } else {
+        removeErrorMsg($select, $selectError);
+      }
+    }
+  });
+
+  var $customField = $('.custom-field');
+  var $customFieldError = $('#custom-field-error');
+  $customField.focusout(function() {
+    if($(this).prop('required')){
+      if ($customField.val() === '') {
+        addErrorMsg($customField, $customFieldError);
+      } else {
+        removeErrorMsg($customField, $customFieldError);
+      }
+    }
+  });
+</script>

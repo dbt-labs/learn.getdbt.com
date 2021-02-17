@@ -1,0 +1,76 @@
+<aside class="checkout__product-overview">
+  <div class="checkout__product-overview__wrapper">
+    <div class="checkout__product-list">
+      <div class="checkout__product-list-item">
+        <div class="checkout__product-details__wrapper">
+          {% if page.product.image.small != blank %}
+          {% assign product_image = page.product.image.small %}
+          {% else %}
+          {% assign product_image = page.product.image.original %}
+          {% endif %}
+          <img
+            src="{{ product_image }}"
+            alt="{{ page.product.name }}"
+            class="checkout__product-image"
+            loading="lazy"
+          />
+          <div class="checkout__product-details">
+            <span class="checkout__product-name">{{ page.product.name }}</span>
+            {% if page.product.productable.description != blank %}
+              <span class="checkout__product-description">{{ page.product.productable.description }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="checkout__footer">
+      <div class="checkout__wrapper">
+        {% unless page.product.course.is_free or page.product.bundle.is_free %}
+          <div class="order-security">
+            <img
+              src="https://cdn.thinkific.com/69/20200110/eb69865fb272af8e09eec44e769bf71b.png"
+              alt="Secure Badge"
+              id="secure-badge"
+              loading="lazy"
+              width="94"
+              height="30"
+            />
+            {% if page.stripe_checkout_is_allowed %}
+              <img
+                src="https://cdn.thinkific.com/69/20200110/e7bb7a68066c534a6cccdb316216007a.png"
+                alt="Stripe Badge"
+                id="stripe-badge"
+                loading="lazy"
+                width="119"
+                height="26"
+              />
+            {% endif %}
+          </div>
+          {% if page.stripe_checkout_is_allowed %}
+            <section class="checkout__footer-info">
+              <strong><i class="fa fa-lock" aria-hidden="true"></i>{{ 'liquid.partials.checkout_overview.footer_secure_checkout' | translate }}</strong>
+              <p>{{ 'liquid.partials.checkout_overview.footer_powered_by_stripe' | translate }}</p>
+            </section>
+          {% endif %}
+        {% endunless %}
+        <section class="checkout__footer-help">
+          <strong><i class="fa fa-question-circle" aria-hidden="true"></i>{{ 'liquid.partials.checkout_overview.footer_help' | translate }}</strong>
+          <p>{{ 'liquid.partials.checkout_overview.footer_need_help' | translate }}
+            <a href="mailto:{{ site.support_email }}" target="_blank">
+              {{ 'liquid.partials.checkout_overview.footer_contact_us' | translate }}
+              <i class='fa fa-external-link' role='img' aria-label="{{ 'liquid.accessibility.new_window_warning' | translate }}"></i>
+            </a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </div>
+</aside>
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[]
+}
+{% endschema %}

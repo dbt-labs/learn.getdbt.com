@@ -1,0 +1,24 @@
+// Rich text
+// ======================================
+
+.rich-text {
+
+  .section__headings,
+  .section__content {
+    @include screen-lg-min {
+      @include make-col(8);
+    }
+    @include make-col(12);
+    @include flex-direction(column);
+  }
+}
+
+.rich-text__container {
+  @include make-container;
+}
+
+.rich-text__wrapper {
+  @include make-row(true);
+  @include align-items(center);
+  @include justify-content(center);
+}

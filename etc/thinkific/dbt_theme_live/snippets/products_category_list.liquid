@@ -1,0 +1,7 @@
+<ul class="course-category__list">
+  {% for collection in site.collections %}
+    <li class="course-category__list-item">
+      {% include 'course_category_card' with collection %}
+    </li>
+  {% endfor %}
+</ul>

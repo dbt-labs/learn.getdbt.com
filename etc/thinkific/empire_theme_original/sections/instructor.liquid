@@ -1,0 +1,184 @@
+<section class="instructor section-height__medium
+{% include 'section_utility_heading_alignment' %}" data-preview-item="instructor">
+  <div class="instructor__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <div class="instructor__list section__body" role="list">
+          {% for block in section.blocks %}
+          {% assign instructor = block.settings.instructor %}
+            <div class="instructor__list-item" role="listitem">
+              {% if instructor.avatar != blank %}
+              <div class="instructor__avatar">
+                <img
+                  src="{{ instructor.image.original }}"
+                  alt=""
+                  class="instructor__avatar-img"
+                  loading="lazy"
+                  width="420"
+                />
+              </div>
+              {% endif %}
+              <div class="instructor__profile">
+                <header>
+                  {% if instructor.title != blank %}
+                    <h3 class="instructor__title">
+                      {{ instructor.title }}
+                    </h3>
+                  {% endif %}
+                  <p class="instructor__name">
+                    {{ instructor.full_name }}
+                  </p>
+                </header>
+                {% if instructor.bio != blank %}
+                  <div class="instructor__bio">
+                    {{ instructor.bio }}
+                  </div>
+                {% endif %}
+                {% if instructor.email != blank and section.settings.show_email == true %}
+                  <a class="instructor__social" href="mailto:{{ instructor.email }}"><i class="fa fa-envelope" aria-hidden="true"></i> Email</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+<script>
+$(window).load(function() {
+  var $instructorCarousel = $('.instructor__list').addClass('owl-carousel'),
+      looped = ($('.instructor__list .instructor__list-item').length <= 2) ? false : true,
+      instructorOwlOptions = {
+        autoHeight: true,
+        dots: false,
+        loop: looped,
+        margin: 0,
+        nav: true,
+        navText: ['<i role="img" aria-hidden="true" class="fa fa-angle-left"></i>','<i role="img" aria-hidden="true" class="fa fa-angle-right"></i>'],
+        slideBy: 1,
+        responsive: {
+          0: {
+            items: 1
+          },
+          768: {
+            center: true,
+            items: 1.25
+          }
+        }
+      };
+  $instructorCarousel.owlCarousel(instructorOwlOptions);
+  $('.instructor__list .owl-next').attr('aria-label', "Next");
+  $('.instructor__list .owl-prev').attr('aria-label', "Previous");
+});
+</script>
+
+{% style %}
+
+.instructor {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .instructor__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .instructor__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Instructor(s)",
+  "description":"Select which Instructor bio(s) will appear in this section. <a href='/manage/instructors/' target='_blank'>Manage your Instructor bios »</a>",
+  "settings":[
+    {
+      "type":"checkbox",
+      "id":"show_email",
+      "label":"Show instructor email",
+      "default":true
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Instructor(s)"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add instructor bio",
+    "limit":3,
+    "types":[
+      {
+        "type":"instructor",
+        "label":"Instructor bio",
+        "settings":[
+          {
+            "type":"instructor_picker",
+            "id":"instructor",
+            "label":"Instructor"
+          }
+        ]
+      }
+    ],
+    "defaults": []
+  }
+}
+{% endschema %}

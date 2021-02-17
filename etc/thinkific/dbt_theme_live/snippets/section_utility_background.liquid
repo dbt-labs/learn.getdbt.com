@@ -1,0 +1,8 @@
+{% if section.settings.background_image != blank or section.settings.overlay_opacity > 0 %}
+  section-background
+  {% if section.settings.overlay_opacity > 0 %}
+    section-background-overlay
+  {% else %}
+    section-background-image
+  {% endif %}
+{% endif %}

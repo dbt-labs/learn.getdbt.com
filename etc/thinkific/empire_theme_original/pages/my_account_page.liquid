@@ -1,0 +1,141 @@
+{% comment %}
+  This is the 'my account profile' page.
+  Here, a user can view and edit their profile.
+{% endcomment %}
+
+<div class="my-account">
+  <div class="my-account__container">
+    <div class="my-account__wrapper">
+      <aside class="my-account__menu hidden-print">
+        {% include 'my_account_menu' %}
+      </aside>
+      <main class="my-account__content" id="main-content" role="main">
+        <h2 class="my-account__heading">{{ 'liquid.views.my_account_page.header_your_profile' | translate }}</h2>
+        {% form 'my_account' %}
+        {% if errors.size > 0 %}
+          {% include 'form_errors' %}
+        {% endif %}
+        <div class="my-account__profile__wrapper">
+          <section class="my-account__avatar">
+            <div class="account-content-profile-img">
+              {% assign field = fields.avatar %}
+              <div class="my-account__avatar-label">
+                <img
+                  src="{{ site.current_user.avatar }}"
+                  alt="{{ site.current_user.name }}"
+                  class="img-responsive"
+                  loading="lazy"
+                >
+                <label for="{{ field.name }}" class="button-upload">
+                  {{ field.label }}
+                </label>
+                <input type="file" id="{{ field.name }}" name="{{ field.name }}" class="image" aria-describedby="my-account__avatar-error"/>
+              </div>
+              <p id="feedback-area" class="form__feedback" role="alert"></p>
+            </div>
+          </section>
+          <section class="my-account__form-contents">
+            <div class="form__group">
+              {% assign field = fields.email %}
+              <label for="{{ field.name }}" class="form__label">
+                {{ field.label }}
+              </label>
+              <input type="email" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" class="form__control" aria-describedby="{{ field.name }}-error"/>
+              <p id="{{ field.name }}-error" class="form__error-msg hidden" role="alert">{{ 'liquid.partials.form.please_enter_valid_email' | translate }}</p>
+            </div>
+            <div class="form__group">
+              <div class="input__group">
+                {% assign field = fields.first_name %}
+                <label for="{{ field.name }}" class="form__label">
+                  {{ field.label }}
+                </label>
+                <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" class="form__control" aria-describedby="{{ field.name }}-error"/>
+                <p id="{{ field.name }}-error" class="form__error-msg hidden" role="alert">{{ 'liquid.partials.form.field_cannot_be_blank' | translate }}</p>
+              </div>
+              {% assign field = fields.last_name %}
+              <div class="input__group">
+                <label for="{{ field.name }}" class="form__label">
+                  {{ field.label }}
+                </label>
+                <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" class="form__control" aria-describedby="{{ field.name }}-error"/>
+                <p id="{{ field.name }}-error" class="form__error-msg hidden" role="alert">{{ 'liquid.partials.form.field_cannot_be_blank' | translate }}</p>
+              </div>
+            </div>
+            <div class="form__group">
+              {% assign field = fields.company_name %}
+              <label for="{{ field.name }}" class="form__label">
+                {{ field.label }}
+              </label>
+              <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" class="form__control" />
+            </div>
+            <div class="form__group">
+              {% assign field = fields.headline %}
+              <label for="{{ field.name }}" class="form__label">
+                {{ field.label }}
+              </label>
+              <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" class="form__control" />
+            </div>
+            <div class="form__group">
+              {% assign field = fields.timezone %}
+              <div class="form__select-label">
+                <label for="{{ field.name }}" class="form__label">
+                  {{ field.label }}
+                </label>
+                <select id="{{ field.name }}" name="{{ field.name }}" class="form__control">
+                  <option value="">{{ field.placeholder }}</option>
+                  {% for timezone in page.timezone_options %}
+                    <option value="{{ timezone.value }}" {% if timezone.value == field.value %}selected="selected"{% endif %}>{{ timezone.label }}</option>
+                  {% endfor %}
+                </select>
+                <p id="{{ field.name }}-error" class="form__error-msg hidden" role="alert">{{ 'liquid.partials.form.please_select_country' | translate }}</p>
+              </div>
+            </div>
+            {% if page.has_student_locale_selection_enabled %}
+            <div class="form__group">
+              {% assign field = fields.site_locale %}
+              <div class="form__select-label">
+                <label for="{{ field.name }}" class="form__label">
+                  {{ field.label }}
+                </label>
+                <select id="{{ field.name }}" name="{{ field.name }}" class="form__control">
+                  <option value="">{{ field.placeholder }}</option>
+                  {% for site_locale in page.site_locale_options %}
+                    <option value="{{ site_locale.value }}" {% if site_locale.value == field.value %}selected="selected"{% endif %}>{{ site_locale.label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            {% endif %}
+            {% for field in custom_signup_fields %}
+              <div class="form__group">
+                {{ field.hidden_input }}
+                {% if field.type_is_country %}
+                  <div class="form__select-label">
+                    <label for="{{ field.name }}" class="form__label">
+                      {{ field.label }}
+                    </label>
+                    <select id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required aria-describedby="custom-select-error"{% endif %} class="form__control custom-select">
+                      {{ field.country_options }}
+                    </select>
+                    <p id="custom-custom-select-error" class="form__error-msg hidden" role="alert">{{ 'liquid.partials.form.please_select_country' | translate }}</p>
+                  </div>
+                {% else %}
+                  <label for="{{ field.name }}" class="form__label">
+                    {{ field.label }}
+                  </label>
+                  <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" {% if field.required %}required aria-describedby="custom-field-error"{% endif %} class="form__control custom-field"/>
+                  <p id="custom-field-error" class="form__error-msg hidden" role="alert">{{ 'liquid.partials.form.field_cannot_be_blank' | translate }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <div class="form__button-group">
+              <input type="submit" value="{{ fields.submit.label }}" class="button button-primary" />
+            </div>
+          </div>
+        {% endform %}
+      </main>
+    </div>
+  </div>
+</div>
+
+{% include 'form_validation_script' %}

@@ -1,0 +1,77 @@
+// Icon & Text
+// ======================================
+
+.text-icon {
+
+  &.section--stacked--top {
+
+    & ~ .text-icon.section--stacked--bottom {
+      margin-top: $gutter-width * -2;
+      padding-bottom: $gutter-width;
+    }
+  }
+
+  & ~ .text-icon.section--stacked--top {
+    margin-top: $gutter-width * -2;
+  }
+
+  &.section__background-decoration {
+
+    .section__content {
+      padding-bottom: $gutter-width;
+    }
+  }
+
+  .section__headings {
+    margin-bottom: $gutter-width * 1.5;
+  }
+
+  .section__heading,
+  .section__subheading {
+    color: $heading__color;
+  }
+}
+
+.text-icon__container {
+  @include make-container;
+}
+
+.text-icon__list {
+  @include make-row(false);
+  @include justify-content(center);
+}
+
+.text-icon__list-item {
+  @include screen-md-min {
+    @include make-col(6);
+  }
+  @include screen-lg-min {
+    @include make-col(4);
+  }
+  @include make-col(12);
+
+  margin-bottom: $gutter-width;
+  text-align: center;
+
+  h3 {
+    margin-bottom: $gutter-width;
+    font-family: $body__font-family;
+    font-size: modular-scale(0);
+    font-weight: bold;
+  }
+
+  p {
+    @include screen-md-min {
+      padding-right: $gutter-width / 2;
+      padding-left: $gutter-width / 2;
+    }
+
+    line-height: 1.4;
+  }
+
+  .fa {
+    margin: 0 0 $gutter-width;
+    color: $accent__color;
+    font-size: 2.5rem;
+  }
+}

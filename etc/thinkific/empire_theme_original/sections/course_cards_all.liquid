@@ -1,0 +1,201 @@
+<section class=
+  "
+    course-cards course-cards-all section-height__medium
+    {% include 'section_utility_heading_alignment' %}
+  "
+  data-preview-item="course-cards-all"
+>
+  <div class="course-cards__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      <ul class="products__list">
+        {% assign card_limit = section.settings.course_card_limit %}
+        {% for product in page.products limit: card_limit %}
+          <li class="products__list-item section__body">
+            {% if product.is_course %}
+              {% assign course = product.course %}
+              {% include 'course_card' with course %}
+            {% else %}
+              {% assign bundle = product.bundle %}
+              {% include 'bundle_card' with bundle %}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+      {% if section.settings.show_button %}
+        <div class="section__button-group">
+          <a class="button button-{{ section.settings.button_type }}" href="{{ site.collections_url }}">{{ section.settings.button_text }}</a>
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% style %}
+
+.course-cards-all {
+  {% include 'section_style_card_alignment' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .course-cards__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .course-cards__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"All products [smart section]",
+  "description":"This smart section includes all of your published products that you haven’t set as hidden. <a href='/manage/courses/list/' target='_blank'>Re-order products »</a>",
+  "settings":[
+    {
+      "type":"select",
+      "id":"course_card_limit",
+      "label":"Max number of cards",
+      "description":"",
+      "default":3,
+      "options":[
+        {
+          "value":3,
+          "label":"3"
+        },
+        {
+          "value":6,
+          "label":"6"
+        },
+        {
+          "value":9,
+          "label":"9"
+        },
+        {
+          "value":12,
+          "label":"12"
+        },
+        {
+          "value":15,
+          "label":"15"
+        }
+      ]
+    },
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"All products"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        }
+      ]
+    },
+    {
+      "label":"Button",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"show_button",
+          "label":"Show link to All Courses page",
+          "default":true
+        },
+        {
+          "type":"text",
+          "id":"button_text",
+          "label":"Button text",
+          "default":"View more courses"
+        },
+        {
+          "type":"radio",
+          "id":"button_type",
+          "label":"Button style",
+          "description":"",
+          "default":"primary",
+          "options":[
+            {
+              "value":"primary",
+              "label":"Primary"
+            },
+            {
+              "value":"secondary",
+              "label":"Secondary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        },
+        {
+          "type":"radio",
+          "id":"card_alignment",
+          "label":"Card alignment",
+          "description":"",
+          "default":"left",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Heading alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

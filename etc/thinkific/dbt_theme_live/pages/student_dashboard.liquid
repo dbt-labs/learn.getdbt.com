@@ -1,0 +1,41 @@
+{% comment %}
+  This is the page students will see when they log in. It shows their all of
+  the courses they have taken, and lets them filter by
+  Completed, In Progress or Expired.
+{% endcomment %}
+
+<div class="bg-silver-light">
+	<div class="mask mask-se text-white"></div>
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 snug">
+					<h1 class="h0">{{ 'liquid.partials.student_dashboard.header_my_courses' | translate }}</h1>
+					<p>Continue your Analytics Engineering journey.</p>
+				</div>
+			</div>
+			{% if page.enrolled_cards != empty %}
+			    {% assign cards = page.enrolled_cards | sort: 'last_accessed' | reverse %}
+			    {% paginate cards by 100 %}
+			    <div class="row">
+					{% for card in paginate.collection %}
+					    {% unless card.is_hidden %}
+					    <div class="col-md-6 col-lg-4">
+							{% assign item = card %}
+							{% include 'course_card' with item %}
+						</div>
+						{% endunless %}
+					{% endfor %}
+				</div>
+				{% include 'pagination' with paginate %}
+				{% endpaginate %}
+            {% else %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="products__list-no-results">{{ 'liquid.views.student_dashboard.text_no_courses_found' | translate }}</p>
+                    </div>
+                </div>
+            {% endif %}
+		</div>
+	</div>
+</div>

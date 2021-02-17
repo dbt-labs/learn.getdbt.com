@@ -1,0 +1,21 @@
+{% comment %}
+  This is a paginated list of all the products (courses or bundles) in your site
+{% endcomment %}
+
+{% paginate page.products by 6 %}
+  <ul class="products__list">
+    {% for product in paginate.collection %}
+      <li class="products__list-item">
+        {% if product.is_course %}
+          {% assign course = product.course %}
+          {% include 'course_card' with course %}
+        {% else %}
+          {% assign bundle = product.bundle %}
+          {% include 'bundle_card' with bundle %}
+        {% endif %}
+      </li>
+      {% assign product_count = forloop.length %}
+    {% endfor %}
+  </ul>
+  {% include 'pagination' with paginate %}
+{% endpaginate %}

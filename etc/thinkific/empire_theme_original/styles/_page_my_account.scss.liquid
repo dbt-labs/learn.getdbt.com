@@ -1,0 +1,220 @@
+// My Account
+// ======================================
+
+.my-account__container {
+  @include make-container;
+  @include page-padding($gutter-width * 2, $gutter-width);
+}
+
+.my-account__banner {
+
+  .my-account__heading {
+    margin: 0;
+    text-align: center;
+  }
+
+  .my-account__span {
+    display: block;
+  }
+
+}
+
+.my-account__wrapper {
+  @include make-row(true);
+}
+
+.my-account__heading {
+  @include page-heading;
+}
+
+.my-account__subheading {
+  @include h2;
+}
+
+.my-account__menu {
+  @include screen-sm-max {
+    @include order(2);
+  }
+  @include screen-lg-min {
+    @include make-col(3);
+  }
+  @include make-col(12);
+
+  @media screen and (min-width: $screen-md) and (max-width: $screen-md-max) {
+    margin: 0 0 $gutter-width;
+  }
+}
+
+.my-account__content {
+  @include screen-sm-max {
+    @include order(1);
+    margin: 0 0 $gutter-width;
+  }
+  @include make-col(12);
+
+  .my-account__menu + & {
+    @include screen-lg-min {
+      @include make-col(9);
+
+      padding-left: $gutter-width;
+    }
+  }
+}
+
+.account-content {
+  .my-account__billing__h4 {
+    @include h4;
+  }
+}
+
+.my-account__profile__wrapper {
+  @include make-row(true);
+}
+
+.my-account__avatar {
+  @include screen-md-min {
+    @include make-col(3);
+  }
+  @include make-col(12);
+
+  margin: 0 0 $gutter-width / 2;
+  padding-top: 8px;
+
+  img {
+    max-width: 150px;
+    margin: 0 auto;
+  }
+
+  input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    z-index: z-index(page-background);
+  }
+
+  .button-upload {
+    display: block;
+    width: 100%;
+    color: $link__color;
+    font-size: 1rem;
+    text-align: center;
+
+    &:active,
+    &:hover {
+      color: $link__color--active;
+    }
+  }
+
+  .form__feedback {
+    font-size: 0.875rem;
+    line-height: normal;
+    text-align: center;
+  }
+}
+
+.my-account__avatar-label {
+  display: block;
+  cursor: pointer;
+
+  img {
+    margin: 0 auto $gutter-width / 2;
+  }
+
+  .button-upload {
+    font-family: $heading__font-family;
+    font-size: modular-scale(-1);
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+}
+
+.my-account__form-contents {
+  @include screen-md-min {
+    @include make-col(9);
+  }
+  @include make-col(12);
+}
+
+.my-account__back-link {
+  display: inline-block;
+  margin: 0 0 $gutter-width / 2;
+  font-size: 0.875rem;
+}
+
+.my-account__order-overview {
+  @include make-row(true);
+
+  margin-bottom: $gutter-width;
+  list-style: none;
+
+  li {
+    @include screen-md-min {
+      @include make-col(6);
+    }
+    @include make-col(12);
+  }
+
+  p {
+    @include form-control;
+
+    background-color: $form__input-disabled;
+    line-height: 1;
+  }
+
+  strong {
+    @include form-label;
+  }
+}
+
+.my-account__order-summary {
+  thead,
+  tbody {
+    tr {
+      & > * {
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+.credit-card__buttons {
+  @include button-group;
+
+  margin-bottom: 2rem;
+
+  .btn {
+    @include button;
+
+    margin-right: $gutter-width / 4;
+  }
+
+  .btn-primary {
+    @include button-primary;
+
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .btn-default {
+    @include button-secondary;
+  }
+}
+
+// In-App Credit Card form (Thinkific)
+// TODO: Update Credit Card form HTML
+table {
+  .btn-primary {
+    @include button;
+    @include button-primary;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+}

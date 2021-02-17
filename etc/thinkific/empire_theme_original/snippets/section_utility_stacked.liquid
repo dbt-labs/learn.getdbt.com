@@ -1,0 +1,7 @@
+{% if section.settings.heading != blank or section.settings.subheading != blank %}
+  section--stacked--top
+{% endif %}
+{% if section.settings.heading == blank and section.settings.subheading == blank %}
+  section--stacked--bottom
+{% endif %}
+

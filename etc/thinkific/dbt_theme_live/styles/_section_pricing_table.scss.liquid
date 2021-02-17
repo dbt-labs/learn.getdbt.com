@@ -1,0 +1,105 @@
+// Pricing Table
+// ======================================
+
+.pricing-table {
+
+  &.section__column-layout__two-column {
+    @include screen-lg-min {
+
+      .section__content {
+        padding-left: 0;
+      }
+    }
+  }
+}
+
+.pricing-table__container {
+  @include make-container;
+}
+
+.pricing-table__wrapper {
+  @include make-row(true);
+}
+
+.pricing-table__list {
+  li {
+    @include screen-sm-min {
+      @include display(flex);
+      @include justify-content(space-between);
+    }
+  }
+}
+
+.pricing-table__list-item {
+  @include screen-md-min {
+    padding: $gutter-width / 2 $gutter-width;
+  }
+  @include make-row(false);
+  @include flex-wrap(nowrap);
+
+  margin: 0 0 $gutter-width / 4;
+  padding: $gutter-width / 2;
+  border-radius: $base__border-radius;
+  background-color: $interface__background-color;
+
+  &:last-of-type {
+    margin: 0;
+  }
+
+  .button {
+    @include screen-legacy-max {
+      padding: 0;
+    }
+    @include screen-sm-min {
+      width: auto;
+      height: auto;
+      border-radius: 100px;
+      font-size: 0.875rem;
+    }
+    @include align-self(center);
+
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    margin-left: auto;
+    border-radius: 50%;
+    font-size: 0;
+    font-weight: 400;
+    text-transform: none;
+  }
+
+  .fa {
+    @include screen-sm-min {
+      display: none;
+    }
+    @include transform(translatex(-50%) translatey(-50%));
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    letter-spacing: -3px;
+
+    &:before {
+      font-size: 1rem;
+      line-height: 0.8rem;
+    }
+  }
+}
+
+.pricing-table__list-item-details {
+  @include screen-sm-min {
+    flex: 0 0 60%;
+    align-self: center;
+    max-width: 60%;
+    min-height: 1px;
+    padding: 0;
+  }
+
+  @include make-col(10, false);
+
+  &__price {
+    margin: 0 0 $gutter-width / 4;
+    font-size: modular-scale(0);
+    font-weight: bold;
+  }
+}

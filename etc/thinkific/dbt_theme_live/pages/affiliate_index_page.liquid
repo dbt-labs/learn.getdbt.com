@@ -1,0 +1,20 @@
+{% comment %}
+  This is the Affiliate Index page.
+  This is where affiliate users can view general affiliate information.
+{% endcomment %}
+
+<div class="affiliate">
+  <div class="affiliate__container">
+    <div class="affiliate__wrapper">
+      <aside class="affiliate__menu hidden-print">
+        {% include 'affiliate_dashboard_menu' %}
+      </aside>
+      <main class="affiliate__content" id="main-content" role="main">
+        <h2 class="affiliate__heading">{{ 'liquid.views.affiliate_index_page.header_general_affiliate_information' | translate }}</h2>
+        {{ 'liquid.views.affiliate_index_page.msg_affiliate_comission_percent_of_sales_1' | translate }}
+        <strong>{{ page.affiliate_commission_percentage }}</strong>
+        {{ 'liquid.views.affiliate_index_page.msg_affiliate_comission_percent_of_sales_2' | translate }}
+      </main>
+    </div>
+  </div>
+</div>

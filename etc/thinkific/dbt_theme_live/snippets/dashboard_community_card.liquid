@@ -1,0 +1,20 @@
+{% comment %}
+  This is the student dashboard community card.
+{% endcomment %}
+
+<a class="course-card community-card__dashboard" href="{{ community.url }}" aria-label="{{ community.name }}">
+  <div class="community-card__body">
+    <h3 class="community-card__title">{{ community.name }}</h3>
+    <p class="community-card__posts">
+      {{ 'liquid.partials.student_dashboard.text_community_posts' | translate: count: community.post_count }}
+    </p>
+  </div>
+  <div class="community-card__img-container">
+    <img
+      src="{{ community.image_url }}"
+      alt=""
+      class="community-card__img"
+      loading="lazy"
+    />
+  </div>
+</a>

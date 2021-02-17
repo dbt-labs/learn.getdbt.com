@@ -1,0 +1,42 @@
+{% comment %}
+  This is the Coming Soon page.
+{% endcomment %}
+
+<main class="coming-soon" id="main-content" role="main">
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "course_cards",
+      "banner",
+      "bonus",
+      "course_categories_all",
+      "course_categories",
+      "call_to_action",
+      "checklist",
+      "countdown",
+      "frequently_asked_questions",
+      "gallery",
+      "icon_and_text",
+      "image_and_text",
+      "instructor",
+      "lead_capture",
+      "pricing_options",
+      "reviews",
+      "showcase",
+      "testimonials",
+      "rich_text",
+      "description",
+      "upsells",
+      "video"
+    ],
+    "defaults":[
+      "banner",
+      "lead_capture"
+    ]
+  }
+}
+{% endschema %}

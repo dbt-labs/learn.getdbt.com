@@ -1,0 +1,6 @@
+{% assign coupon = page.order.coupon %}
+<tr>
+  <td>{{ page.order.cart_purchased_date }}</td>
+  <td>{{ 'liquid.views.my_account_orders_show_page.table_td_promotion' | translate }} {{ coupon.name }}</td>
+  <td>-{{ coupon.discounted_amount }}</td>
+</tr>

@@ -1,0 +1,12 @@
+{% comment %}
+  These are your custom links that have been defined in the Page Header section
+  as Link Item blocks.
+{% endcomment %}
+
+{% if section.blocks != empty %}
+  {% for block in section.blocks %}
+    <li class="header__nav-item">
+      <a href="{{ block.settings.nav_link }}" target="{{ block.settings.nav_target }}">{{ block.settings.nav_text }}</a>
+    </li>
+  {% endfor %}
+{% endif %}

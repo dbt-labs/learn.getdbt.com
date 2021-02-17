@@ -1,0 +1,44 @@
+{% comment %}
+  These are links that appear in your site header that allow users in different
+  roles to see different menu items.
+{% endcomment %}
+
+<ul class="dropdown__menu" aria-expanded="false">
+  {% if site.current_user.signed_in %}
+    {% if site.current_user.can_access_admin_dashboard %}
+      <li class="dropdown__menu-item">
+        <a href="{{ site.dashboard_url }}">
+          {{ 'liquid.partials.header_user_menu.link_admin' | translate }}
+        </a>
+      </li>
+    {% endif %}
+    <li class="dropdown__menu-item {% if section.settings.show_dashboard_link %} header__nav-item--default {% endif %}">
+      <a href="{{ site.student_dashboard_url }}">
+        {{ 'liquid.partials.header_with_links.link_my_dashboard' | translate }}
+      </a>
+    </li>
+    {% if site.current_user.is_affiliate %}
+      <li class="dropdown__menu-item">
+        <a href="{{ site.affiliate_dashboard_url }}">
+          {{ 'liquid.partials.header_user_menu.link_affiliate' | translate }}
+        </a>
+      </li>
+    {% endif %}
+  {% endif %}
+  <li class="dropdown__menu-item">
+    <a href="{{ site.current_user.account_url }}">
+      {{ 'liquid.partials.header_with_links.link_my_account' | translate }}
+    </a>
+  </li>
+  <li class="dropdown__menu-item">
+    <a href="mailto:{{ site.support_email }}" target="_blank">
+      {{ 'liquid.partials.header_with_links.link_support' | translate }}
+      <i class='fa fa-external-link' role='img' aria-label="{{ 'liquid.accessibility.new_window_warning' | translate }}"></i>
+    </a>
+  </li>
+  <li class="dropdown__menu-item">
+    <a href="{{ site.sign_out_url }}">
+      {{ 'liquid.partials.header_with_links.link_sign_out' | translate }}
+    </a>
+  </li>
+</ul>

@@ -1,0 +1,10 @@
+{% if section.settings.heading != blank or section.settings.subheading != blank %}
+  <header class="section__headings">
+    {% if section.settings.heading != blank %}
+      <h2 class="section__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if section.settings.subheading != blank %}
+      <p class="section__subheading">{{ section.settings.subheading }}</p>
+    {% endif %}
+  </header>
+{% endif %}

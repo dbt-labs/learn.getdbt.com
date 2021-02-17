@@ -1,0 +1,42 @@
+// Dashboard
+// ======================================
+
+.student-dashboard__container {
+  @include make-container;
+  @include page-padding($gutter-width * 2, $gutter-width);
+}
+
+.student-dashboard__welcome {
+  margin: 0;
+  font-family: $body__font-family;
+  font-size: modular-scale(2);
+  font-weight: 300;
+  text-align: center;
+}
+
+.student-dashboard__heading {
+  @include page-heading;
+}
+
+.student-dashboard__form {
+  a {
+    text-decoration: none;
+  }
+
+  .form__group {
+    @include justify-content(space-between);
+
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .form__select-no-label {
+    @include flex-grow(0);
+
+    .form__control {
+      border: 0;
+      background-color: transparent;
+      direction: rtl;
+    }
+  }
+}

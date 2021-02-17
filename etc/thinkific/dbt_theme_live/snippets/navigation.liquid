@@ -1,0 +1,71 @@
+<a class="header__mobile-button hidden-print">
+  <span class="header__mobile-button__toggle-icon">
+    <span>{{ 'liquid.accessibility.toggle_menu' | translate }}</span>
+  </span>
+  <span class="header__mobile-button__label {% if section.settings.show_menu_label == false %}sr-only{% endif %}">
+    {{ 'liquid.partials.header_with_links.button_menu' | translate }}
+  </span>
+</a>
+<nav class="header__nav hidden-print
+{% if section.settings.menu_position == 'left' %}
+  header__nav--left
+{% endif %}
+{% if site.current_user.signed_in %}
+  user-signed-in
+{% endif %}
+{% if page.product_is_course or page.product_is_bundle %}
+  header__nav--has-cta
+{% endif %}
+">
+  <ul>
+    {% include 'header_links' %}
+    {% include 'header_default_links' %}
+    {% if site.current_user.signed_in %}
+      <li class="dropdown header__nav-item">
+        <a class="dropdown__toggle-button" role="button" data-toggle="dropdown" aria-label="{{ 'liquid.accessibility.toggle_menu' | translate }}" tabindex="0">
+          {{ site.current_user.first_name_last_initial }}
+          <img
+            src="{{ site.current_user.avatar }}"
+            aria-hidden="true"
+            class="header__user-avatar"
+            loading="lazy"
+            alt=""
+          >
+          <i class="fa fa-caret-down" aria-hidden="true"></i>
+        </a>
+        {% include 'header_user_menu' %}
+      </li>
+    {% else %}
+      <li class="header__nav-item header__nav-sign-in">
+        <a href='{{ site.sign_in_url }}'>
+          {{ 'liquid.partials.header_with_links.link_sign_in' | translate }}
+        </a>
+      </li>
+    {% endif %}
+    {% if page.product_is_course %}
+      {% assign course = page.course %}
+      {% unless course.is_draft %}
+        {% if course.is_public %}
+        {% if section.settings.hide_default_buttons == false %}
+        {% if course.user_can_purchase %}
+          <li class="header__nav-item header__nav-cta">
+            <a href="{{ course.links.buy }}" class="button button-secondary">{{ section.settings.button_text }}</a>
+          </li>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+      {% endunless %}
+    {% elsif page.product_is_bundle %}
+      {% assign bundle = page.bundle %}
+      {% unless bundle.previously_purchased %}
+        {% unless bundle.is_free %}
+          {% if section.settings.hide_default_buttons == false %}
+            <li class="header__nav-item header__nav-cta">
+              <a href="{{ bundle.links.buy }}" class="button button-secondary">{{ section.settings.button_text }}</a>
+            </li>
+          {% endif %}
+        {% endunless %}
+      {% endunless %}
+    {% endif %}
+  </ul>
+</nav>

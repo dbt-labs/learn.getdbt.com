@@ -1,0 +1,270 @@
+// Course Curriculum
+// ======================================
+
+.course-curriculum {
+
+  .course-curriculum__chapter-list {
+    @include make-row(false);
+  }
+
+  .course-curriculum__chapter {
+    @include make-col(12);
+    @include display(flex);
+
+    margin-bottom: 2px;
+    padding-top: $gutter-width / 2;
+    padding-bottom: $gutter-width / 2;
+    border-radius: 5px;
+    background-color: transparentize($accent__color, 0.7);
+    line-height: 1;
+
+    &.course-curriculum__chapter--collapsed {
+      background-color: transparentize($accent__color, 0.9);
+
+      .course-curriculum__chapter-header {
+        @include transition(margin-bottom 400ms ease);
+
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .course-curriculum__chapter-number {
+    @include screen-sm-max {
+      left: 0;
+    }
+    position: absolute;
+    top: 2px;
+    left: 1em;
+    color: inherit;
+    font-family: $heading__font-family;
+    font-size: 1em;
+    text-align: right;
+    opacity: 0.8;
+  }
+
+  .course-curriculum__chapter-content-wrapper {
+    @include screen-sm-max {
+      padding-right: $gutter-width / 2;
+      padding-left: 0;
+    }
+    @include make-row(false);
+
+    position: relative;
+    width: 100%;
+    padding-left: $gutter-width;
+  }
+
+  .course-curriculum__chapter-header {
+    @include transition(margin-bottom 400ms ease);
+    @include screen-tablet-only {
+      padding-right: 0;
+    }
+    @include make-col(12);
+
+    position: initial;
+    margin-bottom: $gutter-width;
+    padding-right: 0;
+    padding-left: $gutter-width;
+  }
+
+  .course-curriculum__chapter-title {
+    @include screen-sm-min {
+      padding-right: $gutter-width;
+    }
+
+    position: relative;
+    margin: 0;
+    font-size: modular-scale(1);
+    font-weight: 400;
+
+    &:after {
+      content: "";
+      opacity: 0;
+    }
+  }
+
+  .course-curriculum__chapter-content {
+    @include screen-sm-min {
+      padding-right: $gutter-width * 1.5;
+    }
+
+    width: 100%;
+    margin: 0;
+    list-style: none;
+  }
+
+  .course-curriculum__chapter-lesson {
+    display: flex;
+
+    &,
+    &:active,
+    &:hover {
+      color: $body__text-color;
+      text-decoration: none;
+    }
+
+    i {
+      margin: 4px 0;
+      padding-right: 1rem;
+      color: $accent__color;
+      font-size: modular-scale(1);
+    }
+  }
+}
+
+.course-curriculum__container {
+  @include make-container(false);
+  @include screen-md-min {
+    max-width: 800px;
+    padding: 4rem 1rem;
+  }
+  width: 90%;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.course-curriculum__chapter-header {
+  @include screen-md-min {
+    position: initial;
+  }
+
+  position: relative;
+  cursor: pointer;
+}
+
+.course-curriculum__chapter-header__toggle {
+  @include screen-md-min {
+    right: $gutter-width / 2;
+
+    .course-curriculum__chapter--collapsed & {
+      right: $gutter-width;
+      width: auto;
+    }
+  }
+
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: $gutter-width / 2;
+  height: $gutter-width / 2;
+
+  &-label {
+    @include screen-sm-max {
+      display: none;
+    }
+
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    opacity: 0;
+    z-index: z-index(element--foreground);
+
+    .course-curriculum__chapter--collapsed & {
+      @include transition(opacity 400ms ease);
+
+      position: initial;
+      top: initial;
+      left: initial;
+      width: auto;
+      opacity: 1;
+    }
+  }
+
+  button {
+    @include transform(translate(-6px, 0));
+    @include screen-md-min {
+      left: $gutter-width / 2;
+    }
+
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    height: 1rem;
+    border: 0;
+    background-color: transparent;
+
+    &:before,
+    &:after {
+      @include transition(all 0.25s ease);
+
+      position: absolute;
+      width: 3px;
+      height: 9px;
+      background-color: $accent__color;
+      content: "";
+    }
+
+    &:before {
+      @include transform(translate(2px, 0) rotate(-45deg));
+    }
+
+    &:after {
+      @include transform(translate(-2px, 0) rotate(45deg));
+    }
+  }
+
+  .course-curriculum__chapter--collapsed & {
+
+    button {
+      &:before {
+        @include transform(translate(2px, 0) rotate(45deg));
+      }
+
+      &:after {
+        @include transform(translate(-2px, 0) rotate(-45deg));
+      }
+    }
+  }
+}
+
+.course-curriculum__chapter-content {
+
+  a {
+    text-decoration: none;
+
+    &:active,
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  li {
+    @include screen-sm-max {
+      padding-left: 0;
+    }
+
+    position: relative;
+    margin-bottom: $gutter-width / 1.25;
+    padding-left: $gutter-width;
+    font-weight: 300;
+  }
+}
+
+.course-curriculum__chapter-content-wrapper {
+  position: relative;
+}
+
+.course-curriculum__lesson-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  p {
+    margin: 4px 0;
+    padding-right: 1rem;
+  }
+}
+
+.course-curriculum__chapter-lesson--free {
+  margin: 4px 0;
+  padding: 5px 8px;
+  border-radius: $base__border-radius;
+  background-color: $accent__color;
+  color: dynamic-contrast-color($accent__color);
+  font-size: modular-scale(-2);
+  font-weight: 400;
+}

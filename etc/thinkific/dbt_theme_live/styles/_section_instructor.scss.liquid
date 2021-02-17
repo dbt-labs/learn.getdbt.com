@@ -1,0 +1,165 @@
+// Instructor(s)
+// ======================================
+
+.instructor {
+	overflow: hidden;
+
+	.section__headings {
+		margin: 0 0 $gutter-width * 2;
+	}
+
+	.section__heading,
+	.section__subheading {
+		color: $heading__color;
+	}
+
+	.owl-carousel {
+		.owl-nav {
+      position: relative;
+      padding-top: $gutter-width / 2;
+      text-align: center;
+
+      .owl-next,
+      .owl-prev {
+        position: relative;
+        top: initial;
+        right: initial;
+	  left: initial;
+	  padding: 0px;
+      }
+
+      .owl-prev {
+        margin-right: $gutter-width;
+      }
+		}
+	}
+}
+
+.instructor__container {
+	@include make-container;
+}
+
+.instructor__list {
+	@include make-col(12);
+	margin: 0 auto;
+
+	&.owl-carousel {
+		.owl-stage-outer {
+			@include screen-md-min {
+				overflow: visible;
+			}
+		}
+
+		.owl-item {
+			@include screen-md-min {
+				opacity: 0.2;
+
+				&.center {
+					opacity: 1;
+				}
+			}
+
+			img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+		}
+	}
+}
+
+.instructor__list-item {
+	@include make-row(false);
+	@include screen-md-min {
+		text-align: left;
+	}
+	text-align: center;
+}
+
+.instructor__avatar {
+	@include screen-sm-max {
+		margin: 0 0 $gutter-width / 2;
+	}
+	@include screen-md-min {
+		@include make-col(6);
+		margin-left: auto;
+
+		.owl-item.center + .owl-item & {
+			margin-right: auto;
+			margin-left: 0;
+		}
+	}
+	@include screen-tablet-only {
+		padding-left: 0;
+	}
+	@include make-col(12, false);
+}
+
+.instructor__avatar-img {
+	@include screen-md-max {
+		max-width: 220px;
+	}
+	margin: 0 auto;
+	border-radius: $base__border-radius;
+}
+
+.instructor__profile {
+	@include screen-md-min {
+		display: none;
+	}
+	padding-top: $gutter-width / 2;
+	padding-bottom: $gutter-width;
+
+	header {
+		margin: 0 0 $gutter-width / 2;
+	}
+
+	ul {
+		margin: 0;
+	}
+
+	.owl-item.center & {
+		@include screen-md-min {
+			@include make-col(6, false);
+			display: block;
+		}
+		@include screen-xl-min {
+			padding-right: $gutter-width * 1.5;
+			padding-left: 1rem;
+		}
+		@include make-col(12, false);
+	}
+}
+
+.instructor__name,
+.instructor__title {
+	font-family: $body__font-family;
+	font-size: modular-scale(1);
+}
+
+.instructor__name {
+	margin: 0;
+	font-family: $heading__font-family;
+	font-size: modular-scale(2);
+	font-weight: 300;
+}
+
+.instructor__title {
+	margin: 0 0 $gutter-width / 4;
+	font-size: modular-scale(-1);
+	font-weight: 400;
+}
+
+.instructor__social {
+	padding-top: 2rem;
+
+	a {
+		color: $accent__color;
+		font-size: modular-scale(-1);
+		text-decoration: none;
+
+		.fa {
+			margin-right: $gutter-width / 4;
+		}
+	}
+}

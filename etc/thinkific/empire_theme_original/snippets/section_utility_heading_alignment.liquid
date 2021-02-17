@@ -1,0 +1,7 @@
+{% if section.settings.heading_alignment == "left" %}
+  section__heading-alignment--left
+{% elsif section.settings.heading_alignment == "center" %}
+  section__heading-alignment--center
+{% else section.settings.heading_alignment == "right" %}
+  section__heading-alignment--right
+{% endif %}

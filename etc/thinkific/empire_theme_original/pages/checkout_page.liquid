@@ -1,0 +1,33 @@
+{% comment %}
+  This is the checkout page.
+  Specifically, this is the page where a user would type in their credit
+  card number, apply a coupon or checkout with PayPal
+  Note that you cannot edit the actual form, however the surrounding content
+  of the page may be modified.
+{% endcomment %}
+
+<main class="checkout" id="main-content" role="main">
+  <div class="checkout__container">
+    <div class="checkout__wrapper">
+      {% section 'checkout_form' %}
+      {% section 'checkout_overview' %}
+    </div>
+  </div>
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "banner",
+      "course_cards",
+      "frequently_asked_questions",
+      "call_to_action",
+      "countdown",
+      "video"
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}

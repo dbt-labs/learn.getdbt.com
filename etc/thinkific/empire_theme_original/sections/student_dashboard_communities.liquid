@@ -1,0 +1,15 @@
+<div class="student-dashboard__communities">
+  <h2 class="student-dashboard__communities-heading">{{ 'liquid.partials.student_dashboard.header_my_communities' | translate }}</h2>
+
+  {% comment %}
+    Display the community cards
+  {% endcomment %}
+  {% assign communities = page.communities | sort: 'name' %}
+    <ul class="products__list">
+      {% for community in communities %}
+        <li class="products__list-item">
+          {% include 'dashboard_community_card' with community %}
+        </li>
+      {% endfor %}
+    </ul>
+</div>

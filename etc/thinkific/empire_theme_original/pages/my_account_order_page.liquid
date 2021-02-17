@@ -1,0 +1,85 @@
+{% comment %}
+  This is the 'my account single order' page.
+  Here, a user view details about a single order.
+{% endcomment %}
+
+<div class="my-account">
+  {% include 'my_account_banner' %}
+  <div class="my-account__container">
+    <div class="my-account__wrapper">
+      <aside class="my-account__menu hidden-print">
+        {% include 'my_account_menu' %}
+      </aside>
+      <main class="my-account__content" id="main-content" role="main">
+        <a href="{{ site.account_orders_url }}" class="my-account__back-link">{{ 'liquid.views.my_account_orders_show_page.header_order_history' | translate }}</a>
+        <h3 class="my-account__subheading">
+          {% if page.order.has_subscription %}
+            {{ 'liquid.views.my_account_orders_show_page.text_subscription' | translate }}
+          {% endif %}
+          {{ page.order.product_name }}
+        </h3>
+        <ul class="my-account__order-overview">
+          <li>
+            <strong>{{ 'liquid.views.my_account_orders_show_page.text_order_status' | translate }}</strong>
+            <p>{{ page.order.status_key | translate }}</p>
+          </li>
+          <li>
+            <strong>{{ 'liquid.views.my_account_orders_show_page.text_order_number' | translate }}</strong>
+            <p>{{ page.order.number }}</p>
+          </li>
+          <li>
+            <strong>{{ 'liquid.views.my_account_orders_show_page.text_order_date' | translate }}</strong>
+            <p>{{ page.order.created_date }}</p>
+          </li>
+          <li>
+            <strong>{{ 'liquid.views.my_account_orders_shared.expires' | translate }}</strong>
+            <p>{{ page.order.product_expiry_date }}</p>
+          </li>
+          <li>
+            <strong>{{ 'liquid.views.my_account_orders_show_page.text_payment_method' | translate }}</strong>
+            <p>{{ page.order.payment_method_key | translate }}</p>
+          </li>
+          <li>
+            <strong>{{ 'liquid.views.my_account_orders_show_page.text_card' | translate }}</strong>
+            <p>{{ page.order.masked_card_numbers }}</p>
+          </li>
+          <li>
+            <strong>{{ 'liquid.views.my_account_orders_show_page.text_total_amount' | translate }}</strong>
+            <p>{{ page.order.cost }}</p>
+          </li>
+        </ul>
+        <h3 class="my-account__subheading">{{ 'liquid.views.my_account_orders_show_page.header_order_summary' | translate }}</h3>
+        <table class="my-account__order-summary">
+          <thead>
+            <tr>
+              <th>{{ 'liquid.views.my_account_orders_show_page.table_th_date' | translate }}</th>
+              <th>{{ 'liquid.views.my_account_orders_show_page.table_th_product' | translate }}</th>
+              <th class="text-right">{{ 'liquid.views.my_account_orders_show_page.table_th_amount' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if page.order.has_recurring and page.order.payments.size > 0 %}
+              {% include 'order_multiple_payments' %}
+            {% else %}
+              {% include 'order_line_items' %}
+            {% endif %}
+            {% if page.order.coupon != blank %}
+              {% include 'order_coupons' %}
+            {% endif %}
+            {% include 'order_refunds' %}
+            <tr>
+              <td colspan="2">
+                <strong>{{ 'liquid.views.my_account_orders_show_page.table_td_total_amount' | translate }}</strong>
+              </td>
+              <td class="my-account__order-summary-cost" data-label="{{ 'liquid.views.my_account_orders_show_page.table_td_total_amount' | translate }}">
+                <strong>{{ page.order.cost }}</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <a class="button button-primary button--print" href="javascript:window.print()">{{ 'liquid.views.my_account_orders_show_page.button_print' | translate }}
+        </a>
+      </main>
+    </div>
+  </div>
+</div>

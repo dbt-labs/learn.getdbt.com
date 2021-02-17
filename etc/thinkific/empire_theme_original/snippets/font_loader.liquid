@@ -1,0 +1,11 @@
+<link href="https://fonts.googleapis.com/css?family={{ theme.settings.banner_font }}:100,200,300,400,400i,500,600,700,800,900" rel="stylesheet">
+{% unless theme.settings.heading_font == theme.settings.banner_font %}
+<link href="https://fonts.googleapis.com/css?family={{ theme.settings.heading_font }}:100,200,300,400,400i,500,600,700,800,900" rel="stylesheet">
+{% endunless %}
+{% unless theme.settings.subheading_font == theme.settings.heading_font %}
+<link href="https://fonts.googleapis.com/css?family={{ theme.settings.subheading_font }}:100,200,300,400,400i,500,600,700,800,900" rel="stylesheet">
+{% endunless %}
+{% unless theme.settings.body_font == theme.settings.banner_font or theme.settings.body_font == theme.settings.heading_font or theme.settings.body_font == theme.settings.subheading_font %}
+<link href="https://fonts.googleapis.com/css?family={{ theme.settings.body_font }}:300,400,400i,500,600,700,800,900" rel="stylesheet">
+{% endunless %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">

@@ -1,0 +1,105 @@
+// Banner (Bundle)
+// ======================================
+
+.banner-bundle {
+  @include screen-lg-min {
+    @include display(flex);
+    @include align-items(center);
+  }
+
+  &.section-background-image {
+    background-position: top;
+  }
+
+  &.section--has-free-trial {
+
+    .section__content {
+      @include screen-tablet-only {
+        @include make-col(12, false);
+      }
+    }
+
+    .section__video {
+      @include screen-tablet-only {
+        @include make-col(12, false);
+      }
+    }
+
+    .bundle-action-buttons--has-additional-prices {
+       @include screen-sm-max {
+        .button,
+        .form__control.bundle-action-buttons__additional-prices {
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+
+  .section__content {
+    @include screen-md-min {
+      @include make-col(8);
+    }
+    @include screen-lg-min {
+      @include make-col(6);
+    }
+    @include make-col(12);
+  }
+
+  .section__headings {
+    @include screen-lg-min {
+      margin: 0;
+    }
+  }
+
+  .section__heading {
+    font-family: $banner__font-family;
+    font-size: modular-scale(4);
+    font-weight: $banner__font-weight;
+  }
+
+  .section__subheading {
+    font-family: $subheading__font-family;
+    font-size: modular-scale(0);
+    font-weight: $subheading__font-weight;
+  }
+
+  .section__button-group {
+    @include button-group;
+    @include screen-xl-min {
+      @include flex-wrap(nowrap);
+    }
+
+    margin-bottom: $gutter-width;
+
+    .bundle-action-buttons__purchase {
+
+      &:only-child {
+        width: 100%;
+      }
+    }
+
+    .button {
+      @include screen-xs-max {
+        margin-bottom: 1rem;
+      }
+
+      padding: 0.5rem 1.5rem;
+    }
+  }
+
+  .video__play-button {
+    @include transform(translate3d(-50%, -50%, 0));
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+}
+
+.banner-bundle__container {
+  @include make-container;
+}
+
+.banner-bundle__wrapper {
+  @include make-row(true);
+}

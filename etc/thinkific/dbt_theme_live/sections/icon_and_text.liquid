@@ -1,0 +1,166 @@
+<section class="text-icon section-height__medium
+{% include 'section_utility_background_decoration' %}
+{% include 'section_utility_heading_alignment' %}
+{% include 'section_utility_stacked' %}" data-preview-item="text-icon">
+  <div class="text-icon__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <div class="text-icon__container">
+          <ul class="text-icon__list section__body">
+            {% for block in section.blocks %}
+              <li class="text-icon__list-item">
+                <i class="fa {{ block.settings.ti_icon }}" aria-hidden="true"></i>
+                <h3>{{ block.settings.ti_name }}</h3>
+                <p>{{ block.settings.ti_body }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% style %}
+
+.text-icon {
+  {% include 'section_style_background_decoration' %}
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .text-icon__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .text-icon__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Icons & text",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Icons & text"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Background & layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_background_decoration",
+          "label":"Show styled background",
+          "default":true
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add icon & text",
+    "limit":12,
+    "types":[
+      {
+        "type":"icon_text",
+        "label":"Icon & text",
+        "settings":[
+          {
+            "type":"icon",
+            "id":"ti_icon",
+            "label":"Icon"
+          },
+          {
+            "type":"text",
+            "id":"ti_name",
+            "label":"Name"
+          },
+          {
+            "type":"textarea",
+            "id":"ti_body",
+            "label":"Description"
+          }
+        ]
+      }
+    ],
+    "defaults":[
+      {
+        "type":"icon_text",
+        "values":{
+          "ti_icon":"fa-asterisk",
+          "ti_name":"Icon & text",
+          "ti_body":"Use an icon and text to communicate the value proposition and share the specific benefits of your offering. What makes it unique in your market?"
+        }
+      },
+      {
+        "type":"icon_text",
+        "values":{
+          "ti_icon":"fa-area-chart",
+          "ti_name":"Icon & text",
+          "ti_body":"Use an icon and text to communicate the value proposition and share the specific benefits of your offering. What makes it unique in your market?"
+        }
+      },
+      {
+        "type":"icon_text",
+        "values":{
+          "ti_icon":"fa-lightbulb-o",
+          "ti_name":"Icon & text",
+          "ti_body":"Use an icon and text to communicate the value proposition and share the specific benefits of your offering. What makes it unique in your market?"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,106 @@
+<article class="sign-in__form">
+  <h3 class="page__heading">
+    {{ 'liquid.views.sign_in_page.header_welcome_back' | translate }}
+  </h3>
+
+  {% form 'sign_in' %}
+    {% if errors.size > 0 %}
+      {% include 'form_errors' %}
+    {% endif %}
+    
+    <div class="form-grid form-grid-left">
+
+      <div class="form__group form-row">
+        {% assign field = fields.email %}
+        <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+        <div class="form-response">
+          <input
+            type="email"
+            id="{{ field.name }}"
+            name="{{ field.name }}"
+            value="{{ field.value }}"
+            placeholder="{{ field.placeholder }}"
+            autocapitalize="off"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            {% if field.required %}required{% endif %}
+            class="form__control form-control input-white input-shadow"
+            aria-describedby="{{ field.name }}-error"
+          />
+          <p id="{{ field.name }}-error" class="form__error-msg hidden help-block text-red" role="alert">{{ 'liquid.partials.form.please_enter_valid_email' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="form__group form-row">
+        {% assign field = fields.password %}
+        <div class="form-label"><label for="{{ field.name }}" class="form__label">{{ field.label }}</label></div>
+        <div class="form-response">
+          <input
+            type="password"
+            id="{{ field.name }}"
+            name="{{ field.name }}"
+            placeholder="{{ field.placeholder }}"
+            autocapitalize="off"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            {% if field.required %}required{% endif %}
+            class="form__control form-control input-white input-shadow"
+            aria-describedby="{{ field.name }}-error"
+          />
+          <p id="{{ field.name }}-error" class="form__error-msg hidden help-block text-red" role="alert" >{{ 'liquid.partials.form.password_length' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="form__group form__remember-me form-row">
+        {% assign field = fields.remember_me %}
+        {% comment %}
+          This hidden input is necessary so that things behave correctly when the checkbox is left unticked.
+        {% endcomment %}
+        <div class="form-label"><input type="hidden" name="{{ field.name }}" value="0" /></div>
+        <div class="form-response">
+          <label class="option">
+            <input
+                type="checkbox"
+                id="{{ field.name }}"
+                name="{{ field.name }}"
+                value="{{ field.value }}"
+                class="form__control"
+              />
+            <i class="option-icon"></i>
+            <span class="form__label">{{ field.label }}</span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form__button-group form-footer btn-inliner">
+        {% if site.invisible_recaptcha_enabled %}
+            {% include 'recaptcha' %}
+        {% else %}
+      
+            <input type="submit" value="{{ fields.submit.label }}" class="button button-primary btn btn-info" id="sign-in" />
+            <a href="{{ page.forgot_password_url }}" class="form__forgot-password btn btn-link">{{ 'liquid.views.sign_in_page.forgot_password' | translate }}</a>
+        
+         {% endif %}
+        <a href='{{ page.sign_up_url }}' class="btn btn-link">{{ 'liquid.views.sign_in_page.link_create_account' | translate }}</a>
+        <a href="{{ page.forgot_password_url }}" class="btn btn-link">{{ 'liquid.views.sign_in_page.forgot_password' | translate }}</a>
+    </div>
+    
+  {% endform %}
+
+  {% include 'remote_sign_in' %}
+</article>
+
+
+{% include 'form_validation_script' %}
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[]
+}
+{% endschema %}

@@ -1,0 +1,257 @@
+// Utility
+// ======================================
+
+// Language Bar (Safari)
+// Vendor default index is 1, resolves overlap
+#language-bar {
+  z-index: z-index(page-foreground);
+}
+
+// Skip to Main Content
+#skip-link {
+  a {
+    position: absolute;
+    top: auto;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: z-index(page-background);
+
+    &:active,
+    &:focus {
+      top: auto;
+      left: auto;
+      margin: 15px;
+      padding: 15px;
+      width: 200px;
+      height: 60px;
+      border: 2px solid $alert--info;
+      background-color: $black;
+      color: $white;
+      font-size: 1rem;
+      text-align: center;
+      overflow: auto;
+      z-index: z-index(page-foreground);
+    }
+  }
+}
+
+.sr-only {
+  @include sr-only;
+}
+
+// Hide
+.hidden {
+  display: none !important;
+}
+
+@media print {
+  .hidden-print {
+    display: none !important;
+  }
+}
+
+// NoScroll
+.noscroll {
+  overflow: hidden;
+}
+
+// Admin Notice (Override)
+.admin-notice__bar {
+  @include screen-md-max {
+    a {
+      display: block;
+    }
+  }
+
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: z-index(page-foreground);
+}
+
+// Notifications
+#notifications {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  .row {
+    @include make-row(true);
+  }
+
+  .flash {
+    @include make-col(12);
+  }
+}
+
+// Full-Width Backgrounds
+.section-background-image {
+  @include section-background-image;
+}
+
+// Section Content Alignment
+.section__content-alignment__center {
+
+  & [class*="__wrapper"] {
+    @include justify-content(center);
+  }
+}
+
+.section__content-alignment__right {
+
+  .section__headings,
+  .section__content {
+    margin-right: 0;
+    margin-left: auto;
+  }
+}
+
+// Section Height Presets
+.section-height__small {
+  @include section-height(section-height-preset(small));
+}
+
+.section-height__medium {
+  @include section-height(section-height-preset(medium));
+}
+
+.section-height__large {
+  @include section-height(section-height-preset(large));
+}
+
+.section-height__xlarge {
+  @include section-height(section-height-preset(xlarge));
+}
+
+
+// Divide
+.section__divide {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: $gutter-width / 2;
+  background-color: $body__text-color;
+  opacity: 0.2;
+}
+
+// OwlCarousel
+.owl-carousel {
+
+  .owl-nav {
+    position: absolute;
+    top: 25%;
+    left: 0;
+    width: 100%;
+    z-index: z-index(default);
+
+    .owl-prev,
+    .owl-next {
+      @include button-primary;
+
+      display: inline-block;
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      letter-spacing: 0;
+      line-height: 1;
+      text-align: center;
+      z-index: z-index(element--middleground);
+
+      &:active,
+      &:hover {
+        @include transition(all 300ms ease, box-shadow 400ms ease);
+
+        box-shadow: $shadow-button;
+      }
+
+      &.disabled {
+        border-color: $gray-0;
+        background-color: $gray-0;
+      }
+    }
+
+    .owl-prev {
+      left: $gutter-width / -2;
+
+      .fa-angle-left {
+        padding-right: 3px;
+      }
+    }
+
+    .owl-next {
+      right: $gutter-width / -2;
+
+      .fa-angle-right {
+        padding-left: 3px;
+      }
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: z-index(page-background);
+
+  &.show {
+    opacity: 1;
+    z-index: z-index(overlay);
+  }
+}
+
+.tooltip {
+  display: inline-block;
+  position: relative;
+
+  span {
+    @include transition(200ms all ease-out);
+    @include screen-md-min {
+      min-width: 20rem;
+    }
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: unset;
+    min-width: 80vw;
+    max-width: 100%;
+    padding: 0.5rem 1rem;
+    border: $interface__border;
+    border-radius: $base__border-radius;
+    background: $body__background-color;
+    color: $body__text-color;
+    font-size: 0.875rem;
+    font-weight: $body__font-weight;
+    line-height: normal;
+    box-shadow: $shadow-1;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+
+    span {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.vbox-overlay {
+
+  .vbox-preloader {
+    @include transform(translate(-50% -50% 0));
+
+    top: 50%;
+    left: 50%;
+  }
+}

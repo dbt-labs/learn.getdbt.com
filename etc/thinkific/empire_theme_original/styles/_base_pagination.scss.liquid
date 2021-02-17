@@ -1,0 +1,83 @@
+// Pagination
+// ======================================
+
+.pagination {
+  @include make-row(false);
+  @include screen-md-min {
+    margin: 0 0 $gutter-width;
+  }
+
+  justify-content: center;
+  width: 100%;
+}
+
+
+.pagination__pages {
+
+  list-style: none;
+
+  li {
+    display: inline-block;
+
+    &.active {
+      a {
+        color: $link__color;
+
+        &:after {
+          content: "";
+        }
+      }
+    }
+  }
+
+  a {
+    @include screen-md-min {
+      font-size: 0.875rem;
+    }
+
+    position: relative;
+    color: $link__color--active;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+
+    &:active,
+    &:hover {
+      color: $link__color;
+    }
+  }
+
+  .fa {
+    @include screen-md-min {
+      font-size: 0.5rem;
+    }
+
+    margin: 0 5px;
+    font-size: 1rem;
+    font-weight: normal;
+    vertical-align: middle;
+  }
+}
+
+.pagination__page-number {
+  margin: 0 2.5px;
+
+  &:active,
+  &:focus,
+  &:hover {
+    &:after {
+      content: "";
+    }
+  }
+
+  &:after {
+    display: inline-block;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: $link__color;
+    content: none;
+  }
+}

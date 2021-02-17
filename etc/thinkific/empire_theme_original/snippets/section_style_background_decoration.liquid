@@ -1,0 +1,11 @@
+{% if section.settings.section_background_decoration == true %}
+  @include section-background-decoration(10%);
+
+  &.section__background-decoration {
+    padding-bottom: 4rem;
+  }
+
+  & > [class*="__container"] {
+    padding-bottom: $gutter-width * 3 !important;
+  }
+{% endif %}

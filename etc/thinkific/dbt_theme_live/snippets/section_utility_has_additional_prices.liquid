@@ -1,0 +1,8 @@
+{% if page.product_is_course %}
+  {% assign product = page.course %}
+{% else %}
+  {% assign product = page.bundle %}
+{% endif %}
+{% if product.additional_prices != empty %}
+  section--has-additional-prices
+{% endif %}

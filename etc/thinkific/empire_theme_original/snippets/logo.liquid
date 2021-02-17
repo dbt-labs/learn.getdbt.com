@@ -1,0 +1,30 @@
+<section class="header__logo">
+  {% if section.settings.site_logo != empty %}
+    <a href="{{ site_url }}">
+      {% if section.settings.logo_alt == blank %}
+        <img
+          src="{{ section.settings.site_logo }}"
+          alt=""
+          class="logo img-responsive"
+          loading="lazy"
+        />
+        <h1 class="sr-only">
+          {{ site.name }}
+        </h1>
+      {% else %}
+        <img
+          src="{{ section.settings.site_logo }}"
+          alt="{{ section.settings.logo_alt }}"
+          class="logo img-responsive"
+          loading="lazy"
+        />
+      {% endif %}
+    </a>
+  {% else %}
+    <h1 class="header__school-name">
+      <a href="{{ site_url }}">
+        {{ site.name }}
+      </a>
+    </h1>
+  {% endif %}
+</section>

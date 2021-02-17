@@ -1,0 +1,7 @@
+{% for refund in page.order.refunded_transactions %}
+  <tr>
+    <td>{{ refund.created_date }}</td>
+    <td>{{ 'liquid.views.my_account_orders_show_page.table_td_refund' | translate }}</td>
+    <td>-{{ refund.amount }}</td>
+  </tr>
+{% endfor %}

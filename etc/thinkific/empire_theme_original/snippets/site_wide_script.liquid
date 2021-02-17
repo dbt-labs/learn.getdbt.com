@@ -1,0 +1,12 @@
+{% comment %}
+  This is the footer code you define in Advanced Settings -> Site Footer Code
+  It is expected that this code is ALREADY wrapped in a <script> tag
+
+  This code runs in the footer of every page on your site,
+  regardless of whether it is a part of the theme or not.
+
+  Note that this is the LAST custom Javascript that runs in the page.
+{% endcomment %}
+{% if site.has_site_wide_footer_scripts %}
+  {{ site.site_wide_footer_scripts }}
+{% endif %}

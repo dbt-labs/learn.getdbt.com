@@ -1,0 +1,96 @@
+{% comment %}
+  Site-wide meta tags. These will be on every page in the site
+{% endcomment %}
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" type="image/png" href="{% if theme.settings.favicon != blank %}{{ theme.settings.favicon }}{% else %}https://cdn.thinkific.com/51/20180809/f1a1de9d3260c96d3a81ee781bc9808e.ico{% endif %}">
+<link rel="icon" type="image/png" href="{% if theme.settings.favicon != blank %}{{ theme.settings.favicon }}{% else %}https://cdn.thinkific.com/51/20180809/f1a1de9d3260c96d3a81ee781bc9808e.ico{% endif %}">
+
+{% for meta in page.meta %}
+  {{ meta.tag }}
+{% endfor %}
+
+{% comment %}
+  If you have a Google Site Verification Meta Tag, add it here
+{% endcomment %}
+
+{% if site.has_google_verification_meta_tag %}
+  <meta name="google-site-verification" content="{{ site.google_verification_meta_tag }}">
+{% endif %}
+
+{% if page.seo_title != blank %}
+  <title>{{ page.seo_title }}</title>
+{% else %}
+  <title>{{ site.name }}</title>
+{% endif %}
+
+{% if page.seo_description != blank %}
+  <meta name="description" content="{{ page.seo_description }}">
+{% elsif page.course.description != blank %}
+  <meta name="description" content="{{ page.course.description }}">
+{% endif %}
+
+{% if page.keywords != blank %}
+  <meta name="keywords" content="{{ page.keywords }}">
+{% endif %}
+
+{% comment %}
+  Page specific meta tags. These will be on only the page specified.
+  The name of the page is available as page.page_identifier
+{% endcomment %}
+
+{% case page.page_identifier %}
+  {% when 'home_landing_page' %}
+
+  {% when 'course_landing_page' %}
+    {% if page.is_hidden %}
+      <meta name="robots" content="noindex">
+    {% endif %}
+
+  {% when 'bundle_landing_page' %}
+    {% if page.is_hidden %}
+      <meta name="robots" content="noindex">
+    {% endif %}
+
+  {% when 'page_template' %}
+    {% if page.seo_metatags != blank %}
+      {{ page.seo_metatags }}
+    {% endif %}
+
+  {% when 'coming_soon_page' %}
+    <meta name="description" content="&nbsp;">
+
+  {% when 'student_certificate_page' %}
+    <meta name="og:image" content="{{page.credential_image_url}}">
+    <meta name="twitter:image" content="{{page.credential_image_url}}">
+    <meta name="twitter:title" content="Check out my new certification!">
+
+  {% when 'collections_landing_page' %}
+
+  {% when 'collection_landing_page' %}
+
+  {% when 'sign_in_page' %}
+
+  {% when 'sign_up_page' %}
+
+  {% when 'student_dashboard' %}
+
+  {% when 'privacy_policy_page' %}
+
+  {% when 'terms_of_use_page' %}
+
+  {% when 'checkout_page' %}
+
+  {% when 'checkout_thankyou_page' %}
+
+  {% when 'paypal_confirm_page' %}
+
+  {% when 'checkout_signin_signup_page' %}
+
+  {% when 'my_account_credit_card_page' %}
+
+{% endcase %}

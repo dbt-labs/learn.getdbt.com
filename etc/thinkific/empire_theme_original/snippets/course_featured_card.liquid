@@ -1,0 +1,56 @@
+{% comment %}
+  This is the featured card representation of your course.
+{% endcomment %}
+<a href="{{ course.links.landing_page_url }}" aria-label="{{ 'liquid.partials.course_card.link_landing_page' | translate }}">
+  <section class="course-card course-card__featured course-card__public {{ course.status }}" data-card-url="{{ course.links.landing_page_url }}" tabindex="0">
+    <div class="course-card__body">
+      <p class="course-card__category">
+        {% for collection in course.collections %}
+          {% if forloop.last == false %}
+            {{ collection.name | append: ", " }}
+          {% else %}
+            {{ collection.name }}
+          {% endif %}
+        {% endfor %}
+      </p>
+      <h3>{{ course.name }}</h3>
+      {% if course.reviews_enabled and course.reviews.approved_count > 0 %}
+        <div class="course-card__reviews">
+          <span class="review__stars">
+            {% assign rating = course.reviews.average_rating | ceil %}
+            {% for index in (1..rating) %}
+              {% include 'star' %}
+            {% endfor %}
+          </span>
+          <span class="review__stars-count">
+            ({{ course.reviews.approved_count }})
+          </span>
+          <span class="sr-only">
+            {{ course.reviews.average_rating }} {{ 'liquid.partials.course_review.average_rating' | translate }}
+          </span>
+        </div>
+      {% endif %}
+      <p>{{ course.description | truncate: 250 }}</p>
+      {% if course.chapters.size != empty OR course.lesson_hours != empty %}
+        <footer class="course-card__details">
+          {% if course.chapters.size != blank %}<span class="course-card__lesson-count"><strong>{{ course.lesson_count }}</strong> {{ 'liquid.partials.course_card.details_lessons' | translate }}</span>{% endif %}
+          {% if course.lesson_hours != blank %}<span class="course-card__lesson-time">{{ course.lesson_hours }}</span>{% endif %}
+          {% if course.is_public %}<span class="course-card__price">{{ course.display_price }}</span>{% endif %}
+        </footer>
+      {% endif %}
+    </div>
+    <header class="course-card__img-container">
+      {% if course.is_presell %}
+        <div class="course-card__header-banner">
+          {{ 'liquid.partials.course_card.presell_banner_text' | translate }}
+        </div>
+      {% endif %}
+      <img
+        src="{{ course.image.original }}"
+        alt=""
+        class="course-card__img"
+        loading="lazy"
+      />
+    </header>
+  </section>
+</a>

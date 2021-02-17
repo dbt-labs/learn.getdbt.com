@@ -1,0 +1,51 @@
+{% include 'products_search' %}
+{% if page.has_search_query %}
+  {% include 'products_search_query' %}
+{% endif %}
+{% if page.has_products %}
+  <div class="collections__product-cards">
+    {% include 'products_card_list' %}
+  </div>
+{% else %}
+  <p class="products__list-no-results">
+    {{ 'liquid.views.collections_index.text_no_results' | translate }}
+  </p>
+{% endif %}
+
+{% style %}
+
+.collections__product-cards {
+  {% include 'section_style_card_alignment' %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Default",
+  "description":"This is a default section — the foundation of your Thinkific site.  While this section is not editable, you can customize this page by adding new sections.",
+  "settings":[
+    {
+      "type":"radio",
+      "id":"card_alignment",
+      "label":"Card alignment",
+      "description":"",
+      "default":"left",
+      "options":[
+        {
+          "value":"left",
+          "label":"Left"
+        },
+        {
+          "value":"center",
+          "label":"Center"
+        },
+        {
+          "value":"right",
+          "label":"Right"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

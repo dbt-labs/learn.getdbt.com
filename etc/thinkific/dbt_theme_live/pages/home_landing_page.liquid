@@ -1,0 +1,43 @@
+{% comment %}
+  This is the site landing page.
+{% endcomment %}
+
+<main class="home" id="main-content" role="main">
+  {{ content_for_page }}
+</main>
+
+{% schema %}
+{
+  "sections":{
+    "options":[
+      "course_cards",
+      "course_cards_all",
+      "banner",
+      "bonus",
+      "call_to_action",
+      "course_categories_all",
+      "course_categories",
+      "checklist",
+      "countdown",
+      "frequently_asked_questions",
+      "icon_and_text",
+      "image_and_text",
+      "gallery",
+      "instructor",
+      "lead_capture",
+      "pricing_options",
+      "description",
+      "rich_text",
+      "reviews",
+      "showcase",
+      "testimonials",
+      "upsells",
+      "video"
+    ],
+    "defaults":[
+      "banner",
+      "course_cards_all"
+    ]
+  }
+}
+{% endschema %}

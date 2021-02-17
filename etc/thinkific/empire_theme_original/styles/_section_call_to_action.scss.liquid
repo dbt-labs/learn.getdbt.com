@@ -1,0 +1,64 @@
+// Call To Action
+// ======================================
+
+.call-to-action {
+
+  .section__headings {
+    margin: 0;
+  }
+
+  .section__heading,
+  .section__subheading {
+    color: $heading__color;
+  }
+
+  .section__content {
+    @include screen-md-min {
+      flex: 0 0 55%;
+      max-width: 55%;
+    }
+    @include screen-lg-min {
+      flex: 0 0 40%;
+      max-width: 40%;
+    }
+    @include make-col(12);
+  }
+
+  .section__button-group {
+    @include button-group;
+
+    padding-top: $gutter-width;
+    text-align: inherit;
+
+    .button {
+      @include screen-sm-max {
+        margin-bottom: $gutter-width / 2;
+      }
+    }
+  }
+}
+
+.call-to-action__container {
+  @include make-container;
+}
+
+.call-to-action__wrapper {
+  @include make-row;
+}
+
+.call-to-action__section-link {
+  display: block;
+  text-decoration: none;
+
+  .section-height__large & {
+    @include section-height(section-height-preset(large));
+  }
+
+  .section-height__medium & {
+    @include section-height(section-height-preset(medium));
+  }
+
+  .section-height__small & {
+    @include section-height(section-height-preset(small));
+  }
+}
