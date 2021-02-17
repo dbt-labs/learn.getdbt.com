@@ -13,6 +13,8 @@
         {% if errors.size > 0 %}
           {% include 'form_errors' %}
         {% endif %}
+        
+        
         <div class="form__group">
           {% assign field = fields.title %}
           <label for="{{ field.name }}" class="form__label">
@@ -20,6 +22,8 @@
           </label>
           <input type="text" id="{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" {% if field.required %}required{% endif %} class="form__control" />
         </div>
+        
+        
         <div class="form__group">
           {% assign field = fields.review_text %}
           <label for="{{ field.name }}" class="form__label">
@@ -27,6 +31,8 @@
           </label>
           <textarea id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required{% endif %} class="form__control">{{ field.value }}</textarea>
         </div>
+
+
         {% assign field = fields.rating %}
         <div role="radiogroup" aria-labelledby="stars">
           <span id="stars" for="{{ field.name }}" class="form__label">
