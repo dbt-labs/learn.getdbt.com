@@ -99,7 +99,7 @@ course review. {% endcomment %}
                   <h2 class="course-review__course-name margin-small">
                     {{ page.course_review.course.name }}
                   </h2>
-                  {% form 'edit_course_review' %} 
+                  {% form 'new_course_review' %} 
                   {% if errors.size > 0 %} 
                     {% include 'form_errors' %} 
                   {% endif %}

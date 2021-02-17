@@ -1,15 +1,15 @@
 {% comment %}
-  This is the new course rating page.
-  Here, a user can fill out a course review.
+  This is the edit course rating page.
+  Here, a user can edit an existing course review.
 {% endcomment %}
 
 <main class="course-review" id="main-content" role="main">
   <div class="course-review__container">
     <div class="course-review__wrapper">
       <article class="course-review__form">
-        <h2 class="course-review__heading">{{ 'liquid.views.new_course_review_page.custom_tell_us_what_you_thought_text' | translate }}</h2>
+        <h2 class="course-review__heading">{{ 'liquid.views.edit_course_review_page.custom_tell_us_what_you_thought_text' | translate }}</h2>
         <h3 class="course-review__course-name">{{ page.course_review.course.name }}</h3>
-        {% form 'new_course_review' %}
+        {% form 'edit_course_review' %}
         {% if errors.size > 0 %}
           {% include 'form_errors' %}
         {% endif %}
@@ -34,7 +34,7 @@
           </span>
           <span class="review__stars review__stars-input">
           {% for i in (1..5) %}
-            <input type="radio" aria-label="{{ i }}" value="{{ i }}" name="{{ field.name }}" {% if i == 5 %}checked="checked"{% endif %} />
+            <input type="radio" value="{{ i }}" name="{{ field.name }}" aria-label="{{ i }}"  {% if field.value == i %}checked="checked"{% endif %} />
             {% include 'star' %}
           {% endfor %}
           </span>
