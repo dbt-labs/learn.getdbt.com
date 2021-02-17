@@ -1,0 +1,208 @@
+<section class=
+  "
+    reviews section-height__medium
+    {% include 'section_utility_heading_alignment' %}
+  "
+  data-preview-item="reviews"
+>
+  <div class="reviews__container">
+    {% include 'section_headings' %}
+    <article class="section__content">
+      {% if section.blocks != empty %}
+        <div class="reviews__list section__body" role="list">
+          {% for block in section.blocks %}
+            {% assign review = block.settings.review %}
+            <div class="reviews__list-item" data-review-id="{{ forloop.index }}" role="listitem">
+              <header>
+                <span class="review__stars">
+                  {% for index in (1..review.rating) %}
+                    {% include 'star' %}
+                  {% endfor %}
+                </span>
+                <span class="sr-only">
+                  {{ review.rating }} {{ 'liquid.partials.course_review.star_rating' | translate }}
+                </span>
+                <h3 class="review__title">
+                  {{ review.title | truncate: 60 }}
+                </h3>
+                <h4 class="review__author">{{ review.user.full_name }}</h4>
+              </header>
+              <div class="review__body">
+                <div class="review__body--partial">
+                  <p>{{ review.review_text | truncate: 160 }}</p>
+                  {% if review.review_text.size >= 160 %}
+                    <a class="review__show-more">
+                      {{ 'liquid.views.curriculum_course_landing_page.read_more_text' | translate }}
+                    </a>
+                  {% endif %}
+                </div>
+                <div class="review__body--complete">
+                  <p>{{ review.review_text }}</p>
+                  <a class="review__show-less">
+                    {{ 'liquid.views.curriculum_course_landing_page.read_less_text' | translate }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+<script>
+$(window).load(function(e) {
+  var $showButton = $('a[class*="review__show-"]'),
+      looped = ($('.instructor__list .instructor__list-item').length <= 2) ? false : true,
+      $reviewsCarousel = $('.reviews__list').addClass('owl-carousel'),
+      reviewCount = $('.reviews__list .reviews__list-item').length,
+      items = reviewCount ? 2 : 1;
+      reviewsOwlOptions = {
+        center: false,
+        dots: false,
+        loop: looped,
+        margin: 0,
+        nav: true,
+        navText: ['<i role="img" aria-hidden="true" class="fa fa-angle-left"></i>','<i role="img" aria-hidden="true" class="fa fa-angle-right"></i>'],
+        slideBy: 1,
+        responsive: {
+          0: {
+            items: 1
+          },
+          768: {
+            items: items
+          }
+        }
+      };
+  $reviewsCarousel.owlCarousel(reviewsOwlOptions);
+  $showButton.each(function(k,v) {
+    $(v).on('click keypress', function(e) {
+      if (e.which === 13 || e.type === 'click') {
+        e.preventDefault();
+        e.stopPropagation();
+        var $this = $(this),
+            $partial = $this.parents('.reviews__list-item').find('.review__body--partial'),
+            $full = $this.parents('.reviews__list-item').find('.review__body--complete');
+        if($this.hasClass('review__show-more')) {
+          $full.show();
+          $partial.hide();
+
+          console.log($full);
+          console.log($partial);
+        }
+        else {
+          $full.hide();
+          $partial.show();
+
+          console.log($full);
+          console.log($partial);
+        }
+      }
+    });
+  });
+  $('.reviews__list .owl-next').attr('aria-label', "Next");
+  $('.reviews__list .owl-prev').attr('aria-label', "Previous");
+});
+</script>
+
+{% style %}
+
+.reviews {
+  {% include 'section_style_heading_alignment' %}
+
+  {% if section.settings.section_padding_top %}
+    .reviews__container {
+      padding-top: 0;
+    }
+  {% endif %}
+
+  {% if section.settings.section_padding_bottom %}
+    .reviews__container {
+      padding-bottom: 0;
+    }
+  {% endif %}
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "label":"Social proof: reviews",
+  "settings":[
+    {
+      "label":"Headings",
+      "settings":[
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading",
+          "default":"Social proof: reviews"
+        },
+        {
+          "type":"text",
+          "id":"subheading",
+          "label":"Subheading",
+          "default":""
+        },
+        {
+          "type":"radio",
+          "id":"heading_alignment",
+          "label":"Alignment",
+          "description":"",
+          "default":"center",
+          "options":[
+            {
+              "value":"left",
+              "label":"Left"
+            },
+            {
+              "value":"center",
+              "label":"Center"
+            },
+            {
+              "value":"right",
+              "label":"Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label":"Layout",
+      "settings":[
+        {
+          "type":"checkbox",
+          "id":"section_padding_top",
+          "label":"Remove top section padding",
+          "default":false
+        },
+        {
+          "type":"checkbox",
+          "id":"section_padding_bottom",
+          "label":"Remove bottom section padding",
+          "default":false
+        }
+      ]
+    }
+  ],
+  "blocks":{
+    "label":"Add course review",
+    "limit":12,
+    "types":[
+      {
+        "type":"reviews",
+        "label":"Course review",
+        "settings":[
+          {
+            "type":"review_picker",
+            "id":"review",
+            "label":"Review"
+          }
+        ]
+      }
+    ],
+    "defaults":[]
+  }
+}
+{% endschema %}
