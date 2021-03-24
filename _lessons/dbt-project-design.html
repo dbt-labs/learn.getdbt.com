@@ -5,6 +5,7 @@ estimated_teaching_time: 60
 teaching_method: slides
 working_session: false
 learningObjectives:
+  - Understand the trade-offs of various model designs
   - Name the three main interfaces for a dbt project
   - Build intuition for naming conventions for database objects
   - Build intuition for how to use dbt and BI tools together
@@ -46,8 +47,8 @@ With dbt!
 
 **1. There is a set of final data artifacts I want to share with stakeholders.**
 - "data model design," "data warehouse design," "warehousing"
-- It's a careful balance between several trade-offs: technological limitations, stakeholder needs, correctness vs. complexity, flexibility vs. rigidity
-- Hard to have generic answers! Could fill a book (or several). It's a fascinating topic that we'll cover _very_ briefly
+- It's a careful balance between several trade-offs
+- Could fill a book (or several) on this topic. It's a fascinating topic that we'll cover _very_ briefly
 
 --
 
@@ -60,116 +61,317 @@ With dbt!
 class: subtitle, center, middle
 # 1. Final data artifacts
 
-### They matter, but you don't need to get them right on the first try
+### What is the table or view I'm trying to build?
 
 ---
+## What is the table or view I'm trying to build?
 
-# Our take
-
-Any set of best practices in model design have always needed to balance between
-two competing interests:
-
-- **Intuition:** speed of comprehension for human analysts
-
-- **Performance:** speed of operation for (non-human) database
+Our view is that there is no one right answer, but there are good heuristics.
 
 As modern data practitioners, we are inheritors of a decades-long history. It
-is our task to determine for the present day which concepts are still necessary, and which
-implementation strategies are still applicable.
+is our task to determine for the present day which concepts are still relevant.
+
+--
+
+Let's break down the process...
 
 ---
 
-# Then: analytics on non-analytic databases
 
-.left-column[
-**Highly normalized star schemas**. Why?
-- Work well within limitations of 90s-era database technology.
-- Clear guidelines for the organization and naming of datasets.
-- Data Engineers expect to build them.
-- Data Analysts expect to query them.
-]
+# It's 1998. You've got mail. 📬
 
-.right-column[
-<img src="/ui/img{{page.id}}/fact-dims.png" class="img-center">
-]
+```
+Dear Analyst,
+
+I would like to know how many widgets we sold in 1997 (last year).
+
+Just widgets in our TV category, that is.
+
+Oh, and if you could slice that number by the brand name of the widget, and
+dice it by the country where we sold them, that'd be rad.
+
+Thanks!
+
+Tristan
+SVP Marketing Analytics
+```
+
 
 ---
 
-# Now: _ad hoc_ or _agile_ analytics
+# The desired output:
+
+| Brand | Country | Units_Sold |
+|-------|---------|------------|
+| GE    | AU      | 120        |
+| GE    | UK      | 180        |
+| GE    | US      | 300        |
+| LG    | AU      | 75         |
+| LG    | UK      | 100        |
+| LG    | US      | 20         |
+
+--
+
+What is the query you (the analyst) will write to get these results?
+
+--
+
+This depends on your models!
+
+
+---
+
+### Before: snowflake schema (ca. 2000s)
+
+```sql
+SELECT
+	B.Brand,
+	G.Country,
+	SUM(F.Units_Sold)
+FROM Fact_Sales F
+INNER JOIN Dim_Date D             ON F.Date_Id = D.Id
+INNER JOIN Dim_Store S            ON F.Store_Id = S.Id
+INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id
+INNER JOIN Dim_Product P          ON F.Product_Id = P.Id
+INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id
+INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id
+WHERE
+	D.Year = 1997 AND
+	C.Product_Category = 'tv'
+GROUP BY
+	B.Brand,
+	G.Country
+```
+
+---
+
+### Before: snowflake schema (ca. 2000s)
+
+<img src="/ui/img/lessons/data-warehouses/fact-sales-erd.png" class="img-center">
+
+---
+
+## Related data modeling practices:
+- Kimball
+- Inmon
+- DataVault
+
+---
+
+### Today: denormalized model
+
+```sql
+select
+	brand,
+	country,
+	sum(units_sold) as total
+
+from analytics.fct_sales
+where date_trunc('year', sale_date) = '1997-01-01'
+  and product_category = 'tv'
+
+group by 1, 2
+```
+
+---
+
+### Today: denormalized model
+
+`fct_sales`: one record per sale to a customer
 
 .denser-text[
 
-.left-column[
-### Given
+| sale_id | sold_at    | units_sold | store_id | store_number | state_province | country | ean_code      | product_name | brand_name   | product_category_name |
+|---------|------------|------------|----------|--------------|----------------|---------|---------------|--------------|--------------|-----------------------|
+| 1       | 1997-01-01 | 1          | 1234     | 12           | PA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+| 2       | 1997-01-01 | 2          | 1234     | 12           | MA             | US      | 901234-123457 | Widget       | Widgetastic  | tv                    |
+| 3       | 1997-01-01 | 1          | 1234     | 12           | NSW            | AU      | 901234-123457 | Widget       | Widgetastic  | tv                    |
 
-- The technology we use is _powerful_. This isn't Kimball's database. You can normalize
-or denormalize if you want to.
-- Designing and naming things for human intuition is _hard_. You won't get
-it right the first time, every time.
-- You're building a data product; you're not a data service provider. 
-Your goal should be to power reports that can be self-service.
-]
-
-.right-column[
-### Therefore
-
-- Build the data models you need, when you need them.
-- Think about the same things as always:
-	1. Business meaning
-	2. Nomenclature
-	3. Primary key
-- Write all data transformation in SQL.
-- Build with layers of abstraction so that you can make changes later.
-]
 ]
 
 ---
 
-# Do you have to listen to us?
+### Today: denormalized model (2020)
 
-**_No!_**
+<img src="/ui/img/lessons/data-warehouses/fact-sales-dag.png" class="img-center">
 
-If you want to build a snowflake schema or Data Vault 2.0 using dbt, 
-you totally can. It's all just SQL.
+---
+class: middle
+## Sidebar
+
+Should that final "roll up" query live in dbt?
+
+(We're going to come back to this discussion!)
 
 ---
 
-class: subtitle
+### Before: snowflake schema (ca. 2000s)
 
-# Checkpoint:
+```sql
+SELECT
+	B.Brand,
+	G.Country,
+	SUM(F.Units_Sold)
+FROM Fact_Sales F
+INNER JOIN Dim_Date D             ON F.Date_Id = D.Id
+INNER JOIN Dim_Store S            ON F.Store_Id = S.Id
+INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id
+INNER JOIN Dim_Product P          ON F.Product_Id = P.Id
+INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id
+INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id
+WHERE
+	D.Year = 1997 AND
+	C.Product_Category = 'tv'
+GROUP BY
+	B.Brand,
+	G.Country
+```
 
-- My manager is committed to a snowflake schema for your organizing our data, can I still use dbt?
+---
+
+### Today: denormalized model
+
+```sql
+select
+	brand,
+	country,
+	sum(units_sold) as total
+
+from analytics.fct_sales
+where date_trunc('year', sale_date) = '1997-01-01'
+  and product_category = 'tv'
+
+group by 1, 2
+```
+
+---
+
+
+# What has changed?
+--
+
+Some design decisions of the past were driven by technology:
+- Storage was expensive → don't duplicate data
+- Joins were cheap → join at report-time
+- SQL functions were expensive → don't `date_trunc`, create a table that has already done it.
+- Updating data was expensive → design models so that changes are isolated to one table
+- Data modeling was a different skill set to analysis → project plan the whole thing!
+
+---
+
+# But what has stayed the same?
+
+- A "final" model should represent a _business_ process or entity.
 
 --
 
-- Why is that the case?
+**Example 1:**
 
---
+Let's say you change payment providers — to your finance team, these are still
+a "payment".
 
-## Questions??
+It might be useful to track whether it was processed via `stripe`
+or `braintree` (i.e. include a `payments_provider` column), but ultimately, the
+`payments` table should include both in a standardized form.
 
 ---
 
+# But what has stayed the same?
+
+- A "final" model should represent a _business_ process or entity.
+
+**Example 2:**
+
+Let's say you're Rideshare Inc.  Every time someone splits a trip,
+the `trips` table has three entries: one parent trip, and two child trips.
+
+| trip_id | parent_id | .. |
+|---------|-----------|----|
+| 1       | NULL      | .. |
+| 2       | 1         | .. |
+| 3       | 1         | .. |
+| 4       | NULL      | .. |
+
+How many trips occurred?
+--
+ Well what's a trip?
+
+---
+# But what has stayed the same?
+
+- A "final" model should represent a _business_ process or entity.
+- Each model should have a clear "grain" — "one record represents a ..."
+
+--
+- Naming is important. In particular, consistency is _extremely_ valuable
+
+--
+- Consider the final use case when designing your final artifacts
+
+---
+
+### OK, but _really_ what is the final artifact that I should build?
+
+Should I denormalize everything into one wide table? Should I use Kimball design patterns?
+
+--
+
+The answer is: it depends!
+
+- What's your BI tool? Does it support joins in the BI layer (e.g. Looker), or
+does it prefer flat datasets (e.g. Tableau).
+- How big is your data? How does data get updated? e.g. do you have millions of
+orders that don't update after they are complete, but product names that update
+without warning? (Maybe join it in the BI tool)
+- What data models are your stakeholders used to? e.g. Do you work at an enterprise
+company that is used to working with DataVault models?
+
+--
+
+And dbt lets you choose! It's all just SQL 😊
+
+---
+
+## So let's say you have an idea of what you want to build
+
+<img src="/ui/img{{page.id}}/dag-part-1.png" style="width: 80%;" class="img-center">
+
+
+Once you have an intuition of what you want to build, how do you do that in dbt?
+
+---
 class: subtitle, center, middle
 
-# 2. The process _is_ the product
+# 2. The process is the product
 
 ### (and that's more important)
 
 ---
 
-# Three interfaces
+class: subtitle, middle
 
-1. The Graph
-2. The Code
-3. The Warehouse
+_The natural state of the universe is chaos: entropy tends to increase in closed
+systems, and there’s really nothing that we can do about that. So too is the
+nature of your dbt project: unless action is taken to maintain order._
+
+---
+# What we really mean to say:
+
+No matter what the final artifacts you're building are, be effortful in how you
+organize them.
+
+These artifacts show up in three places:
+1. The dbt DAG
+2. The repo
+3. The warehouse
 
 These are how people at your organization will conceptualize, interact with,
 and benefit from data—your product—more than any one table or dashboard.
 
 ---
 
-# Interface #1: The Graph
+# Interface #1: The dbt DAG
+
 
 "Where are those sales numbers coming from?" &rarr; _Which data sources, processes, and assumptions do our sales calculations depend on?_
 
@@ -185,7 +387,83 @@ The DAG tells the story:
 
 ---
 
-# Interface #2: The Code
+# Interface #1: The dbt DAG
+
+For your final artifacts, consider which sources will power this project:
+
+<img src="/ui/img{{page.id}}/dag-part-2.png" style="width: 70%;" class="img-center">
+
+(More on this later today)
+---
+
+# Interface #1: The dbt DAG
+
+Then add staging models: "The shape you wish your data came in"
+
+<img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
+
+---
+
+# Interface #1: The dbt DAG
+### Model prefixes
+.dense-text[
+.left-column-33[
+### stg_
+- 1:1 with raw data tables
+- **Source**-conformed
+- Renaming, type casting, coalescing + nullif’ing
+]
+
+.right-column-66[
+.left-column[
+### dim_
+- “Nouns”
+- Core **business** entities
+- Customers, products, apartments, providers, employees, ...
+- Some "slowly-changing" attributes (e.g. address, email)
+]
+
+.right-column[
+### fct_
+- “Verbs”
+- Core **business** processes
+- Orders, cases, plays, listings, comments, ...
+- Often built on top of an immutable event stream
+]]]
+
+
+---
+
+<h3 style="text-align: center;"><span style="color: green;">source</span>
+&rarr;
+<span style="color: lightblue; font-size: 60%;">[base]</span>
+&rarr;
+<span style="color: blue;">stg</span>
+&rarr;
+<span style="color: grey; font-size: 60%;">[intermediate, lookup, utils]</span>
+&rarr;
+<span style="color: purple;">{fct</span>
++
+<span style="color: navy;">dim}</span></h3>
+
+<img src="/ui/img{{page.id}}/dag-grouped.png" style="width: 100%;">
+
+???
+Instructor: draw circles/boxes around the different "model groups" (sources,
+staging, intermediate, lookups, final fact/dim). Comment on how they can
+be grouped together in all three interfaces.
+
+---
+# Interface #1: The dbt DAG
+
+Make sure that for each model, you ask:
+- What does one record represent? Let's document this!
+- What assumptions about our data are we making? We should test those!
+- Am I using naming patterns? You should!
+
+---
+
+# Interface #2: The repo
 
 .left-column[
 - **Within files:** adhere to a style guide
@@ -247,101 +525,6 @@ class: subtitle, center, middle
 
 ---
 
-# Model prefixes: must-haves
-
-.dense-text[
-.left-column-33[
-### stg_
-- 1:1 with raw data tables
-- **Source**-conformed
-- Renaming, type casting, coalescing + nullif’ing
-- Views!*
-]
-
-.right-column-66[
-.left-column[
-### dim_
-- “Nouns”
-- Core **business** entities
-- Customers, products, apartments, providers, employees, ...
-- Some "slowly-changing" attributes (e.g. address, email)
-- Tables!
-]
-
-.right-column[
-### fct_
-- “Verbs”
-- Core **business** processes
-- Orders, cases, plays, listings, comments, ...
-- Often built on top of an immutable event stream
-- Tables (maybe incremental)*
-]]]
-
----
-
-# Source- vs. business-conformed
-
-dbt sits between **source data** and **business intelligence**.
-
-- Staging models should respect the nomenclature and structure of raw source tables
-- Final dimensions and facts should exist in terms the organization understands
-
-<img src="/ui/img{{page.id}}/dag-payments-union.png" style="width: 100%;">
-
----
-
-# Also seen in the wild
-
-.dense-text[
-.left-column-33[
-### __[transformed]
-- Intermediate models accomplishing a transformation step
-- Not meant for public consumption
-- E.g. `orders__amortized`
-- Views or ephemerals (tables only if needed for performance)
-- Different schema?
-]
-
-.right-column-66[
-.left-column[
-### utils, lookups, seeds
-- Handy-dandy tables to make your life easier
-- Calendars: days/months, retail, biz hours
-- Mapping tables
-	- country codes --> region
-	- products --> plans
-]
-
-.right-column[
-### metric_
-- Version-controlled definitions of biz KPIs
-- Can be fed into a union/spine/window process to generate a single-source-of-truth metrics table
-- Next-level stuff! Assumes you already have full assortment of facts + dims at the ready
-]]]
-
----
-
-<h3 style="text-align: center;"><span style="color: green;">source</span>
-&rarr;
-<span style="color: lightblue; font-size: 60%;">[base]</span>
-&rarr;
-<span style="color: blue;">stg</span>
-&rarr;
-<span style="color: grey; font-size: 60%;">[intermediate, lookup, utils]</span>
-&rarr;
-<span style="color: purple;">{fct</span>
-+
-<span style="color: navy;">dim}</span></h3>
-
-<img src="/ui/img{{page.id}}/dag-grouped.png" style="width: 100%;">
-
-???
-Instructor: draw circles/boxes around the different "model groups" (sources,
-staging, intermediate, lookups, final fact/dim). Comment on how they can
-be grouped together in all three interfaces.
-
----
-
 class: subtitle
 
 # Checkpoint:
@@ -361,15 +544,42 @@ class: subtitle
 class: subtitle, center, middle
 # dbt + BI
 
----
-
-# What BI tool(s) do you use?
-
-- What do you use them for?
-- What _should_ you use them for?
+## What BI tools do you use?
 
 ---
 
+class: center
+# What BI tools do you use?
+<img src="/ui/img{{page.id}}/bi-logos-3.png" style="width: 40%;" class="img-center">
+---
+
+# Which part of this should be in the dbt versus the BI tool?
+
+<img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
+
+---
+
+# Which part of this should be in the dbt versus the BI tool?
+
+For most orgs, the final rollup query should be in BI tool — allows for "drill down" functionality / further exploration.
+
+--
+
+What if?
+- This is a KPI your company reports on regularly?
+--
+ Maybe you want it in a dbt model as well.
+
+--
+- You're building a prototype model or field?
+--
+ Potentially build it in the BI tool first then "promote" it.
+---
+
+
+# What should you use your BI tool for?
+
+---
 ## The things they've always been good at!
 
 .left-column-33[
@@ -436,75 +646,6 @@ you should ever have is a rice cooker.
 
 BI assets are like recipes. It doesn't hurt as much to have similar ones, but
 when it comes time to make dinner, your guests might become confused :)
-
----
-
-# How > Who
-
-_Which_ tool you're using matters less than _how_ you're using it.
-
-Your BI layer should be:
-
-.left-column[
-### Thin
-- Rename _only_ for cosmetics
-- No joins best, 1:1 joins okay (at most 2)<sup>1</sup>
-]
-
-.right-column[
-### Flexible
-- User-input parameters/filters
-- Always prefer one explore or dashboard that can answer a dozen questions
-]
-
-.caption[<sup>1</sup>Some tools handle 1:n joins well (Looker symmetric aggregates)]
-
----
-
-# Bad for BI
-
-```sql
-SELECT
-	B.Brand,
-	G.Country,
-	SUM(F.Units_Sold)
-FROM Fact_Sales F
-INNER JOIN Dim_Date D             ON F.Date_Id = D.Id
-INNER JOIN Dim_Store S            ON F.Store_Id = S.Id
-INNER JOIN Dim_Geography G        ON S.Geography_Id = G.Id
-INNER JOIN Dim_Product P          ON F.Product_Id = P.Id
-INNER JOIN Dim_Brand B            ON P.Brand_Id = B.Id
-INNER JOIN Dim_Product_Category C ON P.Product_Category_Id = C.Id
-WHERE
-	D.Year = 1997 AND
-	C.Product_Category = 'tv'
-GROUP BY
-	B.Brand,
-	G.Country
-```
-
----
-
-# Can your BI tool write this?
-
-{% raw %}
-```sql
-select
-
-    product_category,   -- dimension
-    sum(revenue)        -- measure
-
-from {{ environment }}.fct_orders   -- dev or prod
-where order_date >= '{{ param_order_date }}'
-group by 1
-```
-{% endraw %}
-
----
-
-class: center
-# Yes!
-<img src="/ui/img{{page.id}}/bi-logos-3.png" style="width: 40%;" class="img-center">
 
 ---
 
