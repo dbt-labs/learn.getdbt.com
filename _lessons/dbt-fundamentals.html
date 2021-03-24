@@ -5,7 +5,7 @@ estimated_teaching_time: 45
 estimated_working_session: 60
 teaching_method: live demo + slides. Questions encouraged.
 learningObjectives:
-  - Review the basics from the dbt Learn tutorial
+  - Review the basics from the Getting Started tutorial
   - Explain models, materializations, and dependencies in the context of a dbt project
 
 ---
@@ -64,7 +64,7 @@ Uh oh...
 .dense-text[
 * What if the schema doesn't exist yet?
 * What if the schema does exist, and I try to recreate it?
-* What if this table already exits?
+* What if this table already exists?
 * What if I want to parameterize the schema? (And I should!)
 * What if this depends on another transformation?
 ]
@@ -127,15 +127,6 @@ Create the project again/show off the models
 Quick side step into models though...
 
 ---
-# To use dbt you need:
-
-1. A data warehouse
-
-2. A dbt project
-    * created with the `init` command / `initialize` button
-    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
-    * a project contains **models**
----
 # What is a `.yml` file?
 
 YAML is a (relatively) human-friendly way to write dictionaries and arrays.
@@ -145,6 +136,16 @@ It's often used for configuration files (🙋‍♀️).
 We use YAML a lot — it's worth making sure you have a good handle on it (esp. the importance of indentation!)
 
 ---
+# To use dbt you need:
+
+1. A data warehouse
+
+2. A dbt project
+    * created with the `init` command / `initialize` button
+    * a directory with a `dbt_project.yml` file + other `.sql` and `.yml` files
+    * a project contains **models**
+---
+
 ## What are models?
 
 ???
@@ -168,7 +169,7 @@ See if anyone wants to have a go at explaining a model
 3. A connection to your warehouse
 --
 
-    * dbt CLI: a profile (that matches your the `profile:` in your `dbt_project.yml` file)
+    * dbt CLI: a profile (that matches the `profile:` in your `dbt_project.yml` file)
     * dbt Cloud: a connection
     * contains credentials to connect to your warehouse and a **target schema**
 
@@ -286,9 +287,9 @@ Snowflake console
 * They can be set in your `dbt_project.yml` file, _and_ in your model file.
 * Configurations are applied _hierarchically_
 * Example configurations:
-    * `materialized='view'`
-    * `tags=['nightly', 'hourly']`
-    * `enabled=True`
+    * `materialized: view`
+    * `tags: ['nightly', 'hourly']`
+    * `enabled: True`
 
 ???
 * Show changing configurations, esp. examples that highlight hierarchical nature
