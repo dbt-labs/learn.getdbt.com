@@ -437,15 +437,16 @@ class: subtitle, center, middle
 # In practice
 
 .left-column[
-Databases need to sort data for:
+Databases need to scan entire tables:
 - Filters (`where`)
-- Window functions (`partition by`, `order by`)
+- ...unless your table is sorted / pre-partitioned / z-ordered
 ]
 
 .right-column[
-Databases need to move data around for:
+Databases need to scan _and move_ data:
 - Uniqueness (`distinct`)
 - Joins
+- Window functions
 ]
 
 **The optimizer is your friend!** Take the time to listen.
