@@ -40,9 +40,6 @@ hiccups that result in delayed or duplicated data.
 - Something that was once true about my source data is no longer true (e.g. a
 new payment method was introduced)
 
---
-
-- (!!) I want to stage & query an external table that points to files in S3.
 
 ---
 
@@ -57,9 +54,6 @@ new payment method was introduced)
     - Custom: whatever you want!
 --
 - Test the freshness of loaded data, based on thresholds you define
---
-
-- (!!) Declare `external` properties ([read more](https://github.com/fishtown-analytics/dbt-external-tables))
 
 ---
 
@@ -78,6 +72,7 @@ version: 2
 sources:
   - name: jaffle_shop
     database: raw
+    schema: jaffle_shop
     tables:
       - name: customers
       - name: orders
@@ -145,6 +140,7 @@ version: 2
 sources:
   - name: jaffle_shop
     database: raw
+    schema: jaffle_shop
     tables:
       - name: customers
         columns:
@@ -166,6 +162,18 @@ This allows you to debug more quickly!
 ]
 
 ---
+
+# Testing Sources
+
+We can run tests on _only_ sources with the following command
+
+`dbt test -m source:* `
+
+This can be helpful in deployment - coming up soon
+
+---
+
+
 # Feeling fresh?
 
 Optionally, specify a `loaded_at_field` and `freshness`:
@@ -178,16 +186,18 @@ version: 2
 sources:
   - name: jaffle_shop
     database: raw
-
+    schema: jaffle_shop
     tables:
       - name: customers
-
       - name: orders
         loaded_at_field: _etl_loaded_at
-
         freshness:
-          warn_after: {count: 12, period: hour}
-          error_after: {count: 24, period: hour}
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 24
+            period: hour
 
 ```
 
@@ -290,12 +300,41 @@ Given the following YML file, what will the following select statements compile 
 version: 2
 
 sources:
-  - name: snowplow
+  - name: event_data
     database: raw
+    schema: snowplow
     tables:
       - name: events
-  - name: stripe
+```
+]
+
+{% raw %}
+.right-column[
+`SQL`
+
+```sql
+select *
+from {{ source('payment_data', 'events') }}
+```
+]
+{% endraw %}
+
+---
+
+class: subtitle
+
+## Checkpoint
+Given the following YML file, what will the following select statements compile to?
+
+.left-column[
+`sources.yml`
+```yml
+version: 2
+
+sources:
+  - name: payment_data
     database: raw
+    schema: stripe
     tables:
       - name: payments
 ```
@@ -304,15 +343,10 @@ sources:
 {% raw %}
 .right-column[
 `SQL`
-```sql
-select *
-from {{ source('stripe','payments') }}
-```
-
 
 ```sql
 select *
-from {{ source('snowplow', 'events') }}
+from {{ source('payment_data','payments') }}
 ```
 ]
 {% endraw %}
@@ -343,3 +377,11 @@ You should be able to:
 * Check the freshness of your source
 
 {% include options/last_slide.html %}
+
+
+---
+## Further explorations
+
+- (!!) I want to stage & query an external table that points to files in S3.
+
+- (!!) Declare `external` properties ([read more](https://github.com/fishtown-analytics/dbt-external-tables))
