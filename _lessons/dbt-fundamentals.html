@@ -430,11 +430,12 @@ We just got some payment data into our warehouse:
 select * from raw.stripe.payment
 ```
 .dense-text[
-1. Build an `orders` model with the following fields:
+1. Build a `stg_payments` model to stage the payment data.
+2. Build an `orders` model with the following fields:
     * `order_id`
     * `customer_id`
     * `amount` (hint: this has to come from payments)
-2. Add a new field to the `customers` model:
+3. Add a new field to the `customers` model:
     * `customers.lifetime_value`: the total amount a customer has spent at `jaffle_shop`
 ]
 --
