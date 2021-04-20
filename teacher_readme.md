@@ -1,6 +1,9 @@
 # Teacher Readme
 _Here is a quick reference guide for different teacher moves that are included in the lesson decks.  Videos of presentations can be found at the bottom as well._
 
+## View Speaker Notes
+The slides are made with [Remark.js](https://github.com/gnab/remark). When you have a slide deck open, you can press `C` on your keyboard to clone the slides, which means that another window will open that looks exactly the same.  Focus on the new window and press `P` to go into presenter mode, which will show the speaker notes and give you a handy timer (the timer starts when you first click forward on a slide). Now you can view the slides and speaker notes together. When you advance the slides in presenter mode, it will also advance the slides in the original window.
+
 ## Focus Slides
 ### Purpose
 - Provide focus to the teacher so they know what to make *pop* during the lesson.
