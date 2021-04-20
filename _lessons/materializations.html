@@ -59,10 +59,10 @@ class: title, center, middle
 
 # Imagine: some people
 
-| id | name    | favorite_color | is_creative |
+| id | name    | cohort | is_enrolled |
 |----|---------|----------------|-------------|
-| 1  | Alice   | green          | false       |
-| 2  | Barbara | blue           | true        |
+| 1  | Rumi   | Earth          | false       |
+| 2  | Angaline | Wind           | true        |
 
 ---
 
@@ -75,10 +75,10 @@ select
 
     id as person_id,
     name,
-    favorite_color
+    cohort
 
 from raw_people
-where is_creative = true
+where is_enrolled = true
 ```
 
 ---
@@ -87,9 +87,9 @@ where is_creative = true
 
 In the database: `analytics.creative_people`
 
-| person_id | name    | favorite_color |
+| person_id | name    | cohort |
 |----|---------|----------------|
-| 2  | Barbara | blue           |
+| 2  | Angaline | Wind           |
 
 --
 
@@ -99,9 +99,9 @@ select * from analytics.creative_people
 ```
 We will see:
 
-| person_id | name    | favorite_color |
+| person_id | name    | cohort |
 |----|---------|----------------|
-| 2  | Barbara | blue           |
+| 2  | Angaline | Wind           |
 
 ---
 
@@ -110,9 +110,9 @@ We will see:
 In the database: `analytics.creative_people`
 
 ```sql
-select id as person_id, name, favorite_color
+select id as person_id, name, cohort
 from raw_people
-where is_creative = true
+where is_enrolled = true
 ```
 
 --
@@ -123,9 +123,9 @@ select * from analytics.creative_people
 ```
 We will see:
 
-| person_id | name    | favorite_color |
+| person_id | name    | cohort |
 |----|---------|----------------|
-| 2  | Barbara | blue           |
+| 2  | Angaline | Wind           |
 
 ---
 
@@ -150,13 +150,13 @@ Database Error
 
 # What if...
 
-| id | name    | favorite_color | is_creative |
+| id | name    | cohort | is_enrolled |
 |----|---------|----------------|-------------|
-| 1  | Alice   | green          | false       |
-| 2  | Barbara | blue           | true        |
+| 1  | Rumi   | Earth          | false       |
+| 2  | Angaline | Wind           | true        |
 
 --
-| 3  | Casper  | red            | true        |
+| 3  | Ursula  | Fire            | true        |
 
 --
 
@@ -195,11 +195,11 @@ And how do you know?
 
 ---
 
-| id | name    | favorite_color | is_creative |
+| id | name    | cohort | is_enrolled |
 |----|---------|----------------|-------------|
-| 1  | Alice   | green          | false       |
-| 2  | Barbara | blue           | true        |
-| .highlight[3]  | Casper  | red            | true        |
+| 1  | Rumi   | Earth          | false       |
+| 2  | Angaline | Wind           | true        |
+| .highlight[3]  | Ursula  | Fire            | true        |
 
 --
 
@@ -212,11 +212,11 @@ and have never been burned before
 
 ---
 
-| id | name    | favorite_color | is_creative | created_date |
+| id | name    | cohort | is_enrolled | created_date |
 |----|---------|----------------|-------------|--------------|
-| 1  | Alice   | green          | false       | 2020-03-01   |
-| 2  | Barbara | blue           | true        | 2020-03-02   |
-| 3  | Casper  | red            | true        | .highlight[2020-03-03]   |
+| 1  | Rumi   | Earth          | false       | 2020-03-01   |
+| 2  | Angaline | Wind           | true        | 2020-03-02   |
+| 3  | Ursula  | Fire            | true        | .highlight[2020-03-03]   |
 
 - A date when the record was initially created
 - _Much_ more reliable than an auto-increment ID
@@ -226,14 +226,14 @@ and have never been burned before
 
 ---
 
-| id | name    | favorite_color     | is_creative | created_date | updated_date |
+| id | name    | cohort     | is_enrolled | created_date | updated_date |
 |----|---------|--------------------|-------------|--------------|--------------|
-| 1  | Alice   | green              | false       | 2020-03-01   | 2020-03-01   |
-| 2  | Barbara | .highlight[yellow] | true        | 2020-03-02   | .highlight[2020-03-04]   |
-| 3  | Casper  | red                | true        | 2020-03-03   | 2020-03-03   |
+| 1  | Rumi   | Earth              | false       | 2020-03-01   | 2020-03-01   |
+| 2  | Angaline | .highlight[Air] | true        | 2020-03-02   | .highlight[2020-03-04]   |
+| 3  | Ursula  | Fire                | true        | 2020-03-03   | 2020-03-03   |
 
 --
-| 4  | Zelda   | indigo             | true        | .highlight[2020-03-02]   | .highlight[2020-03-02]   |
+| 4  | Christoph   | Metal             | true        | .highlight[2020-03-02]   | .highlight[2020-03-02]   |
 
 --
 
@@ -287,5 +287,28 @@ You should be able to:
 - Explain how dbt processes the tables, views, and ephemeral models differently
 
 ## Questions?
+
+---
+layout: false
+class: subtitle
+
+# Choose your path
+
+.left-column[
+### Learning
+
+- Content-based
+- Learn about data warehouses
+
+]
+
+.right-column[
+### Doing
+
+- Practice-based
+- Tackle an open-ended assignment involving ticket sales data
+
+]
+
 
 {% include options/last_slide.html %}
