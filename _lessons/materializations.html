@@ -68,7 +68,7 @@ class: title, center, middle
 
 # Imagine: a model
 
-`models/creative_people.sql`
+`models/students.sql`
 
 ```sql
 select
@@ -85,7 +85,7 @@ where is_enrolled = true
 
 # Table
 
-In the database: `analytics.creative_people`
+In the database: `analytics.students`
 
 | person_id | name    | cohort |
 |----|---------|----------------|
@@ -95,7 +95,7 @@ In the database: `analytics.creative_people`
 
 If we run:
 ```sql
-select * from analytics.creative_people
+select * from analytics.students
 ```
 We will see:
 
@@ -107,7 +107,7 @@ We will see:
 
 # View
 
-In the database: `analytics.creative_people`
+In the database: `analytics.students`
 
 ```sql
 select id as person_id, name, cohort
@@ -119,7 +119,7 @@ where is_enrolled = true
 
 If we run:
 ```sql
-select * from analytics.creative_people
+select * from analytics.students
 ```
 We will see:
 
@@ -139,7 +139,7 @@ We will see:
 
 If we run:
 ```sql
-select * from analytics.creative_people
+select * from analytics.students
 ```
 We will see:
 ```sql
