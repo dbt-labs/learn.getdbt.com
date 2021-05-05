@@ -3,8 +3,8 @@
   sessions:
     - name: Morning
       lessons:
-        - slug: who-is-analytics-engineer
         - slug: distributed-norms
+        - slug: who-is-analytics-engineer
         - slug: dbt-fundamentals
     - name: Afternoon
       lessons:
@@ -29,5 +29,6 @@
       lessons:
         - slug: incremental
         - slug: data-warehouses
+        - slug: case-study
         - slug: techniques-trade
         - slug: outro
