@@ -162,16 +162,30 @@ The most common question I get is where does this data come from?
 
 # ✅ Documentation
 
+Documenting your models in dbt happens directly in the codebase rather than in some external tool.
 
+This is all automated into dbt docs which includes:
+- DAG
+- Model and column descriptions
+- Some metadata (more to come)
 
 ---
 
-# ❓ Question
+# ❓ Can I refresh my models on a cadence?
 
+Every Monday I run a report, attach it to an email, and send it to my boss.
+
+This is the exact same process every Monday morning.
 
 ---
 
 # ✅ Deployment
+
+dbt Cloud empowers users to run their dbt project on a schedule. This can be any sequence of dbt commands.
+
+Typically includes:
+- dbt run
+- dbt test
 
 ---
 
@@ -189,75 +203,158 @@ class: subtitle, center, middle
 
 ---
 
-# ❓ Question
+# ❓ How can I visualize raw tables in the DAG? Can I test my raw tables?
+
+I can see all the models in the DAG as blue nodes.
+
+I'd love to know exactly where that data comes from though.
+
+Is it possible to test that data before I transform it too?
 
 
 ---
 
 # ✅ Sources
 
+Sources are configured in YML and dependencies are built with the `source` function.
+
+Sources can be tested and documented - just like models!
+
+Bonus! There is a snapshot freshness command to make sure that the raw data is up to date.
+
 ---
 
-# ❓ Question
+# ❓ Can I make dbt aware of BI dashboards?
 
+Some of my dashboards depend on my final models and I want to include that in my workflow.
+
+I'd also love to build only the models that power that dashboard.
 
 ---
 
 # ✅ Exposures
 
+Exposures allow you to make dbt aware of things that exist _outside_ of dbt but depend on dbt.
+
+These will be rendered in the DAG in orange.
+
+Combined with sources, you can now see the full lineage of your data warehouse
+
 ---
 
-# ❓ Question
+# ❓ Can I change a model to be built as a table instead of a view?
 
+Whenever I run dbt run, all my models are built as views.
+
+I'd love to build these as tables instead.
 
 ---
 
 # ✅ Materializations
 
+Materializations make it easy to change how a model is materialized.
+
+This can be done in two ways:
+- `config` blocks
+- `dbt_project.yml` file
+
 ---
 
-# ❓ Question
+# ❓ How can I _only_ add the new records to a model?
 
+If I configure a model as a table, it will be be dropped and completely rebuilt every time I run `dbt run`
+
+I'd love to just add the new records instead of starting from scratch everytime.
 
 ---
 
 # ✅ Incremental Models
 
+Incremental models can be written to just add the new records to a table.
+
+This can reduce compute and build times for very large models.
+
 ---
 
-# ❓ Question
+# ❓ How can I capture type 2 slowly changing dimensions?
 
+On Monday:
+
+| order_id | status  | created_at | updated_at |
+|----------|---------|------------|------------|
+| 1        | pending | 2020-01-01 | 2020-02-20 |
+
+On Tuesday:
+
+| order_id | status  | created_at | updated_at |
+|----------|---------|------------|------------|
+| 1        | shipped | 2020-01-01 | 2020-02-21 |
+
+---
+
+# ❓ How can I capture type 2 slowly changing dimensions?
+
+What we want:
+
+| order_id | status  | updated_at | dbt_valid_from | dbt_valid_to |
+|----------|---------|------------|----------------|--------------|
+| 1        | pending | 2020-01-01 | 2020-01-01     | 2020-01-02   |
+| 1        | shipped | 2020-01-02 | 2020-01-02     | null         |
 
 ---
 
 # ✅ Snapshots
 
+Snapshots allow you to capture this time of model.
+
+The snapshot will only capture changes when it is run.
+
+Unlike tables, these do not get dropped when you run `dbt snapshot`
+
 ---
 
-# ❓ Question
+# ❓ How can I get a quick CSV that won't change into dbt?
+
+I have a table of country code mappings or employee addresses.
+
+I'd love to have these in my warehouse as a table.
+
+---
+
+# ✅ Seeds
+
+The command `dbt seed` will upload an csv's in your `data` folder into your warehouse.
+
+These can be referenced with the `ref` function just like other models!
+
+
+---
+
+# ❓ Can I stash some SQL in my dbt project that I don't want to be built at a model?
 
 
 ---
 
 # ✅ Analyses
 
----
+The analysis folder can be used for storing SQL that you want in version control
 
-# ❓ Question
-
-
----
-
-# ✅ Seeds
+Use cases:
+- ad hoc queries
+- training queries
+- auditing
 
 ---
 
-# ❓ Question
+# ❓ Love the deployment concept - can I be notified when things break?
 
+If a tests fails, I want to be the first to know about it so I can take action.
 
 ---
 
 # ✅ Alerts
+
+dbt Cloud currently supports Slack and Email notifications.
 
 ---
 
@@ -275,7 +372,7 @@ class: subtitle, center, middle
 
 --
 
-## ✅ Technique: search in [discourse](https://discourse.getdbt.com/top/all?order=views)!
+## ✅ [Discourse](https://discourse.getdbt.com/top/all?order=views)
 
 ---
 
@@ -286,9 +383,38 @@ class: subtitle, center, middle
 
 --
 
-## ✅ Technique: read a playbook!
+## ✅ Playbooks
 
 - [Monthly recurring revenue](https://github.com/fishtown-analytics/mrr-playbook)
 - [Marketing attribution](https://github.com/fishtown-analytics/attribution-playbook)
 
 ---
+
+# I have an idea for dbt core!
+
+- ❓ How can I fix a bug?
+- ❓ I have a new testing idea
+
+--
+
+## ✅ Contribute through github
+- Reach out to Jeremy
+- Pick up an issue
+- Contribute!
+
+---
+
+# I have some data questions/ideas...
+
+- ❓ I am hitting a bug with a package?
+- ❓ How should I model this complex data?
+- ❓ I'd love to share a blog post to other analytics engineers?
+- ❓ I made this awesome meme about data
+
+--
+
+## ✅ dbt Community Slack
+- Find a channel and jump in!
+
+---
+
