@@ -1,0 +1,294 @@
+---
+layout: presentation
+title: Techniques of the trade
+learningObjectives:
+  - Get a brief overview of Top 10 advanced dbt features and their use cases
+  - Features include Seeds, Snapshots, Hooks, Operations, & more
+---
+
+class: title, center, middle
+
+# Techniques of the trade - internal learn edition!
+
+---
+
+class: subtitle, center, middle
+# Part I. Borrowing from software engineering
+
+---
+
+## ❓ How can we share files better?
+
+We are having a _really_ challenging time sharing different versions of files with each other.
+
+Alexis sent me an email with `dim_customers.sql`
+
+Jeremy pinged me in slack with `dim_customers_v1.sql`
+
+I have `dim_customers_final.sql` on my desktop
+
+---
+
+# ✅ Version Control
+
+All of the work that a developer does in dbt is written in code - typically sql, yml, or markdown
+
+dbt takes advantage of version control - git specifically - to make collaboration way easier.
+
+---
+
+## ❓ We keep messing up each other's models in development
+
+I'm developing some models and so is Alexis.
+
+I run the code only to realize that Alexis just changed the underlying data in her workflow.
+
+Or worse, I just made a change to the code and broke our KPI dashboard 
+
+---
+
+# ✅ Environments
+
+dbt leverages environments to allow users to operate in their own "sandbox"
+
+I'll build into the schema `dbt_kcoapman` and Alexis will build into the schema `dbt_awongbaird`
+
+* The _production_ models will build into their own schema `dbt_prod`
+
+---
+
+## ❓ I have to update the same code across multiple files
+
+I have a bunch of long SQL files that all start with the same logic.
+
+.left-column[
+model_1
+```
+select 
+    orderid as order_id,
+    paymentid as payment_id,
+    date as order_date
+...
+...
+...
+```
+]
+
+.right-column[
+model_2
+```
+select 
+    orderid as order_id,
+    paymentid as payment_id,
+    date as order_date
+...
+...
+...
+```
+]
+
+---
+
+# ✅ Modularity with models
+
+Developers can break up the SQL into modular chunks that build off each other.
+
+These models can then be linked through the `ref` function.
+
+This allows for less repeated code and automated dependency management.
+
+---
+
+## ❓ Is there a way to make SQL more dynamic?
+
+SQL is by nature a declarative language.
+
+If something about the underlying data changes, I have to update the downstream code sometimes.
+
+There are no loops or conditional statements
+
+---
+
+# ✅ Jinja + Macros
+
+Jinja brings aspects of python directly into the SQL analytics workflow.
+
+You can leverage loops, if/then,
+
+---
+
+## ❓ Is there a way I can make sure my data is _right_?
+
+After I transform my data I often...
+- scroll through the data to make sure it looks right
+- run some queries against the data
+- export the data to a CSV, put it in Excel, run some manual checks
+
+---
+
+# ✅ Tests
+
+dbt has two types of tests built in
+- Schema tests = configurable, scalable
+- Data tests = specific, ad hoc
+
+---
+
+## ❓ I found some dbt code I want to use - should I just copy paste it in?
+
+My colleague Claire wrote some really cool code for generating model files.
+
+A dbt community member wrote an excellent testing suite of macros that I want to use.
+
+---
+
+# ✅ Packages
+
+The packages feature allows you to import models and macros from another code base directly into your own project.
+
+This allows you to get the latest version of the package _instead_ of copy pasting in the code from another repo and updating manually.
+
+---
+
+## ❓ How can I make sure that my documentation of the data is up to date?
+
+I have a really large Google sheet that documents my data for my organization to self-serve.
+
+This is often out of date so I end up answering questions in slack/email all the time.
+
+The most common question I get is where does this data come from?
+
+---
+
+# ✅ Documentation
+
+
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Deployment
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ CI/CD
+
+---
+
+class: subtitle, center, middle
+# Part II. Analytics Engineering tools (or cool dbt specific stuff)
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Sources
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Exposures
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Materializations
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Incremental Models
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Snapshots
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Analyses
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Seeds
+
+---
+
+# ❓ Question
+
+
+---
+
+# ✅ Alerts
+
+---
+
+class: subtitle, center, middle
+# Part III. Contributing to the knowledge loop
+
+---
+
+# I can't have been the first person who...
+
+- ❓ Wants to use blue-green deployments via zero-copy cloning on Snowflake
+- ❓ Wants to create near-real-time models by mixing incremental + view
+- ❓ Needs to test nested BigQuery fields
+- ❓ Needs to determine whether to have one or several dbt projects across the organization
+
+--
+
+## ✅ Technique: search in [discourse](https://discourse.getdbt.com/top/all?order=views)!
+
+---
+
+# I can't have been the first person who...
+
+- ❓ Needs to model subscription data
+- ❓ Needs to model customer attribution
+
+--
+
+## ✅ Technique: read a playbook!
+
+- [Monthly recurring revenue](https://github.com/fishtown-analytics/mrr-playbook)
+- [Marketing attribution](https://github.com/fishtown-analytics/attribution-playbook)
+
+---
