@@ -191,10 +191,17 @@ Typically includes:
 
 # ❓ Question
 
+My team is constantly editing the files in our project in their development environments. When they're ready to propose a change, they open a Pull Request in GitHub.
+
+- I want to know that the change will work before merging, to avoid breaking production
+- Once the change is merged, I want it in production!
 
 ---
 
 # ✅ CI/CD
+
+- Continuous Integration: test all proposed changes, in a separate environment, and report back with ✅ or ❌
+- Continuous Deployment: always build the most recent "main" version of the code (and ideally, rebuild it any time it changes)
 
 ---
 
@@ -234,11 +241,13 @@ I'd also love to build only the models that power that dashboard.
 
 # ✅ Exposures
 
-Exposures allow you to make dbt aware of things that exist _outside_ of dbt but depend on dbt.
+Exposures allow you to make dbt aware of things that exist _outside_ of dbt but depend on dbt: BI dashboards, applications, reverse syncs, machine learning pipelines, ...
 
-These will be rendered in the DAG in orange.
+These will be rendered in the DAG in orange. Combined with sources, you can now see the full lineage of your data warehouse.
 
-Combined with sources, you can now see the full lineage of your data warehouse
+If you use dbt Cloud, you can also check an exposure's status:
+- Is the source data powering that exposure fresh?
+- Are tests passing on the transformations upstream of that exposure?
 
 ---
 
