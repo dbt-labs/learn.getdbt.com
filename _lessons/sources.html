@@ -75,7 +75,9 @@ sources:
     schema: jaffle_shop
     tables:
       - name: customers
+        identifier: customers
       - name: orders
+        identifier: orders
 
 ```
 
@@ -143,6 +145,7 @@ sources:
     schema: jaffle_shop
     tables:
       - name: customers
+        identifier: customers
         columns:
           - name: id
             tests:
@@ -189,7 +192,9 @@ sources:
     schema: jaffle_shop
     tables:
       - name: customers
+        identifier: customers
       - name: orders
+        identifier: orders
         loaded_at_field: _etl_loaded_at
         freshness:
           warn_after:
@@ -305,6 +310,7 @@ sources:
     schema: snowplow
     tables:
       - name: events
+        identifier: snowplow_events
 ```
 ]
 
@@ -337,6 +343,7 @@ sources:
     schema: stripe
     tables:
       - name: payments
+        identifier: stripe_payments
 ```
 ]
 
