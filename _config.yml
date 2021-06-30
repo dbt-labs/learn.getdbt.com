@@ -2,8 +2,8 @@
 # Site settings
 
 title: dbt Learn
-description: Level up your analytics skill set with Fishtown Analytics
-owner: http://github.com/fishtown-analytics
+description: Level up your analytics skill set with dbt Labs
+owner: http://github.com/dbt-labs/
 repo: learn.getdbt.com
 branch: master
 robots: true
@@ -12,8 +12,8 @@ robots: true
 # Site imagery
 
 favicon: /favicon.ico
-avatar: learn.getdbt.com/ui/img/graph/avatar.png
-poster: learn.getdbt.com/ui/img/graph/poster.png
+avatar: https://learn.getdbt.com/ui/img/graph/avatar.png
+poster: https://learn.getdbt.com/ui/img/graph/poster.png
 
 # --------------------------------------------------
 # the subpath of your site, e.g. /blog
