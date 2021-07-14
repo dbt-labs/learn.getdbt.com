@@ -31,6 +31,9 @@ namespace: dbt
 includes_dir: _config/_includes
 layouts_dir: _config/_layouts
 
+# these files are used by Netlify; Jekyll does nothing with them, but they need to be included in _site
+include: [_redirects, _headers]
+
 sass:
   style: compressed
   sass_dir: www.getdbt.com/ui/_sass
