@@ -1,27 +1,29 @@
 - day: 1
   title: "Foundations"
   sessions:
-    lessons:
-      - slug: distributed-norms
-      - slug: who-is-analytics-engineer
-      - slug: dbt-fundamentals
-      - slug: dbt-project-design
-      - slug: testing
-      - slug: sources
-      - slug: docs
-      - slug: assignment
-      - slug: deployment
+    - name: Test
+      lessons:
+        - slug: distributed-norms
+        - slug: who-is-analytics-engineer
+        - slug: dbt-fundamentals
+        - slug: dbt-project-design
+        - slug: testing
+        - slug: sources
+        - slug: docs
+        - slug: assignment
+        - slug: deployment
 
 - day: 2
   title: "Applications"
   sessions:
-    lessons:
-      - slug: polish-project
-      - slug: intro-to-jinja
-      - slug: dbtonic-jinja
-      - slug: packages
-      - slug: materializations
-      - slug: incremental
-      - slug: case-study
-      - slug: techniques-trade
-      - slug: outro
+    - name: Test 2
+      lessons:
+        - slug: polish-project
+        - slug: intro-to-jinja
+        - slug: dbtonic-jinja
+        - slug: packages
+        - slug: materializations
+        - slug: incremental
+        - slug: case-study
+        - slug: techniques-trade
+        - slug: outro
