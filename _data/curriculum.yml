@@ -1,6 +1,7 @@
 - day: 1
+  title: Foundations
   sessions:
-    - name: Foundations
+    - name: 
       lessons:
         - slug: distributed-norms
         - slug: who-is-analytics-engineer
@@ -13,8 +14,9 @@
         - slug: deployment
 
 - day: 2
+  title: Applications
   sessions:
-    - name: Applications
+    - name: 
       lessons:
         - slug: polish-project
         - slug: intro-to-jinja
