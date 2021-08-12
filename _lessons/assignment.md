@@ -12,7 +12,7 @@ To get the most value out of this assignment, we recommend that you try to work 
 
 Then, try using the resources available to you during dbt Learn, including:
 * Ask someone in your breakout group (including your instructor)
-* Ask in our shared Slack channel
+* Ask in chat
 
 If you get _really_ stuck, we do have worked solutions. Use these as a last resort — writing code that doesn't work is part of the learning experience!
 * Each exercise maps to a separate pull request [here](https://github.com/fishtown-analytics/dbt-learn-demo-v2/pulls?q=is%3Apr+is%3Amerged+). You can use to see how we completed this exercise. Remember that the code is only half of the exercise, you should also be comfortable running the related dbt commands.

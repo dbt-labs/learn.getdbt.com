@@ -97,7 +97,7 @@ select * from final
 
 # Working Group #2
 
-**Facilitation Guide** Ask people how they want to work by sending you a private message in Zoom chat:
+**Facilitation Guide** Ask people how they want to work by sending you a private message in chat:
 (1) Independently then check in towards the end
 (2) Guided with a screen share
 
