@@ -15,11 +15,24 @@ learningObjectives:
 class: title, center, middle
 # Sources
 
+
+???
+**Continue the story:** Make a connection to content that was just covered and how we might build off it.
+
+Example: "Excellent! We just concluded testing with Alexis and I'm excited to roll out sources with you all.  You may have noticed that we have been referencing raw tables in some of our models - we are going to figure out why that might be a problem for the future and what we might do about it!"
+
 ---
 
 # If you've ever had this happen...
 
 - I'm switching my email marketing platform. I want to know which final models depend on that source data.
+
+???
+**Hook:** Use this an an opportunity to drive engagement and get folks invested in this lesson.
+
+Examples:
+- Give me an emoji reaction on zoom for each statement that resonates with you. *narrate how popular/common each responses is.*
+- For a line that gets a lot of responses, call on 1-2 students to share their story of that case.
 
 --
 
@@ -41,6 +54,7 @@ hiccups that result in delayed or duplicated data.
 new payment method was introduced)
 
 
+
 ---
 
 # Sources may be right for you!
@@ -58,6 +72,12 @@ new payment method was introduced)
 ---
 
 {% include options/focus_slide.html %}
+
+???
+
+**Focus Slide:** This is your opportunity to bring focus to the rest of the session. You can do this by... 
+- slowing down just a little bit and reading each line with a little context OR
+- asking a learner to read these to the room
 
 ---
 
@@ -118,6 +138,16 @@ renamed as (
 ...
 ```
 ]
+
+???
+
+**Demo:** Pause the deck here and jump into the IDE to show the following:
+- Creating a .yml file and configuring sources (use text on Defining Sources slide)
+- Changing the direct table references in the stg_customers model
+- Show how the code compiles to the table reference based on the YML file
+- Asking learners for how to update the stg_orders and stg_payments model
+
+Then jump back to the slides to talk about source-freshness 🚀
 
 ---
 
@@ -271,6 +301,14 @@ dbt source snapshot-freshness
 <img src="/ui/img{{page.id}}/freshness-viz.png" style="width: 100%;" class="img-center">
 ]
 
+???
+
+**Demo:** Use this an opportunity to demonstrate the source-freshness feature.  Do the following over in dbt Cloud:
+- Copy the freshness configuration from `Feeling Fresh?` slide
+- Run dbt source-freshness
+- Show the code that is run against the warehouse to execute this
+- Tweak the criteria to 1 hour warn and 2 hour error to show how that changes the results of the command
+
 ---
 
 # In deployment
@@ -325,6 +363,13 @@ from {{ source('event_data', 'events') }}
 ]
 {% endraw %}
 
+???
+
+**Check for Understanding:** Ask the group to predict what the code on the right will compile to based on the YML file on the left.  Learners will have to pay close attention to the YML configuration
+
+Slide 1: Compiles to `raw.snowplow.events`
+Slide 2: Compiled to `raw.stripe.payments`
+
 ---
 
 class: subtitle
@@ -366,9 +411,17 @@ class: subtitle
 
 - How does using sources, instead of directly referencing tables, impact our work as analytics engineers?
  
+???
+
+**Check for understanding:** Ask for 1-3 learners to share how they might use sources in their future workflow.
+
 --
 
 ## Questions??
+
+???
+
+Pause for questions on sources based off what was covered.
 
 ---
 
@@ -384,7 +437,6 @@ You should be able to:
 * Check the freshness of your source
 
 {% include options/last_slide.html %}
-
 
 ---
 ## Further explorations
