@@ -56,6 +56,9 @@ new payment method was introduced)
 
 
 ---
+???
+
+Read aloud the text on the slides: 
 
 # Sources may be right for you!
 
@@ -82,6 +85,15 @@ new payment method was introduced)
 ---
 
 # Defining sources
+
+???
+
+Sources are defined in `.yml` files in your `models/` directory, where they have to be nested under a source key. 
+You will have to provide a source name, which is usually the name of the schema of your raw table. Snowflake users,
+you can also provide a database name and then after that you can list your table names. 
+If one of your sources is badly named, there is also an opportunity for you to 
+provide ....
+
 Sources are defined in `.yml` files in your `models/` directory.
 
 (They can co-exist with `models:` blocks)
@@ -100,21 +112,17 @@ sources:
         identifier: orders
 
 ```
-???
-
-source definitions are nested under a source key. You have to provide a source name, which is usually the name of the schema. For the Snowflake users,
-you can also provide a database name and then after that you can list your tables. If one of your sources is badly named, there is also an opportunity for you to 
-provide ....
 
 ---
 
 # Selecting from sources
+
 ???
 
-Once you have defined a source, you can now utilize the source jinja function to select from that source in a model. The source function here will compile to the full 
-object name in the database, so select star from source-jaffleshop will compile to raw.jaffleshop.customers, with the database name raw, which
+Once you have defined a source in your .yml file, you can now utilize the source jinja function to select from that source in a model. 
+The source function here will compile to the full object name in the database,
+so select star from source-jaffleshop will compile to raw.jaffleshop.customers, with the database name raw, which
 is **clicks back** how we defined it in our yml file.
-
 
 Use the {% raw %}`{{ source() }}`{% endraw %} function to select from a source in a model:
 
@@ -171,6 +179,10 @@ They help users understand where data comes from (lineage)
 
 # Testing sources
 
+?? 
+
+Can you add tests to sources? Yes you can and you absolutely should! **Add something about when to test staging models vs when to test source models**
+
 .denser-text[
 
 You can add tests to sources! And you should!
@@ -205,10 +217,6 @@ This allows you to debug more quickly!
 
 ]
 
-?? 
-
-So, can you add tests to sources? Yes you can and you absolutely should! **Add something about when to test staging models vs when to test source models**
-
 
 ---
 
@@ -224,6 +232,19 @@ This can be helpful in deployment - coming up soon
 
 
 # Feeling fresh?
+
+
+???
+
+Now that we've defined our sources and we know how to test them ** jump back to intro slide ** 
+Has that ever happened to you before? And if it has happened to you, do you have a reliable way of capturing that?
+
+dbt has a command called source-snapshot freshness that will allow you to capture the latency of your source tables. All you need to do is add a loaded_at field 
+to your source definition, and under that add whats called a freshness block. The loaded at field should be a column from the source data 
+that is a reliable of when the source data was loaded into the warehouse. This usually something like an updated_at, in Stitch of Fivetran they are xyz. 
+
+Your freshness blocks will then determine define the acceptable amount of time between the most recent record, and now, for a table to be considered "fresh". 
+In this example, we have configured checks to run essentially every 12 hours. 
 
 Optionally, specify a `loaded_at_field` and `freshness`:
 
@@ -256,17 +277,6 @@ sources:
 
 Then run `dbt source snapshot-freshness`
 
-??
-
-Now that we've defined our sources and we know how to test them - lets jump back this slide. What happens when your source data is delayed?
-Has that ever happened to you before? And if it has happened to you, do you have a reliable way of capturing that?
-
-dbt has a command called source-snapshot freshness that will allow you to capture the latency of your source tables. All you need to do is add a loaded_at field 
-to your source definition, and under that add whats called a freshness block. The loaded at field should be a column from the source data 
-that is a reliable of when the source data was loaded into the warehouse. This usually something like an updated_at, in Stitch of Fivetran they are xyz. 
-
-Your freshness blocks will then determine -----. In this example, we have configured 
-checks to run essentially every 12 hours. 
 
 ---
 ## Snapshotting freshness
