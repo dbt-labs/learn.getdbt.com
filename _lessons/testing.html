@@ -13,9 +13,20 @@ learningObjectives:
 ---
 class: title, center, middle
 # Testing
+
+???
+**Continue the story:** Make a connection to content that was just covered and how we might build off it.
+
+Example: We just spent sometime modeling the data for customers, orders, (and payments).  Now that we have these models being built, we want to ensure that we can trust the data!  This is where testing comes in.
 ---
 
 {% include options/focus_slide.html %}
+
+???
+
+**Focus:** This is your opportunity to bring focus to the rest of the session. You can do this by... 
+- slowing down just a little bit and reading each line with a bit of context OR
+- asking a learner to read these to the room
 
 ---
 
@@ -25,6 +36,19 @@ class: title, center, middle
 _**Analytics code should have quality assurance**_
 * _Run automated tests on source data and on transformed data to ensure that SQL works as intended_
 * _Ensure source data is up to date_
+
+--
+
+❓ **What are some ways that you have seen data _break_ in your experience?**
+
+???
+
+**Hook:** Use this an an opportunity to drive engagement and get folks invested in this lesson.
+
+Example:
+- ask 2-3 people to share how data broke in their organization
+- ask for emoji reaction is something similar has happened
+- make a connection to testing to lead into the next slides
 
 ---
 # What are tests?
@@ -108,6 +132,13 @@ select count(*) from (
 Run all tests: `dbt test`
 
 Run specific tests: `dbt test -m one_specific_model`
+
+???
+
+Pause the deck here and jump into the IDE to show the following:
+- copy the snippet of code for a schema.yml file to show how to configure tests
+- run dbt test
+- click into the palette to show off how the tests get compiled to a Select statement that is run against the materialized model.
 
 
 ---
@@ -323,10 +354,13 @@ models:
 ]
 
 .right-column[
-- What are the tests being run in this project?
-- What are they running on?
-- If they fail, what does that tell us?
+- What are we testing for based on this configuration? (Be specific)
 ]
+
+???
+
+**Check for Understanding:** Ask the group to chat in their responses to this question.
+- Celebrate a specific answer like: "We are testing that the payment_id is not_null and unique on the payments model."
 
 
 ---
@@ -353,10 +387,13 @@ models:
 ]
 
 .right-column[
-- What are the tests being run in this project?
-- What are they running on?
-- If they fail, what does that tell us?
+- What are we testing for based on this configuration? (Be specific)
 ]
+
+???
+
+**Check for Understanding:** Ask the group to chat in their responses to this question.
+- Celebrate a specific answer like: "We are testing that the payment_method is only credit_card, paypal, or ach_transfer on the payments model."
 
 ---
 
