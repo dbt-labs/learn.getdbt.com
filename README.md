@@ -1,6 +1,6 @@
 # Legacy learn.getdbt.com
 
-**This repository no longer powers learn.getdbt.com.** The index page of learn.getdbt.com, and most subpages, will now redirect you to www.getdbt.com/learn. 
+**This repository no longer powers learn.getdbt.com.** The index page of learn.getdbt.com, and most subpages, will now redirect you to www.getdbt.com/dbt-learn. 
 
 This repository remains mostly to serve the `_redirects` file and act as a code reference. 
 
