@@ -19,7 +19,7 @@ The slides are made with [Remark.js](https://github.com/gnab/remark). When you h
 ## Checkpoint Slides
 
 ### Purpose
-- There is a lot of content to cover during these two days of dbt Learn.
+- There is a lot of content to cover during these sessions.
 - Checkpoints create an opportunity to see if our learners can name some key takeaways from the lesson.
 - This also is a method for breaking up longer presentations.
 - These create a specific point during the lessons for the entire group to engage in conversation around important concepts/practices

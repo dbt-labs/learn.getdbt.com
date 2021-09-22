@@ -32,10 +32,9 @@ If you get _really_ stuck, we do have worked solutions. Use these as a last reso
 # Prerequisites
 
 Before going further, make sure:
-1. You have completed the [pre-work](https://docs.getdbt.com/learn/setting-up/)
-2. You have added an `orders` model to your project (from [this morning's session](dbt-fundamentals#working-session))
-3. Your project is in a repository owned by your personal GitHub account, and is set to public
-4. You can run `dbt run` and `dbt test` without any errors
+1. You have added an `orders` model to your project (from [the previous Working Group](dbt-fundamentals#working-session))
+1. Your project is in a repository owned by your personal GitHub account, and is set to public
+1. You can run `dbt run` and `dbt test` without any errors
 
 If you need any help with these, please let us know.
 
