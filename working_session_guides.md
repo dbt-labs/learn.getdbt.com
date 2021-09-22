@@ -1,5 +1,134 @@
 # Working Group #1
 
+**Facilitation Guide** The instructor should be driving for most of this session. If students run into issues setting up their projects, ask them to share their screens so you can see their issue and other students can learn from the solution.
+
+**Working Process**
+1. Guide students through the process of finding the email with the dbt Cloud invite, accepting the invite, and finding their project.
+2. Have them enter their Snowflake credentials and initialize their project.
+3. Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
+4. Delete the examples folder.
+5. Finally, have them create the files below. For each model created, run `dbt run` and look at the logs to talk through what is happening.
+6. Change the `dbt_project.yml` materializations to match the file below.
+
+**`stg_customers.sql`**
+
+```sql
+select
+    id as customer_id,
+    first_name,
+    last_name
+
+from raw.jaffle_shop.customers
+```
+
+**`stg_orders.sql`**
+
+```sql
+select
+    id as order_id,
+    user_id as customer_id,
+    order_date,
+    status
+
+from raw.jaffle_shop.orders
+```
+
+**`customers.sql`**
+
+```sql
+with customers as (
+
+    select * from {{ ref('stg_customers') }}
+
+),
+
+orders as (
+
+    select * from {{ ref('stg_orders') }}
+
+),
+
+customer_orders as (
+
+    select
+        customer_id,
+
+        min(order_date) as first_order_date,
+        max(order_date) as most_recent_order_date,
+        count(order_id) as number_of_orders
+
+    from orders
+
+    group by 1
+
+),
+
+final as (
+
+    select
+        customers.customer_id,
+        customers.first_name,
+        customers.last_name,
+        customer_orders.first_order_date,
+        customer_orders.most_recent_order_date,
+        coalesce(customer_orders.number_of_orders, 0) as number_of_orders
+
+    from customers
+
+    left join customer_orders using (customer_id)
+
+)
+
+select * from final
+```
+
+**`schema.yml`**
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+```
+
+**`dbt_project.yml`**
+
+```yml
+models:
+  jaffle_shop:
+    +materialized: table
+```
+
+# Working Group #2
+
 **Facilitation Guide** The instructor should be driving for most of this session. Be sure to allow people time to catch up after each step outlined below.
 
 **Working Process** - Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
@@ -68,7 +197,7 @@ with customers as (
     select * from {{ ref('stg_customers')}}
 ),
 orders as (
-    select * from {{ ref('fct_orders')}}
+    select * from {{ ref('orders')}}
 ),
 customer_orders as (
     select
@@ -95,7 +224,7 @@ final as (
 select * from final
 ```
 
-# Working Group #2
+# Working Group #3
 
 **Facilitation Guide** Ask people how they want to work by sending you a private message in chat:
 (1) Independently then check in towards the end
@@ -204,15 +333,15 @@ models:
         description: Amount in USD
 ```
 
-# Working Group #3
+# Working Group #4
 
 **Jinja Working Exercise Steps**
 
 1. Write the pivot in pure SQL.
-2. Write the pivot with some Jinja + SQL (don't address changing payment methods or how to deal with the final column)
-3. Address the trailing comma and set in Jinja
-4. Use dbt utils to get column values
-5. Write a macro OR use dbt utils pivot function
+2. Write the pivot with some Jinja + SQL (don't address changing payment methods or how to deal with the final column).
+3. Address the trailing comma and set in Jinja.
+4. Use dbt_utils to get column values.
+5. Write a macro OR use dbt_utils pivot function.
 
 **Facilitation Guide** - The instructor for the Jinja session will get the class started on the first two steps. Then in breakout rooms, instructors will nominate one students to be the driver for refactoring this query.
 
@@ -355,15 +484,15 @@ select * from pivoted
   OR
 - Use the pivot macro from dbt Utils
 
-# Working Group #4
+# Working Group #5 (optional)
 
-This is meant to be a *capstone* of sorts for learners to show what they know!  The training wheels are not completely off yet, so use this guide to provide scaffolding for learners:
+This is meant to be a *capstone* of sorts for learners to show what they know! The training wheels are not completely off yet, so use this guide to provide scaffolding for learners:
 
 **Facilitation Guide** Ask people how they want to work by sending you a private message in chat:
 (1) Independently then check in towards the end
 (2) Guided with a screen share
 
-**Working Process** - Facilitate discussion to name the following steps for creating a final model.  There is no **correct** process here, but learners should be comfortable with the idea of refactoring
+**Working Process** - Facilitate discussion to name the following steps for creating a final model. There is no **correct** process here, but learners should be comfortable with the idea of refactoring
 
 1. Create a source for the three ticket tailor tables
 2. Create a staging model for each raw table (pro tip: use the codegen package)
