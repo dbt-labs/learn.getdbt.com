@@ -33,7 +33,6 @@ If you get _really_ stuck, we do have worked solutions. Use these as a last reso
 
 Before going further, make sure:
 1. You have added an `orders` model to your project (from [the previous Working Group](dbt-fundamentals#working-session))
-1. Your project is in a repository owned by your personal GitHub account, and is set to public
 1. You can run `dbt run` and `dbt test` without any errors
 
 If you need any help with these, please let us know.
@@ -45,18 +44,8 @@ For each exercise, we recommend you follow a git flow.
 1. Checkout a new branch¹:
     - **dbt CLI:** In the terminal: `git checkout -b name-of-exercise`
     - **dbt Cloud:** Click the `create a new branch` button (see below)
-2. Make your changes, ensure they work, and then commit your changes¹
-3. Open up a pull request²
-    - Navigate to your repository in GitHub
-    - Click the "New pull request" button
-4. [Bonus] Assign it to a classmate to review:
-    - You will need to add your classmate as a [collaborator](https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/inviting-collaborators-to-a-personal-repository)
-<center>
-<img src="/ui/img{{page.id}}/create-new-branch.png" style="width: 50%;">
-</center>
-
-¹Stuck on what to name your branch or what a good commit message it? We've got a [guide for that](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md)!
-²Check out our tips on good pull requests [here](pull-requests)
+2. Make your changes, ensure they work, and then commit your changes
+    - Stuck on what to name your branch or what a good commit message it? We've got a [guide for that](https://github.com/fishtown-analytics/corp/blob/master/git-guide.md)!
 
 ---
 
@@ -109,7 +98,7 @@ Based on our discussion in [Designing a dbt project](dbt-project-design), refact
 * Set up continuous integration for the job (related [docs](https://docs.getdbt.com/tutorial/deploy-your-project/))
 
 ### Polish your project
-* Skip ahead to tomorrow's lesson on [polishing a dbt project](polish-project), and try implementing some of these recommendations in your own project!
+* Skip ahead to the lesson on [polishing a dbt project](polish-project), and try implementing some of these recommendations in your own project!
 * If you just implemented CI, confirm that you get a ✅ on your PR before merging it
 
 ### Ask for an instructor review!
