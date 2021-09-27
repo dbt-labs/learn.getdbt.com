@@ -1,6 +1,6 @@
 ---
 layout: overview
-title: Group assignment
+title: Working Group 3
 ---
 
 # How to work through this assignment
