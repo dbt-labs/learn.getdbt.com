@@ -122,9 +122,12 @@ models:
 **`dbt_project.yml`**
 
 ```yml
+# replace only the models block with the code below
 models:
   jaffle_shop:
     +materialized: table
+    staging:
+      +materialized: table
 ```
 
 # Working Group #2
