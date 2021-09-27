@@ -216,16 +216,4 @@ You should:
 * Be able to install a package in your own project and use macros/models from the package
 * Understand that dbt itself is package
 
----
-class: subtitle
-# Working session
-
-Over to you! Use this time to implement some Jinja (maybe from a package) in your own project.
-
-If you're looking for inspiration:
-* Try creating a table of all days using the `date_spine` macro (check the [usage docs](https://github.com/fishtown-analytics/dbt-utils#date_spine-source))
-* Override the uniqueness test ([here](https://github.com/fishtown-analytics/dbt/blob/dev/octavius-catto/core/dbt/include/global_project/macros/schema_tests/unique.sql)) to use a CTE rather than a subquery.
-* Union two models together using the `union_relations` macro
-* Whatever you want!
-
 {% include options/last_slide.html %}

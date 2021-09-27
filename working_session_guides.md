@@ -488,7 +488,7 @@ select * from pivoted
 
 This is meant to be a *capstone* of sorts for learners to show what they know! The training wheels are not completely off yet, so use this guide to provide scaffolding for learners:
 
-**Facilitation Guide** Ask people how they want to work by sending you a private message in Zoom chat:
+**Facilitation Guide** Ask people how they want to work by sending you a private message in chat:
 (1) Independently then check in towards the end
 (2) Guided with a screen share
 
