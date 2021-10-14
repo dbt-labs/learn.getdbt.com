@@ -167,7 +167,7 @@ Every value in this column is a value from a given list.
 version: 2
 
 models:
-  - name: orders
+  - name: stg_orders
     columns:
       - name: status
         tests:
@@ -196,13 +196,13 @@ Each value in this column exists in the column of another table.
 version: 2
 
 models:
-  - name: orders
+  - name: stg_orders
     columns:
       - name: customer_id
         tests:
           - relationships:
-              to: ref('customers')
-              field: id
+              to: ref('stg_customers')
+              field: customer_id
 
 ```
 
@@ -226,7 +226,7 @@ left join payments
 ```
 ```yml
 models:
-  - name: fct_orders
+  - name: orders
     columns:
       - name: order_id
         tests:
@@ -248,15 +248,16 @@ Examples:
 
 ```sql
 select
-    orders.order_id,
-    payments.payment_id
-from orders
-left join payments
-    on orders.order_id = payments.order_id
+    id as order_id,
+    user_id as customer_id,
+    order_date,
+    status
+
+from raw.jaffle_shop.orders
 ```
 ```yml
 models:
-  - name: fct_orders
+  - name: stg_orders
     columns:
       - name: order_id
         tests:
