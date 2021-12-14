@@ -268,7 +268,7 @@ select * from joined
 
 ## Run 1:
 .denser-text[
-`$ dbt run -m page_views`
+`$ dbt run -s page_views`
 
 Excerpts from logs:
 ```sql
@@ -285,7 +285,7 @@ create or replace transient table analytics.dbt_alice.page_views as (
 ---
 ## Run 2:
 .denser-text[
-`$ dbt run -m page_views`
+`$ dbt run -s page_views`
 
 Excerpts from logs:
 ```sql
@@ -316,7 +316,7 @@ Teacher note: see the insert! cool!
 
 ## Run 3 (full refresh):
 .denser-text[
-`$ dbt run -m page_views --full-refresh`
+`$ dbt run -s page_views --full-refresh`
 
 Excerpts from logs:
 ```sql
@@ -422,7 +422,7 @@ with events as (
 
 # Run 4:
 .denser-text[
-`dbt run -m page_views`
+`dbt run -s page_views`
 
 Excerpts from logs:
 ```sql
@@ -633,7 +633,7 @@ with events as (
 
 - Whenever a user has a new session, pull the user's _most recent session only_,
 and perform relative calculations
-- This takes some hard thinking! E.g. [Segment package](https://github.com/fishtown-analytics/segment/blob/master/models/sessionization/segment_web_sessions.sql#L67)
+- This takes some hard thinking! E.g. [Segment package](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_sessions.sql#L67)
 
 
 ---

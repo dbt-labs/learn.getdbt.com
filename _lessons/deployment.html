@@ -141,8 +141,8 @@ $ dbt test
 .right-column[
 #### Our preferred setup:
 ```txt
-$ dbt source snapshot-freshness
-$ dbt test -m source:*
+$ dbt source freshness
+$ dbt test -s source:*
 $ dbt seed
 $ dbt run
 $ dbt test --exclude source:*
