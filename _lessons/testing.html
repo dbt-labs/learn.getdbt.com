@@ -222,7 +222,7 @@ select
     payments.payment_id
 from orders
 left join payments
-    on orders.order_id = payments.payment_id
+    on orders.order_id = payments.order_id
 ```
 ```yml
 models:
@@ -236,7 +236,7 @@ models:
 ???
 Examples:
 * Bad deduping
-* Bad joins
+* 1:many relationship between orders and payments unexpectedly causes fan out
 
 ---
 # Q: Why might a test fail?
