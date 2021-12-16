@@ -320,7 +320,7 @@ Teacher note: see the insert! cool!
 
 Excerpts from logs:
 ```sql
-create or replace temporary table analytics.dbt_alice.page_views as (
+create or replace transient table analytics.dbt_alice.page_views as (
     with events as (
         select * from raw.snowplow.events
     ),
