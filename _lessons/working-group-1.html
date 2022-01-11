@@ -4,7 +4,7 @@ title: Working Group 1
 
 ---
 class: subtitle
-# Working session 1
+# Working session 1 - Setting up your training environment
 .dense-text[
 1. Make sure you have your dbt Cloud project set up.
     * Accept the dbt Cloud invite.
@@ -15,11 +15,11 @@ class: subtitle
 select * from raw.jaffle_shop.customers;
 select * from raw.jaffle_shop.orders;
 ```
-3. Delete the examples folder under models.
-4. Create your first models and a YAML configuration file. See chat for code snippets.
-    * `stg_customers.sql`, `stg_orders.sql`, `customers.sql`, `schema.yml`
-5. Change the materialization strategy of your project in `dbt_project.yml`.
-]
+3. Initialize your repository, make your first commit, and open a new branch called `dbt-learn`
+4. Make sure you can run `dbt run` and build the models in your project.
+5. Try testing your models with `dbt test`
+6. Try generating documentation with `dbt docs generate` and viewing the documentations
+
 ???
 Notes for what to walk students through
 * Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
