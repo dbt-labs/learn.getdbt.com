@@ -35,9 +35,8 @@ assurance.
 To do this we need to be able to:  
 ""  
   
-[------------------------------ Teacher Notes ---------------------------------]  
+[Teacher Notes:]  
 Read out bullet points on the slide  
-[-----------------------------------------------------------------------------------]  
 
 ---
 # What are tests?
@@ -57,10 +56,8 @@ What we mean is that we want to ensure that when our assertions about our
 data is true, our tests pass.  
 ""  
   
-[------------------------------ Teacher Notes ---------------------------------]  
+[Teacher Notes:]  
 Read the rest of the slide to give the broad overview of test implementation.  
-[-----------------------------------------------------------------------------------]  
-
 ---
 # Examples:
 .left-column[
@@ -78,24 +75,23 @@ models:
 ]
 
 ???
-""
-We set up tests using our .yml configuration files. Here's an example 
-of a test which ensures that our customer_id key in our customers model is
-not null.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-You can pause here to exemplify this and the following slides in dbt Cloud 
-for tests on uniqueness and not null. You should hit these points:
-    - Setting up a not null test
-    - Showing the underlying code after running the test using the run details.
-    - Setting up a uniqueness test
-    - Showing the underlying code after running the test using the run details.
-
-If you pause here for an example, you can start out with "So to recap:" for
-this and the following test examples.
-[------------------------------------------------------------------------------]
-
+""  
+We set up tests using our .yml configuration files. Here's an example  
+of a test which ensures that our customer_id key in our customers model is  
+not null.  
+""  
+  
+[------------------------------ Teacher Notes ---------------------------------]  
+You can pause here to exemplify this and the following slides in dbt Cloud  
+for tests on uniqueness and not null. You should hit these points:  
+    - Setting up a not null test  
+    - Showing the underlying code after running the test using the run details.  
+    - Setting up a uniqueness test  
+    - Showing the underlying code after running the test using the run details.  
+  
+If you pause here for an example, you can start out with "So to recap:" for  
+this and the following test examples.  
+[-----------------------------------------------------------------------------------]  
 --
 .right-column[
 ```sql
@@ -111,16 +107,16 @@ where customer_id is null
 ]
 
 ???
-""
-Here's the underlying SQL that runs for the not_null test using results of our 
-customers table. It returns number of records in our customers table where our 
-customer_id is null, which will result in a failure if rows are returned.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-Talk about how these relate. 
-If you exemplified this, just do a quick recap.
-[------------------------------------------------------------------------------]
+""  
+Here's the underlying SQL that runs for the not_null test using results of our  
+customers table. It returns number of records in our customers table where our  
+customer_id is null, which will result in a failure if rows are returned.  
+""  
+  
+[------------------------------ Teacher Notes ---------------------------------]  
+Talk about how these relate.  
+If you exemplified this, just do a quick recap.  
+[-----------------------------------------------------------------------------------]  
 
 ---
 
