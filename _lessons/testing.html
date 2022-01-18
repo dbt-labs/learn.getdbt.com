@@ -75,23 +75,23 @@ models:
 ]
 
 ???
-""  
-We set up tests using our .yml configuration files. Here's an example  
-of a test which ensures that our customer_id key in our customers model is  
+""
+We set up tests using our .yml configuration files. Here's an example
+of a test which ensures that our customer_id key in our customers model is
 not null.  
 ""  
   
-[------------------------------ Teacher Notes ---------------------------------]  
+[Teacher Notes:]  
 You can pause here to exemplify this and the following slides in dbt Cloud  
 for tests on uniqueness and not null. You should hit these points:  
-    - Setting up a not null test  
-    - Showing the underlying code after running the test using the run details.  
-    - Setting up a uniqueness test  
-    - Showing the underlying code after running the test using the run details.  
+  
+- Setting up a not null test  
+- Showing the underlying code after running the test using the run details.  
+- Setting up a uniqueness test  
+- Showing the underlying code after running the test using the run details.  
   
 If you pause here for an example, you can start out with "So to recap:" for  
 this and the following test examples.  
-[-----------------------------------------------------------------------------------]  
 --
 .right-column[
 ```sql
@@ -113,11 +113,9 @@ customers table. It returns number of records in our customers table where our
 customer_id is null, which will result in a failure if rows are returned.  
 ""  
   
-[------------------------------ Teacher Notes ---------------------------------]  
+[Teacher Notes:]  
 Talk about how these relate.  
 If you exemplified this, just do a quick recap.  
-[-----------------------------------------------------------------------------------]  
-
 ---
 
 # Examples:
@@ -137,13 +135,13 @@ models:
 ]
 
 ???
-""
-Now we're going to add test to our configuration to ensure that every customer_id
-in the customers table is unique.
-""
-[------------------------------ Teacher Notes ---------------------------------]
-If you exemplified this, just do a quick recap.
-[------------------------------------------------------------------------------]
+""  
+Now we're going to add test to our configuration to ensure that every customer_id  
+in the customers table is unique.  
+""  
+  
+[Teacher Notes:]  
+If you exemplified this, just do a quick recap.  
 --
 
 .right-column[
@@ -162,15 +160,14 @@ select count(*) from (
 ]
 
 ???
-""
-Here's the underlying code - you can see that it returns all customer_ids that
-have more than one record associated to that id. If any rows return, then the
-test fails.
-""
+""  
+Here's the underlying code - you can see that it returns all customer_ids that  
+have more than one record associated to that id. If any rows return, then the  
+test fails.  
+""  
 
-[------------------------------ Teacher Notes ---------------------------------]
-If you exemplified this, just do a quick recap.
-[------------------------------------------------------------------------------]
+[Teacher Notes:]  
+If you exemplified this, just do a quick recap.  
 ---
 
 # How do we run tests?
