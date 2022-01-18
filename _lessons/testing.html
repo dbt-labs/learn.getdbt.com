@@ -75,9 +75,9 @@ models:
 ]
 
 ???
-""
-We set up tests using our .yml configuration files. Here's an example
-of a test which ensures that our customer_id key in our customers model is
+""  
+We set up tests using our .yml configuration files. Here's an example  
+of a test which ensures that our customer_id key in our customers model is  
 not null.  
 ""  
   
@@ -136,8 +136,8 @@ models:
 
 ???
 ""  
-Now we're going to add test to our configuration to ensure that every customer_id  
-in the customers table is unique.  
+Now we're going to add test to our configuration to ensure that every  
+customer_id in the customers table is unique.  
 ""  
   
 [Teacher Notes:]  
@@ -177,17 +177,15 @@ Run all tests: `dbt test`
 Run specific tests: `dbt test -s one_specific_model`
 
 ???
-""
-After we've implemented our tests, how do we run them? We just need a command -
-dbt test. If we wanted to only run tests for a specific model, we could use
-selection syntax with -s to specify which model we want to test.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-You can exemplify this in dbt Cloud. If you've already exemplified this, just
-give a recap here.
-[------------------------------------------------------------------------------]
-
+""  
+After we've implemented our tests, how do we run them? We just need a command -  
+dbt test. If we wanted to only run tests for a specific model, we could use  
+selection syntax with -s to specify which model we want to test.  
+""  
+  
+[Teacher Notes:]  
+You can exemplify this in dbt Cloud. If you've already exemplified this, just  
+give a recap here.  
 ---
 
 # What happens when you run `dbt test`?
@@ -198,20 +196,18 @@ give a recap here.
 4. dbt executes the SQL for each test: if the number `0` is returned your test passes
 
 ???
-""
+""  
 When we run dbt test, what happens under the hood?  
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-Read the list items - you can expand on the parsing by saying that dbt 
-collects all the configurations first and then executes, which means that you
-can separate tests out by folder or you can keep all your tests in one big file.
-Our best practice is to separate by folder. 
-
-The other important piece here is that the dbt test operates on the result of a
-number - count of 0 is a pass and anything more than 0 is a failure.
-[------------------------------------------------------------------------------]
-
+""  
+  
+[Teacher Notes:]  
+Read the list items - you can expand on the parsing by saying that dbt  
+collects all the configurations first and then executes, which means that you  
+can separate tests out by folder or you can keep all your tests in one big file.  
+Our best practice is to separate by folder.  
+  
+The other important piece here is that the dbt test operates on the result of a  
+number - count of 0 is a pass and anything more than 0 is a failure.  
 ---
 
 # dbt's built-in tests:
@@ -229,15 +225,12 @@ Every value in this column is unique.
 ]
 
 ???
-""
-dbt come packages with four out-of-the-box tests. Unique, which as we saw tests
-that each value in the specified column has no more than one row in the results.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-
-[------------------------------------------------------------------------------]
-
+""  
+dbt come packages with four out-of-the-box tests. Unique, which as we saw tests  
+that each value in the specified column has no more than one row in the results.  
+""  
+  
+[Teacher Notes:]  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -254,14 +247,11 @@ Every value in this column is not null.
 ]
 
 ???
-""
-Not null, which tests that every value in the specified column has a value.
-""
+""  
+Not null, which tests that every value in the specified column has a value.  
+""  
 
-[------------------------------ Teacher Notes ---------------------------------]
-
-[------------------------------------------------------------------------------]
-
+[Teacher Notes:]  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -292,15 +282,12 @@ models:
 ]
 
 ???
-""
-Accepted values, which tests that the values in a column is one of the values in
-a specified list.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-
-[------------------------------------------------------------------------------]
-
+""  
+Accepted values, which tests that the values in a column is one of the values in  
+a specified list.  
+""  
+  
+[Teacher Notes:]  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -330,15 +317,12 @@ models:
 ]
 
 ???
-""
-and relationships, which ensures referential integrity. In other words, it tests
-that a column in your model has a related record in a different table.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-
-[------------------------------------------------------------------------------]
-
+""  
+and relationships, which ensures referential integrity. In other words, it tests  
+that a column in your model has a related record in a different table.  
+""  
+  
+[Teacher Notes:]  
 ---
 # Q: Why might a test fail?
 --
@@ -365,18 +349,16 @@ models:
 ```
 
 ???
-""
-Now that we know how to implement and execute tests, let's go over some common
-reasons why our tests might fail.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-Examples for this slide:
-* Bad deduping
-* The 1:many relationship between orders and payments in this example 
-unexpectedly causes a fan out
-[------------------------------------------------------------------------------]
-
+""  
+Now that we know how to implement and execute tests, let's go over some common  
+reasons why our tests might fail.  
+""  
+  
+[Teacher Notes:]  
+Examples for this slide:  
+* Bad deduping  
+* The 1:many relationship between orders and payments in this example   
+unexpectedly causes a fan out  
 ---
 # Q: Why might a test fail?
 
@@ -404,17 +386,15 @@ models:
 ```
 
 ???
-""
-An assumption about your source data is wrong.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-Examples for this slide:
-* You might assume that because a table is called "orders", for example, that the
-order_id is unique identifier. It's great to always test these things - we've
-been burned before!
-[------------------------------------------------------------------------------]
-
+""  
+An assumption about your source data is wrong.  
+""  
+  
+[Teacher Notes:]  
+Examples for this slide:  
+* You might assume that because a table is called "orders", for example, that the  
+order_id is unique identifier. It's great to always test these things - we've  
+been burned before!  
 ---
 # Q: Why might a test fail?
 
@@ -426,15 +406,12 @@ been burned before!
     * NULLs you weren't expecting
 
 ???
-""
-That means testing for things like non-unique IDs, cardinality, missing data, or
-for nulls we don't expect.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-
-[------------------------------------------------------------------------------]
-
+""  
+That means testing for things like non-unique IDs, cardinality, missing data, or  
+for nulls we don't expect.  
+""  
+  
+[Teacher Notes:]  
 ---
 # Q: Why might a test fail?
 
@@ -442,22 +419,28 @@ for nulls we don't expect.
 2. An assumption about your source data is wrong.
 
 ???
-""
-That means testing for things like non-unique IDs, cardinality, missing data, or
-for nulls we don't expect.
-""
-
-[------------------------------ Teacher Notes ---------------------------------]
-
-[------------------------------------------------------------------------------]
-
+""  
+""  
+  
+[Teacher Notes:]  
+This slide just closes up the last bullet point.  
 --
 3. A previously-true assumption about your underlying source data is no longer true
 --
 
     * A previously unique key is no longer unique
     * You have a new payment method
-
+    
+???
+""  
+or, maybe a previously true assumption about our underlying data is no longer  
+true.  
+""  
+  
+[Teacher Notes:]  
+Example:  
+If your web app has added a new payment method, you want to be sure that you  
+can catch that so you can modify your models to account for the new method.  
 ---
 # Q: What should you test?
 --
@@ -466,6 +449,16 @@ for nulls we don't expect.
     * Test primary keys (`unique`, `not_null`)
     * Test fields that you use in downstream models
 
+???
+""  
+With so many ways to test things, you might be wondering about good practices  
+for which how and when to implement tests. Here's our recommendations:  
+- always test the assumed primary key for not null and unique for all models.  
+- if you're using a field for downstream joins or calculations, you might want
+to consider testing those before integrating them with other data.
+""  
+  
+[Teacher Notes:]  
 ---
 # Q: When should you run tests?
 --
@@ -475,6 +468,19 @@ for nulls we don't expect.
 * Automated: When you run dbt on a schedule
 * Automated: When you want to merge your code
 
+???
+""  
+As far as when to run them:  
+- Always test when you first run a project or before making changes - this
+ensures failures aren't caused by anything you did.  
+- Always test when you change things in development.  
+- When you're running dbt on a schedule as you would for production, this
+ensures we're continually checking for any bad code that was merged.  
+- When you open a pull request - this will ensure that if a developer didn't do
+their due diligence, that we have an automated process that checks.  
+""  
+  
+[Teacher Notes:]  
 ---
 
 class: subtitle
