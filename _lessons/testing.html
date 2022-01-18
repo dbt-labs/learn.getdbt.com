@@ -27,8 +27,14 @@ _**Analytics code should have quality assurance**_
 * _Ensure source data is up to date_
 
 ???
-Previously, we'd given a broad overview of our viewpoints. Part of this viewpoint
-is our belief that our code should have quality assurance. To do this we need to be able to:
+""
+Previously, we've given a broad overview of our viewpoints. 
+Part of this viewpoint is our belief that our code should have quality 
+assurance. 
+
+To do this we need to be able to:
+""
+
 [Read out bullet points on the slide]
 
 ---
@@ -43,8 +49,17 @@ You configure tests in YML, in the `models` directory.
 Behind the scenes, test are just `select` statements!
 
 ???
-> So, what do we mean when we talk about "tests"?
-[Read slide]
+""
+So, what do we mean when we're talking about testing?
+What we mean is that we want to ensure that when our assertions about our
+data is true, our tests pass.
+
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+Read the rest of the slide to give the broad overview of test implementation.
+[------------------------------------------------------------------------------]
+
 ---
 # Examples:
 .left-column[
@@ -62,24 +77,23 @@ models:
 ]
 
 ???
-**
-
-You can pause here to exemplify this and the following slides in dbt Cloud 
-for tests on uniqueness and not null. You should hit these points:
-- Setting up a not null test
-- Showing the underlying code after running the test using the run details.
-- Setting up a uniqueness test
-- Showing the underlying code after running the test using the run details.
-
-If you pause here for an example, you can start out with "So to recap:" for
-this and the following test examples.
-**
-
-
-> 
+""
 We set up tests using our .yml configuration files. Here's an example 
 of a test which ensures that our customer_id key in our customers model is
 not null.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+You can pause here to exemplify this and the following slides in dbt Cloud 
+for tests on uniqueness and not null. You should hit these points:
+    - Setting up a not null test
+    - Showing the underlying code after running the test using the run details.
+    - Setting up a uniqueness test
+    - Showing the underlying code after running the test using the run details.
+
+If you pause here for an example, you can start out with "So to recap:" for
+this and the following test examples.
+[------------------------------------------------------------------------------]
 
 --
 .right-column[
@@ -96,12 +110,16 @@ where customer_id is null
 ]
 
 ???
-[Teacher notes: talk about how these relate]
+""
+Here's the underlying SQL that runs for the not_null test using results of our 
+customers table. It returns number of records in our customers table where our 
+customer_id is null, which will result in a failure if rows are returned.
+""
 
-> 
-Here's the underlying SQL that runs on the results of our customers table.
-It returns number of records in our customers table where our customer_id 
-is null.
+[------------------------------ Teacher Notes ---------------------------------]
+Talk about how these relate. 
+If you exemplified this, just do a quick recap.
+[------------------------------------------------------------------------------]
 
 ---
 
@@ -120,6 +138,15 @@ models:
 
 ```
 ]
+
+???
+""
+Now we're going to add test to our configuration to ensure that every customer_id
+in the customers table is unique.
+""
+[------------------------------ Teacher Notes ---------------------------------]
+If you exemplified this, just do a quick recap.
+[------------------------------------------------------------------------------]
 --
 
 .right-column[
@@ -137,6 +164,16 @@ select count(*) from (
 ```
 ]
 
+???
+""
+Here's the underlying code - you can see that it returns all customer_ids that
+have more than one record associated to that id. If any rows return, then the
+test fails.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+If you exemplified this, just do a quick recap.
+[------------------------------------------------------------------------------]
 ---
 
 # How do we run tests?
@@ -145,6 +182,17 @@ Run all tests: `dbt test`
 
 Run specific tests: `dbt test -s one_specific_model`
 
+???
+""
+After we've implemented our tests, how do we run them? We just need a command -
+dbt test. If we wanted to only run tests for a specific model, we could use
+selection syntax with -s to specify which model we want to test.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+You can exemplify this in dbt Cloud. If you've already exemplified this, just
+give a recap here.
+[------------------------------------------------------------------------------]
 
 ---
 
@@ -154,6 +202,21 @@ Run specific tests: `dbt test -s one_specific_model`
 2. dbt parses your **dbt project**
 3. dbt iterates through the resource files (`models/**.yml`) to construct `select` queries.
 4. dbt executes the SQL for each test: if the number `0` is returned your test passes
+
+???
+""
+When we run dbt test, what happens under the hood?  
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+Read the list items - you can expand on the parsing by saying that dbt 
+collects all the configurations first and then executes, which means that you
+can separate tests out by folder or you can keep all your tests in one big file.
+Our best practice is to separate by folder. 
+
+The other important piece here is that the dbt test operates on the result of a
+number - count of 0 is a pass and anything more than 0 is a failure.
+[------------------------------------------------------------------------------]
 
 ---
 
@@ -171,6 +234,16 @@ Every value in this column is unique.
 
 ]
 
+???
+""
+dbt come packages with four out-of-the-box tests. Unique, which as we saw tests
+that each value in the specified column has no more than one row in the results.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+
+[------------------------------------------------------------------------------]
+
 ---
 # dbt's built-in tests:
 .left-column[
@@ -186,6 +259,14 @@ Every value in this column is not null.
 
 ]
 
+???
+""
+Not null, which tests that every value in the specified column has a value.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+
+[------------------------------------------------------------------------------]
 
 ---
 # dbt's built-in tests:
@@ -216,6 +297,16 @@ models:
 ```
 ]
 
+???
+""
+Accepted values, which tests that the values in a column is one of the values in
+a specified list.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+
+[------------------------------------------------------------------------------]
+
 ---
 # dbt's built-in tests:
 .left-column[
@@ -244,6 +335,16 @@ models:
 
 ]
 
+???
+""
+and relationships, which ensures referential integrity. In other words, it tests
+that a column in your model has a related record in a different table.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+
+[------------------------------------------------------------------------------]
+
 ---
 # Q: Why might a test fail?
 --
@@ -270,9 +371,17 @@ models:
 ```
 
 ???
-Examples:
+""
+Now that we know how to implement and execute tests, let's go over some common
+reasons why our tests might fail.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+Examples for this slide:
 * Bad deduping
-* 1:many relationship between orders and payments unexpectedly causes fan out
+* The 1:many relationship between orders and payments in this example 
+unexpectedly causes a fan out
+[------------------------------------------------------------------------------]
 
 ---
 # Q: Why might a test fail?
@@ -299,6 +408,19 @@ models:
         tests:
           - unique
 ```
+
+???
+""
+An assumption about your source data is wrong.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+Examples for this slide:
+* You might assume that because a table is called "orders", for example, that the
+order_id is unique identifier. It's great to always test these things - we've
+been burned before!
+[------------------------------------------------------------------------------]
+
 ---
 # Q: Why might a test fail?
 
@@ -309,11 +431,31 @@ models:
     * Missing data
     * NULLs you weren't expecting
 
+???
+""
+That means testing for things like non-unique IDs, cardinality, missing data, or
+for nulls we don't expect.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+
+[------------------------------------------------------------------------------]
+
 ---
 # Q: Why might a test fail?
 
 1. The SQL in your model doesn’t do what you intended.
 2. An assumption about your source data is wrong.
+
+???
+""
+That means testing for things like non-unique IDs, cardinality, missing data, or
+for nulls we don't expect.
+""
+
+[------------------------------ Teacher Notes ---------------------------------]
+
+[------------------------------------------------------------------------------]
 
 --
 3. A previously-true assumption about your underlying source data is no longer true
