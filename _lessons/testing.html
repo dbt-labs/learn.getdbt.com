@@ -80,7 +80,7 @@ our unique and not_null tests use.)
     be used more broadly (for many sets of data).  
   
 If you pause here for an example, you can start out with "So to recap:" for  
-this and the following test examples. 
+following examples. 
 ---
 # Examples:
 .left-column[
@@ -122,9 +122,6 @@ Here's the underlying SQL that runs for the not_null test using results of our
 customers table. It returns the number of records in our customers table where  
 our customer_id is null, which will result in a failure if rows are returned.  
 ""  
-  
-[Teacher Notes:]  
-Talk about how these relate. If you exemplified this, just do a quick recap.  
 ---
 
 # Examples:
@@ -206,6 +203,7 @@ When we run dbt test, what happens under the hood?
 - it constructs select statements using what it finds  
 - and then it executs the sql for each test using what's built in our warehouse.  
 - if the count of records returned for a test is 0, then it passes successfully.  
+  
 ""  
   
 [Teacher Notes:]  
