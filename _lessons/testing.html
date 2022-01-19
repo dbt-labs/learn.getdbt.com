@@ -89,6 +89,15 @@ for tests on uniqueness and not null. You should hit these points:
 - Showing the underlying code after running the test using the run details.  
 - Setting up a uniqueness test  
 - Showing the underlying code after running the test using the run details.  
+- [Optional] Set up a singular test in the /tests folder and show how dbt uses
+it under the hood (hint: it pipes the SQL as a subquery into the same macro
+our unique and not_null tests use.)  
+  If showing this, be sure to hit on these points:
+  - Singular tests are written in SQL. You want to return the records you don't
+    want to see.
+  - Singular tests are great if you don't want to write up a macro or if you're
+    writing a dedicated test (for a specific set of data) vs. a test that can 
+    be used more broadly (for many sets of data).  
   
 If you pause here for an example, you can start out with "So to recap:" for  
 this and the following test examples.  
@@ -136,7 +145,7 @@ models:
 
 ???
 ""  
-Now we're going to add test to our configuration to ensure that every  
+Now we're going to add a test to our configuration to ensure that every  
 customer_id in the customers table is unique.  
 ""  
   
@@ -226,8 +235,9 @@ Every value in this column is unique.
 
 ???
 ""  
-dbt come packages with four out-of-the-box tests. Unique, which as we saw tests  
-that each value in the specified column has no more than one row in the results.  
+dbt comes packaged with four out-of-the-box tests. Unique: which, as we saw  
+in our example, tests that each value in the specified column has no more than  
+one row in the results.  
 ""  
   
 [Teacher Notes:]  
@@ -288,6 +298,11 @@ a specified list.
 ""  
   
 [Teacher Notes:]  
+Example: If our orders table has a status for each order placed and in a
+model after this we've pivoted our data so we can see total number of orders
+per status, then we'd want to be notified if an order status outside of our 
+four expected values pops up. We'd need to add any additional values
+as a column in our pivot to avoid under-counting orders.
 ---
 # dbt's built-in tests:
 .left-column[
@@ -325,20 +340,24 @@ that a column in your model has a related record in a different table.
 [Teacher Notes:]  
 ---
 # Q: Why might a test fail?
+
+???
+""  
+Now that we know how to implement and execute tests, let's go over some common  
+reasons why our tests might fail.  
+""  
+
+[Teacher Notes:]  
 --
 
 1. The SQL in your model doesn’t do what you intended.
 
+???
+""  
+The SQL in your model doesn't do what you intended - in other words, the failure
+is caused by bad logic.
+""  
 --
-
-```sql
-select
-    orders.order_id,
-    payments.payment_id
-from orders
-left join payments
-    on orders.order_id = payments.order_id
-```
 ```yml
 models:
   - name: orders
@@ -347,23 +366,35 @@ models:
         tests:
           - unique
 ```
+```sql
+select
+    orders.order_id,
+    payments.payment_id
+from orders
+left join payments
+    on orders.order_id = payments.order_id
+```
 
-???
 ""  
-Now that we know how to implement and execute tests, let's go over some common  
-reasons why our tests might fail.  
+For example, our test is configured to ensure that order_id is unique in our  
+orders model. If we look at the code, we can see that payments is joined in. An  
+order can have many payments (because of split payments), so this causes a  
+fan out of the order_id and our assertion is no longer true.  
 ""  
-  
+
 [Teacher Notes:]  
-Examples for this slide:  
+Other examples for this slide:  
 * Bad deduping  
-* The 1:many relationship between orders and payments in this example   
-unexpectedly causes a fan out  
 ---
 # Q: Why might a test fail?
 
 1. The SQL in your model doesn’t do what you intended.
 2. An assumption about your source data is wrong.
+
+???
+""  
+An assumption about your source data is wrong.  
+""  
 --
 
 
@@ -387,14 +418,12 @@ models:
 
 ???
 ""  
-An assumption about your source data is wrong.  
+For example, you might assume that because stg_orders sounds like it's at the  
+grain of one row per order, that order_id should be unique. However, if our  
+orders data appended rows for each status change of an order rather than  
+updating the specific order's record, then the order_id wouldn't be unique.  
 ""  
-  
-[Teacher Notes:]  
-Examples for this slide:  
-* You might assume that because a table is called "orders", for example, that the  
-order_id is unique identifier. It's great to always test these things - we've  
-been burned before!  
+
 ---
 # Q: Why might a test fail?
 
@@ -407,11 +436,12 @@ been burned before!
 
 ???
 ""  
-That means testing for things like non-unique IDs, cardinality, missing data, or  
-for nulls we don't expect.  
+We typically check our basic assumptions to catch things like  
+- non-unique ids  
+- our assumptions on cardinality  
+- if there's any missing data  
+- or for nulls we aren't expecting  
 ""  
-  
-[Teacher Notes:]  
 ---
 # Q: Why might a test fail?
 
@@ -419,9 +449,6 @@ for nulls we don't expect.
 2. An assumption about your source data is wrong.
 
 ???
-""  
-""  
-  
 [Teacher Notes:]  
 This slide just closes up the last bullet point.  
 --
@@ -433,16 +460,19 @@ This slide just closes up the last bullet point.
     
 ???
 ""  
-or, maybe a previously true assumption about our underlying data is no longer  
-true.  
+or, maybe a previously-true assumption about our underlying source data is no  
+longer true - for example, if we assumed we only had four payment methods  
+available and our developers implemented a new payment for our customers.  
 ""  
-  
-[Teacher Notes:]  
-Example:  
-If your web app has added a new payment method, you want to be sure that you  
-can catch that so you can modify your models to account for the new method.  
+
 ---
 # Q: What should you test?
+
+???
+""  
+So, we just talked about reasons that we might test something, but what should  
+we test? and when should we test it?
+""  
 --
 
 * Good rules of thumb:
@@ -451,16 +481,16 @@ can catch that so you can modify your models to account for the new method.
 
 ???
 ""  
-With so many ways to test things, you might be wondering about good practices  
-for which how and when to implement tests. Here's our recommendations:  
-- always test the assumed primary key for not null and unique for all models.  
+Here's our recommendations for what to test:  
+- at a minimum, the assumed primary key for not null and unique, for all models.  
 - if you're using a field for downstream joins or calculations, you might want
 to consider testing those before integrating them with other data.
 ""  
-  
-[Teacher Notes:]  
 ---
 # Q: When should you run tests?
+
+???  
+"When should we test?"
 --
 
 * Manual: When you first run a project
@@ -470,17 +500,18 @@ to consider testing those before integrating them with other data.
 
 ???
 ""  
-As far as when to run them:  
-- Always test when you first run a project or before making changes - this
-ensures failures aren't caused by anything you did.  
-- Always test when you change things in development.  
-- When you're running dbt on a schedule as you would for production, this
-ensures we're continually checking for any bad code that was merged.  
-- When you open a pull request - this will ensure that if a developer didn't do
-their due diligence, that we have an automated process that checks.  
-""  
+There's two places when we should manually test:  
+- when we first run a project or before making changes - this ensures failures
+aren't caused by anything you changed.  
+- when we change things in development  
   
-[Teacher Notes:]  
+Then, there's two places where we should automate tests:  
+- When we're running dbt on a schedule - this ensures we're continually checking  
+for any bad code that was merged. With good checks before hand this should be
+infrequent, but a good check to have in place nonetheless.  
+- When we open a pull request - this ensures that if a developer didn't do
+their due diligence, that we have an automated process that can catch things.  
+""
 ---
 
 class: subtitle
@@ -507,7 +538,21 @@ models:
 - If they fail, what does that tell us?
 ]
 
-
+???
+""  
+Let's review. 
+- What are the tests being run in this project?
+- What are they running on?
+- If they fail, what does that tell us?
+""  
+  
+[Teacher Notes:]  
+Prompt the class to answer these questions.  
+Answers:  
+- The tests being run are not_null and unique.  
+- They're testing the payment_id column.  
+- If they fail, it tells us either that the payment_id column is not unique or
+contains a null value.
 ---
 
 class: subtitle
@@ -537,6 +582,18 @@ models:
 - If they fail, what does that tell us?
 ]
 
+???
+""  
+What about this one?
+""  
+  
+[Teacher Notes:]  
+Prompt the class to answer these questions.  
+Answers:  
+- The test being ran is the accepted_values test.
+- It's testing he payment_method column.
+- If it fails, it tells us that the column contains a value that is not
+credit_card, paypal, or ach_transfer.
 ---
 
 class: subtitle
@@ -547,5 +604,14 @@ You should be able to:
 * Run your tests (all of them / one model at a time)
 * Explain how dbt tests work
 * Find the compiled SQL for tests
+
+???
+""  
+We should now be able to:  
+- Add tests to our models  
+- Run all of our tests or select specific tests to run  
+- Explain how tests work under the hood  
+- and know how to look at the underlying code for tests  
+""  
 
 {% include options/last_slide.html %}
