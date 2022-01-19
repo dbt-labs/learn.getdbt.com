@@ -1,0 +1,39 @@
+<style>
+/* Course: Simplification */
+.course-player__content { padding: 0px; }
+.course-player__top-bar__branding { display: none !important; }
+.top-bar__dashboard-link { background: transparent !important; padding: 5px 5px 5px 10px !important; left: 0 !important; }
+.top-bar__dashboard-link__anchor, .top-bar__dashboard-link__icon { color: #999 !important; }
+.course-progress__school-name { background: transparent !important; display: block !important; }
+.course-progress__inner-container { padding-top: 0 !important; }
+.surface__container { background: transparent !important; box-shadow: none !important; }
+.course-player__content { padding: 20px; }
+.course-player__content > .surface__container { border-radius: 5px; overflow: hidden; }
+.course-player__content-header { border: 0 !important; box-shadow: 0 0 10px rgba(0,20,40,.075); }
+.course-player__content-navigation { border: 0 !important; z-index: 2; position: relative !important; }
+.course-player__branding-badge { display: none !important; }
+.course-player__top-bar { display: none !important; }
+.course-player { height: 100vh !important; background: #f5f6f7 !important; }
+.course-player__course-navigation { background: #f5f6f7 !important; }
+.course-player__content-inner { margin-bottom: 0 !important; }
+
+/* removing this white background to improve modal UI */
+/* #modal-content { background: white; } */
+
+.course-player__content-item__link { border-radius: 5px; }
+.course-player__content-item__link.active { background: #e1e5e9 !important; }
+.course-player__left-drawer { padding: 20px 0 0 20px }
+.course-player__chapter-item__container { border: 0 !important; }
+[class*="course-player__overlay-wrapper"] { position: static !important; }
+.course-player__content-header__action-fullscreen { display: block !important; }
+.course-player__preview-bar { display: none !important; }
+/* Course: Buttons */
+.course-player__content-navigation { padding: 0; min-height: 0; display: flex; }
+.course-player__content-navigation > * { flex: 1 1 auto; margin: 0 !important; }
+.course-player__content-navigation button { width: 100%; padding: 24px; border-radius: 0; text-align: center; border: 0; background: #e1e5e9; }
+/* Course: Fonts */
+body, button, input, textarea { font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif; }
+/* Course: Syntax Highlighter */
+.hljs { padding: 12px 24px !important; border-radius: 5px; }
+code {font-family: SF-Mono-Regular, Menlo, Monaco,Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New; font-size: 14px;}
+</style>
