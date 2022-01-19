@@ -171,9 +171,6 @@ Here's the underlying code - you can see that it returns all customer_ids that
 have more than one record associated to that id. If any rows return, then the  
 test fails.  
 ""  
-  
-[Teacher Notes:]  
-If you exemplified this, just do a quick recap.  
 ---
 
 # How do we run tests?
@@ -204,10 +201,15 @@ give a recap here.
 ???
 ""  
 When we run dbt test, what happens under the hood?  
+- dbt connects to our warehouse using our profile configuration  
+- it then parses our project for all of our test configurations  
+- it constructs select statements using what it finds  
+- and then it executs the sql for each test using what's built in our warehouse.  
+- if the count of records returned for a test is 0, then it passes successfully.  
 ""  
   
 [Teacher Notes:]  
-Read the list items - you can expand on the parsing by saying that dbt  
+You can expand on the parsing by saying that dbt  
 collects all the configurations first and then executes, which means that you  
 can separate tests out by folder or you can keep all your tests in one big file.  
 Our best practice is to separate by folder.  
@@ -333,8 +335,6 @@ models:
 and relationships, which ensures referential integrity. In other words, it tests  
 that a column in your model has a related record in a different table.  
 ""  
-  
-[Teacher Notes:]  
 ---
 # Q: Why might a test fail?
 
@@ -350,7 +350,7 @@ reasons why our tests might fail.
 ???
 ""  
 The SQL in your model doesn't do what you intended - in other words, the failure
-is caused by bad logic.
+is caused by bad logic.  
 ""  
 --
 ```yml
