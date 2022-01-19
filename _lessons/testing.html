@@ -456,15 +456,15 @@ longer true.
 ""  
 For example, if something messed up in our application and a record was added  
 twice, or if we assumed we only had four payment methods  
-available and our developers implemented a new payment for our customers.  
+available and our developers implemented a new payment method for our customers.  
 ""  
 ---
 # Q: What should you test?
 
 ???
 ""  
-So, we just talked about reasons that we might test something, but what should  
-we test? and when should we test it?
+We covered why and how to implement tests, but what about what we should  
+test and when we should test it?  
 ""  
 --
 
@@ -474,7 +474,7 @@ we test? and when should we test it?
 
 ???
 ""  
-Here's our recommendations for what to test:  
+Here's our recommendations:  
 - at a minimum, the assumed primary key for not null and unique, for all models.  
 - if you're using a field for downstream joins or calculations, you might want
 to consider testing those before integrating them with other data.
