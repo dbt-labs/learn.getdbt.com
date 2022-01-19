@@ -59,26 +59,10 @@ We configure our tests using our .yml files, putting them within our models
 directory.  
   
 Under the hood, tests are just select statements!  
-""   
----
-# Examples:
-.left-column[
-```yml
-version: 2
-
-models:
-  - name: customers
-    columns:
-      - name: customer_id
-        tests:
-          - not_null
-
-```
-]
-
-???
+""  
+  
 [Teacher Notes:]  
-You can pause here to exemplify this and the following slides in dbt Cloud  
+You can pause here to exemplify the following slides in dbt Cloud  
 for tests on uniqueness and not null. You should hit these points:  
   
 - Setting up a not null test  
@@ -96,8 +80,24 @@ our unique and not_null tests use.)
     be used more broadly (for many sets of data).  
   
 If you pause here for an example, you can start out with "So to recap:" for  
-this and the following test examples.  
-  
+this and the following test examples. 
+---
+# Examples:
+.left-column[
+```yml
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+
+```
+]
+
+???
 ""  
 Here's an example  of a test we configured in one of our .yml files which  
 ensures that our customer_id key in our customers model is not null.  
