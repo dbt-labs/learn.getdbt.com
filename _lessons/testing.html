@@ -475,7 +475,8 @@ test and when we should test it?
 ???
 ""  
 Here's our recommendations:  
-- at a minimum, the assumed primary key for not null and unique, for all models.  
+- at a minimum, test the assumed primary key for not null and unique, for all 
+models.  
 - if you're using a field for downstream joins or calculations, you might want
 to consider testing those before integrating them with other data.  
   
@@ -502,6 +503,7 @@ for any bad code that was merged. With good checks before hand this should be
 infrequent, but a good check to have in place nonetheless.  
 - When we open a pull request - this ensures that if a developer didn't do
 their due diligence, that we have an automated process that can catch things.  
+  
 ""
 ---
 
@@ -535,6 +537,7 @@ Let's review.
 - What are the tests being run in this project?
 - What are they running on?
 - If they fail, what does that tell us?
+  
 ""  
   
 [Teacher Notes:]  
@@ -575,7 +578,7 @@ models:
 
 ???
 ""  
-What about this one?
+What about this one?  
 ""  
   
 [Teacher Notes:]  
@@ -603,6 +606,7 @@ We should now be able to:
 - Run all of our tests or select specific tests to run  
 - Explain how tests work under the hood  
 - and know how to look at the underlying code for tests  
+  
 ""  
 
 {% include options/last_slide.html %}
