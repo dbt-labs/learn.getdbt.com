@@ -38,8 +38,6 @@ that SQL works as intended
 - and ensure our source data is up to date  
   
 ""  
-  
-[Teacher Notes:]  
 ---
 # What are tests?
 
@@ -61,9 +59,7 @@ We configure our tests using our .yml files, putting them within our models
 directory.  
   
 Under the hood, tests are just select statements!  
-""  
-  
-[Teacher Notes:]  
+""   
 ---
 # Examples:
 .left-column[
@@ -81,11 +77,6 @@ models:
 ]
 
 ???
-""  
-Here's an example  of a test we configured in one of our .yml files which  
-ensures that our customer_id key in our customers model is not null.  
-""  
-  
 [Teacher Notes:]  
 You can pause here to exemplify this and the following slides in dbt Cloud  
 for tests on uniqueness and not null. You should hit these points:  
@@ -106,6 +97,11 @@ our unique and not_null tests use.)
   
 If you pause here for an example, you can start out with "So to recap:" for  
 this and the following test examples.  
+  
+""  
+Here's an example  of a test we configured in one of our .yml files which  
+ensures that our customer_id key in our customers model is not null.  
+""  
 --
 .right-column[
 ```sql
@@ -123,13 +119,12 @@ where customer_id is null
 ???
 ""  
 Here's the underlying SQL that runs for the not_null test using results of our  
-customers table. It returns number of records in our customers table where our  
-customer_id is null, which will result in a failure if rows are returned.  
+customers table. It returns the number of records in our customers table where  
+our customer_id is null, which will result in a failure if rows are returned.  
 ""  
   
 [Teacher Notes:]  
-Talk about how these relate.  
-If you exemplified this, just do a quick recap.  
+Talk about how these relate. If you exemplified this, just do a quick recap.  
 ---
 
 # Examples:
@@ -153,9 +148,6 @@ models:
 Now we're going to add a test to our configuration to ensure that every  
 customer_id in the customers table is unique.  
 ""  
-  
-[Teacher Notes:]  
-If you exemplified this, just do a quick recap.  
 --
 
 .right-column[
@@ -179,7 +171,7 @@ Here's the underlying code - you can see that it returns all customer_ids that
 have more than one record associated to that id. If any rows return, then the  
 test fails.  
 ""  
-
+  
 [Teacher Notes:]  
 If you exemplified this, just do a quick recap.  
 ---
@@ -263,7 +255,7 @@ Every value in this column is not null.
 
 ???
 ""  
-Not null, which tests that every value in the specified column has a value.  
+Not null, which tests that every record has a valu for the specified column.  
 ""  
 
 [Teacher Notes:]  
@@ -298,8 +290,8 @@ models:
 
 ???
 ""  
-Accepted values, which tests that the values in a column is one of the values in  
-a specified list.  
+Accepted values, which tests that the distinct values in are within a specified  
+list.
 ""  
   
 [Teacher Notes:]  
@@ -351,8 +343,6 @@ that a column in your model has a related record in a different table.
 Now that we know how to implement and execute tests, let's go over some common  
 reasons why our tests might fail.  
 ""  
-
-[Teacher Notes:]  
 --
 
 1. The SQL in your model doesn’t do what you intended.
@@ -380,6 +370,7 @@ left join payments
     on orders.order_id = payments.order_id
 ```
 
+???
 ""  
 For example, our test is configured to ensure that order_id is unique in our  
 orders model. If we look at the code, we can see that payments is joined in. An  
