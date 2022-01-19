@@ -12,7 +12,10 @@ class: title, center, middle
 # Polish your dbt project
 
 ???
-A list of hot-tips that will take your project from good to great!
+[Teacher Notes]:  
+A list of hot-tips that will take your project from good to great! The  
+aim here is to pause a bit on fundamentals to talk about best practices and  
+the do's and dont's of utilizing the functionality we've learned about so far.  
 ---
 
 {% include options/focus_slide.html %}
@@ -22,9 +25,19 @@ A list of hot-tips that will take your project from good to great!
 class: subtitle
 # dbt code
 
+???
+""  
+First we'll talk about dbt code  
+""  
 --
 
 i.e. the code in your `.sql` and `.yml` files
+
+???
+""  
+This means the content of your .sql and .yml files.  
+""  
+
 ---
 
 
@@ -50,8 +63,25 @@ Note - You can follow dbt releases on GitHub:
 [github.com/fishtown-analytics/dbt/releases](https://github.com/fishtown-analytics/dbt/releases)
 
 ???
-
-* `require-dbt-version`: will help ensure that everyone is using the same version of dbt, especially important for CLI users
+[Teacher Notes:]  
+You can take a moment here to exemplify what happens when you add this config.  
+You should hit these points:  
+- How does a dbt run function when your version is within the requirements?
+- How does a dbt run function when your version is out of the requirements?
+  
+You'll need to click on the status in the bottom right corner and scroll all  
+the way down the error message to see the message where the version doesn't  
+meet the requirements.  
+  
+""  
+Pin yourself to a version - in our dbt_project.yml, we can set a configuration  
+to do this called `require-dbt-version`. In our example, our project works with  
+versions later than or equal to 0.17.1 and less than 0.19.0. By requiring this,  
+you ensure that the functionality used in the project works as expected and is  
+available for anyone trying to running it. This is more important for CLI users,  
+as the dbt Cloud development environment (which we'll learn about later) sets  
+the version that developers will use across the board.  
+""  
 
 ---
 ## Ensure you don't have any direct table references
@@ -61,6 +91,14 @@ Note - You can follow dbt releases on GitHub:
 ```sql
 select * from dbt_claire.stg_customers
 ```
+
+???
+""  
+We don't want any direct schema references here - as we learned about in earlier  
+lessons, if we explicitly refer to the schema like this, then anyone else  
+pulling your code will need to change the schema reference to refer to the  
+things in their own development schema.  
+""  
 --
 
 🙅‍♀️
@@ -68,6 +106,15 @@ select * from dbt_claire.stg_customers
 ```sql
 select * from {{ target.schema }}.stg_customers
 ```
+
+???
+""  
+We also don't want this - using the target context to identify the schema.  
+This will work because it's looking at your profile setup and schema that you  
+defined, but it won't properly identify the lineage that needs to happen for  
+our dbt runs, which will result in things running out of order and missing  
+dependencies in our DAG.  
+""  
 --
 
 🙆‍♀️
@@ -75,7 +122,12 @@ select * from {{ target.schema }}.stg_customers
 select * from {{ ref('stg_customers') }}
 ```
 ???
-* It sounds obvious but people do this all the time!
+""  
+You always want to use the ref() function to refer to other models in your  
+project! This is the atomic unit of dbt - it identifies the correct order that  
+your models should run in and allows you to efficiently see dependencies and  
+injections for better informed modeling decisions.  
+""  
 
 ---
 ## Ensure you don't have any direct table references
@@ -85,6 +137,17 @@ select * from {{ ref('stg_customers') }}
 ```sql
 select * from raw.jaffle_shop.customers
 ```
+
+???
+""  
+The same goes for sources of data - you shouldn't hardcode the raw data  
+reference. By explicitly stating this, you're not centralizing your  
+configuration for your data sources. If there's a change in where the data lives  
+(it happens!), you'll need to go through all of your files and change the  
+reference vs. going to one configuration file and having that change flow into  
+these models.  
+""  
+
 --
 
 🙆‍♀️
@@ -92,7 +155,12 @@ select * from raw.jaffle_shop.customers
 select * from {{ source('jaffle_shop', 'customers') }}
 ```
 ???
-Also use sources when referring to raw data
+""  
+We always want to configure and use our source functions to refer to raw data!  
+This will ensure the source shows up in our DAG, we can use selection syntax to  
+rebuild models coming off of this source, and we can easily reconfigure the  
+source if needed in one place.  
+""  
 ---
 ## Apply configurations at the group level
 --
@@ -108,6 +176,13 @@ Also use sources when referring to raw data
 ```
 {% endraw %}
 
+???
+""  
+Apply configurations at the group level when you can. You can see here that we  
+have two staging models, customer and orders, which have the same configuration  
+to materialize as a view. [Next Slide]  
+""  
+
 ---
 ## Apply configurations at the group level
 
@@ -120,16 +195,39 @@ models:
 
 ```
 ???
-Makes it easier to change things en-masse
-And you structured your project this way, right?
+""  
+To apply that configuration at a group level, we would instead  
+refer to the folder in our dbt_project.yml. You can see here all models in our  
+staging folder in the jaffle_shop project will be materialized as a view. This  
+helps keep configurations concise and targeted for specific scenarios. When a  
+configuration doesn't fit a group-level specification, you would then specify  
+the configuration within the model itself for the override.  
+""  
+  
+[Teacher Notes:]  
+In our experience when configurations aren't applied at the group level first,  
+we tend to see a lot of configurations that don't or shouldn't apply.  
+Having the configuration at the top of every model can cause onboarding developers  
+to copy and paste just because they see the configuration on everything. By  
+applying at the group level, it tailors one-off configurations to specific  
+use cases, and prompts developers to ask the right questions (i.e, "any reason  
+why this model is configured as a table when the rest are views?").  
 ---
 
 # non-dbt code
+
+???
+""  
+What about things that aren't in a .sql or .yml file?  
+""  
 --
 
 i.e. the code in your repo that dbt doesn't use (but humans do)!
 
-
+???
+""  
+This means the code that dbt doesn't use, but humans do! Such as.. [Next Slide]  
+""  
 ---
 ## Improve your README
 
@@ -148,7 +246,18 @@ A README can help answer:
 ]
 
 ???
-Note: many of these are links to our start project script, so include extra jinja
+""  
+The README in your repository - This contains information on what the project is  
+and how to contribute. Things like.. [Read slide bullet points]  
+""  
+
+[Teacher Note:]  
+Many of these are links to our start project script, so include extra jinja  
+  
+You can pause here to show an example of the README. You can click cmd+click on  
+the link to open it in a new tab, or you can navigate to one of our other  
+project's readme's such as the [Rapid Onboarding Readme](https://github.com/dbt-labs/rapid-onboarding-exemplar)  
+Template, which includes dropdowns for various development setups.  
 ---
 .center[
 <img src="/ui/img{{page.id}}/example-readme.png" style="width: 80%;">
