@@ -236,8 +236,6 @@ dbt comes packaged with four out-of-the-box tests. Unique: which, as we saw
 in our example, tests that each value in the specified column has no more than  
 one row in the results.  
 ""  
-  
-[Teacher Notes:]  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -257,8 +255,6 @@ Every value in this column is not null.
 ""  
 Not null, which tests that every record has a valu for the specified column.  
 ""  
-
-[Teacher Notes:]  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -435,18 +431,21 @@ We typically check our basic assumptions to catch things like
 - our assumptions on cardinality  
 - if there's any missing data  
 - or for nulls we aren't expecting  
+  
 ""  
 ---
 # Q: Why might a test fail?
 
 1. The SQL in your model doesn’t do what you intended.
 2. An assumption about your source data is wrong.
-
-???
-[Teacher Notes:]  
-This slide just closes up the last bullet point.  
 --
 3. A previously-true assumption about your underlying source data is no longer true
+
+???
+""  
+or, maybe a previously-true assumption about our underlying source data is no  
+longer true.  
+""  
 --
 
     * A previously unique key is no longer unique
@@ -454,11 +453,10 @@ This slide just closes up the last bullet point.
     
 ???
 ""  
-or, maybe a previously-true assumption about our underlying source data is no  
-longer true - for example, if we assumed we only had four payment methods  
+For example, if something messed up in our application and a record was added  
+twice, or if we assumed we only had four payment methods  
 available and our developers implemented a new payment for our customers.  
 ""  
-
 ---
 # Q: What should you test?
 
