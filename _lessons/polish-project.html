@@ -70,13 +70,16 @@ Note - You can follow dbt releases on GitHub:
 ???
 ""  
 Pin yourself to a version - in our dbt_project.yml, we can set a configuration  
-to do this called `require-dbt-version`. In our example, our project works with  
-versions later than or equal to 0.17.1 and less than 0.19.0. By requiring this,  
-you ensure that the functionality used in the project works as expected and is  
-available for anyone trying to running it, by ensuring they are running the  
-it with a version it was developed on. This is more important for CLI users,  
-as the dbt Cloud development environment (which we'll learn about later) sets  
-the version that developers use across the board.  
+to do this called `require-dbt-version`.  
+  
+In our example, our project works with versions later than or equal to 0.17.1  
+and less than 0.19.0. By requiring this, you are ensuring other developers are  
+running the project with a version that can handle the functionality used within  
+it.  
+  
+This is more important for CLI users because dbt Cloud uses a development  
+environment, which configures the version that developers use when they access  
+the `develop` tab to make changes.  
 ""  
   
 [Teacher Notes:]  
