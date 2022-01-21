@@ -124,9 +124,8 @@ select * from {{ target.schema }}.stg_customers
 ""  
 We also don't want this, which is using the target context to identify the schema.  
 This will work because it's looking at your profile setup and schema that you  
-defined, but it won't properly identify the lineage that needs to happen for  
-our dbt runs, which will result in things running out of order and missing  
-dependencies in our DAG.  
+defined, but it won't properly identify the order that models need to run in.  
+It also won't show dependencies in our DAG.  
 ""  
 --
 
