@@ -61,7 +61,14 @@ Note: you can also install a package from a git URL, or from a local directory.
 ```shell
 $ dbt deps
 ```
+--
+
+<img src="/ui/img/dbt-standalone-new.png" style="width: 65%;" class="img-right">
+
 ???
+Demo Time:
+* add packageby navigating to https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/ and copying yml
+* run `dbt deps` command
 * Show the  modules directory
 * Note that these are .gitignored
 ---
@@ -83,6 +90,16 @@ $ dbt deps
 }}
 ```
 {% endraw %}
+
+--
+
+<img src="/ui/img/dbt-standalone-new.png" style="width: 65%;" class="img-right">
+
+???
+Demo Time:
+* create date spline model `util_days.sql`
+* run date spline via "Preview" button
+* show compiled SQL
 ---
 ## Use case: Using macros from a package
 

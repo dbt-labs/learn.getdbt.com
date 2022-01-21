@@ -119,6 +119,18 @@ renamed as (
 ```
 ]
 
+--
+<img src="/ui/img/dbt-standalone-new.png" style="width: 65%;" class="img-right">
+
+???
+Demo Time:
+- add source macro
+- run `dbt run`
+- this fails! Why does it fail?  (because we haven't added the sources.yml file. Do that now.)
+- add sources.yml with from a few slides back
+- preview data to show it works
+- show compiled sql to prove it translates to the database.schema.object expected
+
 ---
 
 # Sources are rendered as green nodes
@@ -164,6 +176,15 @@ This allows you to debug more quickly!
 
 ]
 
+--
+<img src="/ui/img/dbt-standalone-new.png" style="width: 65%;" class="img-right">
+
+???
+Demo Time:
+- add tests to your sources.yml
+- run `dbt test`
+- 
+
 ---
 
 # Testing Sources
@@ -173,6 +194,13 @@ We can run tests on _only_ sources with the following command
 `dbt test -s source:* `
 
 This can be helpful in deployment - coming up soon
+
+--
+<img src="/ui/img/dbt-standalone-new.png" style="width: 65%;" class="img-right">
+
+???
+Demo Time:
+- run `dbt test -s source:*`
 
 ---
 
@@ -254,6 +282,19 @@ from raw.stripe.payment
 ]
 * Then it uses python to determine whether the delta is within the right range
 ]
+
+---
+<img src="/ui/img/dbt-standalone-new.png" style="width: 65%;" class="img-center">
+
+???
+Demo Time:
+- "Let's see that in action!"
+- go to statement tab and run `select * from raw.jaffle_shop.orders` to show the metadata columns added by the loading tool (_etl_loaded_at)
+- add the freshness block to the sources.yml file
+- run `dbt source freshness`
+- highlight pass/warn/error
+- bonus: highlight sql and copy into statement tab to run raw outputs
+
 ---
 
 
