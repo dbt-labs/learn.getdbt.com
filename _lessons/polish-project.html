@@ -22,7 +22,7 @@ the do's and dont's of utilizing the functionality we've learned about so far.
 
 ???
 ""  
-Our focus of this session will be to develop our mental checklists in order to  
+Our focus of this session will be to develop our mental checklists to  
 continually keep our project clean and facilitate ease of onboarding.  
 ""  
 ---
@@ -107,7 +107,7 @@ select * from dbt_claire.stg_customers
 
 ???
 ""  
-We don't want any direct schema references here - as we learned about in earlier  
+Don't directly reference schema tables - as we learned about in earlier  
 lessons, if we explicitly refer to the schema like this, then anyone else  
 pulling your code will need to change the schema reference to refer to the  
 things in their own development schema.  
@@ -246,8 +246,7 @@ i.e. the code in your repo that dbt doesn't use (but humans do)!
 
 ???
 ""  
-Which means the code in our repository that dbt doesn't use, but  
-humans do!  
+That means the things in our repository that dbt doesn't use, but humans do.  
 ""  
 ---
 ## Improve your README
@@ -268,8 +267,8 @@ A README can help answer:
 
 ???
 ""  
-One of those things is the README in your repository, which helps someone  
-get familiar with the project. We recommend adding useful information like:  
+One of those things being the README in your repository, which helps someone  
+get familiar with the project. A best practice is adding useful information like:  
 - how someone would get started with the project  
 - who they would contact to get access to various things  
 - snippets to help admins add a new user  
@@ -305,7 +304,7 @@ PR templates help you write better PRs (and are great tools for reviewers!)
 
 ???
 ""  
-Another thing we use often is PR templates - these prefill a pull request  
+Another thing we use: PR templates. These prefill a pull request  
 description with headers to prompt the developer for the right information.  
 They're created with markdown, so you can use helpful things such as checklists  
 to ensure developers are polishing up their code before requesting a review.  
