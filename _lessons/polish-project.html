@@ -158,8 +158,8 @@ select * from raw.jaffle_shop.customers
 The same goes for sources of data - you shouldn't hardcode the raw data  
 reference. By explicitly stating this, you're not centralizing your  
 configuration for your data sources. If there's a change in where the data lives  
-(it happens!), you'll need to go through all of your files and change the  
-reference.
+(it happens!), you'll need to go through all of your code and change the  
+reference.  
 ""  
 
 --
@@ -235,7 +235,7 @@ why this model is configured as a table when the rest are views?").
 
 ???
 ""  
-What about things that aren't in a .sql or .yml file - our non-dbt code?
+What about things that aren't in a .sql or .yml file -- our non-dbt code?  
 ""  
 --
 
@@ -243,7 +243,7 @@ i.e. the code in your repo that dbt doesn't use (but humans do)!
 
 ???
 ""  
-we're talking about the code in our repository that dbt doesn't use, but  
+Which means the code in our repository that dbt doesn't use, but  
 humans do!  
 ""  
 ---
@@ -322,7 +322,9 @@ to ensure developers are polishing up their code before requesting a review.
 ???
 [Teacher Notes:]  
 Use cmd+click to open the links on the slide and show the example of our PR  
-template. (Optional) - How to walk through each section of the PR template:  
+template.  
+  
+(Optional) - How to walk through each section of the PR template:  
 - cmd+click the link, then click `raw` to view the markdown code of the PR template  
 - Between the `<!---` are markdown comments describing what to write about in
 each section.  
@@ -345,7 +347,7 @@ class: subtitle, center, middle
 # 🧘‍♀️ [Much better!](https://github.com/fishtown-analytics/dbt-learn-demo-v2/pull/6)
 
 ???
-[Teacher Notes:]
-This just ends the presentation - say whatever you want here to wrap up!  
+[Teacher Notes:]  
+Say whatever you want here to wrap up!  
   
 {% include options/last_slide.html %}
