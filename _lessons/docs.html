@@ -178,14 +178,17 @@ One of the following values:
 
 ???
 Demo Time:
+
+Regular docs:
 - "Let's see that in action!"
 - add regular model and/or column descriptions to your yml file
 - run `dbt docs generate`
 - show where those end up in the docs
 
+Doc blocks:
 - add a doc block file `order_status.md`
 - paste in the above markdown code ensuring to add newline white spaces
-- add description: "{{ doc('order_status') }}"
+- add description: `"{{ doc('order_status') }}"`
 - run `dbt docs generate`
 - within docs, find the doc block and talk about it
 - talk through all the other data shown (metadata, columns, types)
