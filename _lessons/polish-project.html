@@ -108,9 +108,12 @@ select * from dbt_claire.stg_customers
 ???
 ""  
 Don't directly reference schema tables - as we learned about in earlier  
-lessons, if we explicitly refer to the schema like this, then anyone else  
-pulling your code will need to change the schema reference to refer to the  
-things in their own development schema.  
+lessons this:
+- won't dynamically change where the data is coming from, which means data is
+referring to a place you have less control over  
+- it won't build dependencies in the order it needs to  
+- and it won't show up in the DAG as a dependency for other nodes  
+
 ""  
 --
 
