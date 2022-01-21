@@ -27,7 +27,7 @@ class: subtitle
 
 ???
 ""  
-First we'll talk about dbt code  
+First we'll talk about polishing up your dbt code  
 ""  
 --
 
@@ -35,7 +35,7 @@ i.e. the code in your `.sql` and `.yml` files
 
 ???
 ""  
-This means the content of your .sql and .yml files.  
+When we say 'code', we mean the content of your .sql and .yml files.  
 ""  
 
 ---
@@ -63,6 +63,17 @@ Note - You can follow dbt releases on GitHub:
 [github.com/fishtown-analytics/dbt/releases](https://github.com/fishtown-analytics/dbt/releases)
 
 ???
+""  
+Pin yourself to a version - in our dbt_project.yml, we can set a configuration  
+to do this called `require-dbt-version`. In our example, our project works with  
+versions later than or equal to 0.17.1 and less than 0.19.0. By requiring this,  
+you ensure that the functionality used in the project works as expected and is  
+available for anyone trying to running it, by ensuring they are running the  
+it with a version it was developed on. This is more important for CLI users,  
+as the dbt Cloud development environment (which we'll learn about later) sets  
+the version that developers use across the board.  
+""  
+  
 [Teacher Notes:]  
 You can take a moment here to exemplify what happens when you add this config.  
 You should hit these points:  
@@ -72,19 +83,13 @@ You should hit these points:
 You'll need to click on the status in the bottom right corner and scroll all  
 the way down the error message to see the message where the version doesn't  
 meet the requirements.  
-  
-""  
-Pin yourself to a version - in our dbt_project.yml, we can set a configuration  
-to do this called `require-dbt-version`. In our example, our project works with  
-versions later than or equal to 0.17.1 and less than 0.19.0. By requiring this,  
-you ensure that the functionality used in the project works as expected and is  
-available for anyone trying to running it. This is more important for CLI users,  
-as the dbt Cloud development environment (which we'll learn about later) sets  
-the version that developers will use across the board.  
-""  
-
 ---
 ## Ensure you don't have any direct table references
+
+???  
+""  
+Ensure you don't have any direct table references.  
+""  
 --
 
 🙅‍♀️
@@ -131,6 +136,9 @@ injections for better informed modeling decisions.
 
 ---
 ## Ensure you don't have any direct table references
+
+???
+[This just clears the section for the next example]  
 --
 
 🙅‍♀️
@@ -144,8 +152,7 @@ The same goes for sources of data - you shouldn't hardcode the raw data
 reference. By explicitly stating this, you're not centralizing your  
 configuration for your data sources. If there's a change in where the data lives  
 (it happens!), you'll need to go through all of your files and change the  
-reference vs. going to one configuration file and having that change flow into  
-these models.  
+reference.
 ""  
 
 --
@@ -159,10 +166,15 @@ select * from {{ source('jaffle_shop', 'customers') }}
 We always want to configure and use our source functions to refer to raw data!  
 This will ensure the source shows up in our DAG, we can use selection syntax to  
 rebuild models coming off of this source, and we can easily reconfigure the  
-source if needed in one place.  
+source in one place and have the changes flow into the models.  
 ""  
 ---
 ## Apply configurations at the group level
+
+???
+""  
+Apply configurations at the group level.  
+""  
 --
 
 🙅‍♀️
@@ -178,11 +190,9 @@ source if needed in one place.
 
 ???
 ""  
-Apply configurations at the group level when you can. You can see here that we  
-have two staging models, customer and orders, which have the same configuration  
-to materialize as a view. [Next Slide]  
+You can see here that we have two staging models, customer and orders, which  
+have the same configuration to materialize as a view.  
 ""  
-
 ---
 ## Apply configurations at the group level
 
@@ -200,8 +210,8 @@ To apply that configuration at a group level, we would instead
 refer to the folder in our dbt_project.yml. You can see here all models in our  
 staging folder in the jaffle_shop project will be materialized as a view. This  
 helps keep configurations concise and targeted for specific scenarios. When a  
-configuration doesn't fit a group-level specification, you would then specify  
-the configuration within the model itself for the override.  
+model doesn't fit a group-level configuration, you can then specify  
+it within the model to override it.  
 ""  
   
 [Teacher Notes:]  
@@ -218,7 +228,7 @@ why this model is configured as a table when the rest are views?").
 
 ???
 ""  
-What about things that aren't in a .sql or .yml file?  
+What about things that aren't in a .sql or .yml file - our non-dbt code?
 ""  
 --
 
@@ -226,7 +236,8 @@ i.e. the code in your repo that dbt doesn't use (but humans do)!
 
 ???
 ""  
-This means the code that dbt doesn't use, but humans do! Such as.. [Next Slide]  
+we're talking about the code in our repository that dbt doesn't use, but  
+humans do!  
 ""  
 ---
 ## Improve your README
@@ -247,17 +258,21 @@ A README can help answer:
 
 ???
 ""  
-The README in your repository - This contains information on what the project is  
-and how to contribute. Things like.. [Read slide bullet points]  
+One of those things is the README in your repository, which helps someone  
+get familiar with the project. We recommend adding useful information like:  
+- how someone would get started with the project  
+- who they would contact to get access to various things  
+- snippets to help admins add a new user  
+- if using the CLI, how to set up the profiles.yml file  
+- a rough orientation of the project,  
+- and finally, how one would contribute. You can include coding conventions and  
+style guides here.  
+
 ""  
 
-[Teacher Note:]  
-Many of these are links to our start project script, so include extra jinja  
-  
-You can pause here to show an example of the README. You can click cmd+click on  
-the link to open it in a new tab, or you can navigate to one of our other  
-project's readme's such as the [Rapid Onboarding Readme](https://github.com/dbt-labs/rapid-onboarding-exemplar)  
-Template, which includes dropdowns for various development setups.  
+[Teacher Notes:]  
+Many of these are links to our start project script, so they include extra jinja  
+You can use cmd+click to open the links in a new tab if you want to show them.  
 ---
 .center[
 <img src="/ui/img{{page.id}}/example-readme.png" style="width: 80%;">
@@ -266,11 +281,25 @@ Template, which includes dropdowns for various development setups.
 .caption[
   [Example](https://github.com/clrcrl/dbt-learn-ccarroll/), [Source](https://github.com/fishtown-analytics/dbt-init/tree/master/starter-project)
 ]
+
+???
+[Teacher Notes:]  
+Pause here to show the slide's example of the README (use cmd+click to open in a new tab).  
+Another good example is the [Rapid Onboarding Readme](https://github.com/dbt-labs/rapid-onboarding-exemplar),  
+which includes dropdowns for different ways to run the project.  
 ---
 ## Add a PR template
 PR templates help you write better PRs (and are great tools for reviewers!)
 * Use headers to prompt someone to fill in the right information
 * Checklists are also useful
+
+???
+""  
+Another thing we use often is PR templates - these prefill a pull request  
+description with headers to prompt the developer for the right information.  
+They're created with markdown, so you can use helpful things such as checklists  
+to ensure developers are polishing up their code before requesting a review.  
+""  
 ---
 .center[
 <img src="/ui/img{{page.id}}/example-pr-template.png" style="width: 80%;">
@@ -282,8 +311,34 @@ PR templates help you write better PRs (and are great tools for reviewers!)
 .caption[
   [Guide for adding a PR template in GitHub](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
 ]
+
+???
+[Teacher Notes:]  
+Use cmd+click to open the links on the slide and show the example of our PR  
+template. (Optional) - How to walk through each section of the PR template:  
+- cmd+click the link, then click `raw` to view the markdown code of the PR template  
+- Between the `<!---` are markdown comments describing what to write about in
+each section.  
+- The headers (`##`) create the sections you see when you're looking at the
+rendered version of the template. 
+- In ours, we ask each developer to:
+  - Provide a good title for the PR 
+  - Write a good description of the task or to link to a ticket
+  - Notate any branches that should be merged before this one 
+  - Include screenshots of the DAG if they added to or changed any model flows
+  - Include screenshots of validation results (such as a screenshot of
+  audit-helper output) if they needed to validate the changes.
+  - Notate any changes to existing models 
+  - To go through the following checklist - the items may or may not apply
+  to the task at hand, but with developers focusing on hard problems it can
+  be really easy to forget the simpler things!
+  
 ---
 class: subtitle, center, middle
 # 🧘‍♀️ [Much better!](https://github.com/fishtown-analytics/dbt-learn-demo-v2/pull/6)
 
+???
+[Teacher Notes:]
+This just ends the presentation - say whatever you want here to wrap up!  
+  
 {% include options/last_slide.html %}
