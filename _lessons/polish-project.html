@@ -135,10 +135,10 @@ select * from {{ ref('stg_customers') }}
 ```
 ???
 ""  
-You always want to use the ref() function to refer to other models in your  
-project! This is the atomic unit of dbt - it identifies the correct order that  
-your models should run in and allows you to efficiently see dependencies and  
-injections for better informed modeling decisions.  
+This is what we want! Always want to use the ref() function to refer to other  
+models in your project! This is the atomic unit of dbt - it identifies the  
+correct order that your models should run in and allows you to efficiently see  
+dependencies and injections to make informed modeling decisions.  
 ""  
 
 ---
