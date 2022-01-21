@@ -73,7 +73,7 @@ It's best practice to require a dbt version to prevent conflicts. We do this by
 setting a configuration called `require-dbt-version`.  
   
 In our example, our project works with versions later than or equal to 0.17.1  
-and less than 0.19.0. By requiring this, you are ensuring other developers are  
+and less than 0.19.0. By requiring this, you're ensuring other developers are  
 running the project with a version that can handle the functionality used within  
 it.  
   
@@ -135,7 +135,7 @@ select * from {{ ref('stg_customers') }}
 ```
 ???
 ""  
-This is what we want! Always want to use the ref() function to refer to other  
+This is what we want! Always use the ref() function to refer to other  
 models in your project! This is the atomic unit of dbt - it identifies the  
 correct order that your models should run in and allows you to efficiently see  
 dependencies and injections to make informed modeling decisions.  
@@ -159,7 +159,7 @@ The same goes for sources of data - you shouldn't hardcode the raw data
 reference. By explicitly stating this, you're not centralizing your  
 configuration for your data sources. If there's a change in where the data lives  
 (it happens!), you'll need to go through all of your code and change the  
-reference.  
+references.  
 ""  
 
 --
@@ -171,9 +171,12 @@ select * from {{ source('jaffle_shop', 'customers') }}
 ???
 ""  
 We always want to configure and use our source functions to refer to raw data!  
-This will ensure the source shows up in our DAG, we can use selection syntax to  
-rebuild models coming off of this source, and we can easily reconfigure the  
-source in one place and have the changes flow into the models.  
+This will ensure:  
+- the source shows up in our DAG
+- we can use selection syntax to rebuild models coming off of this source
+- and we can easily reconfigure the source in one place and have the changes 
+flow downstream.  
+  
 ""  
 ---
 ## Apply configurations at the group level
