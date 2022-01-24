@@ -40,6 +40,9 @@ hiccups that result in delayed or duplicated data.
 - Something that was once true about my source data is no longer true (e.g. a
 new payment method was introduced)
 
+???
+Teaching Note: Think of a good story to share about a specific situation when dbt source functionality would have really helped avoid a painful mistake or burdensome work.
+
 
 ---
 
@@ -80,7 +83,12 @@ sources:
         identifier: orders
 
 ```
+???
+Demo: Jump into dbt cloud to walk through this source.yml in the IDE.
 
+Note: Code in the project is different from on the slide. Slide contains schema and table identifiers - call this out as optional config that allow for more flexibility - giving you the chance to name a source something more appropriate than its given name in the db.
+
+Teaching Note: In case anyone asks 'What does the 'version: 2' in all the yml file code snippets do? Can/should I update yml code versions?'. Answer: "Once upon a time, the structure of these .yml files was very different (s/o to anyone who was using dbt back then!). Adding version: 2 allowed us to make this structure more extensible." taken from dbt docs https://docs.getdbt.com/faqs/why-version-2
 ---
 
 # Selecting from sources
@@ -102,7 +110,8 @@ renamed as (
 ```
 {% endraw %}
 ]
-
+???
+Demo: Open and talk through the use of source in model stg_customers. Press compile to demo how the source function gets compiled to the full object name.
 --
 
 .right-column[
@@ -125,6 +134,9 @@ renamed as (
 They help users understand where data comes from (lineage)
 
 <img src="/ui/img{{page.id}}/dag-source.png" class="img-center">
+
+???
+Demo: Still on the stg_customers model, open the lineage tab and identify the source and model nodes.
 
 ---
 
@@ -163,7 +175,10 @@ Being thoughtful about where you test helps you understand whether tests are fai
 This allows you to debug more quickly!
 
 ]
+???
+Demo: While looking at the source yml ask the group what is being tested in this source (look for the table name, column name, and specific tests)
 
+Ask group why it might be helpful to test sources in addition to testing models (transformed data). (Answer - faster troubleshooting!)
 ---
 
 # Testing Sources
@@ -209,6 +224,9 @@ sources:
 ]
 
 Then run `dbt source freshness`
+
+???
+Note: In order for source freshness testing to work as intended, it's imperative to have an accurate 'loaded_at' field. 
 
 ---
 ## Snapshotting freshness
@@ -270,7 +288,8 @@ dbt source freshness
 ```
 <img src="/ui/img{{page.id}}/freshness-viz.png" style="width: 100%;" class="img-center">
 ]
-
+???
+The dbt cloud source freshness page is accessable to dbt cloud developers but also to those with read-only seats - providing a friendly self service UI for stakeholders to check on the freshness of source data. (Which hopefully means fewer emails asking whether data from [insert your favorite/most problematic source system] is up to date in the BI tool.
 ---
 
 # In deployment
