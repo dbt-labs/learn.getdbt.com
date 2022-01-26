@@ -23,7 +23,7 @@ If you get _really_ stuck, we do have worked solutions. Use these as a last reso
 # Common pitfalls
 
 1. Forgetting to `save` a file before running it. We've _all_ been there. Over time it becomes muscle memory. A dot next to a filename indicates that a file isn't saved.
-2. dbt Cloud users: Hitting the `preview data` button, rather than executing `dbt run` in the terminal prompt
+2. dbt Cloud users: Hitting the `preview data` button, rather than executing the command: `dbt run` in the terminal prompt
     * The `preview data` button executes whatever SQL statement is on your screen
     * The `dbt run` command builds objects in your database
 
@@ -33,7 +33,7 @@ If you get _really_ stuck, we do have worked solutions. Use these as a last reso
 
 Before going further, make sure:
 1. You have added an `orders` model to your project (from [the previous Working Group](dbt-fundamentals#working-session))
-1. You can run `dbt run` and `dbt test` without any errors
+1. You can run the commands: `dbt run` and `dbt test` without any errors
 
 If you need any help with these, please let us know.
 
