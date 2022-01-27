@@ -1,4 +1,4 @@
 [submodule "www.getdbt.com"]
 	path = www.getdbt.com
-	url = git@github.com:fishtown-analytics/www.getdbt.com.git
+	url = git@github.com:dbt-labs/www.getdbt.com.git
 	branch = master
