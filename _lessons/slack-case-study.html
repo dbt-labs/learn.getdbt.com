@@ -7,8 +7,8 @@ class: title, center, middle
 ???
 Notes to teacher:
 * This is a real life case study from Slack
-* There's a repo [here](https://github.com/fishtown-analytics/learn-case-study) that contains the WIP code (the real code is in our internal analytics repo)
-* This repo is connected to the `dbt Learn` account. Feel free to open up the IDE for this project, you'll need to put in your creds for the Fishtown Analytics Snowflake accounts (_not_ the Learn account)
+* There's a repo [here](https://github.com/dbt-labs/learn-case-study) that contains the WIP code (the real code is in our internal analytics repo)
+* This repo is connected to the `dbt Learn` account. Feel free to open up the IDE for this project, you'll need to put in your creds for the dbt Labs Snowflake accounts (_not_ the Learn account)
 
 
 Speaker track:
@@ -152,7 +152,7 @@ Then `git commit!`
 # Case study
 **Process I followed**
 * Defined some sources
-* Defined my staging models (used the [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/) package 🤫). I noticed:
+* Defined my staging models (used the [codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/) package 🤫). I noticed:
     * Timestamps are in epoch?
     * No primary key? The epoch timestamp is the primary key?
 * Built my `fct_` models
@@ -215,11 +215,11 @@ Before you send a PR to be reviewed, check:
 * Does my code match the style guide?
 * Do I have tests and descriptions?
 
-(Check out our [checklist](https://github.com/fishtown-analytics/dbt-init/blob/master/starter-project/.github/pull_request_template.md))
+(Check out our [checklist](https://github.com/dbt-labs/dbt-init/blob/master/starter-project/.github/pull_request_template.md))
 
 ???
 * Note that these are all things we talked about on day two, but 90% of the work in this case study was things we learnt on day one!
-* The actual PR: https://github.com/fishtown-analytics/internal-analytics/pull/110
+* The actual PR: https://github.com/dbt-labs/internal-analytics/pull/110
 ---
 class: subtitle
 # Summary

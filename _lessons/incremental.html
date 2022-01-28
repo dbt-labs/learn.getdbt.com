@@ -455,9 +455,9 @@ What's the DDL/DML that dbt is running?
 
 1. Create a temp table of new records
 2. Reconcile the existing table with the temp table, using one of:
-    - `merge`
-    - `delete` + `insert` ("upsert")
-    - `insert overwrite` ("replace") _entire partitions_
+    - `merge` ("upsert" new field values on row)
+    - `delete+insert` ("delete" entire row and "insert" new row in place)
+    - `insert overwrite` ("replace" _entire partitions_)
 
 Depends on:
 - database support (e.g. Redshift does not have a `merge` statement)
