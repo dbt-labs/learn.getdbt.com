@@ -1,14 +1,17 @@
 # Working Group #1
 
-**Facilitation Guide** The instructor should be driving for most of this session. If students run into issues setting up their projects, ask them to share their screens so you can see their issue and other students can learn from the solution.
+**Facilitation Guide** The instructor should be driving for most of this session. Students were emailed with instructions on how to do the following setup tasks, but walk them through it if they haven't yet completed it or are having trouble. If students run into issues, ask them to share their screens so you can see their issue and other students can learn from the solution.
 
 **Working Process**
+
 1. Guide students through the process of finding the email with the dbt Cloud invite, accepting the invite, and finding their project.
 2. Have them enter their Snowflake credentials and initialize their project.
-3. Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
-4. Delete the examples folder.
-5. Finally, have them create the files below. For each model created, run `dbt run` and look at the logs to talk through what is happening.
-6. Change the `dbt_project.yml` materializations to match the file below.
+3. Commit to main with a commit message like "initialized project".
+4. Have them create a new branch so they can start making changes.
+
+Now that the setup is done, do the following.
+1. Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
+2. Students should have the following files already in their projects. Code snippets are included below in case there are any issues.
 
 **`stg_customers.sql`**
 
@@ -127,7 +130,7 @@ models:
   jaffle_shop:
     +materialized: table
     staging:
-      +materialized: table
+      +materialized: view
 ```
 
 # Working Group #2
@@ -269,7 +272,7 @@ sources:
               - not_null
 ```
 
-**`stg_jaffle_shop`**
+**`stg_jaffle_shop.yml`**
 
 ```yml
 version: 2
