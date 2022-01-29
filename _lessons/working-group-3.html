@@ -1,0 +1,23 @@
+---
+layout: presentation
+title: Working Group 3
+
+---
+class: subtitle
+# Working session 3
+.dense-text[
+1. Create a `sources.yml` file to configure sources for the three raw tables in your project. 
+    a. Refactor your staging models to use the source function.
+    b. Add a test to at least one column in one of the source tables.
+2. Create a `schema.yml` file.
+    a. Add **unique** and **not null** tests to all primary keys (across all 5 models and 3 source tables).
+    b. Add descriptions to all columns in customers.
+3. Finish early?
+    a. Add a docs block.
+    b. Add source freshness to one of your sources.
+    c. Merge your code to main, set up a production environment, and create a production job.
+]
+
+???
+    * After students finish step 1, show them how the Lineage tab now shows green nodes for sources.
+    * After step 2, have students run `dbt test` and `dbt docs generate`. Show the docs site.

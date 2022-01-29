@@ -10,10 +10,73 @@
 4. Have them create a new branch so they can start making changes.
 
 Now that the setup is done, do the following.
-1. Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
-2. Students should have the following files already in their projects. Code snippets are included below in case there are any issues.
+1. Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tabs (Query Results, Compiled SQL, Lineage), and command line.
+2. Students will have the following version of `customers.sql` already in their projects. Code snippets are included below in case there are any issues.
 
-**`stg_customers.sql`**
+**`stg_customers.sql (original)`**
+
+```sql
+with customers as (
+
+    select
+        id as customer_id,
+        first_name,
+        last_name
+
+    from raw.jaffle_shop.customers
+
+),
+
+orders as (
+
+    select
+        id as order_id,
+        user_id as customer_id,
+        order_date,
+        status
+
+    from raw.jaffle_shop.orders
+
+),
+
+customer_orders as (
+
+    select
+        customer_id,
+
+        min(order_date) as first_order_date,
+        max(order_date) as most_recent_order_date,
+        count(order_id) as number_of_orders
+
+    from orders
+
+    group by 1
+
+),
+
+
+final as (
+
+    select
+        customers.customer_id,
+        customers.first_name,
+        customers.last_name,
+        customer_orders.first_order_date,
+        customer_orders.most_recent_order_date,
+        coalesce(customer_orders.number_of_orders, 0) as number_of_orders
+
+    from customers
+
+    left join customer_orders using (customer_id)
+
+)
+
+select * from final
+```
+
+3. Walk students through refactoring `customers.sql` to break out the staging CTEs into the staging models below. Create a subdirectory called staging under the models folder. Replace the CTEs in `customers.sql` with ref() functions.
+
+**`staging/stg_customers.sql`**
 
 ```sql
 select
@@ -24,7 +87,7 @@ select
 from raw.jaffle_shop.customers
 ```
 
-**`stg_orders.sql`**
+**`staging/stg_orders.sql`**
 
 ```sql
 select
@@ -85,42 +148,7 @@ final as (
 select * from final
 ```
 
-**`schema.yml`**
-```yml
-version: 2
-
-models:
-  - name: customers
-    columns:
-      - name: customer_id
-        tests:
-          - unique
-          - not_null
-
-  - name: stg_customers
-    columns:
-      - name: customer_id
-        tests:
-          - unique
-          - not_null
-
-  - name: stg_orders
-    columns:
-      - name: order_id
-        tests:
-          - unique
-          - not_null
-      - name: status
-        tests:
-          - accepted_values:
-              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
-      - name: customer_id
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_customers')
-              field: customer_id
-```
+4. Change the models block in the `dbt_project.yml` to match the snippet below.
 
 **`dbt_project.yml`**
 
@@ -139,11 +167,11 @@ models:
 
 **Working Process** - Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
 
-1. Inspect `raw.stripe.payment`
-2. Stage payment data as `stg_payments`
+1. Inspect `raw.stripe.payment`.
+2. Stage payment data as `stg_payments`.
 3. Inspect `stg_payments` and `stg_orders`, recognize that orders to payments is one-to-many.
-4. Write the `orders` model
-5. Refactor the `customers` model
+4. Write the `orders` model.
+5. Refactor the `customers` model.
 
 **`stg_payments.sql`**
 
@@ -236,12 +264,12 @@ select * from final
 (1) Independently then check in towards the end
 (2) Guided with a screen share
 
-**Working Process** - Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
+**Working Process**
 
 1. Add Tests
-2. Add Sources and Refactor
+2. Add Sources and Refactor staging models
 3. Add Docs
-4. Refactor project into marts/core and staging
+4. Refactor project into marts/core and staging/jaffle_shop, staging/stripe
 
 **`src_jaffle_shop.yml`**
 
@@ -347,9 +375,8 @@ models:
 2. Write the pivot with some Jinja + SQL (don't address changing payment methods or how to deal with the final column).
 3. Address the trailing comma and set in Jinja.
 4. Use dbt_utils to get column values.
-5. Write a macro OR use dbt_utils pivot function.
 
-**Facilitation Guide** - The instructor for the Jinja session will get the class started on the first two steps. Then in breakout rooms, instructors will nominate one students to be the driver for refactoring this query.
+**Facilitation Guide** The instructor for the Jinja session will get the class started on the first two steps. Then in breakout rooms, instructors will nominate one students to be the driver for refactoring this query.
 
 **Step 1: Pure SQL**
 
@@ -483,12 +510,6 @@ pivoted as (
 
 select * from pivoted
 ```
-
-**Step 5: Write a macro of your own / find the pivot macro**
-
-- Either write our own pivot macro
-  OR
-- Use the pivot macro from dbt Utils
 
 # Working Group #5 (optional)
 

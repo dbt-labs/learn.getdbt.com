@@ -10,16 +10,11 @@ class: subtitle
     * Accept the dbt Cloud invite.
     * Find your project and input your Snowflake credentials.
     * Initialize your project.
-2. Inspect the raw data
-```sql
-select * from raw.jaffle_shop.customers;
-select * from raw.jaffle_shop.orders;
-```
-3. Delete the examples folder under models.
-4. Create your first models and a YAML configuration file. See chat for code snippets.
-    * `stg_customers.sql`, `stg_orders.sql`, `customers.sql`, `schema.yml`
-5. Change the materialization strategy of your project in `dbt_project.yml`.
+2. Run the `customers.sql` model.
+3. Refactor this code to break out the staging models into `stg_customers.sql` and `stg_orders.sql`. Create a staging subdirectory under models for these staging models.
+4. Change the materialization strategy of your project in `dbt_project.yml` so that all models are materialized as tables by default, but the models in the staging folder will be materialized as tables.
 ]
+
 ???
 Notes for what to walk students through
 * Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
