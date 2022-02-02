@@ -165,15 +165,16 @@ models:
 
 **Facilitation Guide** The instructor should be driving for most of this session. Be sure to allow people time to catch up after each step outlined below.
 
-**Working Process** - Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
+**Working Process** Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
 
 1. Inspect `raw.stripe.payment`.
 2. Stage payment data as `stg_payments`.
 3. Inspect `stg_payments` and `stg_orders`, recognize that orders to payments is one-to-many.
 4. Write the `orders` model.
 5. Refactor the `customers` model.
+6. Check that the total lifetime value for all customers is $1,672. Realize that we need to convert cents to dollars in `stg_payments`.
 
-**`stg_payments.sql`**
+**`staging/stg_payments.sql`**
 
 ```sql
 select
@@ -266,41 +267,16 @@ select * from final
 
 **Working Process**
 
-1. Add Tests
-2. Add Sources and Refactor staging models
-3. Add Docs
-4. Refactor project into marts/core and staging/jaffle_shop, staging/stripe
+1. Create 2 subfolders under the staging folder: jaffle_shop and stripe. Create marts/core under models. Move all model files into their respective folders.
+2. Create schema yml files in each subfolder that include tests and descriptions for the models in that subfolder.
+3. Create 2 sources yml files in each of the staging subfolders to configure those sources. Replace the hard-coded references to sources in the staging models with the source() function.
+4. Extra credit: create `models/order_status.md` below. Add source freshness block (see code snippet below under the orders model in `models/staging/jaffle_shop/src_jaffle_shop.yml`). Work with students to create a deployment environment and set up a scheduled job.
 
-**`src_jaffle_shop.yml`**
+**models folder at the end of Working Group 3**
 
-```yml
-version: 2
+<img src="/ui/img/working_group_3_models.png" style="width: 60%;" class="img-center">
 
-sources:
-  - name: jaffle_shop
-    description: A clone of a Postgres application database.
-    database: raw
-    tables:
-      - name: customers
-        description: Raw customers data.
-        columns:
-          - name: id
-            description: Primary key for customers
-            tests:
-              - unique
-              - not_null
-
-      - name: orders
-        description: Raw orders data.
-        columns:
-          - name: id
-            description: Primary key for orders.
-            tests:
-              - unique
-              - not_null
-```
-
-**`stg_jaffle_shop.yml`**
+**`models/staging/jaffle_shop/stg_jaffle_shop.yml`**
 
 ```yml
 version: 2
@@ -336,7 +312,23 @@ models:
                 - return_pending
 ```
 
-**`core.yml`**
+**`models/staging/stripe/stg_stripe.yml`**
+
+```yml
+version: 2
+
+models:
+  - name: stg_payments
+    description: Staged payment data from Stripe.
+    columns:
+      - name: payment_id
+        description: The primary key for payments.
+        tests:
+          - unique
+          - not_null
+```
+
+**`modles/marts/core/core.yml`**
 
 ```yml
 version: 2
@@ -365,6 +357,77 @@ models:
 
       - name: amount
         description: Amount in USD
+```
+
+**`staging/jaffle_shop/src_jaffle_shop.yml`**
+
+```yml
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: A replica of the postgres database
+    database: raw
+    tables:
+      - name: customers
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+      - name: orders
+        description: One record per order
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+          - name: status
+            description: "{{ doc('order_status') }}"
+            tests:
+              - accepted_values:
+                  values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+```
+
+**`models/staging/stripe/src_stripe.yml`**
+
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    database: raw
+    tables:
+      - name: payment
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+```
+
+**Extra Credit**
+
+**`models/order_status.md`**
+
+```yml
+{% docs order_status %}
+
+One of the following values:
+
+| status         | definition                                                 |
+|----------------|------------------------------------------------------------|
+| placed         | Order placed but not yet shipped                           |
+| shipped        | Order has been shipped but hasn't yet been delivered       |
+| completed      | Order has been received by customers                       |
+| return_pending | Customer has indicated they would like to return this item |
+| returned       | Item has been returned                                     |
+
+{% enddocs %}
 ```
 
 # Working Group #4
