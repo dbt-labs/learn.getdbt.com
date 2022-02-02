@@ -7,20 +7,20 @@ class: subtitle
 # Working session 3
 .dense-text[
 1. Re-organize your models folder to follow dbt's best practices for project design.
-    a. Under the models/staging folder, create one subfolder for jaffle_shop and one for stripe.
-    b. Move the respective staging models files into these new subfolders.
-    c. Create a new directories marts/core under models.
-    d. Move the respective models into this new subfolder.
+    - Under the models/staging folder, create one subfolder for jaffle_shop and one for stripe.
+    - Move the respective staging models files into these new subfolders.
+    - Create a new directories marts/core under models.
+    - Move the respective models into this new subfolder.
 2. Create schema yml files.
-    a. Add **unique** and **not null** tests to all primary keys.
-    b. Add descriptions to all columns in customers.
+    - Add **unique** and **not null** tests to all primary keys.
+    - Add descriptions to all columns in customers.
 3. Create sources yml files to configure sources for the three raw tables in your project. 
-    a. Refactor your staging models to use the source function.
-    b. Add a test to at least one column in one of the source tables.
+    - Refactor your staging models to use the source function.
+    - Add a test to at least one column in one of the source tables.
 3. Finish early?
-    a. Add a docs block.
-    b. Add source freshness to one of your sources.
-    c. Merge your code to main, set up a production environment, and create a production job.
+    - Add a docs block.
+    - Add source freshness to one of your sources.
+    - Merge your code to main, set up a production environment, and create a production job.
 ]
 
 ???

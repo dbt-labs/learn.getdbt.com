@@ -274,7 +274,7 @@ select * from final
 
 **models folder at the end of Working Group 3**
 
-<img src="/ui/img/working_group_3_models.png" style="width: 60%;" class="img-center">
+<img src="/ui/img/working_group_3_models.png" style="width: 20%;" class="img-center">
 
 **`models/staging/jaffle_shop/stg_jaffle_shop.yml`**
 
