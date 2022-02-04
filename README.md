@@ -13,7 +13,7 @@ Since the redirects file is not processed in the local dev environment, you may 
 ## Getting Started
 
 **To run locally:**
-1. Ensure `jekyll` is installed with `jeykll --version` (if it's not installed, [here](https://jekyllrb.com/docs/installation/macos/) are the docs)
+1. Ensure `jekyll` is installed with `jekyll --version` (if it's not installed, [here](https://jekyllrb.com/docs/installation/macos/) are the docs)
 2. Ensure that the `www.getdbt.com` styles are available locally: `git submodule init && git submodule update`
 3. `jekyll serve`
 
@@ -22,9 +22,3 @@ Since the redirects file is not processed in the local dev environment, you may 
 * Presentations are located in `_lessons`
 * Use `presentation` as your layout in the front matter of your presentation html file.
 * Adjust the styling using in `_config/_includes/options/styles-learn.html`
-
-## Reveal.js
-* Exploring using this for dbt Learn on demand
-* Presentations are located in `_ondemand`
-* Use `reveal` as your layout in the front matter of your presentation html file.
-* Adjust the styling using .scss in `stylesheets/styles-ondemand.scss` or create your own.
