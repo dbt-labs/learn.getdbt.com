@@ -127,6 +127,7 @@ class: subtitle, middle, center
   'number': 3
 } %}
 ```
+--
 ```jinja
 {{ person.name }}
 {{ person['name'] }}
@@ -147,7 +148,7 @@ me
 
 {% do self.append('i') %}
 ```
-
+--
 ```jinja
 {{ self[0] }}
 ```
@@ -168,8 +169,6 @@ me
 3
 ```
 
-
-
 ---
 
 # And so on
@@ -178,21 +177,31 @@ me
 {% set us = [
 {
     'name': 'me',
-    'number': 3
-},
-{
+    'number': 3,
+    'details': 'bar'
+  },
+  {
     'name': 'you',
+    'number': 100,
     'details': 'foo'
 }
 ] %}
-
+```
+--
+```jinja
 {{ us[1]['details'] }}
 ```
 --
 ```
 foo
 ```
-
+--
+```jinja
+{{ us[0].number }}
+```
+--
+```
+3
 ---
 
 # Conditions
