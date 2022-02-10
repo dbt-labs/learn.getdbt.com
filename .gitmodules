@@ -1,0 +1,4 @@
+[submodule "www.getdbt.com"]
+	path = www.getdbt.com
+	url = git@github.com:dbt-labs/legacy-www.getdbt.com.git
+	branch = master
