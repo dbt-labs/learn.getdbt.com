@@ -21,7 +21,6 @@ class: title, center, middle
 
 # Refresher:
 
-### The [dbt Viewpoint](https://docs.getdbt.com/docs/about/viewpoint/)
 _**Analytics code should have quality assurance**_
 * _Run automated tests on source data and on transformed data to ensure that SQL works as intended_
 * _Ensure source data is up to date_
@@ -202,8 +201,8 @@ When we run dbt test, what happens under the hood?
 - dbt connects to our warehouse using our profile configuration  
 - it then parses our project for all of our test configurations  
 - it constructs select statements using what it finds  
-- and then it executs the sql for each test using what's built in our warehouse.  
-- if the count of records returned for a test is 0, then it passes successfully.  
+- and then it executes the sql for each test using what's built in our warehouse.  
+- if there are no failing rows returned for a test, then it passes successfully.  
   
 ""  
   
@@ -213,8 +212,8 @@ collects all the configurations first and then executes, which means that you
 can separate tests out by folder or you can keep all your tests in one big file.  
 Our best practice is to separate by folder.  
   
-The other important piece here is that the dbt test operates on the result of a  
-number - count of 0 is a pass and anything more than 0 is a failure.  
+The other important piece here is that dbt testa operate on the return of
+rows that that shouldn't be in the table.
 ---
 
 # dbt's built-in tests:
@@ -254,7 +253,7 @@ Every value in this column is not null.
 
 ???
 ""  
-Not null, which tests that every record has a valu for the specified column.  
+Not null, which tests that every record has a value for the specified column.  
 ""  
 ---
 # dbt's built-in tests:
@@ -296,7 +295,11 @@ Example: If our orders table has a status for each order placed and in a
 model after this we've pivoted our data so we can see total number of orders
 per status, then we'd want to be notified if an order status outside of our 
 four expected values pops up. We'd need to add any additional values
-as a column in our pivot to avoid under-counting orders.
+as a column in our pivot to avoid under-counting orders.  
+  
+Note: If there is a NULL in a column which has an accepted_values test
+applied, the test will fail. In order to get around this, you can COALESCE()
+your value or write a custom test.  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -586,7 +589,7 @@ What about this one?
 Prompt the class to answer these questions.  
 Answers:  
 - The test being ran is the accepted_values test.
-- It's testing he payment_method column.
+- It's testing the payment_method column.
 - If it fails, it tells us that the column contains a value that is not
 credit_card, paypal, or ach_transfer.
 ---
