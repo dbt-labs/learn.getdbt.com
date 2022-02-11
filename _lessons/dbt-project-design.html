@@ -314,6 +314,8 @@ a database function to date_trunc our sales date.
 ???
 ""  
 Here's what the underlying data looks like for our denormalized model.  
+You can see that important data such as brand, country, units_sold, year, and  
+product category are all located in this model.  
 ""  
 
 ---
@@ -327,8 +329,8 @@ Here's what the underlying data looks like for our denormalized model.
 And here's the underlying flow of our data. You can see that we still have  
 all of the same underlying tables, but instead of joining all of it at once,  
 we've modularized it into various flows which finally come together to  
-give us a table of all sales, which we then apply filters on to get Tristan's  
-report.  
+give us a table of all sales. We'll end up querying from this to get Tristan's  
+answer via filters and aggregations.  
 ""  
 
 ---
@@ -341,8 +343,10 @@ Should that final "roll up" query live in dbt?
 
 ???
 ""  
-Before we continue, I want everyone to think about the final rollup query. 
-Should this live in dbt? We'll come back to this later!
+but before we continue, everyone should think about that final rollup query with  
+our filters and aggregations - should this live in dbt?  
+  
+Think about it - we'll come back to this later!  
 ""  
 
 ---
@@ -371,7 +375,7 @@ GROUP BY
 
 ???
 ""  
-So, we've got our query from 1998 -
+So, we've got our query from 1998 -  
 ""  
 
 ---
@@ -393,7 +397,7 @@ group by 1, 2
 
 ???
 ""  
-and we've got our query from today - 
+and we've got our query from today -  
 ""  
 
 ---
@@ -403,9 +407,8 @@ and we've got our query from today -
 
 ???
 ""  
-What's changed? Why didn't we just denormalize in 1998 or use date_trunc
-instead of having dedicated date tables?
-""  
+What's changed? Why didn't we just denormalize in 1998 or use date_trunc  
+instead of having dedicated date tables?  
 
 --
 
@@ -418,9 +421,10 @@ Some design decisions of the past were driven by technology:
 
 ???
 ""  
-It's because the decisions we made in the past and the decisions we make today 
-are driven by technology, namely in the way that row-oriented and 
-column-oriented databases store and process data.
+It's because the decisions we made in the past and the decisions we make today  
+are driven by technology, namely in the way that row-oriented and  
+column-oriented databases store and process data.  
+  
 For row-oriented databases:
 - Storage was expensive, so you wouldn't want to duplicate data
 - Joins were cheap, so it was fine join at report-time
@@ -431,9 +435,9 @@ were isolated to one table
 - and data modeling was a different skill set to analysis - the entire schema
 would go through project planning before ever reaching analysis!
   
-Because we use columnar-store for our analytics processing today, it allows us
-normalize or denormalize as we'd like, comfortable use SQL functions, and start 
-closing the gap between modeling and analysis.
+Because we use columnar-store for our analytics processing today, it allows us  
+normalize or denormalize as we'd like, comfortably use SQL functions, and start  
+closing the gap between modeling and analysis.  
 ""  
 
 ---
@@ -444,11 +448,10 @@ closing the gap between modeling and analysis.
 
 ???
 ""  
-What's stayed the same?
+But, what's stayed the same?  
 
-A final model should always represent a business process or entity. For example,
-orders, customers, or suppliers.
-""  
+A final model should always represent a business process or entity. For example,  
+orders, customers, or suppliers.  
 
 --
 
@@ -463,14 +466,13 @@ or `braintree` (i.e. include a `payments_provider` column), but ultimately, the
 
 ???
 ""  
-For example, say we had a legacy payment system, `braintree`, and a new payment
-system, `stripe`. Our stakeholders only know these things as `payments`, and 
+For example, say we had a legacy payment system, `braintree`, and a new payment  
+system, `stripe`. Our stakeholders only know these things as `payments`, and  
 it should be represented as such.  
   
-It might be useful to add a column with information on how the payment was
-processed (i.e, 'braintree' or 'stripe'), but in the end the payments table
-should include all records in a standardized form. 
-""  
+It might be useful to add a column with information on how the payment was  
+processed (i.e, 'braintree' or 'stripe'), but in the end the payments table  
+should include all records in a standardized form.  
 
 ---
 
@@ -495,26 +497,26 @@ How many trips occurred?
 
 ???
 ""  
-Each model should represent a clear grain - you should be able to say "each 
-record represents a ...".
+Each model should represent a clear grain - you should be able to say "each  
+record represents a ...".  
 
-For example, say we have a rideshare company and each time someone splits a trip, 
-the trips table had three entries: one for the parent trip, and two child trips.
+For example, say we have a rideshare company and each time someone splits a trip,  
+the trips table had three entries: one for the parent trip, and two child trips.  
 
-How many trips occured?
+How many trips occured?  
 
-We could say that: 
+We could say that:
 - two trips occured, we're only counting trips without a parent trip as a trip.
 - three trips occurred, because we're counting those without a parent trip as 
 a trip, and the split trip as one trip.
 - four trips occurred because we're counting each trip id
-""
+
 --
  Well what's a trip?
 
 ???
 ""  
-Okay, well what's a trip? In this example, we had to explain our trips by saying:
+Okay, well what's a trip? In this example, we had to explain our trips by saying:  
 "each record represents a trip, but ...".  
 ""  
 
