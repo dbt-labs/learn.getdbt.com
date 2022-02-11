@@ -204,7 +204,7 @@ This depends on your models!
 
 ???
 ""  
-If you arrived at this answer - you're correct! It depends on what our underlying
+If you arrived at this answer - you're correct! It depends on what our underlying  
 data modeling looks like.  
 ""  
 
@@ -234,10 +234,10 @@ GROUP BY
 
 ???
 ""  
-In 1998, it would have been typical to see a query like this, written on an 
-underlying database which uses a snowflake or star schema. We have a central 
-fact table, which we're then joining out to dimensions to get the information we
-need.  
+In 1998, it would have been typical to see a query like this, written on an  
+underlying database which uses a snowflake or star schema. We have a central  
+fact table, which we're then joining out to dimensions to get the information we  
+need to answer Tristan's question.  
 ""  
 
 ---
@@ -248,8 +248,8 @@ need.
 
 ???
 ""  
-And here's what that schema looks like - again, you can see we have a central
-fact table, and in order to get information like country or brand, we actually
+And here's what that schema looks like - again, you can see we have a central  
+fact table, and in order to get information like country or brand, we actually  
 need to join in other tables in between to get there.  
 ""  
 
@@ -262,8 +262,8 @@ need to join in other tables in between to get there.
 
 ???
 ""  
-And then we move in to today's world where you might hear more about 
-related data modeling practices such as Kimball, Inmon and DataVault. 
+You might have heard about related data modeling practices such as Kimball,  
+Inmon, and DataVault.  
 ""  
 
 ---
@@ -285,11 +285,11 @@ group by 1, 2
 
 ???
 ""  
-Our query today would look something like this. There's a lot less going on
-here - notable there are way less joins. Why is that? It's because we're working
-with denormalized data, meaning that all of the relevant information is in the
-same model. 
-
+Our query today would look something like this. There's a lot less going on  
+here - notable there are way less joins. Why is that? It's because we're working  
+with denormalized data, meaning that all of the relevant information is in the  
+same model.  
+  
 You'll also notice that instead of joining to a date table, we're using  
 a database function to date_trunc our sales date.  
 ""  
@@ -312,7 +312,7 @@ a database function to date_trunc our sales date.
 
 ???
 ""  
-Here's what the underlying data looks like for our denormalized model.
+Here's what the underlying data looks like for our denormalized model.  
 ""  
 
 ---
@@ -323,11 +323,11 @@ Here's what the underlying data looks like for our denormalized model.
 
 ???  
 ""  
-And here's the underlying flow of our data. You can see that we still have
-all of the same underlying tables, but instead of joining all of it at once, 
-we've modularized it into various flows which finally come together to 
-give us a table of all sales, which we then apply filters on to get Tristan's
-report.
+And here's the underlying flow of our data. You can see that we still have  
+all of the same underlying tables, but instead of joining all of it at once,  
+we've modularized it into various flows which finally come together to  
+give us a table of all sales, which we then apply filters on to get Tristan's  
+report.  
 ""  
 
 ---
