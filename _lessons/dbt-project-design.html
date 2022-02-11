@@ -15,24 +15,50 @@ learningObjectives:
 class: title, center, middle
 # dbt Project Design
 
+???
+""  
+dbt Project Design  
+""  
 ---
 
 # So, I have raw data.
 
 .grey[_What do I do with it?_]
 
+???
+[Teacher Note]: 
+You can read these out or pose these questions to the class - read the audience. 
+If they don't seem interactive but you want some interactivity, you can also 
+pose these questions to fellow teachers.  
+    
+""  
+In previous sessions we saw that we have raw data in the warehouse.   
+What should we do it?  
+""   
 --
 
 Model it!
 
+???
+""  
+We should model it!  
+""  
 --
 
 .grey[_How?_]
 
+???
+""  
+and how are we going to model it?  
+""  
 --
 
 With dbt!
 
+???
+""  
+With dbt of course!
+""  
 --
 
 .grey[_Cool._]
@@ -40,6 +66,17 @@ With dbt!
 ---
 
 {% include options/focus_slide.html %}
+
+???
+""  
+In this lesson we're going to focus on:
+- Understanding the trade-offs of various model designs
+- Naming the three main interfaces for a dbt project
+- Building intuition for naming conventions for database objects
+- and building intuition for how to use dbt and BI tools together
+
+But first, we need to know what we mean by "model it". It's a broad term!  
+""  
 
 ---
 
@@ -50,11 +87,30 @@ With dbt!
 - It's a careful balance between several trade-offs
 - Could fill a book (or several) on this topic. It's a fascinating topic that we'll cover _very_ briefly
 
+???
+""  
+There's two main things we could mean when we say "model it". The first thing
+it could mean is that there's a set of final artifacts you want to share with 
+stake holders.  
+
+This is also known as data model design, data warehouse design, or warehousing,
+and choosing how you do it is a careful balance of trade-offs which your team
+will need to consider. There's numerous methodologies and books on this topic, 
+and while it's fascinating, we'll only be covering this breifly.  
+""  
 --
 
 **2. I need a reliable, scalable, intuitive process for generating those final artifacts.**
 - With dbt!
 - The _real_ interest of this presentation
+
+???
+""  
+The second thing it could mean is that you need a reliable, scalable, and
+intuitive process for creating those artifacts.  
+  
+We can do that with dbt, and that's the real interest of this presentation!  
+""  
 
 ---
 
@@ -62,6 +118,12 @@ class: subtitle, center, middle
 # 1. Final data artifacts
 
 ### What is the table or view I'm trying to build?
+
+???
+""  
+Let's get back to the first point - the final data artifacts. In other words,
+we're asking ourselves: "What is the table or view I'm trying to build?"  
+""  
 
 ---
 ## What is the table or view I'm trying to build?
@@ -71,10 +133,23 @@ Our view is that there is no one right answer, but there are good heuristics.
 As modern data practitioners, we are inheritors of a decades-long history. It
 is our task to determine for the present day which concepts are still relevant.
 
+???
+""  
+Our viewpoint here is that there is no one right answer, but there are good
+practices to get there.  
+  
+As modern data practitioners, it's our duty to determine which practices from
+our decades-long history are still relevant and useful today.  
+""   
+
 --
 
 Let's break down the process...
 
+???
+""  
+So, let's break it down -  
+""  
 ---
 
 
@@ -96,6 +171,10 @@ Tristan
 SVP Marketing Analytics
 ```
 
+???
+""  
+Let's go back to 1998. We've got mail: [ read slide ]  
+""  
 
 ---
 
@@ -110,14 +189,35 @@ SVP Marketing Analytics
 | LG    | UK      | 100        |
 | LG    | US      | 20         |
 
+???
+""  
+This is our desired output - You can see that we've got a table with a row per
+brand and country combination, with an aggregate of the units sold.  
+""  
+
 --
 
 What is the query you (the analyst) will write to get these results?
 
+???
+""  
+Let's pause here, close our eyes, and imagine the query you would write
+in 1998 to get these results!  
+""  
+  
+[Teacher note:]  
+You should actually pause here for a few seconds to allow everyone to think 
+about this!  
+  
 --
 
 This depends on your models!
 
+???
+""  
+If you arrived at this answer - you're correct! It depends on what our underlying
+data modeling looks like.  
+""  
 
 ---
 
@@ -143,11 +243,26 @@ GROUP BY
 	G.Country
 ```
 
+???
+""  
+In 1998, it would have been typical to see a query like this, written on an 
+underlying database which uses a snowflake or star schema. We have a central 
+fact table, which we're then joining out to dimensions to get the information we
+need.  
+""  
+
 ---
 
 ### Before: snowflake schema (ca. 2000s)
 
 <img src="/ui/img/lessons/data-warehouses/fact-sales-erd.png" class="img-center">
+
+???
+""  
+And here's what that schema looks like - again, you can see we have a central
+fact table, and in order to get information like country or brand, we actually
+need to join in other tables in between to get there.  
+""  
 
 ---
 
@@ -155,6 +270,12 @@ GROUP BY
 - Kimball
 - Inmon
 - DataVault
+
+???
+""  
+And then we move in to today's world where you might hear more about 
+related data modeling practices such as Kimball, Inmon and DataVault. 
+""  
 
 ---
 
@@ -172,6 +293,17 @@ where date_trunc('year', sale_date) = '1997-01-01'
 
 group by 1, 2
 ```
+
+???
+""  
+Our query today would look something like this. There's a lot less going on
+here - notable there are way less joins. Why is that? It's because we're working
+with denormalized data, meaning that all of the relevant information is in the
+same model. 
+
+You'll also notice that instead of joining to a date table, we're using  
+a database function to date_trunc our sales date.  
+""  
 
 ---
 
@@ -189,11 +321,25 @@ group by 1, 2
 
 ]
 
+???
+""  
+Here's what the underlying data looks like for our denormalized model.
+""  
+
 ---
 
 ### Today: denormalized model (2020)
 
 <img src="/ui/img/lessons/data-warehouses/fact-sales-dag.png" class="img-center">
+
+???  
+""  
+And here's the underlying flow of our data. You can see that we still have
+all of the same underlying tables, but instead of joining all of it at once, 
+we've modularized it into various flows which finally come together to 
+give us a table of all sales, which we then apply filters on to get Tristan's
+report.
+""  
 
 ---
 class: middle
@@ -202,6 +348,12 @@ class: middle
 Should that final "roll up" query live in dbt?
 
 (We're going to come back to this discussion!)
+
+???
+""  
+Before we continue, I want everyone to think about the final rollup query. 
+Should this live in dbt? We'll come back to this later!
+""  
 
 ---
 
@@ -227,6 +379,11 @@ GROUP BY
 	G.Country
 ```
 
+???
+""  
+So, we've got our query from 1998 -
+""  
+
 ---
 
 ### Today: denormalized model
@@ -244,10 +401,22 @@ where date_trunc('year', sale_date) = '1997-01-01'
 group by 1, 2
 ```
 
+???
+""  
+and we've got our query from today - 
+""  
+
 ---
 
 
 # What has changed?
+
+???
+""  
+What's changed? Why didn't we just denormalize in 1998 or use date_trunc
+instead of having dedicated date tables?
+""  
+
 --
 
 Some design decisions of the past were driven by technology:
@@ -257,11 +426,39 @@ Some design decisions of the past were driven by technology:
 - Updating data was expensive → design models so that changes are isolated to one table
 - Data modeling was a different skill set to analysis → project plan the whole thing!
 
+???
+""  
+It's because the decisions we made in the past and the decisions we make today 
+are driven by technology, namely in the way that row-oriented and 
+column-oriented databases store and process data.
+For row-oriented databases:
+- Storage was expensive, so you wouldn't want to duplicate data
+- Joins were cheap, so it was fine join at report-time
+- SQL functions were expensive, so instead of using `date_trunc`, it was better 
+to create a table that has already done it.
+- Updating data was expensive, so it was better to design models so that changes
+were isolated to one table
+- and data modeling was a different skill set to analysis - the entire schema
+would go through project planning before ever reaching analysis!
+  
+Because we use columnar-store for our analytics processing today, it allows us
+normalize or denormalize as we'd like, comfortable use SQL functions, and start 
+closing the gap between modeling and analysis.
+""  
+
 ---
 
 # But what has stayed the same?
 
 - A "final" model should represent a _business_ process or entity.
+
+???
+""  
+What's stayed the same?
+
+A final model should always represent a business process or entity. For example,
+orders, customers, or suppliers.
+""  
 
 --
 
@@ -274,11 +471,23 @@ It might be useful to track whether it was processed via `stripe`
 or `braintree` (i.e. include a `payments_provider` column), but ultimately, the
 `payments` table should include both in a standardized form.
 
+???
+""  
+For example, say we had a legacy payment system, `braintree`, and a new payment
+system, `stripe`. Our stakeholders only know these things as `payments`, and 
+it should be represented as such.  
+  
+It might be useful to add a column with information on how the payment was
+processed (i.e, 'braintree' or 'stripe'), but in the end the payments table
+should include all records in a standardized form. 
+""  
+
 ---
 
 # But what has stayed the same?
 
 - A "final" model should represent a _business_ process or entity.
+- Each model should have a clear "grain" — "one record represents a ..."
 
 **Example 2:**
 
@@ -293,8 +502,31 @@ the `trips` table has three entries: one parent trip, and two child trips.
 | 4       | NULL      | .. |
 
 How many trips occurred?
+
+???
+""  
+Each model should represent a clear grain - you should be able to say "each 
+record represents a ...".
+
+For example, say we have a rideshare company and each time someone splits a trip, 
+the trips table had three entries: one for the parent trip, and two child trips.
+
+How many trips occured?
+
+We could say that: 
+- two trips occured, we're only counting trips without a parent trip as a trip.
+- three trips occurred, because we're counting those without a parent trip as 
+a trip, and the split trip as one trip.
+- four trips occurred because we're counting each trip id
+""
 --
  Well what's a trip?
+
+???
+""  
+Okay, well what's a trip? In this example, we had to explain our trips by saying:
+"each record represents a trip, but ...".  
+""  
 
 ---
 # But what has stayed the same?
@@ -305,14 +537,34 @@ How many trips occurred?
 --
 - Naming is important. In particular, consistency is _extremely_ valuable
 
+???
+""  
+Naming always has been, and always will be, important. It's extemely valuable
+so your team can understand the inputs and outputs of your analytics ecosystem.
+""  
+
 --
 - Consider the final use case when designing your final artifacts
+
+???
+""  
+And finally, we always want to consider what the final use case is of the objects
+we're building. Who will need to see it? Do we need to be able to answer a multitude
+of related questions? How do the tools consuming our products handle how we 
+choose to model it?  
+""  
 
 ---
 
 ### OK, but _really_ what is the final artifact that I should build?
 
 Should I denormalize everything into one wide table? Should I use Kimball design patterns?
+
+???
+""  
+We still haven't answered this question - what's the final artifact you should
+build? Should it be a wide denormalized table? Should you use Kimball design patterns?
+""  
 
 --
 
@@ -326,9 +578,27 @@ without warning? (Maybe join it in the BI tool)
 - What data models are your stakeholders used to? e.g. Do you work at an enterprise
 company that is used to working with DataVault models?
 
+???
+""  
+Our answer: it depends! For example:
+- If your BI tool is great with joins such as Looker, you can handle being a little
+more normalized. However, if it doesn't handle joins well like Tableau, you might
+choose to denormalize.
+- If you have data sets that updates in unpredictable ways, you might fair 
+better joining this in the BI tool so you can keep the information isolated 
+so that you can always understand what you're looking at.
+- If your company and team is used to working with a specific methodology, then 
+sometimes it's just easier to go with the flow!
+""  
+
 --
 
 And dbt lets you choose! It's all just SQL 😊
+
+???
+""  
+In the end, it's all just SQL. You can model it how you want!
+""  
 
 ---
 
@@ -339,12 +609,24 @@ And dbt lets you choose! It's all just SQL 😊
 
 Once you have an intuition of what you want to build, how do you do that in dbt?
 
+???
+""  
+So, let's say we _do_ have an idea of what we want to build. How do we do that 
+in dbt?
+""  
+
 ---
 class: subtitle, center, middle
 
 # 2. The process is the product
 
 ### (and that's more important)
+
+???
+""  
+That brings us to the process - how we'll create our artifacts in a scalable,
+reliable, and intuitive way.
+""  
 
 ---
 
@@ -353,6 +635,14 @@ class: subtitle, middle
 _The natural state of the universe is chaos: entropy tends to increase in closed
 systems, and there’s really nothing that we can do about that. So too is the
 nature of your dbt project: unless action is taken to maintain order._
+
+???
+""  
+Let's start with this quote:  
+The natural state of the universe is chaos: entropy tends to increase in closed
+systems, and there’s really nothing that we can do about that. So too is the
+nature of your dbt project: unless action is taken to maintain order.
+""  
 
 ---
 # What we really mean to say:
@@ -367,6 +657,15 @@ These artifacts show up in three places:
 
 These are how people at your organization will conceptualize, interact with,
 and benefit from data—your product—more than any one table or dashboard.
+
+???
+""  
+What we really mean by that is that no matter what you're building, be effortful
+in how you organize your artifacts. 
+
+The three main places where people at your organization will interact with your
+products are the DAG, the repository, and the warehouse. 
+""  
 
 ---
 
@@ -385,6 +684,20 @@ The DAG tells the story:
 &rarr;
 <span style="color: purple;">Dimensions/Facts</span></h3>
 
+???
+""  
+Let's look at the DAG - The DAG reflects how data flows from source to end 
+product through your project. If you've ever been asked "where are those sales 
+numbers coming from?", what you're really being asked about how the end result 
+is consuming sources of data, what processes are happening, and what assumptions
+you're applying to the sales calculations.
+
+Our DAG tells the story - you can see here that our sales model combines
+gets order and payment information from jaffle_shop and stripe, cleans the data,
+and finally comes together in fct_sales. This makes it easy for us to refer
+to the documentation or code of those models to understand what's happening.
+""  
+
 ---
 
 # Interface #1: The dbt DAG
@@ -394,6 +707,14 @@ For your final artifacts, consider which sources will power this project:
 <img src="/ui/img{{page.id}}/dag-part-2.png" style="width: 70%;" class="img-center">
 
 (More on this later)
+
+???
+""  
+In order to plan out our flow of data, we start by considering the the sources
+that power our end result. In our example, that's orders, products, customers, 
+and stores.
+""  
+
 ---
 
 # Interface #1: The dbt DAG
@@ -401,6 +722,12 @@ For your final artifacts, consider which sources will power this project:
 Then add staging models: "The shape you wish your data came in"
 
 <img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
+
+???
+""  
+Then, we start our first layer of models. This layer cleans and standardizes 
+our raw data so that it's easier to build with downstream.
+""  
 
 ---
 
@@ -431,7 +758,42 @@ Then add staging models: "The shape you wish your data came in"
 - Often built on top of an immutable event stream
 ]]]
 
+???
+""  
+So far, you've seen these prefixes for our model names. It's great to have 
+a naming convention like this to flag developers on a model's purpose or contents,
+for example:
 
+- stg_ means that we're cleaning and standardizing raw data: 
+  - We keep them 1:1 with our source tables, meaning that one model is cleaning one table - no joins.
+  - We also don't aggregate here, we keep it relatively source conformed - meaning
+    that the grain is kept the same aside from any light filtering (such as filtering out deleted records)
+  - The types of SQL you'll see here are things like:
+    - renaming
+    - casting
+    - coalescing
+    - null-if'ing 
+    - case when'ing
+    - row_number'ing
+    
+- dim_ and fct_ are final artifacts that will be used in analysis. Typically
+these are surfaced to stakeholders or outside tooling (such as Looker).
+  - dim_ stands for dimension and usually describes an entity or object, 
+    such as customers, products, apartments, or providers.
+    - dimensions usually update by overwriting data.
+  - fct_ describes something that's happening, i.e, an action or verb such as
+    orders, cases, plays, or listings, or comments.
+    - they usually append data rather than overwrite data, because the data is
+      logged as one row per action taken. 
+
+[Teacher note:]
+If anyone asks why we say "typically surfaced to outside tooling", you can give
+the example of typical modeling seen with Tableau. Tableau does better when you
+pre-aggregate data sets before piping them in to reports. For this reason, you 
+might create a "reports" folder with report_ prefixed models which do your joins
+and aggregations on the major concepts (the dims and fcts). 
+- 
+""  
 ---
 
 <h3 style="text-align: center;"><span style="color: green;">source</span>
