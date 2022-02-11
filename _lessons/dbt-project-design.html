@@ -473,8 +473,21 @@ it should be represented as such.
 It might be useful to add a column with information on how the payment was  
 processed (i.e, 'braintree' or 'stripe'), but in the end the payments table  
 should include all records in a standardized form.  
+""  
 
 ---
+
+# But what has stayed the same?
+
+- A "final" model should represent a _business_ process or entity.
+- Each model should have a clear "grain" — "one record represents a ..."
+
+???
+""  
+Each model should represent a clear grain - you should be able to say "each  
+record represents a ...".  
+
+--
 
 # But what has stayed the same?
 
@@ -497,9 +510,6 @@ How many trips occurred?
 
 ???
 ""  
-Each model should represent a clear grain - you should be able to say "each  
-record represents a ...".  
-
 For example, say we have a rideshare company and each time someone splits a trip,  
 the trips table had three entries: one for the parent trip, and two child trips.  
 
