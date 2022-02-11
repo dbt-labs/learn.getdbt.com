@@ -420,7 +420,6 @@ Some design decisions of the past were driven by technology:
 - Data modeling was a different skill set to analysis → project plan the whole thing!
 
 ???
-""  
 It's because the decisions we made in the past and the decisions we make today  
 are driven by technology, namely in the way that row-oriented and  
 column-oriented databases store and process data.  
@@ -465,7 +464,6 @@ or `braintree` (i.e. include a `payments_provider` column), but ultimately, the
 `payments` table should include both in a standardized form.
 
 ???
-""  
 For example, say we had a legacy payment system, `braintree`, and a new payment  
 system, `stripe`. Our stakeholders only know these things as `payments`, and  
 it should be represented as such.  
@@ -488,11 +486,6 @@ Each model should represent a clear grain - you should be able to say "each
 record represents a ...".  
 
 --
-
-# But what has stayed the same?
-
-- A "final" model should represent a _business_ process or entity.
-- Each model should have a clear "grain" — "one record represents a ..."
 
 **Example 2:**
 
@@ -519,7 +512,7 @@ We could say that:
 - two trips occured, we're only counting trips without a parent trip as a trip.
 - three trips occurred, because we're counting those without a parent trip as 
 a trip, and the split trip as one trip.
-- four trips occurred because we're counting each trip id
+- or four trips occurred because we're counting each trip id
 
 --
  Well what's a trip?
