@@ -502,7 +502,6 @@ the `trips` table has three entries: one parent trip, and two child trips.
 How many trips occurred?
 
 ???
-""  
 For example, say we have a rideshare company and each time someone splits a trip,  
 the trips table had three entries: one for the parent trip, and two child trips.  
 
@@ -514,12 +513,13 @@ We could say that:
 a trip, and the split trip as one trip.
 - or four trips occurred because we're counting each trip id
 
+""  
+
 --
  Well what's a trip?
 
 ???
-""  
-Okay, well what's a trip? In this example, we had to explain our trips by saying:  
+Well, what's a trip? In this example, we had to explain our trips by saying:  
 "each record represents a trip, but ...".  
 ""  
 
@@ -528,25 +528,22 @@ Okay, well what's a trip? In this example, we had to explain our trips by saying
 
 - A "final" model should represent a _business_ process or entity.
 - Each model should have a clear "grain" — "one record represents a ..."
-
---
 - Naming is important. In particular, consistency is _extremely_ valuable
 
 ???
 ""  
-Naming always has been, and always will be, important. It's extemely valuable
-so your team can understand the inputs and outputs of your analytics ecosystem.
-""  
+Naming always has been, and always will be, important. It's extemely valuable  
+so your team can understand the inputs and outputs of your analytics ecosystem.  
 
 --
 - Consider the final use case when designing your final artifacts
 
 ???
-""  
-And finally, we always want to consider what the final use case is of the objects
-we're building. Who will need to see it? Do we need to be able to answer a multitude
-of related questions? How do the tools consuming our products handle how we 
-choose to model it?  
+And finally, we always want to keep in mind what the final use case is:
+- Who will need to see it?
+- Do we need to be able to answer a multitude of questions related to this data set?
+- How do well do the tools consuming our data products handle how we choose to model it?
+
 ""  
 
 ---
@@ -557,9 +554,9 @@ Should I denormalize everything into one wide table? Should I use Kimball design
 
 ???
 ""  
-We still haven't answered this question - what's the final artifact you should
-build? Should it be a wide denormalized table? Should you use Kimball design patterns?
-""  
+We still haven't answered this question - what's the final artifact we should  
+be building? Should it be a wide denormalized table? Should we use a Kimball   
+design pattern?  
 
 --
 
@@ -574,7 +571,6 @@ without warning? (Maybe join it in the BI tool)
 company that is used to working with DataVault models?
 
 ???
-""  
 Our answer: it depends! For example:
 - If your BI tool is great with joins such as Looker, you can handle being a little
 more normalized. However, if it doesn't handle joins well like Tableau, you might
@@ -584,15 +580,13 @@ better joining this in the BI tool so you can keep the information isolated
 so that you can always understand what you're looking at.
 - If your company and team is used to working with a specific methodology, then 
 sometimes it's just easier to go with the flow!
-""  
 
 --
 
 And dbt lets you choose! It's all just SQL 😊
 
 ???
-""  
-In the end, it's all just SQL. You can model it how you want!
+In the end, it's all just SQL. You can choose what's best for your team!  
 ""  
 
 ---
