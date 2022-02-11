@@ -542,7 +542,7 @@ so your team can understand the inputs and outputs of your analytics ecosystem.
 
 ???
 And finally, we always want to keep in mind what the final use case is:
-- Who will need to our final artifacts?
+- Who will need to use our final artifacts?
 - Which questions do we need to answer related to these data sets?
 - How well will the tools consuming our data products handle how we propose to model it?
 
@@ -556,8 +556,8 @@ Should I denormalize everything into one wide table? Should I use Kimball design
 
 ???
 ""  
-We still haven't answered the question of what the final artifacts we should  
-be building are. Should they be wide denormalized tables? Should we use a Kimball  
+Okay, buy we still haven't answered the question about what the final artifacts  
+should be. Should they be wide denormalized tables? Should we use a Kimball  
 design pattern?  
 
 --
@@ -617,8 +617,8 @@ class: subtitle, center, middle
 
 ???
 ""  
-This is where we'll talk about the process - how we'll create our artifacts in a  
-scalable, reliable, and intuitive way.  
+This is where we'll talk about the process and how we'll create our artifacts in  
+a scalable, reliable, and intuitive way.  
 ""  
 
 ---
@@ -679,8 +679,9 @@ The DAG tells the story:
 
 ???
 ""  
-Let's look at the DAG:
-The DAG reflects how data flows from source to end product through your project.  
+Let's talk about the first interface - the DAG.  
+A DAG (Directed Acyclic Graph) is generated in every dbt project, and reflects  
+how data flows from source to end product.  
 
 If you've ever been asked "where are those sales numbers coming from?", what  
 you're really being asked about how the end result is:
@@ -707,8 +708,8 @@ For your final artifacts, consider which sources will power this project:
 
 ???
 ""  
-In order to plan out our flow of data, let's whiteboard our example.  
-We'll start by considering the the sources that power our end result, fct_sales.   
+In order to plan out our flow of data, let's whiteboard our fct_sales example.  
+We'll start by considering the the sources that power our end result.   
 The data sources we need are orders, products, customers, and stores.  
 
 ---
@@ -721,7 +722,7 @@ Then add staging models: "The shape you wish your data came in"
 
 ???
 Once we have our sources, we create our first layer of models which cleans and  
-standardize our raw data so that it's easier to work with downstream.  
+standardizes our raw data so that it's easier to work with downstream.  
 ""  
 
 ---
@@ -761,34 +762,28 @@ At dbt Labs, here's what our prefixes mean:
 - stg_ means that we're cleaning and standardizing raw data: 
   - We keep them 1:1 with our source tables, meaning that one model is cleaning  
     one table - no joins.
-  - We also don't aggregate here, we keep it relatively source conformed - meaning  
-    that the grain is kept the same aside from any light filtering, such as filtering  
-    out deleted records.
-  - The types of SQL you'll see here are things like:
-        - renaming
-        - casting
-        - coalescing
-        - null-if'ing 
-        - case when'ing
-        - row_number'ing
+  - We also don't aggregate here, we keep it source conformed - meaning  
+    that the grain of the data is kept the same.
+  - Most of the SQL you'll see in these models are renaming, casting, coalescing,  
+    and null-if'ing. If it helps in downstream modeling, we'll also do things like case whens,  
+    row_numbers and filtering out duplicated or deleted records
     
 - dim_ and fct_ are final artifacts that will be used in analysis. Typically  
 these are surfaced to stakeholders or outside tooling (such as a BI tool).  
-  - dim_ stands for dimension and usually describes an entity or object, 
-    such as customers, products, apartments, or providers.
+  - dim_ stands for dimension and usually describes an entity or object, such as  
+    customers, products, apartments, or providers.
   - dimensions usually update by overwriting data.
   - fct_ describes something that's happening, i.e, an action or verb such as
     orders, cases, plays, or listings, or comments.
-    - they usually append data rather than overwrite data, because the data is
-      logged as one row per action taken. 
+        - they usually append data rather than overwrite data, because the data  
+        is logged as one row per action taken. 
 
 [Teacher note:]
-If anyone asks why we say "typically surfaced to outside tooling", you can give
-the example of typical modeling seen with Tableau. Tableau does better when you
-pre-aggregate data sets before piping them in to reports. For this reason, you 
-might create a "reports" folder with report_ prefixed models which do your joins
-and aggregations on the major concepts (the dims and fcts). 
-- 
+This says "typically surfaced to outside tooling", because you can also keep  
+BI-type queries in dbt. A use case is Tableau, which does better when you  
+pre-aggregate data sets before piping them in to reports. For this reason, you  
+might create a "reports" folder with report_ prefixed models which do your joins  
+and aggregations on the major concepts (the dims and fcts).  
 ""  
 ---
 
