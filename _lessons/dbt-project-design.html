@@ -32,7 +32,8 @@ If they don't seem interactive but you want some interactivity, you can also
 pose these questions to fellow teachers.  
     
 ""  
-In previous sessions we saw that we have raw data in the warehouse.   
+In previous sessions we saw that we have raw data in the warehouse.  
+  
 What should we do it?  
 --
 
@@ -190,7 +191,7 @@ brand and country combination, with an aggregate of the units sold.
 What is the query you (the analyst) will write to get these results?
 
 ???
-Let's pause here, close our eyes, and imagine the query we would write in 1998  
+Let's pause here and close our eyes, and imagine the query we would write in 1998  
 to get these results.  
 ""  
   
@@ -286,7 +287,7 @@ group by 1, 2
 ???
 ""  
 Our query today would look something like this. There's a lot less going on  
-here - notable there are way less joins. Why is that? It's because we're working  
+here - notable there are no joins. Why is that? It's because we're working  
 with denormalized data, meaning that all of the relevant information is in the  
 same model.  
   
@@ -321,7 +322,7 @@ Here's what the underlying data looks like for our denormalized model.
 
 <img src="/ui/img/lessons/data-warehouses/fact-sales-dag.png" class="img-center">
 
-???  
+???
 ""  
 And here's the underlying flow of our data. You can see that we still have  
 all of the same underlying tables, but instead of joining all of it at once,  
