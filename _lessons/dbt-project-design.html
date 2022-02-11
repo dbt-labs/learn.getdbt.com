@@ -287,7 +287,7 @@ group by 1, 2
 ???
 ""  
 Our query today would look something like this. There's a lot less going on  
-here - notable there are no joins. Why is that? It's because we're working  
+here - notably there are no joins. Why is that? It's because we're working  
 with denormalized data, meaning that all of the relevant information is in the  
 same model.  
   
@@ -464,7 +464,7 @@ or `braintree` (i.e. include a `payments_provider` column), but ultimately, the
 `payments` table should include both in a standardized form.
 
 ???
-For example, say we had a legacy payment system, `braintree`, and a new payment  
+Let's say we had a legacy payment system, `braintree`, and a new payment  
 system, `stripe`. Our stakeholders only know these things as `payments`, and  
 it should be represented as such.  
   
@@ -513,14 +513,13 @@ We could say that:
 a trip, and the split trip as one trip.
 - or four trips occurred because we're counting each trip id
 
-""  
-
 --
  Well what's a trip?
 
 ???
-Well, what's a trip? In this example, we had to explain our trips by saying:  
-"each record represents a trip, but ...".  
+Well, what's a trip...?  
+In this example, we had to explain our trips by saying: "each record represents  
+a trip, but ...".  
 ""  
 
 ---
@@ -540,9 +539,9 @@ so your team can understand the inputs and outputs of your analytics ecosystem.
 
 ???
 And finally, we always want to keep in mind what the final use case is:
-- Who will need to see it?
-- Do we need to be able to answer a multitude of questions related to this data set?
-- How do well do the tools consuming our data products handle how we choose to model it?
+- Who will need to our final artifacts?
+- Which questions do we need to answer related to these data sets?
+- How well will the tools consuming our data products handle how we propose to model it?
 
 ""  
 
@@ -554,8 +553,8 @@ Should I denormalize everything into one wide table? Should I use Kimball design
 
 ???
 ""  
-We still haven't answered this question - what's the final artifact we should  
-be building? Should it be a wide denormalized table? Should we use a Kimball   
+We still haven't answered the question of what the final artifacts we should  
+be building are. Should they be wide denormalized tables? Should we use a Kimball  
 design pattern?  
 
 --
@@ -573,11 +572,11 @@ company that is used to working with DataVault models?
 ???
 Our answer: it depends! For example:
 - If your BI tool is great with joins such as Looker, you can handle being a little
-more normalized. However, if it doesn't handle joins well like Tableau, you might
+more normalized. However, if it prefers flat data sets like Tableau, you might
 choose to denormalize.
-- If you have data sets that updates in unpredictable ways, you might fair 
+- If you have data sets that update in unpredictable ways, you might fair 
 better joining this in the BI tool so you can keep the information isolated 
-so that you can always understand what you're looking at.
+to understand what you're looking at.
 - If your company and team is used to working with a specific methodology, then 
 sometimes it's just easier to go with the flow!
 
@@ -586,7 +585,9 @@ sometimes it's just easier to go with the flow!
 And dbt lets you choose! It's all just SQL 😊
 
 ???
-In the end, it's all just SQL. You can choose what's best for your team!  
+In the end, it's all just SQL. You can choose what makes the most sense for your  
+own business practices and tooling!  
+
 ""  
 
 ---
@@ -600,8 +601,8 @@ Once you have an intuition of what you want to build, how do you do that in dbt?
 
 ???
 ""  
-So, let's say we _do_ have an idea of what we want to build. How do we do that 
-in dbt?
+So, let's say we _do_ have an idea of what we want to build. How do we do that  
+with dbt?  
 ""  
 
 ---
@@ -613,8 +614,8 @@ class: subtitle, center, middle
 
 ???
 ""  
-That brings us to the process - how we'll create our artifacts in a scalable,
-reliable, and intuitive way.
+This is where we'll talk about the process - how we'll create our artifacts in a  
+scalable, reliable, and intuitive way.  
 ""  
 
 ---
@@ -628,9 +629,9 @@ nature of your dbt project: unless action is taken to maintain order._
 ???
 ""  
 Let's start with this quote:  
-The natural state of the universe is chaos: entropy tends to increase in closed
-systems, and there’s really nothing that we can do about that. So too is the
-nature of your dbt project: unless action is taken to maintain order.
+The natural state of the universe is chaos: entropy tends to increase in closed  
+systems, and there’s really nothing that we can do about that. So too is the  
+nature of your dbt project: unless action is taken to maintain order.  
 ""  
 
 ---
@@ -649,11 +650,11 @@ and benefit from data—your product—more than any one table or dashboard.
 
 ???
 ""  
-What we really mean by that is that no matter what you're building, be effortful
-in how you organize your artifacts. 
+What we really mean by that is that no matter what you're building, be effortful  
+in how you organize your artifacts.  
 
-The three main places where people at your organization will interact with your
-products are the DAG, the repository, and the warehouse. 
+The three main places where people at your organization will interact with your  
+products are the DAG, the repository, and the warehouse.  
 ""  
 
 ---
@@ -675,16 +676,20 @@ The DAG tells the story:
 
 ???
 ""  
-Let's look at the DAG - The DAG reflects how data flows from source to end 
-product through your project. If you've ever been asked "where are those sales 
-numbers coming from?", what you're really being asked about how the end result 
-is consuming sources of data, what processes are happening, and what assumptions
-you're applying to the sales calculations.
+Let's look at the DAG:
+The DAG reflects how data flows from source to end product through your project.  
 
-Our DAG tells the story - you can see here that our sales model combines
-gets order and payment information from jaffle_shop and stripe, cleans the data,
-and finally comes together in fct_sales. This makes it easy for us to refer
-to the documentation or code of those models to understand what's happening.
+If you've ever been asked "where are those sales numbers coming from?", what  
+you're really being asked about how the end result is:
+- consuming sources of data
+- being processed
+- and being calculated (what are the assumptions?)
+
+Our DAG tells the story -  
+You can see here that our sales model combines order and payment information from  
+jaffle_shop and stripe, cleans the data, and finally comes together in fct_sales.  
+This makes it easy for us to make informed decisions and understand where to  
+look for more information.  
 ""  
 
 ---
@@ -699,10 +704,9 @@ For your final artifacts, consider which sources will power this project:
 
 ???
 ""  
-In order to plan out our flow of data, we start by considering the the sources
-that power our end result. In our example, that's orders, products, customers, 
-and stores.
-""  
+In order to plan out our flow of data, let's whiteboard our example.  
+We'll start by considering the the sources that power our end result, fct_sales.   
+The data sources we need are orders, products, customers, and stores.  
 
 ---
 
@@ -713,9 +717,8 @@ Then add staging models: "The shape you wish your data came in"
 <img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
 
 ???
-""  
-Then, we start our first layer of models. This layer cleans and standardizes 
-our raw data so that it's easier to build with downstream.
+Once we have our sources, we create our first layer of models which cleans and  
+standardize our raw data so that it's easier to work with downstream.  
 ""  
 
 ---
@@ -749,27 +752,28 @@ our raw data so that it's easier to build with downstream.
 
 ???
 ""  
-So far, you've seen these prefixes for our model names. It's great to have 
-a naming convention like this to flag developers on a model's purpose or contents,
-for example:
-
+So far, you've seen the following prefixes mentioned. It's great to have a naming  
+convention for your models to flag developers on their contents or purposes.  
+At dbt Labs, here's what our prefixes mean:
 - stg_ means that we're cleaning and standardizing raw data: 
-  - We keep them 1:1 with our source tables, meaning that one model is cleaning one table - no joins.
-  - We also don't aggregate here, we keep it relatively source conformed - meaning
-    that the grain is kept the same aside from any light filtering (such as filtering out deleted records)
+  - We keep them 1:1 with our source tables, meaning that one model is cleaning  
+    one table - no joins.
+  - We also don't aggregate here, we keep it relatively source conformed - meaning  
+    that the grain is kept the same aside from any light filtering, such as filtering  
+    out deleted records.
   - The types of SQL you'll see here are things like:
-    - renaming
-    - casting
-    - coalescing
-    - null-if'ing 
-    - case when'ing
-    - row_number'ing
+        - renaming
+        - casting
+        - coalescing
+        - null-if'ing 
+        - case when'ing
+        - row_number'ing
     
-- dim_ and fct_ are final artifacts that will be used in analysis. Typically
-these are surfaced to stakeholders or outside tooling (such as Looker).
+- dim_ and fct_ are final artifacts that will be used in analysis. Typically  
+these are surfaced to stakeholders or outside tooling (such as a BI tool).  
   - dim_ stands for dimension and usually describes an entity or object, 
     such as customers, products, apartments, or providers.
-    - dimensions usually update by overwriting data.
+  - dimensions usually update by overwriting data.
   - fct_ describes something that's happening, i.e, an action or verb such as
     orders, cases, plays, or listings, or comments.
     - they usually append data rather than overwrite data, because the data is
