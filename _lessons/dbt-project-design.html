@@ -777,8 +777,8 @@ At dbt Labs, here's what our prefixes mean:
 - dim_ and fct_ are data sets that will be used in analysis. Typically  
 these are surfaced to stakeholders or outside tooling (such as a BI tool).  
   - dim_ stands for dimension and usually describes an entity or object, such as  
-    customers, products, apartments, or providers.
-  - dimensions usually update by overwriting data.
+    customers, products, apartments, or providers. The underlying data typically
+    updates via overwriting values.
   - fct_ describes something that's happening, i.e, an action or verb such as
     orders, cases, plays, or listings, or comments.
         - they usually append data rather than overwrite data, because the data  
