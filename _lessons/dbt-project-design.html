@@ -783,13 +783,8 @@ these are surfaced to stakeholders or outside tooling (such as a BI tool).
     orders, cases, plays, or listings, or comments. The underlying data usually 
     appends updates to the data set rather than overwriting.
 
-[Teacher note:]
-This says "typically surfaced to outside tooling", because you can also keep  
-BI-type queries in dbt. A use case is Tableau, which does better when you  
-pre-aggregate data sets before piping them in to reports. For this reason, you  
-might create a "reports" folder with report_ prefixed models which do your joins  
-and aggregations on top of the major concepts (dims and fcts).  
 ""  
+
 ---
 
 <h3 style="text-align: center;"><span style="color: green;">source</span>
