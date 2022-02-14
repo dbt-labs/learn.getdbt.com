@@ -783,7 +783,7 @@ This says "typically surfaced to outside tooling", because you can also keep
 BI-type queries in dbt. A use case is Tableau, which does better when you  
 pre-aggregate data sets before piping them in to reports. For this reason, you  
 might create a "reports" folder with report_ prefixed models which do your joins  
-and aggregations on the major concepts (the dims and fcts).  
+and aggregations on top of the major concepts (dims and fcts).  
 ""  
 ---
 
@@ -802,9 +802,27 @@ and aggregations on the major concepts (the dims and fcts).
 <img src="/ui/img{{page.id}}/dag-grouped.png" style="width: 100%;">
 
 ???
-Instructor: draw circles/boxes around the different "model groups" (sources,
+""  
+Here's an example of what a real DAG might end up looking like. You can  
+see that we have:
+- Our sources (the green nodes)
+- Our staging models
+- Some intermediate steps happening
+- and our final dimensions and facts
+""  
+
+[Demo:]  
+Draw circles/boxes around the different "model groups" (sources,
 staging, intermediate, lookups, final fact/dim). Comment on how they can
-be grouped together in all three interfaces.
+be grouped together in all three interfaces.  
+
+[Teacher Note:]  
+If you start out by having the class focus on the major pieces (sourcse, stg_,  
+dim_/fct_), you can then explain that the other layers are purely optional  
+and serve to break down the flows into even more understandable steps.  
+- base: usually used to bring together parts of a whole building block
+- intermediate: usually used to break processes up in to logical steps 
+or components towards the end goal.  
 
 ---
 # Interface #1: The dbt DAG
@@ -813,6 +831,19 @@ Make sure that for each model, you ask:
 - What does one record represent? Let's document this!
 - What assumptions about our data are we making? We should test those!
 - Am I using naming patterns? You should!
+
+???
+""  
+Some good practices to go along with building your DAG are documentation,
+testing, and organization. You can add more quality by asking these questions:
+- What does one record represent? We should document this - this helps our team  
+understand what they're working with.
+- What assumptions about our data are we making? We should test these - this  
+ensures that through our iterations that our assumptions remain true.
+- Are we using naming patterns? We should! This helps us keep things organized
+and understandable at a glance.
+
+""  
 
 ---
 
@@ -847,6 +878,27 @@ Make sure that for each model, you ask:
 ]
 ]
 
+???
+""  
+Our developers are doing most of their work within the files of the repository.  
+We can keep this organized by separating our modeling layers in to dedicated  
+folders. In this example, you can see that we have:
+- A folder for our staging models and our marts models. Our staging folder is for
+models that clean our source data, and our marts folder is for models that put 
+together our cleaned data.
+- Our staging folder contains subfolders for each source.  
+- Within the subfolders, we have a our configurations and models that relate to
+each source.
+- Our marts folder contains a subfolder that relates to the area of business our
+models apply to - right now we have core, but we could also add for others such
+as product and marketing.
+- Similar to our staging area, we keep configuration files within the folder of 
+the models they seek to describe.
+- And lastly, you can see that we've used our naming conventions for each model.
+These names will show up as the object names in our warehouse and as the node
+names in the DAG.
+
+""  
 ---
 
 # Interface #3: The Warehouse
@@ -863,6 +915,23 @@ find, and easy to infer contents?
 <img src="/ui/img{{page.id}}/mode-sidebar.png" style="width: 60%;" class="img-center">
 ]
 
+???
+""  
+The last interface is the warehouse - which takes into consideration:
+- How we've named things
+- Our configurations for how materialized objects are organized
+- and our permissioning setups in our warehouse
+
+You can see on the right how a naming prefix has helped organize the models
+into easy-to-find groups, and how the naming helps someone infer
+the contents of the objects.
+  
+Depending on the usage of these objects, we might further customize them by  
+configuring them to build into schemas by use case and setting permissions on  
+those schemas based on who or what should use the objects within them.  
+
+""  
+
 ---
 
 class: subtitle, center, middle
@@ -875,6 +944,12 @@ class: subtitle, center, middle
 <img src="/ui/img{{page.id}}/discourse-intro.png" class="img-center">
 
 .center[[Read it!](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)]
+
+???
+""  
+Here's an article we wrote on how we organize and structure our dbt projects.  
+It's worth a read if you want to get some ideas for creating your own conventions!  
+""  
 
 ---
 
@@ -899,16 +974,43 @@ class: subtitle, center, middle
 
 ## What BI tools do you use?
 
+???
+""  
+Now we're going to talk about dbt artifacts and business intelligence tools.
+Our end products typically get consumed by these, so it's important to understand  
+the practices surrounding this part of the stack.  
+
+""  
+
 ---
 
 class: center
 # What BI tools do you use?
 <img src="/ui/img{{page.id}}/bi-logos-3.png" style="width: 40%;" class="img-center">
+
+???
+""  
+There's a lot of BI tools at our disposal - tools such as Sisense, Metabase,  
+Redash, Mode, Looker, Tableau, R, Chartio, etc.
+
+Which of these tools do you use currently, or have you used in the past? 
+Throw your answer in Slack! 
+""  
+
+[Teacher Notes:]  
+Interactivity - have the class shout out which of these tools they've used in  
+the slack channel!
 ---
 
 # Which part of this should be in the dbt versus the BI tool?
 
 <img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
+
+???
+""  
+Let's go back to our question from earlier - where should our rollup query for  
+sales by product and country live? Should it live in dbt, or in our BI tool?  
+""  
 
 ---
 
@@ -916,23 +1018,61 @@ class: center
 
 For most orgs, the final rollup query should be in BI tool — allows for "drill down" functionality / further exploration.
 
+???
+""  
+For most organizations, the final rollup query would be in the BI tool. By keeping  
+things at the fct_sales level and aggregating using our BI tool's functionality,
+we can allow for drill downs and deeper explorations.  
+
 --
 
 What if?
 - This is a KPI your company reports on regularly?
---
- Maybe you want it in a dbt model as well.
+
+???
+And if this is a trusted KPI that your company reports on regularly?  
 
 --
-- You're building a prototype model or field?
+
+ Maybe you want it in a dbt model as well.
+ 
+???
+then you might decide to model this in dbt so that it can be version contolled  
+as well! There's nothing wrong with moving important calculations in to dbt,  
+but you might want to create a prefix for them to inform others that they  
+are metrics aggregated from the major ideas.  
+
 --
+
+- You're building a prototype model or field?
+
+???
+what about if we're prototyping a new model or testing out transformations on  
+a new peice of data?  
+
+--
+
  Potentially build it in the BI tool first then "promote" it.
+
+???
+then we might want to build our prototyped query into the BI tool first, then  
+move it into dbt once we verify that it's useful and agreed-upon.  
+
 ---
 
 
 # What should you use your BI tool for?
 
+???
+""  
+Queries and transformations can move around between dbt and the BI tool, so how  
+do we try to stay effortful in what we decide to put where?  
+
+Let's look at what we _should_ use our BI tool for:  
+""  
+
 ---
+
 ## The things they've always been good at!
 
 .left-column-33[
@@ -958,9 +1098,31 @@ What if?
 ]
 ]
 
+???
+""  
+They've always been good for supplying an easy-to-use user interface for less  
+technical users, which include:
+- point and click interfaces
+- self-service filters and the ability for exploration through drill downs
+  
+They are also great at visualizing data. They usually have really great:
+- out of the box visualizations that are easy to create
+- the ability to brand the interface or visualizations using color palettes
+- and the ability to bake in further functionality via imported frameworks and 
+libraries
+  
+They also have some really nice features which make management overhead a little  
+easier, such as:
+- dynamic user input: allowing your users to dynamically change the inputs of a query  
+- scheduling  
+- alerting  
+- and exporting to pdf's and csv's  
+
+""  
+
 ---
 
-## Not the things they're less good at
+## The things they're less good at
 
 - Multilayered data transformation with complex ordered dependencies
 - Enforcing a single sources of truth
@@ -970,6 +1132,26 @@ What if?
     - Version control
 - Running a lot non-performant SQL concurrently
 - Managing user access to sensitive data
+
+???
+""  
+They're not so great at:
+- Multi-layered data transformations with complex ordered dependencies; For  
+example, You need to transform data at different steps and you need to ensure  
+everything happens in the correct order.
+- Enforcing single sources of truth; For example, you need to ensure that    
+logic for a sales calculation is the same anywhere it's used, and you also need  
+to ensure the documentation and definitions of your data can be found in one  
+place.
+- Maintaining seperate data environments; For example, you need to ensure that  
+you can test changes without messing up production, and need version control so  
+so you can easily perform code comparisons or rollbacks.  
+- Running a lot of non-performant SQL concurrently; For example, you need to make  
+many calculations on large event tables before you can perform analyses on the data.  
+- and managing user access to sensitive data; For example, you need to allow a certain  
+group of stakeholders access to a certain set of models.   
+
+""  
 
 ---
 
@@ -994,6 +1176,25 @@ What if?
 ]
 
 ???
+""  
+So, what goes where?  
+  
+Here's what we suggest:  
+  
+In dbt, we want critical business logic, the best agreed versions of models,  
+complex SQL, queries that can serve multiple purposes, and really anything worth  
+version control. You can think of this as our assembly line which produces 
+expected outputs every time.  
+
+In the BI layer, we want to keep aggregations and queries that need to be  
+calculated on the fly, joins qualified by user input (throw back to dynamic user  
+input), ad-hoc queries and prototyping, select stars that feed data science  
+libraries, and _most importantly_: nothing you can't take with you! You can think  
+of this as the place where we take the items produced from our assembly line  
+and customize them to meet our stakeholder's needs.  
+""  
+
+[Teacher Note:]  
 dbt models are like kitchen tools. The only single-purpose kitchen appliance
 you should ever have is a rice cooker.
 
@@ -1007,16 +1208,40 @@ class: subtitle
 # Checkpoint:
 
 - What are the three interfaces into your dbt project?
+
+???
+""  
+- What are the three interfaces into our dbt projects? [DAG, warehouse, repo]  
+
 --
 
 - What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
+
+???
+- What are some key distinctions between dbt and the BI layer that you should
+keep in mind?  
+
 --
 
 - What naming conventions is your team already using?
 
+???
+- What are some naming conventions your team is already using?
+""  
+
+[Teacher Note:]  
+Use your intuition on the interactivity of the group. If they're less outspoken,  
+ask them to shout it out in the Slack channel. Otherwise, you can pause for a  
+moment here to allow others to say what conventions they use!  
+
 --
 
 ## Questions?
+
+???
+""  
+Any questions?  
+""  
 
 ---
 
@@ -1030,6 +1255,19 @@ When creating a dbt project:
 - Stage your raw source data before transforming it.
 - Every model should have a primary key.
 - Decide as an organization how to keep your BI layer thin and flexible.
+
+???
+""  
+To recap:  
+
+When creating a dbt project:
+- First decide on the final artifact, and then sketch out the process for modeling it.
+- Use the three interfaces to organize your models.
+- Stage your raw source data before transforming it.
+- Every model should have a primary key.
+- Decide as an organization how to keep your BI layer thin and flexible.
+  
+""  
 
 {% include options/last_slide.html %}
 
