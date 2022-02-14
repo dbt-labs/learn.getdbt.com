@@ -766,12 +766,12 @@ to flag developers on model contents and purposes.
   
 At dbt Labs, here's what our prefixes mean:
 - stg_ means that we're cleaning and standardizing raw data: 
-  - We keep them 1:1 with our source tables, meaning that one model is cleaning  
+  - We keep them 1:1 with our source tables, meaning that one model is cleaning
     one table - no joins.
-  - We also don't aggregate here, we keep it source conformed - meaning  
+  - We also don't aggregate here, we keep it source conformed - meaning
     that the grain of the data is kept the same.
-  - Most of the SQL you'll see in these models are renaming, casting, coalescing,  
-    and null-if'ing. If it helps in downstream modeling, we'll also do things like case whens,  
+  - Most of the SQL you'll see in these models are renaming, casting, coalescing,
+    and null-if'ing. If it helps in downstream modeling, we'll also do things like case whens,
     row_numbers and filtering out duplicated or deleted records
     
 - dim_ and fct_ are final artifacts that will be used in analysis. Typically  
