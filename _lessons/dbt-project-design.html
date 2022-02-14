@@ -807,7 +807,11 @@ Here's an example of what a real DAG might end up looking like. You can
 see that we have:
 - Our sources (the green nodes)
 - Our staging models
-- Some intermediate steps happening
+- Some intermediate steps happening: Remember our leftover question mark when we
+were whiteboarding our DAG? We can identify what processes are our "stepping stones"
+to our endresult and modularize those as intermediate models. You don't need these,
+but it does make the overall flow more understandable and allows you to reuse the
+outputs of those processes!
 - and our final dimensions and facts
 ""  
 
