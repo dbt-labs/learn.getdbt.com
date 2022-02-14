@@ -725,6 +725,8 @@ Then add staging models: "The shape you wish your data came in"
 ???
 Once we have our sources, we create our first layer of models which cleans and  
 standardizes our raw data so that it's easier to work with downstream.  
+  
+We'll learn later on about what fills in our leftover question mark.  
 ""  
 
 ---
@@ -758,8 +760,10 @@ standardizes our raw data so that it's easier to work with downstream.
 
 ???
 ""  
-So far, you've seen the following prefixes mentioned. It's great to have a naming  
-convention for your models to flag developers on their contents or purposes.  
+But first, let's talk about the prefixes you've seen so far on our model names.  
+Having naming conventions for your models is a great way to leverage self-documentation  
+to flag developers on model contents and purposes.  
+  
 At dbt Labs, here's what our prefixes mean:
 - stg_ means that we're cleaning and standardizing raw data: 
   - We keep them 1:1 with our source tables, meaning that one model is cleaning  
