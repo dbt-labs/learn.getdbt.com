@@ -1,16 +1,82 @@
 # Working Group #1
 
-**Facilitation Guide** The instructor should be driving for most of this session. If students run into issues setting up their projects, ask them to share their screens so you can see their issue and other students can learn from the solution.
+**Facilitation Guide** The instructor should be driving for most of this session. Students were emailed with instructions on how to do the following setup tasks, but walk them through it if they haven't yet completed it or are having trouble. If students run into issues, ask them to share their screens so you can see their issue and other students can learn from the solution.
 
 **Working Process**
+
 1. Guide students through the process of finding the email with the dbt Cloud invite, accepting the invite, and finding their project.
 2. Have them enter their Snowflake credentials and initialize their project.
-3. Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
-4. Delete the examples folder.
-5. Finally, have them create the files below. For each model created, run `dbt run` and look at the logs to talk through what is happening.
-6. Change the `dbt_project.yml` materializations to match the file below.
+3. Commit to main with a commit message like "initialized project".
+4. Have them create a new branch so they can start making changes.
 
-**`stg_customers.sql`**
+Now that the setup is done, do the following.
+1. Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tabs (Query Results, Compiled SQL, Lineage), and command line.
+2. Students will have the following version of `customers.sql` already in their projects. Code snippets are included below in case there are any issues.
+
+**`stg_customers.sql (original)`**
+
+```sql
+with customers as (
+
+    select
+        id as customer_id,
+        first_name,
+        last_name
+
+    from raw.jaffle_shop.customers
+
+),
+
+orders as (
+
+    select
+        id as order_id,
+        user_id as customer_id,
+        order_date,
+        status
+
+    from raw.jaffle_shop.orders
+
+),
+
+customer_orders as (
+
+    select
+        customer_id,
+
+        min(order_date) as first_order_date,
+        max(order_date) as most_recent_order_date,
+        count(order_id) as number_of_orders
+
+    from orders
+
+    group by 1
+
+),
+
+
+final as (
+
+    select
+        customers.customer_id,
+        customers.first_name,
+        customers.last_name,
+        customer_orders.first_order_date,
+        customer_orders.most_recent_order_date,
+        coalesce(customer_orders.number_of_orders, 0) as number_of_orders
+
+    from customers
+
+    left join customer_orders using (customer_id)
+
+)
+
+select * from final
+```
+
+3. Walk students through refactoring `customers.sql` to break out the staging CTEs into the staging models below. Create a subdirectory called staging under the models folder. Replace the CTEs in `customers.sql` with ref() functions.
+
+**`staging/stg_customers.sql`**
 
 ```sql
 select
@@ -21,7 +87,7 @@ select
 from raw.jaffle_shop.customers
 ```
 
-**`stg_orders.sql`**
+**`staging/stg_orders.sql`**
 
 ```sql
 select
@@ -82,42 +148,7 @@ final as (
 select * from final
 ```
 
-**`schema.yml`**
-```yml
-version: 2
-
-models:
-  - name: customers
-    columns:
-      - name: customer_id
-        tests:
-          - unique
-          - not_null
-
-  - name: stg_customers
-    columns:
-      - name: customer_id
-        tests:
-          - unique
-          - not_null
-
-  - name: stg_orders
-    columns:
-      - name: order_id
-        tests:
-          - unique
-          - not_null
-      - name: status
-        tests:
-          - accepted_values:
-              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
-      - name: customer_id
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_customers')
-              field: customer_id
-```
+4. Change the models block in the `dbt_project.yml` to match the snippet below.
 
 **`dbt_project.yml`**
 
@@ -127,22 +158,23 @@ models:
   jaffle_shop:
     +materialized: table
     staging:
-      +materialized: table
+      +materialized: view
 ```
 
 # Working Group #2
 
 **Facilitation Guide** The instructor should be driving for most of this session. Be sure to allow people time to catch up after each step outlined below.
 
-**Working Process** - Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
+**Working Process** Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
 
-1. Inspect `raw.stripe.payment`
-2. Stage payment data as `stg_payments`
+1. Inspect `raw.stripe.payment`.
+2. Stage payment data as `stg_payments`.
 3. Inspect `stg_payments` and `stg_orders`, recognize that orders to payments is one-to-many.
-4. Write the `orders` model
-5. Refactor the `customers` model
+4. Write the `orders` model.
+5. Refactor the `customers` model.
+6. Check that the total lifetime value for all customers is $1,672. Realize that we need to convert cents to dollars in `stg_payments`.
 
-**`stg_payments.sql`**
+**`staging/stg_payments.sql`**
 
 ```sql
 select
@@ -233,43 +265,18 @@ select * from final
 (1) Independently then check in towards the end
 (2) Guided with a screen share
 
-**Working Process** - Facilitate discussion to name the following steps for building the orders model and refactoring the customers model
+**Working Process**
 
-1. Add Tests
-2. Add Sources and Refactor
-3. Add Docs
-4. Refactor project into marts/core and staging
+1. Create 2 subfolders under the staging folder: jaffle_shop and stripe. Create marts/core under models. Move all model files into their respective folders.
+2. Create schema yml files in each subfolder that include tests and descriptions for the models in that subfolder.
+3. Create 2 sources yml files in each of the staging subfolders to configure those sources. Replace the hard-coded references to sources in the staging models with the source() function.
+4. Extra credit: create `models/order_status.md` below. Add source freshness block (see code snippet below under the orders model in `models/staging/jaffle_shop/src_jaffle_shop.yml`). Work with students to create a deployment environment and set up a scheduled job.
 
-**`src_jaffle_shop.yml`**
+**models folder at the end of Working Group 3**
 
-```yml
-version: 2
+<img src="/ui/img/working_group_3_models.png" style="width: 20%;" class="img-center">
 
-sources:
-  - name: jaffle_shop
-    description: A clone of a Postgres application database.
-    database: raw
-    tables:
-      - name: customers
-        description: Raw customers data.
-        columns:
-          - name: id
-            description: Primary key for customers
-            tests:
-              - unique
-              - not_null
-
-      - name: orders
-        description: Raw orders data.
-        columns:
-          - name: id
-            description: Primary key for orders.
-            tests:
-              - unique
-              - not_null
-```
-
-**`stg_jaffle_shop`**
+**`models/staging/jaffle_shop/stg_jaffle_shop.yml`**
 
 ```yml
 version: 2
@@ -305,7 +312,23 @@ models:
                 - return_pending
 ```
 
-**`core.yml`**
+**`models/staging/stripe/stg_stripe.yml`**
+
+```yml
+version: 2
+
+models:
+  - name: stg_payments
+    description: Staged payment data from Stripe.
+    columns:
+      - name: payment_id
+        description: The primary key for payments.
+        tests:
+          - unique
+          - not_null
+```
+
+**`modles/marts/core/core.yml`**
 
 ```yml
 version: 2
@@ -336,6 +359,77 @@ models:
         description: Amount in USD
 ```
 
+**`staging/jaffle_shop/src_jaffle_shop.yml`**
+
+```yml
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: A replica of the postgres database
+    database: raw
+    tables:
+      - name: customers
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+      - name: orders
+        description: One record per order
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+          - name: status
+            description: "{{ doc('order_status') }}"
+            tests:
+              - accepted_values:
+                  values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+```
+
+**`models/staging/stripe/src_stripe.yml`**
+
+```yml
+version: 2
+
+sources:
+  - name: stripe
+    database: raw
+    tables:
+      - name: payment
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+```
+
+**Extra Credit**
+
+**`models/order_status.md`**
+
+```yml
+{% docs order_status %}
+
+One of the following values:
+
+| status         | definition                                                 |
+|----------------|------------------------------------------------------------|
+| placed         | Order placed but not yet shipped                           |
+| shipped        | Order has been shipped but hasn't yet been delivered       |
+| completed      | Order has been received by customers                       |
+| return_pending | Customer has indicated they would like to return this item |
+| returned       | Item has been returned                                     |
+
+{% enddocs %}
+```
+
 # Working Group #4
 
 **Jinja Working Exercise Steps**
@@ -344,9 +438,8 @@ models:
 2. Write the pivot with some Jinja + SQL (don't address changing payment methods or how to deal with the final column).
 3. Address the trailing comma and set in Jinja.
 4. Use dbt_utils to get column values.
-5. Write a macro OR use dbt_utils pivot function.
 
-**Facilitation Guide** - The instructor for the Jinja session will get the class started on the first two steps. Then in breakout rooms, instructors will nominate one students to be the driver for refactoring this query.
+**Facilitation Guide** The instructor for the Jinja session will get the class started on the first two steps. Then in breakout rooms, instructors will nominate one students to be the driver for refactoring this query.
 
 **Step 1: Pure SQL**
 
@@ -480,12 +573,6 @@ pivoted as (
 
 select * from pivoted
 ```
-
-**Step 5: Write a macro of your own / find the pivot macro**
-
-- Either write our own pivot macro
-  OR
-- Use the pivot macro from dbt Utils
 
 # Working Group #5 (optional)
 
