@@ -21,11 +21,22 @@ class: title, center, middle
 
 # Refresher:
 
-### The [dbt Viewpoint](https://docs.getdbt.com/docs/about/viewpoint/)
 _**Analytics code should have quality assurance**_
 * _Run automated tests on source data and on transformed data to ensure that SQL works as intended_
 * _Ensure source data is up to date_
 
+???
+""  
+Previously, we've given a broad overview of our viewpoints.  
+Part of this viewpoint is our belief that our code should have quality  
+assurance.  
+  
+To do this we need to be able to:  
+- Run automated tests on our source data and on our transformed data to ensure 
+that SQL works as intended
+- and ensure our source data is up to date  
+  
+""  
 ---
 # What are tests?
 
@@ -37,6 +48,38 @@ You configure tests in YML, in the `models` directory.
 
 Behind the scenes, test are just `select` statements!
 
+???
+""  
+So, what do we mean when we're talking about testing?  
+What we mean is that we want to ensure that when our assertions about our  
+data is true, our tests pass.  
+  
+We configure our tests using our .yml files, putting them within our models  
+directory.  
+  
+Under the hood, tests are just select statements!  
+""  
+  
+[Teacher Notes:]  
+You can pause here to exemplify the following slides in dbt Cloud  
+for tests on uniqueness and not null. You should hit these points:  
+  
+- Setting up a not null test  
+- Showing the underlying code after running the test using the run details.  
+- Setting up a uniqueness test  
+- Showing the underlying code after running the test using the run details.  
+- [Optional] Set up a singular test in the /tests folder and show how dbt uses
+it under the hood (hint: it pipes the SQL as a subquery into the same macro
+our unique and not_null tests use.)  
+  If showing this, be sure to hit on these points:
+  - Singular tests are written in SQL. You want to return the records you don't
+    want to see.
+  - Singular tests are great if you don't want to write up a macro or if you're
+    writing a dedicated test (for a specific set of data) vs. a test that can 
+    be used more broadly (for many sets of data).  
+  
+If you pause here for an example, you can start out with "So to recap:" for  
+following examples. 
 ---
 # Examples:
 .left-column[
@@ -52,6 +95,12 @@ models:
 
 ```
 ]
+
+???
+""  
+Here's an example  of a test we configured in one of our .yml files which  
+ensures that our customer_id key in our customers model is not null.  
+""  
 --
 .right-column[
 ```sql
@@ -65,8 +114,13 @@ where customer_id is null
 ```
 
 ]
+
 ???
-Teacher notes: talk about how these relate
+""  
+Here's the underlying SQL that runs for the not_null test using results of our  
+customers table. It returns the number of records in our customers table where  
+our customer_id is null, which will result in a failure if rows are returned.  
+""  
 ---
 
 # Examples:
@@ -84,6 +138,12 @@ models:
 
 ```
 ]
+
+???
+""  
+Now we're going to add a test to our configuration to ensure that every  
+customer_id in the customers table is unique.  
+""  
 --
 
 .right-column[
@@ -101,6 +161,12 @@ select count(*) from (
 ```
 ]
 
+???
+""  
+Here's the underlying code - you can see that it returns all customer_ids that  
+have more than one record associated to that id. If any rows return, then the  
+test fails.  
+""  
 ---
 
 # How do we run tests?
@@ -109,7 +175,16 @@ Run all tests: `dbt test`
 
 Run specific tests: `dbt test -s one_specific_model`
 
-
+???
+""  
+After we've implemented our tests, how do we run them? We just need a command -  
+dbt test. If we wanted to only run tests for a specific model, we could use  
+selection syntax with -s to specify which model we want to test.  
+""  
+  
+[Teacher Notes:]  
+You can exemplify this in dbt Cloud. If you've already exemplified this, just  
+give a recap here.  
 ---
 
 # What happens when you run the command: `dbt test`?
@@ -120,6 +195,25 @@ Run specific tests: `dbt test -s one_specific_model`
 4. dbt executes the SQL for each test: If the test returns zero failing rows, it passes,
 and your assertion has been validated.
 
+???
+""  
+When we run dbt test, what happens under the hood?  
+- dbt connects to our warehouse using our profile configuration  
+- it then parses our project for all of our test configurations  
+- it constructs select statements using what it finds  
+- and then it executes the sql for each test using what's built in our warehouse.  
+- if there are no failing rows returned for a test, then it passes successfully.  
+  
+""  
+  
+[Teacher Notes:]  
+You can expand on the parsing by saying that dbt  
+collects all the configurations first and then executes, which means that you  
+can separate tests out by folder or you can keep all your tests in one big file.  
+Our best practice is to separate by folder.  
+  
+The other important piece here is that dbt tests operate on the return of
+rows that that shouldn't be in the table.
 ---
 
 # dbt's built-in tests:
@@ -136,6 +230,12 @@ Every value in this column is unique.
 
 ]
 
+???
+""  
+dbt comes packaged with four out-of-the-box tests. Unique: which, as we saw  
+in our example, tests that each value in the specified column has no more than  
+one row in the results.  
+""  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -151,7 +251,10 @@ Every value in this column is not null.
 
 ]
 
-
+???
+""  
+Not null, which tests that every record has a value for the specified column.  
+""  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -181,6 +284,22 @@ models:
 ```
 ]
 
+???
+""  
+Accepted values, which tests that the distinct values in are within a specified  
+list.  
+""  
+  
+[Teacher Notes:]  
+Example: If our orders table has a status for each order placed and in a
+model after this we've pivoted our data so we can see total number of orders
+per status, then we'd want to be notified if an order status outside of our 
+four expected values pops up. We'd need to add any additional values
+as a column in our pivot to avoid under-counting orders.  
+  
+Note: If there is a NULL in a column which has an accepted_values test
+applied, the test will fail. In order to get around this, you can COALESCE()
+your value or write a custom test.  
 ---
 # dbt's built-in tests:
 .left-column[
@@ -209,22 +328,29 @@ models:
 
 ]
 
+???
+""  
+and relationships, which ensures referential integrity. In other words, it tests  
+that a column in your model has a related record in a different table.  
+""  
 ---
 # Q: Why might a test fail?
+
+???
+""  
+Now that we know how to implement and execute tests, let's go over some common  
+reasons why our tests might fail.  
+""  
 --
 
 1. The SQL in your model doesn’t do what you intended.
 
+???
+""  
+The SQL in your model doesn't do what you intended - in other words, the failure
+is caused by bad logic.  
+""  
 --
-
-```sql
-select
-    orders.order_id,
-    payments.payment_id
-from orders
-left join payments
-    on orders.order_id = payments.order_id
-```
 ```yml
 models:
   - name: orders
@@ -233,17 +359,36 @@ models:
         tests:
           - unique
 ```
+```sql
+select
+    orders.order_id,
+    payments.payment_id
+from orders
+left join payments
+    on orders.order_id = payments.order_id
+```
 
 ???
-Examples:
-* Bad deduping
-* 1:many relationship between orders and payments unexpectedly causes fan out
+""  
+For example, our test is configured to ensure that order_id is unique in our  
+orders model. If we look at the code, we can see that payments is joined in. An  
+order can have many payments (because of split payments), so this causes a  
+fan out of the order_id and our assertion is no longer true.  
+""  
 
+[Teacher Notes:]  
+Other examples for this slide:  
+* Bad deduping  
 ---
 # Q: Why might a test fail?
 
 1. The SQL in your model doesn’t do what you intended.
 2. An assumption about your source data is wrong.
+
+???
+""  
+An assumption about your source data is wrong.  
+""  
 --
 
 
@@ -264,6 +409,15 @@ models:
         tests:
           - unique
 ```
+
+???
+""  
+For example, you might assume that because stg_orders sounds like it's at the  
+grain of one row per order, that order_id should be unique. However, if our  
+orders data appended rows for each status change of an order rather than  
+updating the specific order's record, then the order_id wouldn't be unique.  
+""  
+
 ---
 # Q: Why might a test fail?
 
@@ -274,27 +428,63 @@ models:
     * Missing data
     * NULLs you weren't expecting
 
+???
+""  
+We typically check our basic assumptions to catch things like  
+- non-unique ids  
+- our assumptions on cardinality  
+- if there's any missing data  
+- or for nulls we aren't expecting  
+  
+""  
 ---
 # Q: Why might a test fail?
 
 1. The SQL in your model doesn’t do what you intended.
-2. An assumption about your source data is wrong.
+2. An assumption about your source data is wrong.  
 
 --
 3. A previously-true assumption about your underlying source data is no longer true
+
+???
+""  
+or, maybe a previously-true assumption about our underlying source data is no  
+longer true.  
+""  
 --
 
     * A previously unique key is no longer unique
     * You have a new payment method
-
+    
+???
+""  
+For example, if something messed up in our application and a record was added  
+twice, or if we assumed we only had four payment methods  
+available and our developers implemented a new payment method for our customers.  
+""  
 ---
 # Q: What should you test?
+
+???
+""  
+We covered why and how to implement tests, but what about what we should  
+test and when we should test it?  
+""  
 --
 
 * Good rules of thumb:
     * Test primary keys (`unique`, `not_null`)
     * Test fields that you use in downstream models
 
+???
+""  
+Here's our recommendations:  
+- at a minimum, test the assumed primary key for not null and unique, for all 
+models.  
+- if you're using a field for downstream joins or calculations, you might want
+to consider testing those before integrating them with other data.  
+  
+""  
 ---
 # Q: When should you run tests?
 --
@@ -304,6 +494,21 @@ models:
 * Automated: When you run dbt on a schedule
 * Automated: When you want to merge your code
 
+???
+""  
+There's two places when we should manually test:  
+- when we first run a project or before making changes - this ensures failures
+aren't caused by anything you changed.  
+- when we change things in development  
+  
+Then, there's two places where we should automate tests:  
+- When we're running dbt on a schedule - this ensures we're continually checking  
+for any bad code that was merged. With good checks before hand this should be
+infrequent, but a good check to have in place nonetheless.  
+- When we open a pull request - this ensures that if a developer didn't do
+their due diligence, that we have an automated process that can catch things.  
+  
+""
 ---
 
 class: subtitle
@@ -330,7 +535,22 @@ models:
 - If they fail, what does that tell us?
 ]
 
-
+???
+""  
+Let's review. 
+- What are the tests being run in this project?
+- What are they running on?
+- If they fail, what does that tell us?
+  
+""  
+  
+[Teacher Notes:]  
+Prompt the class to answer these questions.  
+Answers:  
+- The tests being run are not_null and unique.  
+- They're testing the payment_id column.  
+- If they fail, it tells us either that the payment_id column is not unique or
+contains a null value.
 ---
 
 class: subtitle
@@ -360,6 +580,18 @@ models:
 - If they fail, what does that tell us?
 ]
 
+???
+""  
+What about this one?  
+""  
+  
+[Teacher Notes:]  
+Prompt the class to answer these questions.  
+Answers:  
+- The test being ran is the accepted_values test.
+- It's testing the payment_method column.
+- If it fails, it tells us that the column contains a value that is not
+credit_card, paypal, or ach_transfer.
 ---
 
 class: subtitle
@@ -370,5 +602,15 @@ You should be able to:
 * Run your tests (all of them / one model at a time)
 * Explain how dbt tests work
 * Find the compiled SQL for tests
+
+???
+""  
+We should now be able to:  
+- Add tests to our models  
+- Run all of our tests or select specific tests to run  
+- Explain how tests work under the hood  
+- and know how to look at the underlying code for tests  
+  
+""  
 
 {% include options/last_slide.html %}

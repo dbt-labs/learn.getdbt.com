@@ -61,6 +61,9 @@ class: subtitle, middle, center
     * Manual inputs ("this field means that")
 * The process to update documentation _must_ be part of the same workflow as the transformations it seeks to describe. If the two are separate, documentation will _always_ lag behind.
 ]
+
+???
+- Slide setup: From dbt Viewpoint: "Bad data can lead to bad analyses, and bad analyses can lead to bad decisions. Any code that generates data or analysis should be reviewed and tested."
 ---
 
 class: subtitle, middle, center
@@ -134,7 +137,8 @@ sources:
 
 ]
 ]
-
+???
+Demo in dbt cloud. 
 --
 .dense-text[
 What's the `{{ doc('order_status') }}`?
@@ -166,7 +170,8 @@ One of the following values:
 ```
 ]
 {% endraw %}
-
+???
+- Docs blocks are great for special formatting but also allow for more modular documentation. A given .md file can be referenced and used in multiple descriptions without having to copy and paste any text. 
 ---
 # Generating documentation
 .denser-text[
@@ -226,7 +231,8 @@ _Serve_
 <img src="/ui/img{{page.id}}/ide-gen-docs-2.png" style="width: 100%; float: left;">
 
 ]
-
+???
+- No need to run the 'dbt serve' command in dbt cloud in order to view dbt docs.
 ---
 
 ## dbt Cloud - Deployment
@@ -262,6 +268,8 @@ For example:
 * Intermediate models
     - As required
 ]
+???
+- Consider the intended audience for the documentation. Are the docs primarily for your team/department or are they intended for a wider, less technical stakeholder group?
 ---
 
 class: subtitle

@@ -27,16 +27,23 @@ class: title, center, middle
 ]
 ]
 
+???
+Slide setup: When did people first start hearing the term 'analytics engineering'? Analytics Engineering is relatively new. The role of Analytics Engineer is relatively new. To understand it, we need to understand how data teams traditionally looked. 
+
+Note: Lots of custom engineering work. Distance between business stakeholders and those doing the actual transformation of their data.
+
 ---
 # Modern data stack
 
 <img src="/ui/img{{page.id}}/premodern-data-stack.svg" class="img-center">
 
 ???
-- MPP warehouses replaced the need for engineers to maintain warehouse infrastructures
-- Stitch and Fivetran got data into your warehouse, but the data was then in a source conformed format
-- BI tools (Looker) allowed consumers to do their own deep dives into data
+- Reliable out of the box data loader tools like Stitch and Fivetran made it easy to get data into your warehouse, but the data is in a source conformed format.
+- MPP (massively parallel processing) warehouses such as Snowflake, Redshift, and BigQuery replaced the need for engineers to maintain warehouse infrastructures.
+- BI tools (Looker, Mode, and others) allowed analysts and consumers to do their own deep dives into data.
+- The combination of these tools is what we call the modern data stack and it has created huge improvements for data teams however with great power comes great responsibility. 
 - Problem: people only had access to the raw data
+
 
 Teaching notes:
 - flip back to traditional data team and annotate to show how it doesn't make sense anymore (cross parts out, arrow other parts around, particularly stakeholders not wanting to wait for the analysts)
@@ -69,11 +76,10 @@ audience: Share your story of the silliest data problem you've had
 
 
 ???
-* The solution? Transform your data in a shape that's ready for analytics. But don't just do that:
-    - test it
-    - document it
-* Anyone who knows SQL can do this!
-* This role is neither data engineering nor data analysis... it's analytics engineering
+- At it’s core, dbt facilitates the application of software engineering best practices to analytics work - things like version control, logging, alerting, automated testing and deployment. 
+- Enter: dbt. At it’s core, dbt facilitates the application of software engineering best practices to analytics work - things like version control, logging, alerting, automated testing and deployment. 
+- Anyone who knows SQL can do this!
+- This role is neither data engineering nor data analysis... it's analytics engineering
 
 
 ---

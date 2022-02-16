@@ -53,6 +53,9 @@ hiccups that result in delayed or duplicated data.
 - Something that was once true about my source data is no longer true (e.g. a
 new payment method was introduced)
 
+???
+Teaching Note: Think of a good story to share about a specific situation when dbt source functionality would have really helped avoid a painful mistake or burdensome work.
+
 
 
 ---
@@ -133,7 +136,8 @@ renamed as (
 ```
 {% endraw %}
 ]
-
+???
+Demo: Open and talk through the use of source in model stg_customers. Press compile to demo how the source function gets compiled to the full object name.
 --
 
 .right-column[
@@ -167,6 +171,9 @@ Then jump back to the slides to talk about source-freshness 🚀
 They help users understand where data comes from (lineage)
 
 <img src="/ui/img{{page.id}}/dag-source.png" class="img-center">
+
+???
+Demo: Still on the stg_customers model, open the lineage tab and identify the source and model nodes.
 
 ---
 
@@ -205,6 +212,8 @@ Being thoughtful about where you test helps you understand whether tests are fai
 This allows you to debug more quickly!
 
 ]
+???
+Demo: While looking at the source yml ask the group what is being tested in this source (look for the table name, column name, and specific tests)
 
 ???
 Can you add tests to sources? Yes you can and you absolutely should! If there's something wrong with your data, you will be able to see if it was caused by something going wrong in your source data, or in one of your models.
@@ -329,7 +338,6 @@ dbt source freshness
 ```
 <img src="/ui/img{{page.id}}/freshness-viz.png" style="width: 100%;" class="img-center">
 ]
-
 ???
 Behind the scenes, dbt will calculate the difference between the max of the loaded_at field, so the most recent row uploaded, and the time at which the snapshot is being run. The results of this query are used to determine whether the source is fresh or not. 
 
@@ -338,6 +346,12 @@ Behind the scenes, dbt will calculate the difference between the max of the load
 - Run dbt source-freshness
 - Show the code that is run against the warehouse to execute this
 - Tweak the criteria to 1 hour warn and 2 hour error to show how that changes the results of the command
+  
+The dbt cloud source freshness page is accessable to dbt cloud developers but also to 
+those with read-only seats - providing a friendly self service UI for stakeholders to 
+check on the freshness of source data. (Which hopefully means fewer emails asking 
+whether data from [insert your favorite/most problematic source system] is up to date 
+in the BI tool.  
 
 ---
 
