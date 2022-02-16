@@ -334,7 +334,7 @@ In a model:
 
 In deployment:
 ```
-dbt run -m tag:hourly
+dbt run -s tag:hourly
 ```
 ]
 
@@ -430,7 +430,7 @@ In `macros/generate_schema_name.sql`:
 {%- endmacro %}
 ```
 
-Based on [this code](https://github.com/fishtown-analytics/dbt/blob/dev/kiyoshi-kuromiya/core/dbt/include/global_project/macros/etc/get_custom_schema.sql),
+Based on [this code](https://github.com/dbt-labs/dbt-core/blob/dev/kiyoshi-kuromiya/core/dbt/include/global_project/macros/etc/get_custom_schema.sql),
 but you can write whatever logic you want.
 
 ---
@@ -567,8 +567,8 @@ Consider:
 
 # Other use cases for hooks & operations
 * Creating UDFs at the start of a run ([Discourse](https://discourse.getdbt.com/t/using-dbt-to-manage-user-defined-functions/18))
-* Performing warehouse maintenance on Redshift ([package](https://hub.getdbt.com/fishtown-analytics/redshift/latest/))
-* Staging external tables ([package](https://hub.getdbt.com/fishtown-analytics/dbt_external_tables/latest/))
+* Performing warehouse maintenance on Redshift ([package](https://hub.getdbt.com/dbt-labs/redshift/latest/))
+* Staging external tables ([package](https://hub.getdbt.com/dbt-labs/dbt_external_tables/latest/))
 
 ---
 
@@ -589,7 +589,7 @@ class: subtitle, center, middle
 
 ## ✅ Technique: use (or adapt) a package!
 
-- [dbt-utils](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/), [audit-helper](https://hub.getdbt.com/fishtown-analytics/audit_helper/latest/), [codegen](https://hub.getdbt.com/fishtown-analytics/codegen/latest/)
+- [dbt-utils](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/), [audit-helper](https://hub.getdbt.com/dbt-labs/audit_helper/latest/), [codegen](https://hub.getdbt.com/dbt-labs/codegen/latest/)
 - [package hub](https://hub.getdbt.com/)
 
 ---
@@ -603,8 +603,8 @@ class: subtitle, center, middle
 
 ## ✅ Technique: read a playbook!
 
-- [Monthly recurring revenue](https://github.com/fishtown-analytics/mrr-playbook)
-- [Marketing attribution](https://github.com/fishtown-analytics/attribution-playbook)
+- [Monthly recurring revenue](https://github.com/dbt-labs/mrr-playbook)
+- [Marketing attribution](https://github.com/dbt-labs/attribution-playbook)
 
 ---
 

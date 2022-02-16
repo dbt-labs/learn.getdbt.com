@@ -1,34 +1,30 @@
 - day: 1
-  title: "Day One: Foundations"
+  title: Foundations
   sessions:
-    - name: Morning
+    - name: 
       lessons:
         - slug: distributed-norms
         - slug: who-is-analytics-engineer
         - slug: dbt-fundamentals
-    - name: Afternoon
-      lessons:
+        - slug: working-group-1
         - slug: dbt-project-design
+        - slug: working-group-2
         - slug: testing
         - slug: sources
         - slug: docs
-        - slug: assignment
         - slug: deployment
+        - slug: working-group-3
 
 - day: 2
-  title: "Day Two: Applications"
+  title: Applications
   sessions:
-    - name: Morning
+    - name: 
       lessons:
         - slug: polish-project
         - slug: intro-to-jinja
         - slug: dbtonic-jinja
         - slug: packages
         - slug: materializations
-    - name: Afternoon
-      lessons:
         - slug: incremental
-        - slug: data-warehouses
-        - slug: case-study
         - slug: techniques-trade
         - slug: outro

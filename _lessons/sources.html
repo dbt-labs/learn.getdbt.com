@@ -224,7 +224,7 @@ This allows you to debug more quickly!
 
 We can run tests on _only_ sources with the following command
 
-`dbt test -m source:* `
+`dbt test -s source:* `
 
 This can be helpful in deployment - coming up soon
 
@@ -275,7 +275,7 @@ sources:
 
 ]
 
-Then run `dbt source snapshot-freshness`
+Then run `dbt source freshness`
 
 
 ---
@@ -283,7 +283,7 @@ Then run `dbt source snapshot-freshness`
 
 .denser-text[
 ```yml
-$ dbt source snapshot-freshness
+$ dbt source freshness
 Running with dbt=0.16.0
 Found 5 models, 20 tests, 0 snapshots, 0 analyses, 130 macros, 0 operations, 0 seed files, 3 sources
 
@@ -342,7 +342,7 @@ Adding this step to a job helps you understand if one of your data sources is ou
 
 .right-column-66[
 ```bash
-dbt source snapshot-freshness
+dbt source freshness
 ```
 <img src="/ui/img{{page.id}}/freshness-viz.png" style="width: 100%;" class="img-center">
 ]
@@ -363,13 +363,13 @@ A common approach: Test the schema integrity of raw tables _before_
 replacing production models.
 
 ```bash
-dbt test -m source:*            # ensure no duplicates or unexpected nulls -- the job won't continue if these tests fail
+dbt test -s source:*            # ensure no duplicates or unexpected nulls -- the job won't continue if these tests fail
 dbt run                         # only runs if test above succeeds
 dbt test --exclude source:*     # or you can even skip these!
-dbt source snapshot-freshness   # powers freshness viz in dbt Cloud
+dbt source freshness   # powers freshness viz in dbt Cloud
 ```
 
-Another option: `snapshot-freshness` first, so that your job won't run on stale data.
+Another option: `source freshness` first, so that your job won't run on stale data.
 
 ???
 More complex deployments:
@@ -489,4 +489,4 @@ You should be able to:
 
 - (!!) I want to stage & query an external table that points to files in S3.
 
-- (!!) Declare `external` properties ([read more](https://github.com/fishtown-analytics/dbt-external-tables))
+- (!!) Declare `external` properties ([read more](https://github.com/dbt-labs/dbt-external-tables))

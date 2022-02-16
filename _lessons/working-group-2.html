@@ -1,0 +1,52 @@
+---
+layout: presentation
+title: Working Group 2
+---
+class: subtitle
+# Working session 2
+We just got some payment data into our warehouse:
+
+`select * from raw.stripe.payment`
+
+<img src="/ui/img/raw_payment_data.png" style="width: 100%;" class="img-center">
+
+
+???
+Notes on the data (for teachers, hopefully the students discover some of these)
+* singular table name
+* no underscores in column names
+* cased column names
+* amount is in cents
+* `created` vs. `created_date`
+
+---
+name: working-session-2
+class: subtitle
+# Working session 2
+We just got some payment data into our warehouse:
+
+```sql
+select * from raw.stripe.payment
+```
+.dense-text[
+1. Build a `stg_payments` model to stage the payment data.
+2. Build an `orders` model with the following fields:
+    * `order_id`
+    * `customer_id`
+    * `amount` (hint: this has to come from payments)
+3. Add a new field to the `customers` model:
+    * `customers.lifetime_value`: the total amount a customer has spent at `jaffle_shop`
+]
+
+By the way, the Excel spreadsheet I've been using to raise venture capital says my all-time revenue is $1,672.
+
+???
+Discussion points (leading questions for the next session)
+
+Where did our data come from? How do we know that?
+* All of it was in the `raw` database
+* Grouped into schemas based on the source
+
+When building your models
+* What did you name the files?
+* How did you organize them in your models directory?

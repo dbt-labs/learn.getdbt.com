@@ -107,17 +107,18 @@ select count(*) from (
 
 Run all tests: `dbt test`
 
-Run specific tests: `dbt test -m one_specific_model`
+Run specific tests: `dbt test -s one_specific_model`
 
 
 ---
 
-# What happens when you run `dbt test`?
+# What happens when you run the command: `dbt test`?
 
 1. dbt connection to your **data warehouse** (via a **profile/connection**)
 2. dbt parses your **dbt project**
 3. dbt iterates through the resource files (`models/**.yml`) to construct `select` queries.
-4. dbt executes the SQL for each test: if the number `0` is returned your test passes
+4. dbt executes the SQL for each test: If the test returns zero failing rows, it passes,
+and your assertion has been validated.
 
 ---
 
@@ -167,7 +168,7 @@ Every value in this column is a value from a given list.
 version: 2
 
 models:
-  - name: orders
+  - name: stg_orders
     columns:
       - name: status
         tests:
@@ -196,13 +197,13 @@ Each value in this column exists in the column of another table.
 version: 2
 
 models:
-  - name: orders
+  - name: stg_orders
     columns:
       - name: customer_id
         tests:
           - relationships:
-              to: ref('customers')
-              field: id
+              to: ref('stg_customers')
+              field: customer_id
 
 ```
 
@@ -222,11 +223,11 @@ select
     payments.payment_id
 from orders
 left join payments
-    on orders.order_id = payments.payment_id
+    on orders.order_id = payments.order_id
 ```
 ```yml
 models:
-  - name: fct_orders
+  - name: orders
     columns:
       - name: order_id
         tests:
@@ -236,7 +237,7 @@ models:
 ???
 Examples:
 * Bad deduping
-* Bad joins
+* 1:many relationship between orders and payments unexpectedly causes fan out
 
 ---
 # Q: Why might a test fail?
@@ -248,15 +249,16 @@ Examples:
 
 ```sql
 select
-    orders.order_id,
-    payments.payment_id
-from orders
-left join payments
-    on orders.order_id = payments.order_id
+    id as order_id,
+    user_id as customer_id,
+    order_date,
+    status
+
+from raw.jaffle_shop.orders
 ```
 ```yml
 models:
-  - name: fct_orders
+  - name: stg_orders
     columns:
       - name: order_id
         tests:

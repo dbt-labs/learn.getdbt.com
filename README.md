@@ -1,17 +1,16 @@
-# learn.getdbt.com
+# Legacy learn.getdbt.com
 
-The everything site for dbt Learn including:
-* Information about dbt Learn distributed/IRL
-* dbt Learn presentations
-* (Coming Soon) Landing page for dbt Learn on demand
+**This repository no longer powers learn.getdbt.com.** The index page of learn.getdbt.com, and most subpages, will now redirect you to www.getdbt.com/dbt-learn. 
+
+This repository remains mostly to serve the `_redirects` file and act as a code reference. 
+
+*Notable exception:* **the /lessons directory, which is used for teaching trainings, is not being redirected**. If you need to make changes to the training slides, you will still do it here.
+
+You can reach the /lessons files directly at learn.getdbt.com/lessons, or, in the preview environment, at https://deploy-preview-XXX--kind-lovelace-c014dc.netlify.app/lessons, where "XXX" is the pull request number. 
+
+Since the redirects file is not processed in the local dev environment, you may still run the legacy site locally. See instructions below.
 
 ## Getting Started
-
-
-**Run with:**
-```
-$ bundle exec jekyll serve --incremental --baseurl '' -w --port 5017
-```
 
 **To run locally:**
 1. Ensure `jekyll` is installed with `jekyll --version` (if it's not installed, [here](https://jekyllrb.com/docs/installation/macos/) are the docs)

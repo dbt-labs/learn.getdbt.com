@@ -141,8 +141,8 @@ $ dbt test
 .right-column[
 #### Our preferred setup:
 ```txt
-$ dbt source snapshot-freshness
-$ dbt test -m source:*
+$ dbt source freshness
+$ dbt test -s source:*
 $ dbt seed
 $ dbt run
 $ dbt test --exclude source:*
@@ -155,7 +155,7 @@ $ dbt test --exclude source:*
 
 Recommended:
 - Separate "slim" CI job — fast runs, clear notifications
-- Weekly full refresh job — more on this tomorrow!
+- Weekly full refresh job — more on this later!
 
 Seen in the wild:
 - Separate jobs for different parts of your project
@@ -174,4 +174,4 @@ You should be able to:
 - List some options for deploying your dbt project
 - Deploy your dbt project with dbt Cloud
 
-{% include options/last_slide_of_day.html %}
+{% include options/last_slide.html %}

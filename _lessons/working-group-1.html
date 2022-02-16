@@ -1,0 +1,22 @@
+---
+layout: presentation
+title: Working Group 1
+
+---
+class: subtitle
+# Working session 1
+.dense-text[
+1. Make sure you have your dbt Cloud project set up.
+    * Accept the dbt Cloud invite.
+    * Find your project and input your Snowflake credentials.
+    * Initialize your project.
+2. Run the `customers.sql` model.
+3. Refactor this code to break out the staging models into `stg_customers.sql` and `stg_orders.sql`. Create a staging subdirectory under models for these staging models.
+4. Change the materialization strategy of your project in `dbt_project.yml` so that all models are materialized as tables by default, but the models in the staging folder will be materialized as tables.
+]
+
+???
+Notes for what to walk students through
+* Give them a brief tour of the IDE: the file tree, file editor, the "Preview Data" and "Compile SQL" buttons, the results tab, and command line.
+* When creating the staging models explain that best practice is to create one staging model per raw data table and to do some minimal cleanup and re-naming.
+* For each model created, run the command: `dbt run` and look at the logs to talk through what is happening.
