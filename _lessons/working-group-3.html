@@ -1,0 +1,28 @@
+---
+layout: presentation
+title: Working Group 3
+
+---
+class: subtitle
+# Working session 3
+.dense-text[
+1. Re-organize your models folder to follow dbt's best practices for project design.
+    1. Under the models/staging folder, create one subfolder for jaffle_shop and one for stripe.
+    2. Create folders marts/core under models.
+    3. Move the respective models into these new subfolders.
+2. Create schema yml files.
+    1. Add **unique** and **not null** tests to all primary keys.
+    2. Add descriptions to all columns in customers.
+3. Create sources yml files to configure sources for the three raw tables in your project. 
+    1. Refactor your staging models to use the source function.
+    2. Add a test to at least one column in one of the source tables.
+3. Finish early?
+    1. Add a docs block.
+    2. Add source freshness to one of your sources.
+    3. Merge your code to main, set up a production environment, and create a production job.
+]
+
+???
+    * After step 2, have students run `dbt test` and `dbt docs generate`. Show the docs site.
+    * After step 3, show them how the Lineage tab now shows green nodes for sources.    
+ 
