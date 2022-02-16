@@ -1070,7 +1070,7 @@ For most orgs, the final rollup query should be in BI tool — allows for "drill
 ???
 ""  
 For most organizations, the final rollup query would be in the BI tool. By keeping  
-things at the fct_sales level and aggregating using our BI tool's functionality,
+things at the fct_sales level and aggregating using our BI tool's functionality,  
 we can allow for drill downs and deeper explorations.  
 
 --
@@ -1104,8 +1104,8 @@ a new peice of data?
  Potentially build it in the BI tool first then "promote" it.
 
 ???
-then we might want to build our prototyped query into the BI tool first, then  
-move it into dbt once we verify that it's useful and agreed-upon.  
+then we might want to build our prototype query into the BI tool first, then  
+move it into dbt once our team agrees that it's useful.  
 
 ---
 
@@ -1186,7 +1186,7 @@ easier, such as:
 ""  
 They're not so great at:
 - Multi-layered data transformations with complex ordered dependencies; For  
-example, You need to transform data at different steps and you need to ensure  
+example, you need to transform data at different steps and you need to ensure  
 everything happens in the correct order.
 - Enforcing single sources of truth; For example, you need to ensure that    
 logic for a sales calculation is the same anywhere it's used, and you also need  
@@ -1230,9 +1230,9 @@ So, what goes where?
   
 Here's what we suggest:  
   
-In dbt, we want critical business logic, the best agreed versions of models,  
+In dbt, we want critical business logic, the best agreed-on versions of models,  
 complex SQL, queries that can serve multiple purposes, and really anything worth  
-version control. You can think of this as our assembly line which produces 
+version controlling. You can think of this as our assembly line which produces  
 expected outputs every time.  
 
 In the BI layer, we want to keep aggregations and queries that need to be  
@@ -1275,7 +1275,7 @@ keep in mind?
 - What naming conventions is your team already using?
 
 ???
-- What are some naming conventions your team is already using?
+- What are some naming conventions your team is already using?  
 ""  
 
 [Teacher Note:]  
