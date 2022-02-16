@@ -822,7 +822,7 @@ staging, intermediate, lookups, final fact/dim). Comment on how they can
 be grouped together in all three interfaces.  
 
 [Teacher Note:]  
-If you start out by having the class focus on the major pieces (sourcse, stg_,  
+If you start out by having the class focus on the major pieces (sources, stg_,  
 dim_/fct_), you can then explain that the other layers are purely optional  
 and serve to break down the flows into even more understandable steps.  
 - base: usually used to bring together parts of a whole building block
@@ -892,7 +892,7 @@ folders. In this example, you can see that we have:
 models that clean our source data, and our marts folder is for models that put 
 together our cleaned data.
 - Our staging folder contains subfolders for each source.  
-- Within the subfolders, we have a our configurations and models that relate to
+- Within the subfolders, we have our configurations and models that relate to
 each source.
 - Our marts folder contains a subfolder that relates to the area of business our
 models apply to - right now we have core, but we could also add subfolders for
@@ -900,7 +900,7 @@ others such as product and marketing.
 - Similar to our staging area, we keep configuration files within the folder of 
 the models they seek to describe.
 - And lastly, you can see that we've used our naming conventions for each model.
-These names will show up as the object names in our warehouse and as the node
+These names will show up as view or table names in our warehouse and as node
 names in the DAG.
 
 ""  
@@ -924,7 +924,7 @@ find, and easy to infer contents?
 ""  
 The last interface is the warehouse - which takes into consideration:
 - How we've named things
-- Our configurations for how materialized objects are organized
+- Our configurations in our project for how database objects are organized
 - and our permissioning setups in our warehouse
 
 You can see on the right how a naming prefix has helped organize the models
@@ -941,6 +941,11 @@ those schemas based on who or what should use the objects within them.
 
 class: subtitle, center, middle
 # The way we roll
+
+???
+""  
+So, how does the dbt Labs team do things?  
+""  
 
 ---
 
@@ -963,10 +968,54 @@ class: subtitle
 # Checkpoint:
 
 - What are some helpful actions to do in the staging layer?  Why?
+
+???
+""  
+What are some helpful actions to do in the staging later? Why?  
+""  
+  
+[Teacher Note:]  
+Good answers would be things like:
+- light transformations (renaming, casting, nullif'in, case when's, no joins)
+- Filtering out deleted records
+- Deduplicating data
+
+Why:  
+It helps in centralizing and standardizing logic so that code is kept dry and  
+everyone uses the same logic downstream.  
+
+[Addt'l Note:] DRY means "Do not repeat yourself". In other words, we want to  
+reduce the amount of times we have to write the same logic.  
+
 --
 
 - For those who have worked with dim/fct tables, how do you think about the differences?
 - Note: The difference can be a bit blurry if you are learning them for the first time.
+
+???
+""  
+For those who have worked with dim/fct tables, how do you think about the differences?  
+""  
+
+[Teacher Note]:
+Dimensions:
+- typically overwrites a row of data when there's changes. For example,  
+if a customer changed their email preferences and the row of data for that  
+customer was overwritten because of that, then you wouldn't be able to look back  
+historically to see what the preference value used to be. This would be  
+considered a dimension.  
+- typically describe the characteristics of an entity or object.
+- Can be thought of as nouns
+
+Facts:
+- typically append a row of data when there's changes. For example, if a customer  
+changed their email preferences and a new row was added for the customer and new  
+preference, then you'd be able to look back historically to see what the old  
+preference was. This would be considered a fact.  
+- are immutable event streams.
+- Can be thought of as verbs or processes.
+  
+You can also think
 
 --
 
