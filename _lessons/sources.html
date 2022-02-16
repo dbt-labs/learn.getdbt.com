@@ -88,11 +88,10 @@ Read aloud the text on the slides:
 
 ???
 
-Sources are defined in `.yml` files in your `models/` directory, where they have to be nested under a source key. 
+- Sources are defined in `.yml` files in your `models/` directory, where they have to be nested under a source key. 
 You will have to provide a source name, which is usually the name of the schema of your raw table. Snowflake users,
 you can also provide a database name and then after that you can list your table names. 
-If one of your sources is badly named, there is also an opportunity for you to 
-provide ....
+- If one of your source tables is badly named, there is also an opportunity for you to provide an alias using the identifier key.
 
 Sources are defined in `.yml` files in your `models/` directory.
 
@@ -119,10 +118,8 @@ sources:
 
 ???
 
-Once you have defined a source in your .yml file, you can now utilize the source jinja function to select from that source in a model. 
-The source function here will compile to the full object name in the database,
-so select star from source-jaffleshop will compile to raw.jaffleshop.customers, with the database name raw, which
-is **clicks back** how we defined it in our yml file.
+  - Once you have defined a source in your .yml file, you can now utilize the source Jinja function to select from that source in a model. 
+  - The source function here will compile to the full object name in the database, so select star from source-jaffleshop will compile to raw.jaffleshop.customers, with the database name raw, which is **clicks back** how we defined it in our yml file.
 
 Use the {% raw %}`{{ source() }}`{% endraw %} function to select from a source in a model:
 
@@ -181,7 +178,7 @@ They help users understand where data comes from (lineage)
 
 ?? 
 
-Can you add tests to sources? Yes you can and you absolutely should! **Add something about when to test staging models vs when to test source models**
+Can you add tests to sources? Yes you can and you absolutely should! If there's something wrong with your data, you will be able to see if it was caused by something going wrong in your source data, or in one of your models.
 
 .denser-text[
 
@@ -236,14 +233,12 @@ This can be helpful in deployment - coming up soon
 
 ???
 
-Now that we've defined our sources and we know how to test them ** jump back to intro slide ** 
-Has that ever happened to you before? And if it has happened to you, do you have a reliable way of capturing that?
+  - Now that we've defined our sources and we know how to test them ** jump back to intro slide ** 
+  - Has that ever happened to you before? And if it has happened to you, do you have a reliable way of capturing that?
 
-dbt has a command called source-snapshot freshness that will allow you to capture the latency of your source tables. All you need to do is add a loaded_at field 
-to your source definition, and under that add whats called a freshness block. The loaded at field should be a column from the source data 
-that is a reliable of when the source data was loaded into the warehouse. This usually something like an updated_at, in Stitch of Fivetran they are xyz. 
-
-Your freshness blocks will then determine define the acceptable amount of time between the most recent record, and now, for a table to be considered "fresh". 
+  - dbt has a command called source freshness that will allow you to check the freshness of your source tables. All you need to do is add a loaded_at field to your source definition, and under that add a freshness block.
+  - The loaded_at field should be a column from the source data that reliably captures when that row was loaded into the warehouse. This usually something like an updated_at field. 
+  - Your freshness blocks will then determine define the acceptable amount of time between the most recent record, and now, for a table to be considered "fresh". 
 In this example, we have configured checks to run essentially every 12 hours. 
 
 Optionally, specify a `loaded_at_field` and `freshness`:
@@ -331,8 +326,7 @@ from raw.stripe.payment
 
 ???
 
-Behind the scenes, dbt will calculate the difference between the max of the loaded at field, so the most recent row uploaded, and the time 
-at which the snapshot time is being run. The results of this query are used to determine whether the source is fresh or not. 
+Behind the scenes, dbt will calculate the difference between the max of the loaded_at field, so the most recent row uploaded, and the time at which the snapshot is being run. The results of this query are used to determine whether the source is fresh or not. 
 
 ## In dbt Cloud:
 
