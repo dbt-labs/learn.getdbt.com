@@ -15,10 +15,6 @@ learningObjectives:
 class: title, center, middle
 # dbt Project Design
 
-???
-""  
-dbt Project Design  
-""  
 ---
 
 # So, I have raw data.
@@ -26,34 +22,27 @@ dbt Project Design
 .grey[_What do I do with it?_]
 
 ???
-[Teacher Note]: 
-You can read these out or pose these questions to the class - read the audience. 
-If they don't seem interactive but you want some interactivity, you can also 
+[Teacher Note]:  
+You can read these out or pose these questions to the class - read the audience.  
+If they don't seem interactive but you want some interactivity, you can also  
 pose these questions to fellow teachers.  
-    
-""  
-In previous sessions we saw that we have raw data in the warehouse.  
-  
-What should we do it?  
+
+This flows best by refering to what happened in previous sessions before asking  
+the questions on the slides:  
+"In previous sessions we saw that we have raw data in the warehouse.""  
+
 --
 
 Model it!
 
-???
-We should model it!  
 --
 
 .grey[_How?_]
 
-???
-and how are we going to model it?  
 --
 
 With dbt!
 
-???
-With dbt of course!  
-""  
 --
 
 .grey[_Cool._]
@@ -63,15 +52,8 @@ With dbt of course!
 {% include options/focus_slide.html %}
 
 ???
-""  
-In this lesson we're going to focus on:
-- Understanding the trade-offs of various model designs
-- Naming the three main interfaces for a dbt project
-- Building intuition for naming conventions for database objects
-- and building intuition for how to use dbt and BI tools together
-
-But first, we need to know what we mean by "model it". It's a broad term!  
-""  
+[Teacher Note]:
+We need to know what we mean by "model it". It's a broad term!  
 
 ---
 
@@ -83,18 +65,14 @@ But first, we need to know what we mean by "model it". It's a broad term!
 - Could fill a book (or several) on this topic. It's a fascinating topic that we'll cover _very_ briefly
 
 ???
-""  
+[Teacher Note]:  
 There's two main things we could mean when we say "model it":  
 
-[1.] The first thing it could mean is that there's a set of final artifacts we 
-want to share with stakeholders.  
-
-This is also known as data model design, data warehouse design, or warehousing.  
-Choosing how we'll do it is a careful balance of trade-offs which our team will  
-need to consider.  
-
-There's numerous methodologies and books on this topic, and while it's fascinating,  
-we'll only be covering this subject briefly.  
+The first set of bullet points are saying:
+- This is also known as these three terms
+- The tradeoffs will be specific to how our team and org functions
+- And there's numerous methodologies and extensive conversation to be had on  
+this topic, but we're not going to dive too deeply in to it.  
 
 --
 
@@ -103,10 +81,10 @@ we'll only be covering this subject briefly.
 - The _real_ interest of this presentation
 
 ???
-[2.] The second thing it could mean is that you need a reliable, scalable, and  
-intuitive process for creating those artifacts.  
-
-We can do that with dbt - and that's the real interest of this presentation!  
+[Teacher Note]:  
+Or it could mean that we need a reliable, scalable, and intuitive process - this  
+is communicating dbt's value in the modern data stack and sets up the focus  
+for the session.  
 ""  
 ---
 
@@ -129,21 +107,10 @@ Our view is that there is no one right answer, but there are good heuristics.
 As modern data practitioners, we are inheritors of a decades-long history. It
 is our task to determine for the present day which concepts are still relevant.
 
-???
-""  
-Our viewpoint here is that there is no one right answer, but there are good  
-practices we have at our disposal to get there.  
-  
-As modern data practitioners, it's our duty to determine which practices from  
-our decades-long history are still relevant and useful today.  
-
 --
 
 Let's break down the process...
 
-???
-So, let's break it down -  
-""  
 ---
 
 
@@ -164,12 +131,6 @@ Thanks!
 Tristan
 SVP Marketing Analytics
 ```
-
-???
-""  
-Let's go back to 1998. We've got mail:  
-[> Read Slide <]  
-""  
 
 ---
 
@@ -194,10 +155,6 @@ brand and country combination, with an aggregate of the units sold.
 What is the query you (the analyst) will write to get these results?
 
 ???
-Let's pause here and close our eyes, and imagine the query we would write in 1998  
-to get these results.  
-""  
-  
 [Teacher note:]  
 You should actually pause here for a few seconds to allow everyone to think  
 about this!  
@@ -205,12 +162,6 @@ about this!
 --
 
 This depends on your models!
-
-???
-""  
-If you arrived at this answer - you're correct! It depends on what our underlying  
-data modeling looks like.  
-""  
 
 ---
 
@@ -423,40 +374,21 @@ Some design decisions of the past were driven by technology:
 - Data modeling was a different skill set to analysis → project plan the whole thing!
 
 ???
-It's because the decisions we made in the past and the decisions we make today  
-are driven by technology, namely in the way that row-oriented and  
-column-oriented databases store and process data.  
-  
-For row-oriented databases:
-- Storage was expensive, so you wouldn't want to duplicate data
-- Joins were cheap, so it was fine join at report-time
-- SQL functions were expensive, so instead of using `date_trunc`, it was better 
-to create a table that has already done it.
-- Updating data was expensive, so it was better to design models so that changes
-were isolated to one table
-- and data modeling was a different skill set to analysis - the entire schema
-would go through project planning before ever reaching analysis!
+[Teacher Note]:  
+Namely in the way that row-oriented and column-oriented databases store and  
+process data.  
   
 Because we use columnar-store for our analytics processing today, it allows us  
 normalize or denormalize as we'd like, comfortably use SQL functions, and start  
 closing the gap between modeling and analysis.  
-""  
 
 ---
 
 # But what has stayed the same?
 
-???
-""  
-But, what's stayed the same?  
-
 --
 
 - A "final" model should represent a _business_ process or entity.
-
-???
-A final model should always represent a business process or entity. For example,  
-orders, customers, or suppliers.  
 
 --
 
@@ -467,17 +399,7 @@ a "payment".
 
 It might be useful to track whether it was processed via `stripe`
 or `braintree` (i.e. include a `payments_provider` column), but ultimately, the
-`payments` table should include both in a standardized form.
-
-???
-Let's say we had a legacy payment system, `braintree`, and a new payment  
-system, `stripe`. Our stakeholders only know these things as `payments`, and  
-it should be represented as such.  
-  
-It might be useful to add a column with information on how the payment was  
-processed (i.e, 'braintree' or 'stripe'), but in the end the payments table  
-should include all records in a standardized form.  
-""  
+`payments` table should include both in a standardized form. 
 
 ---
 
@@ -485,11 +407,6 @@ should include all records in a standardized form.
 
 - A "final" model should represent a _business_ process or entity.
 - Each model should have a clear "grain" — "one record represents a ..."
-
-???
-""  
-Each model should represent a clear grain - you should be able to say "each  
-record represents a ...".  
 
 --
 
@@ -508,11 +425,8 @@ the `trips` table has three entries: one parent trip, and two child trips.
 How many trips occurred?
 
 ???
-For example, say we have a rideshare company and each time someone splits a trip,  
-the trips table had three entries: one for the parent trip, and two child trips.  
 
-How many trips occured?  
-
+[Teacher Note]:  
 We could say that:
 - two trips occured, we're only counting trips without a parent trip as a trip.
 - three trips occurred, because we're counting those without a parent trip as 
@@ -523,46 +437,34 @@ a trip, and the split trip as one trip.
  Well what's a trip?
 
 ???
-Well, what's a trip...?  
+[Teacher Note]:  
 In this example, we had to explain our trips by saying: "each record represents  
-a trip, but ...".  
-""  
+a trip, *but* ...".  
 
 ---
+
 # But what has stayed the same?
 
 - A "final" model should represent a _business_ process or entity.
 - Each model should have a clear "grain" — "one record represents a ..."
 - Naming is important. In particular, consistency is _extremely_ valuable
 
-???
-""  
-Naming always has been, and always will be, important. It's extemely valuable  
-so your team can understand the inputs and outputs of your analytics ecosystem.  
-
 --
+
 - Consider the final use case when designing your final artifacts
 
 ???
-And finally, we always want to keep in mind what the final use case is by asking  
-questions like:
+[Teacher Note]:  
+We can do this by asking questions like:
 - Who will need to use our final artifacts?
 - Which questions do we need to answer related to these data sets?
 - How well will the tools consuming our data products handle how we propose to model it?
-
-""  
 
 ---
 
 ### OK, but _really_ what is the final artifact that I should build?
 
 Should I denormalize everything into one wide table? Should I use Kimball design patterns?
-
-???
-""  
-Okay, but we still haven't answered the question about what the final artifacts  
-should be. Should they be wide denormalized tables? Should we use a Kimball  
-design pattern?  
 
 --
 
@@ -576,26 +478,9 @@ without warning? (Maybe join it in the BI tool)
 - What data models are your stakeholders used to? e.g. Do you work at an enterprise
 company that is used to working with DataVault models?
 
-???
-Our answer: it depends! For example:
-- If your BI tool is great with joins such as Looker, you can handle being a little
-more normalized. However, if it prefers flat data sets like Tableau, you might
-choose to denormalize.
-- or mayber you have data sets that update in unpredictable ways - it might be
-better joining these in the BI tool so you can keep the information isolated 
-to understand what you're looking at.
-- or maybe your team is used to working with a specific methodology - if that's  
-the case, sometimes it's just easier to go with the flow!
-
 --
 
 And dbt lets you choose! It's all just SQL 😊
-
-???
-In the end, it's all just SQL. You can choose what makes the most sense for your  
-own business practices and tooling!  
-
-""  
 
 ---
 
@@ -606,12 +491,6 @@ own business practices and tooling!
 
 Once you have an intuition of what you want to build, how do you do that in dbt?
 
-???
-""  
-So, let's say we _do_ have an idea of what we want to build. How do we do that  
-with dbt?  
-""  
-
 ---
 class: subtitle, center, middle
 
@@ -620,10 +499,9 @@ class: subtitle, center, middle
 ### (and that's more important)
 
 ???
-""  
+[Teacher Note]:  
 This is where we'll talk about the process and how we'll create our artifacts in  
 a scalable, reliable, and intuitive way.  
-""  
 
 ---
 
@@ -632,14 +510,6 @@ class: subtitle, middle
 _The natural state of the universe is chaos: entropy tends to increase in closed
 systems, and there’s really nothing that we can do about that. So too is the
 nature of your dbt project: unless action is taken to maintain order._
-
-???
-""  
-Let's start with this quote:  
-The natural state of the universe is chaos: entropy tends to increase in closed  
-systems, and there’s really nothing that we can do about that. So too is the  
-nature of your dbt project: unless action is taken to maintain order.  
-""  
 
 ---
 # What we really mean to say:
@@ -654,15 +524,6 @@ These artifacts show up in three places:
 
 These are how people at your organization will conceptualize, interact with,
 and benefit from data—your product—more than any one table or dashboard.
-
-???
-""  
-What we really mean by that is that no matter what you're building, be effortful  
-in how you organize your artifacts.  
-
-The three main places where people at your organization will interact with your  
-products are the DAG, the repository, and the warehouse.  
-""  
 
 ---
 
@@ -682,21 +543,9 @@ The DAG tells the story:
 <span style="color: purple;">Dimensions/Facts</span></h3>
 
 ???
-""  
-Let's talk about the first interface - the DAG.  
-A DAG (Directed Acyclic Graph) is generated in every dbt project, and reflects  
-how data flows from source to end product.  
-
-If you've ever been asked "where are those sales numbers coming from?", you're  
-really being asked how the end result is:
-- consuming sources of data
-- being processed
-- and being calculated (what are the assumptions?)
-
-Our DAG tells the story -  
+[Teacher Note]:  
 You can see here that our sales model combines order and payment information from  
 jaffle_shop and stripe, cleans the data, and finally comes together in fct_sales.  
-""  
 
 ---
 
@@ -760,33 +609,6 @@ We'll learn later on about what fills in our leftover question mark.
 - Often built on top of an immutable event stream
 ]]]
 
-???
-""  
-But first, let's talk about the prefixes you've seen so far on our model names.  
-Having naming conventions for your models is a great way to leverage self-documentation  
-to flag developers on model contents and purposes.  
-  
-At dbt Labs, here's what our prefixes mean:
-- stg_ means that we're cleaning and standardizing raw data: 
-  - We keep them 1:1 with our source tables, meaning that one model is cleaning
-    one table - no joins.
-  - We also don't aggregate here, we keep it source conformed - meaning
-    that the grain of the data is kept the same.
-  - Most of the SQL you'll see in these models are renaming, casting, coalescing,
-    and null-if'ing. If it helps in downstream modeling, we'll also do things like case whens,
-    row_numbers and filtering out duplicated or deleted records
-    
-- dim_ and fct_ are data sets that will be used in analysis. Typically  
-these are surfaced to stakeholders or outside tooling (such as a BI tool).  
-  - dim_ stands for dimension and usually describes an entity or object, such as
-    customers, products, apartments, or providers. The underlying data typically
-    updates via overwriting values.
-  - fct_ describes something that's happening. I.e, an action or verb such as
-    orders, cases, plays, listings, or comments. The underlying data usually 
-    appends updates to the data set rather than overwriting.
-
-""  
-
 ---
 
 <h3 style="text-align: center;"><span style="color: green;">source</span>
@@ -840,17 +662,9 @@ Make sure that for each model, you ask:
 - Am I using naming patterns? You should!
 
 ???
-""  
-Some good practices to go along with building your DAG are documentation,
-testing, and organization. You can add more quality by asking these questions:
-- What does one record represent? We should document this - this helps our team  
-understand what they're working with.
-- What assumptions about our data are we making? We should test these - this  
-ensures that our assumptions remain true through our iterations on the code.
-- Are we using naming patterns? We should! This helps us keep things organized
-and understandable at a glance.
-
-""  
+[Teacher Note]:
+Transitioning: Some good practices to go along with building your DAG are  
+documentation, testing, and organization.  
 
 ---
 
@@ -886,26 +700,15 @@ and understandable at a glance.
 ]
 
 ???
-""  
+[Teacher Note]:
 Our developers are doing most of their work within the files of the repository.  
 We can keep this organized by separating our modeling layers in to dedicated  
-folders. In this example, you can see that we have:
-- A folder for our staging models and our marts models. Our staging folder is for
-models that clean our source data, and our marts folder is for models that put 
-together our cleaned data.
-- Our staging folder contains subfolders for each source.  
-- Within the subfolders, we have our configurations and models that relate to
-each source.
-- Our marts folder contains a subfolder that relates to the area of business our
-models apply to - right now we have core, but we could also add subfolders for
-others such as product and marketing.
-- Similar to our staging area, we keep configuration files within the folder of 
-the models they seek to describe.
-- And lastly, you can see that we've used our naming conventions for each model.
-These names will show up as view or table names in our warehouse and as node
-names in the DAG.
+folders and having naming conventions for our files. Point out:
+- marts / staging separation
+- subfolders within each
+- configuration files that describe the contents of the folder they're in
+- naming conventions of the models
 
-""  
 ---
 
 # Interface #3: The Warehouse
@@ -923,31 +726,18 @@ find, and easy to infer contents?
 ]
 
 ???
-""  
-The last interface is the warehouse - which takes into consideration:
-- How we've named things
-- Our configurations in our project for how database objects are organized
-- and our permissioning setups in our warehouse
-
-You can see on the right how a naming prefix has helped organize the models
-into easy-to-find groups, and how the naming helps someone infer
-the contents of the objects.
-  
-Depending on the usage of these objects, we might further customize them by  
+[Teacher Note]:  
+Point out how:
+- naming has helped organize the models into easy to find groups 
+- the naming helps infer the contents of the objects
+- that depending on the usage of these objects, we could further customize by  
 configuring them to build into schemas by use case and setting permissions on  
 those schemas based on who or what should use the objects within them.  
-
-""  
 
 ---
 
 class: subtitle, center, middle
 # The way we roll
-
-???
-""  
-So, how does the dbt Labs team do things?  
-""  
 
 ---
 
@@ -970,52 +760,6 @@ class: subtitle
 # Checkpoint:
 
 - What are some helpful actions to do in the staging layer?  Why?
-
-???
-""  
-What are some helpful actions to do in the staging later? Why?  
-""  
-  
-[Teacher Note:]  
-Good answers would be things like:
-- light transformations (renaming, casting, nullif'in, case when's, no joins)
-- Filtering out deleted records
-- Deduplicating data
-
-Why:  
-It helps in centralizing and standardizing logic so that code is kept dry and  
-everyone uses the same logic downstream.  
-
-[Addt'l Note:] DRY means "Do not repeat yourself". In other words, we want to  
-reduce the amount of times we have to write the same logic.  
-
---
-
-- For those who have worked with dim/fct tables, how do you think about the differences?
-- Note: The difference can be a bit blurry if you are learning them for the first time.
-
-???
-""  
-For those who have worked with dim/fct tables, how do you think about the differences?  
-""  
-
-[Teacher Note]:  
-Dimensions:
-- typically overwrites a row of data when there's changes. For example,  
-if a customer changed their email preferences and the row of data for that  
-customer was overwritten because of that, then you wouldn't be able to look back  
-historically to see what the preference value used to be. This would be  
-considered a dimension.  
-- typically describe the characteristics of an entity or object.
-- Can be thought of as nouns
-
-Facts:
-- typically append a row of data when there's changes. For example, if a customer  
-changed their email preferences and a new row was added for the customer and new  
-preference, then you'd be able to look back historically to see what the old  
-preference was. This would be considered a fact.  
-- are immutable event streams.
-- Can be thought of as verbs or processes.
 
 --
 
@@ -1069,27 +813,18 @@ sales by product and country live? Should it live in dbt, or in our BI tool?
 
 For most orgs, the final rollup query should be in BI tool — allows for "drill down" functionality / further exploration.
 
-???
-""  
-For most organizations, the final rollup query would be in the BI tool. By keeping  
-things at the fct_sales level and aggregating using our BI tool's functionality,  
-we can allow for drill downs and deeper explorations.  
-
 --
 
 What if?
 - This is a KPI your company reports on regularly?
-
-???
-And if this is a trusted KPI that your company reports on regularly?  
 
 --
 
  Maybe you want it in a dbt model as well.
  
 ???
-then you might decide to model this in dbt so that it can be version contolled  
-as well! There's nothing wrong with moving important calculations in to dbt,  
+[Teacher Note]:
+There's nothing wrong with moving important calculations in to dbt,  
 but you might want to create a prefix for them to inform others that they  
 are metrics aggregated from the major ideas.  
 
@@ -1097,18 +832,9 @@ are metrics aggregated from the major ideas.
 
 - You're building a prototype model or field?
 
-???
-what about if we're prototyping a new model or testing out transformations on  
-a new peice of data?  
-
 --
 
  Potentially build it in the BI tool first then "promote" it.
-
-???
-then we might want to build our prototype query into the BI tool first, then  
-move it into dbt once our team agrees that it's useful.  
-""  
 
 ---
 
@@ -1151,26 +877,12 @@ Let's look at what we _should_ use our BI tool for:
 ]
 
 ???
-""  
-They've always been good for supplying an easy-to-use user interface for less  
-technical users, which include:
-- point and click interfaces
-- self-service filters and the ability for exploration through drill downs
-  
-They are also great at visualizing data. They usually have really great:
-- out of the box visualizations that are easy to create
-- the ability to brand the interface or visualizations using color palettes
-- and the ability to bake in further functionality via imported frameworks and 
-libraries
-  
-They also have some really nice features which make management overhead a little  
-easier, such as:
-- dynamic user input: allowing your users to dynamically change the inputs of a query  
-- scheduling  
-- alerting  
-- and exporting to pdf's and csv's  
-
-""  
+[Teacher Note]:  
+dynamic user input: allowing your users to dynamically change the inputs of a  
+query. The BI tool would need to have the capabilities for this, but it allows  
+you to set up your own "choices" that the user can choose, and allows you to  
+template those choices in the query. For example, a table joins a customers table  
+to {{ something }}, and the user chooses what that {{ something }} is.  
 
 ---
 
@@ -1184,26 +896,6 @@ easier, such as:
     - Version control
 - Running a lot non-performant SQL concurrently
 - Managing user access to sensitive data
-
-???
-""  
-They're not so great at:
-- Multi-layered data transformations with complex ordered dependencies; For  
-example, you need to transform data at different steps and you need to ensure  
-everything happens in the correct order.
-- Enforcing single sources of truth; For example, you need to ensure that    
-logic for a sales calculation is the same anywhere it's used, and you also need  
-to ensure the documentation and definitions of your data can be found in one  
-place.
-- Maintaining seperate data environments; For example, you need to ensure that  
-you can test changes without messing up production, and need version control so  
-so you can easily perform code comparisons or rollbacks.  
-- Running a lot of non-performant SQL concurrently; For example, you need to make  
-many calculations on large event tables before you can perform analyses on the data.  
-- and managing user access to sensitive data; For example, you need to allow a certain  
-group of stakeholders access to a certain set of models.   
-
-""  
 
 ---
 
@@ -1228,30 +920,12 @@ group of stakeholders access to a certain set of models.
 ]
 
 ???
-""  
-So, what goes where?  
-  
-Here's what we suggest:  
-  
-In dbt, we want critical business logic, the best agreed-on versions of models,  
-complex SQL, queries that can serve multiple purposes, and really anything worth  
-version controlling. You can think of this as our assembly line which produces  
-expected outputs every time.  
-
-In the BI layer, we want to keep aggregations and queries that need to be  
-calculated on the fly, joins qualified by user input (throw back to dynamic user  
-input), ad-hoc queries and prototyping, select stars that feed data science  
-libraries, and _most importantly_: nothing you can't take with you! You can think  
-of this as the place where we take the items produced from our assembly line  
-and customize them to meet our stakeholder's needs.  
-""  
-
 [Teacher Note:]  
-dbt models are like kitchen tools. The only single-purpose kitchen appliance
-you should ever have is a rice cooker.
+You can think of dbt as our assembly line which produces expected outputs every  
+time.  
 
-BI assets are like recipes. It doesn't hurt as much to have similar ones, but
-when it comes time to make dinner, your guests might become confused :)
+You can think of the BI layer as the place where we take the items produced from  
+our assembly line to customize them in order to meet our stakeholder's needs. 
 
 ---
 
@@ -1262,25 +936,21 @@ class: subtitle
 - What are the three interfaces into your dbt project?
 
 ???
-""  
-- What are the three interfaces into our dbt projects? [DAG, warehouse, repo]  
+[Teacher Note]:  
+DAG, repo, and warehouse  
 
 --
 
 - What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
 
 ???
-- What are some key distinctions between dbt and the BI layer that you should  
-keep in mind?  
+[Teacher Note]:  
+- dbt should have our solidly defined business logic and metrics
+- The BI later should be kept thin and flexible
 
 --
 
 - What naming conventions is your team already using?  
-
-???
-- What are some naming conventions your team is already using?  
-
-"  
 
 [Teacher Note:]  
 Use your intuition on the interactivity of the group. If they're less outspoken,  
@@ -1290,11 +960,6 @@ moment here to allow others to say what conventions they use!
 --
 
 ## Questions?
-
-???
-""  
-Any questions?  
-""  
 
 ---
 
@@ -1308,19 +973,6 @@ When creating a dbt project:
 - Stage your raw source data before transforming it.
 - Every model should have a primary key.
 - Decide as an organization how to keep your BI layer thin and flexible.
-
-???
-""  
-To recap:  
-
-When creating a dbt project:
-- First decide on the final artifact, and then sketch out the process for modeling it.
-- Use the three interfaces to organize your models.
-- Stage your raw source data before transforming it.
-- Be aware of the columns that make each row unique in your models.
-- Decide as an organization how to keep your BI layer thin and flexible.
-  
-""  
 
 {% include options/last_slide.html %}
 
