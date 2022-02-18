@@ -29,7 +29,7 @@ pose these questions to fellow teachers.
 
 This flows best by refering to what happened in previous sessions before asking  
 the questions on the slides:  
-"In previous sessions we saw that we have raw data in the warehouse.""  
+"In previous sessions we saw that we have raw data in the warehouse."  
 
 --
 
@@ -180,7 +180,7 @@ GROUP BY
 ```
 
 ???
-[Teacher Note]:
+[Teacher Note]:  
 In 1998, it would have been typical to see a query like this, written on an  
 underlying database which uses a snowflake or star schema. We have a central  
 fact table, which we're then joining out to dimensions to get the information we  
@@ -255,7 +255,7 @@ explanation later on.
 ]
 
 ???
-[Teacher Note]  
+[Teacher Note]:  
 This is what the underlying data looks like for our denormalized model.  
 You can see that important data such as brand, country, units_sold, year, and  
 product category are all located in this model.  
@@ -316,7 +316,8 @@ GROUP BY
 ???
 [Teacher Note]:  
 This and the next slide recap on the two queries to position why we're able to  
-design like we do today.  
+design like we do today. You can position this like:  
+"So we have our query from 1998, and we have our query from today"  
 
 ---
 
@@ -342,7 +343,7 @@ group by 1, 2
 
 ???
 [Teacher Note]:  
-You can pose this question like:
+You can pose this question like:  
 "What's changed? Why didn't we just denormalize in 1998 or use date_trunc  
 instead of having dedicated date tables?"  
 
