@@ -52,7 +52,7 @@ With dbt!
 {% include options/focus_slide.html %}
 
 ???
-[Teacher Note]:
+[Teacher Note]:  
 We need to know what we mean by "model it". It's a broad term!  
 
 ---
@@ -80,12 +80,6 @@ this topic, but we're not going to dive too deeply in to it.
 - With dbt!
 - The _real_ interest of this presentation
 
-???
-[Teacher Note]:  
-Or it could mean that we need a reliable, scalable, and intuitive process - this  
-is communicating dbt's value in the modern data stack and sets up the focus  
-for the session.  
-""  
 ---
 
 class: subtitle, center, middle
@@ -94,10 +88,8 @@ class: subtitle, center, middle
 ### What is the table or view I'm trying to build?
 
 ???
-""  
-So, let's start with our first point - the final data artifacts. The question  
-we're aiming to answer is "what is the table or view I'm trying to build?"  
-""  
+[Teacher Note]:  
+This is referring to the first set of bullet points on the previous slide.  
 
 ---
 ## What is the table or view I'm trying to build?
@@ -146,7 +138,7 @@ SVP Marketing Analytics
 | LG    | US      | 20         |
 
 ???
-""  
+[Teacher Note]:  
 This is our desired output - You can see that we've got a table with one row per  
 brand and country combination, with an aggregate of the units sold.  
 
@@ -188,12 +180,11 @@ GROUP BY
 ```
 
 ???
-""  
+[Teacher Note]:
 In 1998, it would have been typical to see a query like this, written on an  
 underlying database which uses a snowflake or star schema. We have a central  
 fact table, which we're then joining out to dimensions to get the information we  
 need to answer Tristan's question.  
-""  
 
 ---
 
@@ -202,11 +193,10 @@ need to answer Tristan's question.
 <img src="/ui/img/lessons/data-warehouses/fact-sales-erd.png" class="img-center">
 
 ???
-""  
-And here's what that schema looks like - again, you can see we have a central  
+[Teacher Note]:  
+This is what that schema looks like - again, you can see we have a central  
 fact table, and in order to get information like country or brand, we actually  
 need to join in other tables in between to get there.  
-""  
 
 ---
 
@@ -216,10 +206,9 @@ need to join in other tables in between to get there.
 - DataVault
 
 ???
-""  
-You might have heard about related data modeling practices such as Kimball,  
-Inmon, and DataVault.  
-""  
+[Teacher Note]:  
+A good way to transition to this slide:  
+"You might have heard about related data modeling practices such as"  
 
 ---
 
@@ -239,15 +228,15 @@ group by 1, 2
 ```
 
 ???
-""  
+[Teacher Note]:  
 Our query today would look something like this. There's a lot less going on  
-here - notably there are no joins. Why is that? It's because we're working  
-with denormalized data, meaning that all of the relevant information is in the  
-same model.  
-  
-You'll also notice that instead of joining to a date table, we're using  
-a database function to date_trunc our sales date.  
-""  
+here - notably:
+- no joins
+- using a date_trunc instead
+
+Why no joins? It's because we're working with denormalized data, meaning that all  
+of the relevant information is in the  same model. We get to the date_trunc  
+explanation later on. 
 
 ---
 
@@ -266,11 +255,10 @@ a database function to date_trunc our sales date.
 ]
 
 ???
-""  
-Here's what the underlying data looks like for our denormalized model.  
+[Teacher Note]  
+This is what the underlying data looks like for our denormalized model.  
 You can see that important data such as brand, country, units_sold, year, and  
 product category are all located in this model.  
-""  
 
 ---
 
@@ -279,13 +267,12 @@ product category are all located in this model.
 <img src="/ui/img/lessons/data-warehouses/fact-sales-dag.png" class="img-center">
 
 ???
-""  
-And here's the underlying flow of our data. You can see that we still have  
+[Teacher Note]:  
+This is the underlying flow of our data. You can see that we still have  
 all of the same underlying tables, but instead of joining all of it at once,  
 we've modularized it into various flows which finally come together to  
 give us a table of all sales. We'll end up querying from this to get Tristan's  
 answer via filters and aggregations.  
-""  
 
 ---
 class: middle
@@ -296,12 +283,11 @@ Should that final "roll up" query live in dbt?
 (We're going to come back to this discussion!)
 
 ???
-""  
-but before we continue, everyone should think about that final rollup query with  
-our filters and aggregations - should this live in dbt?  
-  
-Think about it - we'll come back to this later!  
-""  
+[Teacher Note]:  
+You can position this by saying something like:  
+"but before we continue, everyone should think about that final rollup query  
+with our filters and aggregations - should this live in dbt? Think about it -  
+we'll come back to this later!"  
 
 ---
 
@@ -328,9 +314,9 @@ GROUP BY
 ```
 
 ???
-""  
-So, we've got our query from 1998 -  
-""  
+[Teacher Note]:  
+This and the next slide recap on the two queries to position why we're able to  
+design like we do today.  
 
 ---
 
@@ -349,20 +335,16 @@ where date_trunc('year', sale_date) = '1997-01-01'
 group by 1, 2
 ```
 
-???
-""  
-and we've got our query from today -  
-""  
-
 ---
 
 
 # What has changed?
 
 ???
-""  
-What's changed? Why didn't we just denormalize in 1998 or use date_trunc  
-instead of having dedicated date tables?  
+[Teacher Note]:  
+You can pose this question like:
+"What's changed? Why didn't we just denormalize in 1998 or use date_trunc  
+instead of having dedicated date tables?"  
 
 --
 
