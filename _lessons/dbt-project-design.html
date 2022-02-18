@@ -21,6 +21,16 @@ class: title, center, middle
 
 .grey[_What do I do with it?_]
 
+???
+[Teacher Note]:  
+You can read these out or pose these questions to the class - read the audience.  
+If they don't seem interactive but you want some interactivity, you can also  
+pose these questions to fellow teachers.  
+
+This flows best by refering to what happened in previous sessions before asking  
+the questions on the slides:  
+"In previous sessions we saw that we have raw data in the warehouse."  
+
 --
 
 Model it!
@@ -39,8 +49,12 @@ With dbt!
 
 ---
 
-{% include options/focus_slide.html %}
 
+???
+[Teacher Note]:  
+We need to know what we mean by "model it". It's a broad term!  
+
+{% include options/focus_slide.html %}
 ---
 
 # "Model it!" actually means:
@@ -49,6 +63,16 @@ With dbt!
 - "data model design," "data warehouse design," "warehousing"
 - It's a careful balance between several trade-offs
 - Could fill a book (or several) on this topic. It's a fascinating topic that we'll cover _very_ briefly
+
+???
+[Teacher Note]:  
+There's two main things we could mean when we say "model it":  
+
+The first set of bullet points are saying:
+- This is also known as these three terms
+- The tradeoffs will be specific to how our team and org functions
+- And there's numerous methodologies and extensive conversation to be had on  
+this topic, but we're not going to dive too deeply in to it.  
 
 --
 
@@ -62,6 +86,10 @@ class: subtitle, center, middle
 # 1. Final data artifacts
 
 ### What is the table or view I'm trying to build?
+
+???
+[Teacher Note]:  
+This is referring to the first set of bullet points on the previous slide.  
 
 ---
 ## What is the table or view I'm trying to build?
@@ -96,7 +124,6 @@ Tristan
 SVP Marketing Analytics
 ```
 
-
 ---
 
 # The desired output:
@@ -110,14 +137,23 @@ SVP Marketing Analytics
 | LG    | UK      | 100        |
 | LG    | US      | 20         |
 
+???
+[Teacher Note]:  
+This is our desired output - You can see that we've got a table with one row per  
+brand and country combination, with an aggregate of the units sold.  
+
 --
 
 What is the query you (the analyst) will write to get these results?
 
+???
+[Teacher note:]  
+You should actually pause here for a few seconds to allow everyone to think  
+about this!  
+  
 --
 
 This depends on your models!
-
 
 ---
 
@@ -143,11 +179,24 @@ GROUP BY
 	G.Country
 ```
 
+???
+[Teacher Note]:  
+In 1998, it would have been typical to see a query like this, written on an  
+underlying database which uses a snowflake or star schema. We have a central  
+fact table, which we're then joining out to dimensions to get the information we  
+need to answer Tristan's question.  
+
 ---
 
 ### Before: snowflake schema (ca. 2000s)
 
 <img src="/ui/img/lessons/data-warehouses/fact-sales-erd.png" class="img-center">
+
+???
+[Teacher Note]:  
+This is what that schema looks like - again, you can see we have a central  
+fact table, and in order to get information like country or brand, we actually  
+need to join in other tables in between to get there.  
 
 ---
 
@@ -155,6 +204,11 @@ GROUP BY
 - Kimball
 - Inmon
 - DataVault
+
+???
+[Teacher Note]:  
+A good way to transition to this slide:  
+"You might have heard about related data modeling practices such as"  
 
 ---
 
@@ -173,6 +227,17 @@ where date_trunc('year', sale_date) = '1997-01-01'
 group by 1, 2
 ```
 
+???
+[Teacher Note]:  
+Our query today would look something like this. There's a lot less going on  
+here - notably:
+- no joins
+- using a date_trunc instead
+
+Why no joins? It's because we're working with denormalized data, meaning that all  
+of the relevant information is in the  same model. We get to the date_trunc  
+explanation later on. 
+
 ---
 
 ### Today: denormalized model
@@ -189,11 +254,25 @@ group by 1, 2
 
 ]
 
+???
+[Teacher Note]:  
+This is what the underlying data looks like for our denormalized model.  
+You can see that important data such as brand, country, units_sold, year, and  
+product category are all located in this model.  
+
 ---
 
 ### Today: denormalized model (2020)
 
 <img src="/ui/img/lessons/data-warehouses/fact-sales-dag.png" class="img-center">
+
+???
+[Teacher Note]:  
+This is the underlying flow of our data. You can see that we still have  
+all of the same underlying tables, but instead of joining all of it at once,  
+we've modularized it into various flows which finally come together to  
+give us a table of all sales. We'll end up querying from this to get Tristan's  
+answer via filters and aggregations.  
 
 ---
 class: middle
@@ -202,6 +281,13 @@ class: middle
 Should that final "roll up" query live in dbt?
 
 (We're going to come back to this discussion!)
+
+???
+[Teacher Note]:  
+You can position this by saying something like:  
+"but before we continue, everyone should think about that final rollup query  
+with our filters and aggregations - should this live in dbt? Think about it -  
+we'll come back to this later!"  
 
 ---
 
@@ -226,6 +312,12 @@ GROUP BY
 	B.Brand,
 	G.Country
 ```
+
+???
+[Teacher Note]:  
+This and the next slide recap on the two queries to position why we're able to  
+design like we do today. You can position this like:  
+"So we have our query from 1998, and we have our query from today"  
 
 ---
 
@@ -248,6 +340,13 @@ group by 1, 2
 
 
 # What has changed?
+
+???
+[Teacher Note]:  
+You can pose this question like:  
+"What's changed? Why didn't we just denormalize in 1998 or use date_trunc  
+instead of having dedicated date tables?"  
+
 --
 
 Some design decisions of the past were driven by technology:
@@ -257,9 +356,20 @@ Some design decisions of the past were driven by technology:
 - Updating data was expensive → design models so that changes are isolated to one table
 - Data modeling was a different skill set to analysis → project plan the whole thing!
 
+???
+[Teacher Note]:  
+Namely in the way that row-oriented and column-oriented databases store and  
+process data.  
+  
+Because we use columnar-store for our analytics processing today, it allows us  
+normalize or denormalize as we'd like, comfortably use SQL functions, and start  
+closing the gap between modeling and analysis.  
+
 ---
 
 # But what has stayed the same?
+
+--
 
 - A "final" model should represent a _business_ process or entity.
 
@@ -272,13 +382,16 @@ a "payment".
 
 It might be useful to track whether it was processed via `stripe`
 or `braintree` (i.e. include a `payments_provider` column), but ultimately, the
-`payments` table should include both in a standardized form.
+`payments` table should include both in a standardized form. 
 
 ---
 
 # But what has stayed the same?
 
 - A "final" model should represent a _business_ process or entity.
+- Each model should have a clear "grain" — "one record represents a ..."
+
+--
 
 **Example 2:**
 
@@ -293,20 +406,42 @@ the `trips` table has three entries: one parent trip, and two child trips.
 | 4       | NULL      | .. |
 
 How many trips occurred?
+
+???
+
+[Teacher Note]:  
+We could say that:
+- two trips occured, we're only counting trips without a parent trip as a trip.
+- three trips occurred, because we're counting those without a parent trip as 
+a trip, and the split trip as one trip.
+- or four trips occurred because we're counting each trip id
+
 --
  Well what's a trip?
 
+???
+[Teacher Note]:  
+In this example, we had to explain our trips by saying: "each record represents  
+a trip, *but* ...".  
+
 ---
+
 # But what has stayed the same?
 
 - A "final" model should represent a _business_ process or entity.
 - Each model should have a clear "grain" — "one record represents a ..."
-
---
 - Naming is important. In particular, consistency is _extremely_ valuable
 
 --
+
 - Consider the final use case when designing your final artifacts
+
+???
+[Teacher Note]:  
+We can do this by asking questions like:
+- Who will need to use our final artifacts?
+- Which questions do we need to answer related to these data sets?
+- How well will the tools consuming our data products handle how we propose to model it?
 
 ---
 
@@ -345,6 +480,11 @@ class: subtitle, center, middle
 # 2. The process is the product
 
 ### (and that's more important)
+
+???
+[Teacher Note]:  
+This is where we'll talk about the process and how we'll create our artifacts in  
+a scalable, reliable, and intuitive way.  
 
 ---
 
@@ -385,6 +525,11 @@ The DAG tells the story:
 &rarr;
 <span style="color: purple;">Dimensions/Facts</span></h3>
 
+???
+[Teacher Note]:  
+You can see here that our sales model combines order and payment information from  
+jaffle_shop and stripe, cleans the data, and finally comes together in fct_sales.  
+
 ---
 
 # Interface #1: The dbt DAG
@@ -394,6 +539,14 @@ For your final artifacts, consider which sources will power this project:
 <img src="/ui/img{{page.id}}/dag-part-2.png" style="width: 70%;" class="img-center">
 
 (More on this later)
+
+???
+[Teacher Note]:  
+To transition, you can word this slide like:  
+"In order to plan out our flow of data, let's whiteboard our fct_sales example.  
+We'll start by considering the the sources that power our end result.   
+The data sources we need are orders, products, customers, and stores."  
+
 ---
 
 # Interface #1: The dbt DAG
@@ -401,6 +554,14 @@ For your final artifacts, consider which sources will power this project:
 Then add staging models: "The shape you wish your data came in"
 
 <img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
+
+???
+[Teacher Note]:  
+Further explanation on the whiteboarding:  
+"Once we have our sources, we create our first layer of models which cleans and  
+standardizes our raw data so that it's easier to work with downstream.  
+  
+We'll learn later on about what fills in our leftover question mark."  
 
 ---
 
@@ -431,7 +592,6 @@ Then add staging models: "The shape you wish your data came in"
 - Often built on top of an immutable event stream
 ]]]
 
-
 ---
 
 <h3 style="text-align: center;"><span style="color: green;">source</span>
@@ -449,9 +609,24 @@ Then add staging models: "The shape you wish your data came in"
 <img src="/ui/img{{page.id}}/dag-grouped.png" style="width: 100%;">
 
 ???
-Instructor: draw circles/boxes around the different "model groups" (sources,
+[Teacher Note]:  
+This explanation plays on the leftover question mark from whiteboarding earlier,  
+which isn't covered explicitly in any other slide:  
+"Here's an example of what a real DAG might end up looking like. You can  
+see that we have:
+- Our sources (the green nodes)
+- Our staging models
+- Some intermediate steps happening: Remember our leftover question mark when we
+were whiteboarding our DAG? We can identify what processes are our "stepping stones"
+to our endresult and modularize those as intermediate models. You don't need these,
+but it does make the overall flow more understandable and allows you to reuse the
+outputs of those processes!
+- and our final dimensions and facts"
+
+[Demo:]  
+Draw circles/boxes around the different "model groups" (sources,
 staging, intermediate, lookups, final fact/dim). Comment on how they can
-be grouped together in all three interfaces.
+be grouped together in all three interfaces.  
 
 ---
 # Interface #1: The dbt DAG
@@ -460,6 +635,11 @@ Make sure that for each model, you ask:
 - What does one record represent? Let's document this!
 - What assumptions about our data are we making? We should test those!
 - Am I using naming patterns? You should!
+
+???
+[Teacher Note]:  
+You can position this by saying something like:  
+"Some good practices to go along with building your DAG are..."  
 
 ---
 
@@ -494,6 +674,17 @@ Make sure that for each model, you ask:
 ]
 ]
 
+???
+[Teacher Note]:  
+Our developers are doing most of their work within the files of the repository.  
+We can keep this organized by separating our modeling layers in to dedicated  
+folders and having naming conventions for our files.  
+Point out:
+- marts / staging separation
+- subfolders within each
+- configuration files that describe the contents of the folder they're in
+- naming conventions of the models
+
 ---
 
 # Interface #3: The Warehouse
@@ -510,6 +701,15 @@ find, and easy to infer contents?
 <img src="/ui/img{{page.id}}/mode-sidebar.png" style="width: 60%;" class="img-center">
 ]
 
+???
+[Teacher Note]:  
+Point out how:
+- naming has helped organize the models into easy to find groups 
+- the naming helps infer the contents of the objects
+- that depending on the usage of these objects, we could further customize by  
+configuring them to build into schemas by use case and setting permissions on  
+those schemas based on who or what should use the objects within them.  
+
 ---
 
 class: subtitle, center, middle
@@ -523,6 +723,12 @@ class: subtitle, center, middle
 
 .center[[Read it!](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)]
 
+???
+[Teacher Note]:  
+You can position this like:  
+"Here's an article we wrote on how we organize and structure our dbt projects.  
+It's worth a read if you want to get some ideas for creating your own conventions!"  
+
 ---
 
 class: subtitle
@@ -530,10 +736,6 @@ class: subtitle
 # Checkpoint:
 
 - What are some helpful actions to do in the staging layer?  Why?
---
-
-- For those who have worked with dim/fct tables, how do you think about the differences?
-- Note: The difference can be a bit blurry if you are learning them for the first time.
 
 --
 
@@ -546,16 +748,34 @@ class: subtitle, center, middle
 
 ## What BI tools do you use?
 
+???
+[Teacher Note]:  
+Now we're going to talk about dbt artifacts and business intelligence tools.  
+Our end products typically get consumed by these, so it's important to understand  
+the practices surrounding this part of the stack.  
+
 ---
 
 class: center
 # What BI tools do you use?
 <img src="/ui/img{{page.id}}/bi-logos-3.png" style="width: 40%;" class="img-center">
+
+???
+[Teacher Note]:  
+There's a lot of BI tools at our disposal - tools such as Sisense, Metabase,  
+Redash, Mode, Looker, Tableau, R, Chartio, etc.  
+
+*Interactivity*: have the class shout out which of these tools they've used in  
+the slack channel!
 ---
 
 # Which part of this should be in the dbt versus the BI tool?
 
 <img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
+
+???
+[Teacher Note]:  
+Throw back to our question from earlier  
 
 ---
 
@@ -567,19 +787,39 @@ For most orgs, the final rollup query should be in BI tool — allows for "drill
 
 What if?
 - This is a KPI your company reports on regularly?
---
- Maybe you want it in a dbt model as well.
 
 --
-- You're building a prototype model or field?
+
+ Maybe you want it in a dbt model as well.
+ 
+???
+[Teacher Note]:
+There's nothing wrong with moving important calculations in to dbt,  
+but you might want to create a prefix for them to inform others that they  
+are metrics aggregated from the major ideas.  
+
 --
+
+- You're building a prototype model or field?
+
+--
+
  Potentially build it in the BI tool first then "promote" it.
+
 ---
 
 
 # What should you use your BI tool for?
 
+???
+[Teacher Note]:  
+In order to put more emphasis on why this is important, you can position this  
+like:  
+"Queries and transformations can move around between dbt and the BI tool, so how  
+do we try to stay effortful in what we decide to put where?"  
+
 ---
+
 ## The things they've always been good at!
 
 .left-column-33[
@@ -605,9 +845,17 @@ What if?
 ]
 ]
 
+???
+[Teacher Note]:  
+dynamic user input: allowing your users to dynamically change the inputs of a  
+query. The BI tool would need to have the capabilities for this, but it allows  
+you to set up your own "choices" that the user can choose, and allows you to  
+template those choices in the query. For example, a table joins a customers table  
+to {{ something }}, and the user chooses what that {{ something }} is.  
+
 ---
 
-## Not the things they're less good at
+## The things they're less good at
 
 - Multilayered data transformation with complex ordered dependencies
 - Enforcing a single sources of truth
@@ -641,11 +889,12 @@ What if?
 ]
 
 ???
-dbt models are like kitchen tools. The only single-purpose kitchen appliance
-you should ever have is a rice cooker.
+[Teacher Note:]  
+You can think of dbt as our assembly line which produces expected outputs every  
+time.  
 
-BI assets are like recipes. It doesn't hurt as much to have similar ones, but
-when it comes time to make dinner, your guests might become confused :)
+You can think of the BI layer as the place where we take the items produced from  
+our assembly line to customize them in order to meet our stakeholder's needs. 
 
 ---
 
@@ -654,12 +903,28 @@ class: subtitle
 # Checkpoint:
 
 - What are the three interfaces into your dbt project?
+
+???
+[Teacher Note]:  
+DAG, repo, and warehouse  
+
 --
 
 - What are some key distinctions between the dbt layer and BI layer that you want to keep in mind?
+
+???
+[Teacher Note]:  
+- dbt should have our solidly defined business logic and metrics
+- The BI later should be kept thin and flexible
+
 --
 
-- What naming conventions is your team already using?
+- What naming conventions is your team already using?  
+
+[Teacher Note:]  
+Use your intuition on the interactivity of the group. If they're less outspoken,  
+ask them to shout it out in the Slack channel. Otherwise, you can pause for a  
+moment here to allow others to say what conventions they use!  
 
 --
 
