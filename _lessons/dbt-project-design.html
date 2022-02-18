@@ -541,11 +541,11 @@ For your final artifacts, consider which sources will power this project:
 (More on this later)
 
 ???
-""  
-In order to plan out our flow of data, let's whiteboard our fct_sales example.  
+[Teacher Note]:  
+To transition, you can word this slide like:  
+"In order to plan out our flow of data, let's whiteboard our fct_sales example.  
 We'll start by considering the the sources that power our end result.   
-The data sources we need are orders, products, customers, and stores.  
-""  
+The data sources we need are orders, products, customers, and stores."  
 
 ---
 
@@ -556,12 +556,12 @@ Then add staging models: "The shape you wish your data came in"
 <img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
 
 ???
-""  
-Once we have our sources, we create our first layer of models which cleans and  
+[Teacher Note]:  
+Further explanation on the whiteboarding:  
+"Once we have our sources, we create our first layer of models which cleans and  
 standardizes our raw data so that it's easier to work with downstream.  
   
-We'll learn later on about what fills in our leftover question mark.  
-""  
+We'll learn later on about what fills in our leftover question mark."  
 
 ---
 
@@ -609,8 +609,10 @@ We'll learn later on about what fills in our leftover question mark.
 <img src="/ui/img{{page.id}}/dag-grouped.png" style="width: 100%;">
 
 ???
-""  
-Here's an example of what a real DAG might end up looking like. You can  
+[Teacher Note]:  
+This explanation plays on the leftover question mark from whiteboarding earlier,  
+which isn't covered explicitly in any other slide:  
+"Here's an example of what a real DAG might end up looking like. You can  
 see that we have:
 - Our sources (the green nodes)
 - Our staging models
@@ -619,22 +621,12 @@ were whiteboarding our DAG? We can identify what processes are our "stepping sto
 to our endresult and modularize those as intermediate models. You don't need these,
 but it does make the overall flow more understandable and allows you to reuse the
 outputs of those processes!
-- and our final dimensions and facts
-
-""  
+- and our final dimensions and facts"
 
 [Demo:]  
 Draw circles/boxes around the different "model groups" (sources,
 staging, intermediate, lookups, final fact/dim). Comment on how they can
 be grouped together in all three interfaces.  
-
-[Teacher Note:]  
-If you start out by having the class focus on the major pieces (sources, stg_,  
-dim_/fct_), you can then explain that the other layers are purely optional  
-and serve to break down the flows into even more understandable steps.  
-- base: usually used to bring together parts of a whole building block
-- intermediate: usually used to break processes up in to logical steps 
-or components towards the end goal.  
 
 ---
 # Interface #1: The dbt DAG
@@ -683,10 +675,11 @@ You can position this by saying something like:
 ]
 
 ???
-[Teacher Note]:
+[Teacher Note]:  
 Our developers are doing most of their work within the files of the repository.  
 We can keep this organized by separating our modeling layers in to dedicated  
-folders and having naming conventions for our files. Point out:
+folders and having naming conventions for our files.  
+Point out:
 - marts / staging separation
 - subfolders within each
 - configuration files that describe the contents of the folder they're in
@@ -731,10 +724,10 @@ class: subtitle, center, middle
 .center[[Read it!](https://discourse.getdbt.com/t/how-we-structure-our-dbt-projects/355)]
 
 ???
-""  
-Here's an article we wrote on how we organize and structure our dbt projects.  
-It's worth a read if you want to get some ideas for creating your own conventions!  
-""  
+[Teacher Note]:  
+You can position this like:  
+"Here's an article we wrote on how we organize and structure our dbt projects.  
+It's worth a read if you want to get some ideas for creating your own conventions!"  
 
 ---
 
@@ -756,12 +749,10 @@ class: subtitle, center, middle
 ## What BI tools do you use?
 
 ???
-""  
+[Teacher Note]:  
 Now we're going to talk about dbt artifacts and business intelligence tools.  
 Our end products typically get consumed by these, so it's important to understand  
 the practices surrounding this part of the stack.  
-
-""  
 
 ---
 
@@ -770,13 +761,11 @@ class: center
 <img src="/ui/img{{page.id}}/bi-logos-3.png" style="width: 40%;" class="img-center">
 
 ???
-""  
+[Teacher Note]:  
 There's a lot of BI tools at our disposal - tools such as Sisense, Metabase,  
 Redash, Mode, Looker, Tableau, R, Chartio, etc.  
-""  
 
-[Teacher Notes:]  
-Interactivity - have the class shout out which of these tools they've used in  
+*Interactivity*: have the class shout out which of these tools they've used in  
 the slack channel!
 ---
 
@@ -785,10 +774,8 @@ the slack channel!
 <img src="/ui/img{{page.id}}/dag-part-3.png" style="width: 70%;" class="img-center">
 
 ???
-""  
-Let's go back to our question from earlier - where should our rollup query for  
-sales by product and country live? Should it live in dbt, or in our BI tool?  
-""  
+[Teacher Note]:  
+Throw back to our question from earlier  
 
 ---
 
@@ -825,12 +812,11 @@ are metrics aggregated from the major ideas.
 # What should you use your BI tool for?
 
 ???
-""  
-Queries and transformations can move around between dbt and the BI tool, so how  
-do we try to stay effortful in what we decide to put where?  
-
-Let's look at what we _should_ use our BI tool for:  
-""  
+[Teacher Note]:  
+In order to put more emphasis on why this is important, you can position this  
+like:  
+"Queries and transformations can move around between dbt and the BI tool, so how  
+do we try to stay effortful in what we decide to put where?"  
 
 ---
 
