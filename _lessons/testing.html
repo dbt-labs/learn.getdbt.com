@@ -332,7 +332,19 @@ models:
 ""  
 and relationships, which ensures referential integrity. In other words, it tests  
 that a column in your model has a related record in a different table.  
-""  
+"" 
+
+--
+
+{% include options/demo_prompt.html %}  
+
+???
+Demo Time:
+- "Let's see tests in action!"
+- run `dbt test`
+- run `dbt test -s customers`
+- show details tab with compiled SQL
+
 ---
 # Q: Why might a test fail?
 
@@ -509,21 +521,6 @@ infrequent, but a good check to have in place nonetheless.
 their due diligence, that we have an automated process that can catch things.  
   
 ""
----
-## demo
-
-<br>
-<br>
-.center[
-<img src="/ui/img/dbt-standalone-new.png" style="width: 20%;">
-]
-
-???
-Demo Time:
-- "Let's see tests in action!"
-- run `dbt test`
-- run `dbt test -s customers`
-- show details tab with compiled SQL
 
 ---
 
