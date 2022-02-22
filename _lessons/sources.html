@@ -141,7 +141,6 @@ Demo: Open and talk through the use of source in model stg_customers. Press comp
 --
 
 .right-column[
-{% raw %}
 ```sql
 with source as (
 
@@ -153,13 +152,11 @@ renamed as (
 
 ...
 ```
-{% endraw %}
 ]
 
 ???
   - Once you have defined a source in your .yml file, you can now utilize the source Jinja function to select from that source in a model. 
   - The source function here will compile to the full object name in the database, so select star from source-jaffleshop will compile to raw.jaffleshop.customers, with the database name raw, which is **clicks back** how we defined it in our yml file.
-
 **Demo:** Pause the deck here and jump into the IDE to show the following:
 - Creating a .yml file and configuring sources (use text on Defining Sources slide)
 - Changing the direct table references in the stg_customers model
@@ -168,10 +165,14 @@ renamed as (
 
 Then jump back to the slides to talk about source-freshness 🚀
 
+---
+## demo
 
---
-
-{% include options/demo_prompt.html %}  
+<br>
+<br>
+.center[
+<img src="/ui/img/dbt-standalone-new.png" style="width: 20%;">
+]
 
 ???
 Demo Time:
@@ -235,9 +236,14 @@ Demo: While looking at the source yml ask the group what is being tested in this
 ???
 Can you add tests to sources? Yes you can and you absolutely should! If there's something wrong with your data, you will be able to see if it was caused by something going wrong in your source data, or in one of your models.
 
---
+---
+## demo
 
-{% include options/demo_prompt.html %}  
+<br>
+<br>
+.center[
+<img src="/ui/img/dbt-standalone-new.png" style="width: 20%;">
+]
 
 ???
 Demo Time:
@@ -255,9 +261,14 @@ We can run tests on _only_ sources with the following command
 
 This can be helpful in deployment - coming up soon
 
---
+---
+## demo
 
-{% include options/demo_prompt.html %}  
+<br>
+<br>
+.center[
+<img src="/ui/img/dbt-standalone-new.png" style="width: 20%;">
+]
 
 ???
 Demo Time:
@@ -354,9 +365,14 @@ from raw.stripe.payment
 * Then it uses python to determine whether the delta is within the right range
 ]
 
---
+---
+## demo
 
-{% include options/demo_prompt.html %}  
+<br>
+<br>
+.center[
+<img src="/ui/img/dbt-standalone-new.png" style="width: 20%;">
+]
 
 ???
 Demo Time:
