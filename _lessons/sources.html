@@ -165,9 +165,11 @@ Demo Time:
 - run `dbt run`
 - this fails! Why does it fail?  (because we haven't added the sources.yml file. Do that now.)
 - add sources.yml  (use text on Defining Sources slide)
+
 "Once you have defined a source in your .yml file, you can now utilize the source Jinja function to select from that source in a model.""
 
 - Preview data to show it works
+
 "The source function here will compile to the full object name in the database, so select star from source-jaffleshop will compile to raw.jaffleshop.customers, with the database name raw, which is **clicks back** how we defined it in our yml file.""
 
 - show Compiled sql to prove it translates to the database.schema.object expected
