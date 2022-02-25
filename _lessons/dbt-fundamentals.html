@@ -160,6 +160,18 @@ See if anyone wants to have a go at explaining a model
 <img src="/ui/img{{page.id}}/model.png" style="width: 50%;">
 ]
 
+--
+{% include options/demo_prompt.html %}
+
+???
+Demo Time:
+- Jump over into dbt Cloud _Group Training project: https://cloud.getdbt.com/#/accounts/26712/projects/43345/develop/
+- Look at the model `customers.sql`
+- Show the SQL select statement. 
+- Talk about SQL & Jinja working together
+- Hit `Compile` to show Jinja compiles to SQL
+- Hit 'Preview' to show that it outputs data
+
 ---
 # To use dbt you need:
 1. .grey[A data warehouse]
@@ -291,8 +303,21 @@ Snowflake console
     * `tags: ['nightly', 'hourly']`
     * `enabled: True`
 
+--
+{% include options/demo_prompt.html %}  
+
 ???
-* Show changing configurations, esp. examples that highlight hierarchical nature
+Demo Time:
+- "Let's see configurations in action!"
+- show dbt_project.yml materialization
+- run `dbt run`
+- show staging model DDL stating view
+
+Now let's do an example that highlights hierarchical nature, showing that more specific configurations take precedence
+- add a config blocks in a file with a different materialization (e.g. staging file materialized as a table)
+- run `dbt run`
+- show staging model DDL stating table
+
 ---
 # What happens when you run the command: `dbt run`?
 1. dbt connects to your **data warehouse** (via a **profile**/**connection**)

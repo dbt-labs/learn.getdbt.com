@@ -172,6 +172,30 @@ One of the following values:
 {% endraw %}
 ???
 - Docs blocks are great for special formatting but also allow for more modular documentation. A given .md file can be referenced and used in multiple descriptions without having to copy and paste any text. 
+
+--
+
+{% include options/demo_prompt.html %}  
+
+
+???
+Demo Time:
+
+Regular docs:
+- "Let's see that in action!"
+- add regular model and/or column descriptions to your yml file
+- run `dbt docs generate`
+- show where those end up in the docs
+
+Doc blocks:
+- add a doc block file `order_status.md`
+- paste in the above markdown code ensuring to add newline white spaces
+- add description: `"&#123;&#123; doc('order_status') &#125;&#125;"`
+- run `dbt docs generate`
+- within docs, find the doc block and talk about it
+- talk through all the other data shown (metadata, columns, types)
+- talk through DAG / lineage graph and model selection syntax
+
 ---
 # Generating documentation
 .denser-text[
