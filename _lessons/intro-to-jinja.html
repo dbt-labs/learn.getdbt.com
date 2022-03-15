@@ -99,6 +99,17 @@ class: subtitle, middle, center
 {% set me = 3 %}
 {% set you = 'foo' %}
 ```
+--
+```jinja
+{{ me }}
+{{ you }}
+```
+--
+```
+3
+foo
+```
+
 ---
 # Dictionaries and Lists
 
@@ -194,6 +205,24 @@ me
 --
 ```
 foo
+```
+---
+
+# And so on
+
+```jinja
+{% set us = [
+{
+    'name': 'me',
+    'number': 3,
+    'details': 'bar'
+  },
+  {
+    'name': 'you',
+    'number': 100,
+    'details': 'foo'
+}
+] %}
 ```
 --
 ```jinja
