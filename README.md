@@ -4,9 +4,7 @@
 
 This repository remains mostly to serve the `_redirects` file and act as a code reference. 
 
-*Notable exception:* **the /lessons directory, which is used for teaching trainings, is not being redirected**. If you need to make changes to the training slides, you will still do it here.
-
-You can reach the /lessons files directly at learn.getdbt.com/lessons, or, in the preview environment, at https://deploy-preview-XXX--kind-lovelace-c014dc.netlify.app/lessons, where "XXX" is the pull request number. 
+You can now reach the /lessons files directly at https://www.getdbt.com/dbt-learn/lessons/.
 
 Since the redirects file is not processed in the local dev environment, you may still run the legacy site locally. See instructions below.
 

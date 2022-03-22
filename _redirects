@@ -1,2 +1,4 @@
-/public/        https://www.getdbt.com/dbt-learn/   301!
-/               https://www.getdbt.com/dbt-learn/   301!
+/lessons/*      https://www.getdbt.com/dbt-learn/lessons/:splat 301!
+
+/public/        https://www.getdbt.com/dbt-learn/               301!
+/               https://www.getdbt.com/dbt-learn/               301!
